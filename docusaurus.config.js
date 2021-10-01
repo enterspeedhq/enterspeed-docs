@@ -33,6 +33,21 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        apiKey: '0332d636b5100c042414e8625668f55a',
+        indexName: 'enterspeed_docs',
+  
+        // Optional: see doc section below
+        contextualSearch: true,
+  
+        // Optional: see doc section below
+        appId: 'T0NG7A39KM',
+  
+        // Optional: Algolia search parameters
+        searchParameters: {},
+  
+        //... other Algolia params
+      },
       navbar: {
         title: 'Docs',
         logo: {
