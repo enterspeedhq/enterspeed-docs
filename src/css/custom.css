@@ -1,0 +1,62 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:wght@600&display=swap');
+
+:root {
+  --ifm-color-primary: #0b0f89;
+  --ifm-color-primary-dark: #0a0d79;
+  --ifm-color-primary-darker: #080c6a;
+  --ifm-color-primary-darkest: #070a5a;
+  --ifm-color-primary-light: #0c1199;
+  --ifm-color-primary-lighter: #0e12a8;
+  --ifm-color-primary-lightest: #0f14b8;
+  --ifm-code-font-size: 95%;
+  --ifm-heading-font-family: 'EB Garamond', serif;
+}
+
+body, h5 {
+  font-family: 'Barlow', sans-serif;
+}
+
+p {
+  font-size: 17px;
+}
+
+.table-of-contents__link {
+  font-size: 14px;
+}
+
+article {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+b.navbar__title {
+  padding: 2.5px 5px;
+  background-color: var(--ifm-color-primary);
+  border-radius: 4px;
+  text-transform: uppercase;
+  color: var(--ifm-font-color-base-inverse);
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+html[data-theme='dark'] {
+  --ifm-color-primary: #7175ef;
+  --ifm-color-primary-darker: #a4a8ff;
+  --ifm-color-primary-darkest: #d7dbff;
+
+}
