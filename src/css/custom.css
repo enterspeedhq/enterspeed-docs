@@ -9,12 +9,12 @@
 
 :root {
   --ifm-color-primary: #0b0f89;
-  --ifm-color-primary-dark: #0a0d79;
-  --ifm-color-primary-darker: #080c6a;
-  --ifm-color-primary-darkest: #070a5a;
-  --ifm-color-primary-light: #0c1199;
-  --ifm-color-primary-lighter: #0e12a8;
-  --ifm-color-primary-lightest: #0f14b8;
+  --ifm-color-primary-dark: #0a0e7b;
+  --ifm-color-primary-darker: #090d74;
+  --ifm-color-primary-darkest: #080b60;
+  --ifm-color-primary-light: #0c1197;
+  --ifm-color-primary-lighter: #0d119e;
+  --ifm-color-primary-lightest: #0e14b2;
   --ifm-code-font-size: 95%;
   --ifm-heading-font-family: 'EB Garamond', serif;
 }
