@@ -8,7 +8,11 @@ title: Welcome
 
 Enterspeed lets you sync all of your content from your CMS (*e.g. Umbraco Cloud*), PIM, etc to Enterspeed. This enables you to design a whole new front-end application, while still using data from your existing content system.
 
-You might be wondering: *“But why, though? 🤷‍♂️“*. The answer is **performance** and **flexibility**.
+You might be wondering: 
+
+> But why, though? 🤷‍♂️
+
+The answer is **performance** and **flexibility**.
 
 It’s no secret that traditional CMS' can be quite cumbersome to work on, when optimizing for performance, for instance improving [Core Web Vitals](https://web.dev/vitals/). This is why many websites are moving away from traditional, [monolithic](https://en.wikipedia.org/wiki/Monolithic_application) solutions and over to new [headless](https://en.wikipedia.org/wiki/Headless_software) solutions like a JAMstack (**J**avascript, **A**PI, and **M**arkup) solution.
 

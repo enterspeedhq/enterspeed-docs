@@ -49,6 +49,18 @@ article {
     no-repeat;
 }
 
+.navbar__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.main-wrapper {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
