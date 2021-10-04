@@ -61,6 +61,10 @@ article {
   margin: 0 auto;
 }
 
+.button.clean-btn.close.announcementBarClose_node_modules-\@docusaurus-theme-classic-lib-next-theme-AnnouncementBar-styles-module {
+  color: #fff;
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
@@ -74,6 +78,10 @@ b.navbar__title {
   border-radius: 4px;
   text-transform: uppercase;
   color: var(--ifm-font-color-base-inverse);
+  font-size: 11px;
+}
+.navbar__brand {
+  height: 1.5rem;
 }
 
 html[data-theme='dark'] .docusaurus-highlight-code-line {

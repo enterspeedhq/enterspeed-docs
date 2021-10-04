@@ -22,7 +22,7 @@ The UmbracoContentEntity is the concrete Umbraco specific implementation of the 
 
 ### Example
 
-```javascript
+```json
 {
   "id": "1055-en-us",
   "type": "site",
@@ -58,7 +58,7 @@ To process Umbraco specific properties we have added a `metaData` object that co
 | sortOrder  | number   | What order the nodes are sorted in           |
 | level      | number   | What level in the tree the node has          |
 
-```javascript
+```json
 {
   "properties": {
     "metaData": {

@@ -16,7 +16,7 @@ to convert it into an IEnterspeedProprety automatically, by looking at the types
 This interface contains two methods that needs to be implemented
 
 ### IsConverter
-```
+```csharp
 bool IsConverter(string alias);
 ```
 
@@ -24,7 +24,7 @@ This method is called when the EnterspeedGridEditorService tries to find the cor
 
 An implementation of this method could look like this:
 
-```
+```csharp
 public bool IsConverter(string alias)
 {
     return alias.InvariantEquals("rte");
@@ -32,7 +32,7 @@ public bool IsConverter(string alias)
 ```
 
 ### Convert
-```
+```csharp
 IEnterspeedProperty Convert(GridControl editor, string culture)
 ```
 
@@ -40,7 +40,7 @@ This is the method that is converting the Umbraco grid editor to an IEnterspeedP
 
 An implementation of this method could look like this:
 
-```
+```csharp
 public IEnterspeedProperty Convert(GridControl editor, string culture)
 {
     return new StringEnterspeedProperty(editor.Value.ToString());
@@ -51,7 +51,7 @@ public IEnterspeedProperty Convert(GridControl editor, string culture)
 Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
 
 Example:
-```
+```csharp
 [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
 public class MyCustomerGridEditorValueConverterComposer : IUserComposer
 {
@@ -62,7 +62,7 @@ public class MyCustomerGridEditorValueConverterComposer : IUserComposer
 
 Note that the EnterspeedGridEditorService will find the converters in the order that they are registered, which means that, if you want to replace a default converter with your own, you need to insert your converter like this:
 
-```
+```csharp
 [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
 public class MyCustomerPropertyValueConverterComposer : IUserComposer
 {

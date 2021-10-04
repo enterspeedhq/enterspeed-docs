@@ -57,6 +57,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         },
         items: [
           {
+            href: 'https://www.enterspeed.com/',
+            label: 'Enterspeed.com',
+            position: 'right',
+          },
+          {
             href: 'https://app.enterspeed.com/',
             label: 'Log in',
             position: 'right',
@@ -76,6 +81,17 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      announcementBar: {
+        id: 'support_header',
+        content:
+          'Need help? Feel free to drop us an email at <a href="mailto:support@enterspeed.com">support@enterspeed.com</a>',
+        backgroundColor: '#0b0f89',
+        textColor: '#fff',
+        isCloseable: true,
+      },
+      prism: {
+        additionalLanguages: ['csharp'],
       },
     }),
 });

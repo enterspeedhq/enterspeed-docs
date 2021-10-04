@@ -18,7 +18,7 @@ When the editor publishes a node the cache refreshed event is triggered and the 
 
 If you wish you can checkout the sequence diagram for the process here:
 
-```
+```bash
 @startuml
 title Umbraco - publishing
 

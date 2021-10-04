@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
-title: Tagging
+title: Tagging in Umbraco
 ---
 
-# Tagging
+# Tagging in Umbraco
 
 The following article describes an example of tagging implementation for content in Umbraco, and how to filter source entities by tag in Enterspeed.
 
@@ -13,7 +13,7 @@ As an example, we are going to build a basic news portal about sports, named "Sp
 
 In order to build the site's content structure and filter it in Enterspeed, we have to do some groundwork as - creating document types, data types and adding some articles as content.
 
-![Umbraco Content Structure](../../../../static/img/docs/source-integrations/umbraco-v8-site-content-structure.png)
+![Umbraco Content Structure](../../static/img/docs/source-integrations/umbraco-v8-site-content-structure.png)
 
 ## Document types
 
@@ -76,13 +76,13 @@ Is a data type extending Umbraco default 'Block List', where we add a single ava
 ## Adding blocks to frontpage
 On the site node, we are going to add some blocks for displaying articles by different tag.
 
-![Umbraco blocks](../../../../static/img/docs/source-integrations/umbraco-v8-blocks.png)
+![Umbraco blocks](../../static/img/docs/source-integrations/umbraco-v8-blocks.png)
 
 Each of them configured with their own criteria for display of articles:
 
-![Umbraco blocks Content](../../../../static/img/docs/source-integrations/umbraco-v8-blocks-content.png)
+![Umbraco blocks Content](../../static/img/docs/source-integrations/umbraco-v8-blocks-content.png)
 
-![Umbraco blocks Content basketball](../../../../static/img/docs/source-integrations/umbraco-v8-blocks-content-basketball.png)
+![Umbraco blocks Content basketball](../../static/img/docs/source-integrations/umbraco-v8-blocks-content-basketball.png)
 
 ## Defining schemas in Enterspeed
 ### Creating a Site schema
@@ -90,7 +90,7 @@ Site schema will work with source entities of type - 'site' since those are the 
 
 This schema doesn't contain much of the logic, its responsibility is to iterate over blocks defined on the source entity and pass each of the blocks in partial view, with matching name.
 
-```javascript
+```json
 {
    "route":{
       "url":{
@@ -127,7 +127,7 @@ We are halfway through, the previous schema iterated through blocks, this schema
 
 As result, we want to display the following properties - alias and title of this block and collection of articles matching criteria defined on this block along with basic information about them - title, subheader, published at date and list of tags associated.
 
-```javascript
+```json
 {
    "viewHandle":"Block-articlesByTag",
    "properties":{
@@ -204,7 +204,7 @@ On our front page, we want to show the latest published news first, that is what
 ## Outcome
 After updating and deploying previously mentioned schemas and publishing all content data to Enterspeed, the outcome from Delivery API would look like this:
 
-```javascript
+```json
 {
    "meta":{
       "status":200,

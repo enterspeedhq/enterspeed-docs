@@ -24,7 +24,7 @@ A route is not specifically an URL, but it can be. The route property contains 2
 
 If you want your schema to be routable by an URL, you can specify the URL to use in an `$exp`. Like the example below.
 
-```javascript
+```json
 {
   "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
@@ -40,7 +40,7 @@ If you want your schema to be routable by an URL, you can specify the URL to use
 
 You are not limited to use the built in `url` property, you can also use custom properties defined by your source:
 
-```javascript
+```json
 {
   "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
@@ -64,7 +64,7 @@ The `handles` is an array, so you can specify multiple handles per schema.
 
 A handle gets its value by utilizing the `$exp`, as shown below.
 
-```javascript
+```json
 {
   "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
@@ -82,7 +82,7 @@ A handle gets its value by utilizing the `$exp`, as shown below.
 
 The handle can also contain Source Entity properties, like the URL:
 
-```javascript
+```json
 {
   "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],

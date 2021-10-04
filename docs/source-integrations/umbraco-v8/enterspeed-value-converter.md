@@ -10,7 +10,7 @@ A property value converter is a class that will convert the input value from Umb
 This interface contains two methods that needs to be implemented
 
 ### IsConverter
-```
+```csharp
 bool IsConverter(IPublishedPropertyType propertyType);
 ```
 
@@ -18,7 +18,7 @@ This method is called when the EnterspeedPropertyService tries to find the prope
 
 An implementation of this method could look like this:
 
-```
+```csharp
 public bool IsConverter(IPublishedPropertyType propertyType)
 {
     return propertyType.EditorAlias.Equals("Umbraco.TextBox");
@@ -26,7 +26,7 @@ public bool IsConverter(IPublishedPropertyType propertyType)
 ```
 
 ### Convert
-```
+```csharp
 IEnterspeedProperty Convert(IPublishedProperty property, string culture);
 ```
 
@@ -34,7 +34,7 @@ This is the method that is converting the Umbraco property to an IEnterspeedProp
 
 An implementation of this method could look like this:
 
-```
+```csharp
 public IEnterspeedProperty Convert(IPublishedProperty property, string culture)
 {
     var value = property.GetValue<string>(culture);
@@ -46,7 +46,7 @@ public IEnterspeedProperty Convert(IPublishedProperty property, string culture)
 Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
 
 Example:
-```
+```csharp
 [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
 public class MyCustomerPropertyValueConverterComposer : IUserComposer
 {
@@ -57,7 +57,7 @@ public class MyCustomerPropertyValueConverterComposer : IUserComposer
 
 Note that the EnterspeedPropertyService will find the converters in the order that they are registered, which means that if you want to replace a default converter with your own, you need to insert your converter like this:
 
-```
+```csharp
 [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
 public class MyCustomerPropertyValueConverterComposer : IUserComposer
 {

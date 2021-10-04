@@ -20,13 +20,13 @@ The fastest way to get up and running, is to install the Enterspeed Umbraco inte
 
 You can either install it manually from the NuGet manager in Visual Studio or execute the Install-Package command:
 
-```
+```bash
 Install-Package Enterspeed.Source.UmbracoCms.V8
 ```
 
 **Install specific version**
 
-```
+```bash
 Install-Package Enterspeed.Source.UmbracoCms.V8 -Version <version>  
 ```
 

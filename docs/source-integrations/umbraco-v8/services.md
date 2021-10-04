@@ -8,7 +8,7 @@ title: Services
 This service is used for converting an Umbraco property to an IEnterspeedProperty.
 
 ### Methods
-```
+```csharp
 IDictionary<string, IEnterspeedProperty> GetProperties (IPublishedContent content, string culture = null);
 
 IDictionary<string, IEnterspeedProperty> ConvertProperties (IEnumerable<IPublishedProperty> properties, string culture = null;
@@ -20,7 +20,7 @@ Both methods will find the correct registered Enterspeed Property Value Converte
 This service is used for converting an Umbraco grid editor value to an IEnterspeedProperty.
 
 ### Methods
-```
+```csharp
 IEnterspeedProperty ConvertGridEditor(GridControl control, string culture = null)
 ```
 

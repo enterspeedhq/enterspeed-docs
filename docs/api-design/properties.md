@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## string
 
-```javascript title="Property type: string"
+```json title="Property type: string"
 "title": {
   "type": "string",
   "value": {
@@ -17,7 +17,7 @@ sidebar_position: 2
 
 ## number
 
-```javascript title="Property type: number"
+```json title="Property type: number"
 "stock": {
   "type": "number",
   "value": {
@@ -28,7 +28,7 @@ sidebar_position: 2
 
 ## boolean
 
-```javascript title="Property type: boolean"
+```json title="Property type: boolean"
 "isPublished": {
   "type": "boolean",
   "default": true,
@@ -52,7 +52,7 @@ Array property type is designed for working with collections.
 
 With expression input, you can reference the desired property on the source entity that is an array.
 
-```javascript title="$exp input"
+```json title="$exp input"
 "tabs": {
   "type": "array",
   "input": {
@@ -94,7 +94,7 @@ Lookup input comparing to $exp allows you to define query-like and criteria matc
 | orderBy              | false     | Allows you to specify your desired sorting order                                                     |
 | top                  | false     | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression. |
 
-```javascript title="$lookup with single property"
+```json title="$lookup with single property"
 "navigationItems":{
    "type":"array",
    "input":{
@@ -195,7 +195,7 @@ properties.tags/any(t: t eq '{properties.selectedTag}')
 properties.articles/any(a: a.isFeatured eq true)
 ```
 
-```javascript title="Lambda operator"
+```json title="Lambda operator"
 "featuredSportArticles": {
     "type": "array",
     "input": {
@@ -230,7 +230,7 @@ properties.articles/any(a: a.isFeatured eq true)
 ```
 
 ## object
-```javascript title="Property type: object"
+```json title="Property type: object"
 "item": {
   "type": "object",
   "properties": {
@@ -254,7 +254,7 @@ properties.articles/any(a: a.isFeatured eq true)
 
 The partial mapping property type allows for dynamically including partial schemas into the main schema. This is useful when you need to iterate an array of different objects that has an identifier, like an ID, alias or similar.
 
-```javascript title="Property type: partial"
+```json title="Property type: partial"
 "blocks": {
   "type": "array",
   "input": {
@@ -281,7 +281,7 @@ This property types allows to reference other views created from either this Sou
 
 When referenced Enterspeed will resolve the view when requested by the Delivery API, so that the data will stay up-to-date.
 
-```javascript title="Property type: reference (static value)"
+```json title="Property type: reference (static value)"
 "seoData": {
   "type": "reference",
   "gid": {
@@ -291,7 +291,7 @@ When referenced Enterspeed will resolve the view when requested by the Delivery 
 }
 ```
 
-```javascript title="Property type: reference (dynamic value)"
+```json title="Property type: reference (dynamic value)"
 "seoData": {
   "type": "reference",
   "gid": {

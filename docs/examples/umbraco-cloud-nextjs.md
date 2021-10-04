@@ -237,7 +237,7 @@ Copy the API key from your Environment client in the Enterspeed app (*See step 2
 
 Go to your Next.config.js and insert your API key under **env** in a key called **enterspeedApiKey**. It should look like this:
 
-```json title="next.config.js"
+```javascript title="next.config.js"
 module.exports = {
   env: {
     enterspeedApiKey: 'YOUR-ENVIRONMENT-KEY-HERE'
