@@ -11,7 +11,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
-  organizationName: 'enterspeed', // Usually your GitHub org/user name.
+  organizationName: 'enterspeedhq', // Usually your GitHub org/user name.
   projectName: 'enterspeed-docs', // Usually your repo name.
 
   presets: [
@@ -61,6 +61,12 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             label: 'Log in',
             position: 'right',
           },
+          {
+            href: 'https://github.com/enterspeedhq',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
+          }
         ],
       },
       footer: {

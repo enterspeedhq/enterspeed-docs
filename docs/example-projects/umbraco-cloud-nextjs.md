@@ -12,20 +12,6 @@ This tutorial uses Umbraco Cloud V8. You can view the finished project [here](ht
 
 In this tutorial, we’re going to see how we can set up a Next.js application, using data from Enterspeed and Umbraco Cloud.
 
-We’re going to sync all of our content from Umbraco Cloud to our new Enterspeed-project. This will enable us to design a whole new front-end application, while still using our data from our existing CMS.
-
-You might be wondering: *“But why, though? 🤷‍♂️“*. The answer is **performance** and **flexibility**.
-
-It’s no secret that traditional CMS' can be quite cumbersome to work on, when optimizing for performance, for instance improving [Core Web Vitals](https://web.dev/vitals/). This is why many websites are moving away from traditional, [monolithic](https://en.wikipedia.org/wiki/Monolithic_application) solutions and over to new [headless](https://en.wikipedia.org/wiki/Headless_software) solutions like a JAMstack (**J**avascript, **A**PI, and **M**arkup) solution.
-
-By syncing your content to Enterspeed, you get the flexibility to design and optimize your front-end application as you please. Content can be rendered in whichever framework you prefer, be it Next.js, Nuxt.js, Gatsby, or simply plain vanilla JS.
-
-This makes developers happy since they now can build a blazing fast application. The content creators are also happy since they can keep the editor experience (their CMS) they are familiar with and don’t have to learn a new tool.
-
-Should content creators wish to switch to another CMS, the developers can simply connect this new source to Enterspeed without worrying about losing data or risking downtime.
-
-Everybody gets it their way ❤️
-
 **So what do you need to get started? You’ll need:**
 - An Enterspeed account.
 
@@ -66,68 +52,9 @@ To send published content to Enterspeed, click the **Seed** button. This will qu
 
 ![Umbraco Cloud Seed Content](../../static/img/docs/example-projects/umbraco-cloud-enterspeed-seed.png)
 
-## 2. Setting up your Enterspeed account
-For this tutorial, we already assume that you have an Enterspeed-account with a **tenant** attached to it. First, let’s take a closer look at the Enterspeed interface and see how everything works.
+## 2. Setting up your first project
+For this tutorial, we already assume that you have an Enterspeed-account with a **tenant** attached to it.
 
-:::info
-If you are already familiar with the Enterspeed interface, you can skip section “2.1. The Enterspeed Interface” and go directly to “2.2. Setting up your first project”
-:::
-
-## 2.1. The Enterspeed interface
-Once you’re logged in, you’ll see an empty Frontpage. Don’t worry, you didn’t do anything wrong - we’re still working on it ⚒️ 
-
-In the blue sidebar, you have all the navigation. 
-
-Right under the logo, you’ll find the name of the **tenant** you are on. Think of a tenant as a property for your website. You can have multiple tenants under your account. If you have more than one, you can switch tenants by using the arrows next to the tenant name.
-
-:::info
-An account can have access to multiple tenants.
-:::
-
-In the menu below you’ll find three sections: **Sources, API Design & Environments**. We’ll dive into each section explaining its purpose and how to use it.
-
-### 2.1.1. Sources
-Sources are where we create our connection to our data source. In this example, our data source is Umbraco Cloud, but it might as well have been another CMS, a PIM-system, or perhaps a development instance of your CMS. 
-
-When we create a source, we start by giving it a name and selecting a type (e.g. CMS). After we have created a source an API key is generated. This API key will be used in our data source, in this example Umbraco Cloud.
-
-Once we have set up the Enterspeed Umbraco package and configured our new API key, the data will be pushed to Enterspeed via our Ingest API.
-
-All content will now be available under **Source entities**.
-
-On the Source entities page, you will find all the content from your sources. You can switch between sources and view the raw data that has been injected into Enterspeed.
-
-:::info
-All ingested data is saved “as a copy” in Enterspeed. Therefore, deleting data in Enterspeed won’t delete data in Umbraco Cloud.
-:::
-
-### 2.1.2. API Design
-API design is where you design the schemas you’re going to use on your new application (in our example it's Next.js).
-
-This section consists of two pages: **Schemas** and **Partial schemas**. 
-
-You can think of **Partial schemas** as reusable components/building blocks for your **Schemas**. This can for instance be a button or headline component that is used in the Umbraco Block Editor.
-
-Once you have designed and deployed your schemas they will be available via our Delivery API which fetches the data.
-
-### 2.1.3. Environments
-Environments are an area for your new application (in this example, our new Next.js application). You can set up multiple environments, for instance, a development environment and a production environment. 
-
-In each environment, you can have multiple **Environment clients**. You can think of an **Environment client** as a single site. 
-
-You start by giving the **Environment** a name, afterwards, you can create an **Environment client**. Once you have given it a name and selected which **Environment** it should be attached to, an API key is generated.
-
-On the **Domain** page, you can add your domain name(s). This/these can then be attached to your **Environment client** on the **Environment client** page.
-
-The **Domain** helps to filter your data correctly in the Enterspeed Delivery API. Since you might have multiple sites configured in Enterspeed, it is important for us to know which site you want data from, when sending the request.
-
-:::info
-Each **Domain** can have multiple hostnames attached.
-:::
-
-Great, now that we have an understanding of the interface, it’s time for the fun part: Setting up your first project! 👏
-
-## 2.2. Setting up your first project
 Setting up a new project in Enterspeed consists of 3 steps, which are:
 
 1. Creating your sources
@@ -138,14 +65,14 @@ Setting up a new project in Enterspeed consists of 3 steps, which are:
 
 Once these steps are complete we can start using the data in our Next.js application.
 
-### 2.2.1. Creating your sources
+### 2.1. Creating your sources
 Go to **Sources** and click the “**Create new**” button. Give your source a name (e.g. Umbraco Cloud) and select **CMS** in type. Afterward, click on the **Create** button.
 
 An API key is now generated. Copy the API key and paste it into the Enterspeed settings in your Umbraco backend (*See step 1*).
 
 After a couple of minutes, all your data from Umbraco Cloud will have been synced to Enterspeed. You can view it by navigating to **Source Entities** and selecting your source (the name you provided when creating it) in the **Source** dropdown.
 
-### 2.2.2. Configuring your environments
+### 2.2. Configuring your environments
 Now it’s time to configure your environments. Go to **Environments** and click the “**Create new**” button. Give your environment a name (e.g. Production) and click on the Create button.
 
 Go to **Domains** and click the “**Create new**” button. Give your domain a name (e.g. Production) and click on the **Create** button.
@@ -162,7 +89,7 @@ An API key is now generated. We’re going to use this in our Next.js applicatio
 
 Next to your new environment client click on the three dots and select **Edit domains**. Select the domain you just created and click the “**Save changes**” button.
 
-### 2.2.3. Designing your API’s
+### 2.3. Designing your API’s
 Now for the fun part - designing the APIs we're going to use. This will be the glue that ties our Sources and Environments together. We do this by setting up schemas.
 
 The powerful thing about setting up schemas yourself is you get to decide precisely which data you need and how it gets structured.
@@ -197,7 +124,7 @@ When designing your schema, use the **Source entities** button to both tests and
 
 When you're finished designing your schema, it's time to deploy it. Click the **Deploy schema** and choose the version of your schema you wish to deploy.
 
-#### 2.2.3.1. Example schemas
+#### 2.3.1. Example schemas
 
 ```json title="Example schema: ContentPage"
 {
@@ -306,7 +233,7 @@ We’ve made a demo site you can view here: [https://enterspeed-demo-umbraco-clo
 The GitHub repo is available here: [https://github.com/enterspeedhq/enterspeed-demo-umbraco-cloud-next](https://github.com/enterspeedhq/enterspeed-demo-umbraco-cloud-next)
 
 ### 3.1. Inserting the API key
-Copy the API key from your Environment client in the Enterspeed app (*See step 2.2.2.*).
+Copy the API key from your Environment client in the Enterspeed app (*See step 2.2.*).
 
 Go to your Next.config.js and insert your API key under **env** in a key called **enterspeedApiKey**. It should look like this:
 
