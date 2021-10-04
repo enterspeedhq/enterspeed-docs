@@ -1,6 +1,5 @@
 ---
 sidebar_position: 1
-slug: /umbraco-cloud-nextjs
 title: Umbraco Cloud & Next.js
 ---
 
