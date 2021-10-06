@@ -2,6 +2,7 @@
 sidebar_position: 4
 title: 3. Designing your API's
 ---
+import ReactPlayer from 'react-player'
 
 # Designing your API's in Enterspeed
 
@@ -206,3 +207,6 @@ When you're finished designing your schema, it's time to deploy it. Click the **
 :::info
 If you get stuck on the way, don't hesitate to reach out to us. We're more than happy to help! You can contact us at [support@enterspeed.com](mailto:support@enterspeed.com).
 :::
+
+## Testing your schemas
+<ReactPlayer url='https://www.youtube.com/watch?v=jrGPa8lXbio' />
