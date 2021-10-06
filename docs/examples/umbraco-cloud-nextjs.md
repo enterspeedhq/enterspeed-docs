@@ -29,7 +29,7 @@ For production setups, we recommend installing the NuGet package instead. You ca
 
 Now it’s time to configure the package. Go to the **Settings** tab in the top menu and select **Enterspeed settings**.
 
-![Umbraco Cloud Enterspeed Config](../../static/img/docs/example-projects/umbraco-cloud-enterspeed-config.png)
+![Umbraco Cloud Enterspeed Config](../../static/img/docs/examples/umbraco-cloud-enterspeed-config.png)
 
 1. Set the **Enterspeed endpoint** to [https://api.enterspeed.com/](https://api.enterspeed.com/)
 
@@ -49,7 +49,7 @@ To send content manually to Enterspeed go to the **Content** tab in the top menu
 
 To send published content to Enterspeed, click the **Seed** button. This will queue a transfer of all your Umbraco content to Enterspeed.
 
-![Umbraco Cloud Seed Content](../../static/img/docs/example-projects/umbraco-cloud-enterspeed-seed.png)
+![Umbraco Cloud Seed Content](../../static/img/docs/examples/umbraco-cloud-enterspeed-seed.png)
 
 ## 2. Setting up your first project
 For this tutorial, we already assume that you have an Enterspeed-account with a **tenant** attached to it.
