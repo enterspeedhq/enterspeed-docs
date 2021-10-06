@@ -20,4 +20,8 @@ You can choose to [clone the project from Github](https://github.com/enterspeedh
 
 - A Umbraco Cloud account ([Start 14-day free trial here](https://umbraco.com/products/umbraco-cloud/)).
 
-- A Next.js application (If you don’t want to host it locally, we suggest using [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com/) - both have a free tier available).
+- A Next.js environment (we recommend running Next.js locally).
+
+:::tip
+If you don’t want to run Next.js locally, we suggest using [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com/) (both have a free tier available).
+:::
