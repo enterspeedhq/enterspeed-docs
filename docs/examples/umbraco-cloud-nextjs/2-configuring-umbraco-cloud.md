@@ -6,6 +6,13 @@ title: 2. Configuring Umbraco Cloud
 # Configuring Umbraco Cloud
 Sign into your Umbraco Cloud account and navigate to the backoffice.
 
+In this step, we're going to:
+1. Install the Enterspeed Umbraco package
+2. Import our demo content
+3. Configure our hostname
+4. Seed content to Enterspeed manually
+
+
 ## Installing the Enterspeed Umbraco package
 In order to send data to Enterspeed, we need to install the Enterspeed Umbraco package. Go to the **Packages** tab in the top menu and search for **“Enterspeed Umbraco source integration”**. Select the package and hit install.
 
@@ -60,7 +67,7 @@ Insert the same domain name as the one you entered when you configured your **ho
 
 ## Sending content to Enterspeed manually
 
-When you click **Save and publish** in Umbraco, the content will automatically be sent to Enterspeed. There may be cases where you need to trigger it manually.
+When you click **Save and publish** in Umbraco, the content will automatically be sent to Enterspeed. But since we just updated our hostname, all of our content now has a new URL, which we need to be synced to Enterspeed. We do this by manually triggering an update. 
 
 To send content manually to Enterspeed go to the **Content** tab in the top menu. Click the **Enterspeed content** tab and select **Seed**. 
 
