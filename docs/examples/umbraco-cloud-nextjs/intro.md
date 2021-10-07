@@ -13,7 +13,7 @@ In this tutorial, we’re going to see how we can set up a Next.js application, 
 
 We've made a demo website called [The Flying Trunk](https://enterspeed-demo-nextjs.netlify.app/), which lists H.C. Andersen fairy tales and also "sells" a book containing these fairy tales.
 
-You can choose to [clone the project from Github](https://github.com/enterspeedhq/enterspeed-demo-nextjs)) and build this example site, or you can choose to start from scratch and build your own. 
+You can choose to [clone the project from Github](https://github.com/enterspeedhq/enterspeed-demo-nextjs) and build this example site, or you can choose to start from scratch and build your own. 
 
 **So what do you need to get started? You’ll need:**
 - An Enterspeed account.

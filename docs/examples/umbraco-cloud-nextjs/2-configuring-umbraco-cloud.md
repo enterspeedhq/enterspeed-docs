@@ -31,27 +31,31 @@ Your data will now be synced to Enterspeed each time you publish content.
 You can view synced data in Enterspeed by navigating to **Source Entities** and selecting your source (the name you provided when creating it) in the **Source** dropdown.
 :::
 
+## Importing content from the demo project
+If you wish, you can import the Umbraco content from our [demo project](https://enterspeed-demo-nextjs.netlify.app/).
+
+Download the **[enterspeed-demo-umbraco-content.zip](https://github.com/enterspeedhq/enterspeed-demo-nextjs/raw/a3d4cf69b3384cea9669e59b388c75149542201f/example-data/umbraco-cloud/content/enterspeed-demo-umbraco-content.zip)**-file from our [Github-repo](https://github.com/enterspeedhq/enterspeed-demo-nextjs).
+
+Click on the **Packages** tab and select "**Install local**" on the right-hand side. Then drag the zip file onto the page, or click to select it from the dialog.
+
+Publish the site by navigating to the **Content** tab, and select the **Home** node.
+
+Then click **the arrow** on the green "Save and Publish" button in the lower right corner, and select "**Publish with descendants**".
+
+Check the "**Include unpublished content items**" option, and click the "**Publish with descendants**" button.
+
+![Publish with descendants](../../../static/img/docs/examples/publish-with-descendants.png)
+
+This will publish the entire site, and send the data to Enterspeed.
+
+Go to your Enterspeed-project and navigate to Sources --> Sources entities to verify that the data have synced.
+
 ## Configuring your hostname
 Go to the **Content** tab and click the three dots next to **Home**. Click the **Do something else** button at the bottom and select **Culture and Hostnames**.
 
 Insert the same domain name as the one you entered when you configured your **hostname** in Enterspeed.
 
 ![Umbraco Cloud Culture and Hostnames](../../../static/img/docs/examples/umbraco-cloud-culture-and-hostnames.png)
-
-## Importing content from the demo project
-If you wish, you can import the Umbraco content from our [demo project](https://enterspeed-demo-nextjs.netlify.app/).
-
-Download the **[enterspeed-demo-umbraco-content.zip](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/a3d4cf69b3384cea9669e59b388c75149542201f/example-data/umbraco-cloud/content/enterspeed-demo-umbraco-content.zip)**-file from our [Github-repo](https://github.com/enterspeedhq/enterspeed-demo-nextjs).
-
-Click on the Packages tab and select "Install local" on the right-hand side. Then drag the zip file onto the page, or click to select it from the dialog.
-
-Publish the site by navigating to the Content tab, and select the Home node.
-
-Then click the arrow on the green "Save and Publish" button in the lower right corner, and select "Publish with descendants",
-
-Check the "Include unpublished content items" option, and click the "Publish with descendants" button.
-
-This will publish the entire site, and send the data to Enterspeed.
 
 
 ## Sending content to Enterspeed manually

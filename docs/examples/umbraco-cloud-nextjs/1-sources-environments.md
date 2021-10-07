@@ -6,13 +6,32 @@ title: 1. Sources & Environments
 # Sources & Environments in Enterspeed
 Start by logging into Enterspeed: [https://app.enterspeed.com](https://app.enterspeed.com)
 
+In this step, we're going to:
+1. Create sources
+2. Create environments
+3. Create and configure domains
+4. Create environment clients
+
+## Creating sources
+
 Go to **Sources** and click the “**Create new**” button. Give your source a name (e.g. Umbraco Cloud) and select **CMS** in type. Afterward, click on the **Create** button.
 
 An API key is now generated. Save the API key for now (e.g., in a notepad document) - you'll need it when configuring your Umbraco project.
 
+![Create source Enterspeed](../../../static/img/docs/examples/create-sources.png)
+
+## Creating environments
+
 Now it’s time to configure your environments. Go to **Environments** and click the “**Create new**” button. Give your environment a name (e.g. Production) and click on the Create button.
 
+![Create environment Enterspeed](../../../static/img/docs/examples/create-environment.png)
+
+
+## Creating and configuring domains
+
 Go to **Domains** and click the “**Create new**” button. Give your domain a name (e.g. Production) and click on the **Create** button.
+
+![Create domain](../../../static/img/docs/examples/create-domain.png)
 
 :::info
 **Domains** are used in Enterspeed as a way of filtering your data if you have multiple data sources. You can name it whatever you like, but we recommend using the same name as your domain name for ease of use.
@@ -20,13 +39,19 @@ Go to **Domains** and click the “**Create new**” button. Give your domain a 
 
 Afterward, click on the three dots next to the domain name and select **Edit hostnames**. Click **Create new** and insert the URL you're going to use for your new project. We're going to use the same hostname when configuring Umbraco Cloud.
 
+![Create hostname](../../../static/img/docs/examples/create-hostname.png)
+
 :::tip
 If you're working on your project locally, you can insert for instance **localhost:3000**. 
 
 If you're working on an environment like Netlify you can insert the site URL for instance **https://my-new-kickass-enterspeed-project.netlify.app**
 :::
 
+## Creating environment clients
+
 Navigate to **Environment clients** and click the “**Create new**” button. Give your environment client a name (e.g. My Next.js Application) and select the **Environment** you just created. Afterward, click on the **Create** button.
+
+![Create environment client Enterspeed](../../../static/img/docs/examples/create-environment-client.png)
 
 Also save this API key for now (e.g., in a notepad document) - we’re going to use it in our Next.js application.
 
