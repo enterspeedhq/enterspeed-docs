@@ -14,11 +14,11 @@ Now for the fun part - designing the APIs we're going to use. This will be the g
 
 You find the schema editor in Enterspeed under API Design. Here you can add and edit Schemas and Partial schemas.
 
+![Create new chema](../../../static/img/docs/examples/create-new-schema.png)
+
 The powerful thing about setting up schemas yourself is you get to decide precisely which data you need and how it gets structured.
 
 Let's take a look at how a schema can be structured. In *Example schemas & pertial schemas* below you'll see three examples from this project. We'll look at the **contentPage** example.
-
-[![Schema example: ContentPage](../../../static/img/docs/examples/enterspeed-schema-example-contentpage.png)](../../../static/img/docs/examples/enterspeed-schema-example-contentpage.png)
 
 The first thing you need to define is your **sourceEntityTypes** - what kind of data should this schema use? You can find a list of all the Source Entity Types in the **Source entities** table in your Enterspeed-project under **Type**.
 
