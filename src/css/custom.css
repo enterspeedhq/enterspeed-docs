@@ -79,6 +79,7 @@ b.navbar__title {
   text-transform: uppercase;
   color: var(--ifm-font-color-base-inverse);
   font-size: 11px;
+  display: flex;
 }
 .navbar__brand {
   height: 1.5rem;
