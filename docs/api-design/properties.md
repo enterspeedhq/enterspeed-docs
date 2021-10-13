@@ -215,13 +215,13 @@ properties.articles/any(a: a.isFeatured eq true)
             "title": {
                 "type": "string",
                 "value": {
-                    "$exp": "{article.title}"
+                    "$exp": "{article.properties.title}"
                 }
             },
             "content": {
                 "type": "string",
                 "value": {
-                    "$exp": "{article.content}"
+                    "$exp": "{article.properties.content}"
                 }
             }
         }
