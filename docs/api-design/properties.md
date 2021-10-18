@@ -281,6 +281,18 @@ This property types allows to reference other views created from either this Sou
 
 When referenced Enterspeed will resolve the view when requested by the Delivery API, so that the data will stay up-to-date.
 
+In order to reference desired source entity, you can use `gid` or `originId`.
+
+```json title="Property type: reference (static value) with originId"
+"seoData": {
+  "type": "reference",
+  "originId": {
+    "$exp": "{originId}"
+  },
+  "view": "Seo"
+}
+```
+
 ```json title="Property type: reference (static value)"
 "seoData": {
   "type": "reference",
