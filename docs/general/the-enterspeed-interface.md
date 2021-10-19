@@ -18,9 +18,9 @@ An account can have access to multiple tenants.
 In the menu below you’ll find three sections: **Sources, API Design & Environments**. We’ll dive into each section explaining its purpose and how to use it.
 
 ## Sources
-Sources are where we create our connection to our data source. In this example, our data source is Umbraco Cloud, but it might as well have been another CMS, a PIM-system, or perhaps a development instance of your CMS. 
+Sources are where we create our connection to our data source. In this example, our data source is Umbraco, but it might as well have been another CMS, a PIM-system, or perhaps a development instance of your CMS. 
 
-When we create a source, we start by giving it a name and selecting a type (e.g. CMS). After we have created a source an API key is generated. This API key will be used in our data source, in this example Umbraco Cloud.
+When we create a source, we start by giving it a name and selecting a type (e.g. CMS). After we have created a source an API key is generated. This API key will be used in our data source, in this example Umbraco.
 
 Once we have set up the Enterspeed Umbraco package and configured our new API key, the data will be pushed to Enterspeed via our Ingest API.
 
@@ -29,7 +29,7 @@ All content will now be available under **Source entities**.
 On the Source entities page, you will find all the content from your sources. You can switch between sources and view the raw data that has been injected into Enterspeed.
 
 :::info
-All ingested data is saved “as a copy” in Enterspeed. Therefore, deleting data in Enterspeed won’t delete data in Umbraco Cloud.
+All ingested data is saved “as a copy” in Enterspeed. Therefore, deleting data in Enterspeed won’t delete data in Umbraco.
 :::
 
 ## API Design

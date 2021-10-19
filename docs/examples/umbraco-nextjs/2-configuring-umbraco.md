@@ -1,10 +1,9 @@
 ---
 sidebar_position: 3
-title: 2. Configuring Umbraco Cloud
+title: 2. Configuring Umbraco
 ---
 
-# Configuring Umbraco Cloud
-Sign into your Umbraco Cloud account and navigate to the backoffice.
+# Configuring Umbraco
 
 In this step, we're going to:
 1. Install the Enterspeed Umbraco package
@@ -12,17 +11,26 @@ In this step, we're going to:
 3. Configure our hostname
 4. Seed content to Enterspeed manually
 
+## Installation
 
-## Installing the Enterspeed Umbraco package
+### Installation for Umbraco 8
+Sign into your Umbraco instance and navigate to the backoffice.
+
 In order to send data to Enterspeed, we need to install the Enterspeed Umbraco package. Go to the **Packages** tab in the top menu and search for **“Enterspeed Umbraco source integration”**. Select the package and hit install.
 
 :::caution
 For production setups, we recommend installing the NuGet package instead. You can find it here: [https://www.nuget.org/profiles/Enterspeed](https://www.nuget.org/profiles/Enterspeed) 
 :::
 
+### Installation for Umbraco 9
+
+Since, Umbraco 9 has removed packages installation from the backoffice, we need to install [Enterspeed.Source.UmbracoCms.V9](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V9/) NuGet package.
+
+## Configuring 
+
 Go to the **Settings** tab in the top menu and select **Enterspeed settings**.
 
-![Umbraco Cloud Enterspeed Config](../../../static/img/docs/examples/umbraco-cloud-enterspeed-config.png)
+![Umbraco Enterspeed Config](../../../static/img/docs/examples/umbraco-enterspeed-config.png)
 
 1. Set the **Enterspeed endpoint** to [https://api.enterspeed.com/](https://api.enterspeed.com/)
 
@@ -41,9 +49,18 @@ You can view synced data in Enterspeed by navigating to **Source Entities** and 
 ## Importing content from the demo project
 If you wish, you can import the Umbraco content from our [demo project](https://enterspeed-demo-nextjs.netlify.app/).
 
-Download the **[enterspeed-demo-umbraco-content.zip](https://github.com/enterspeedhq/enterspeed-demo-nextjs/raw/a3d4cf69b3384cea9669e59b388c75149542201f/example-data/umbraco-cloud/content/enterspeed-demo-umbraco-content.zip)**-file from our [Github-repo](https://github.com/enterspeedhq/enterspeed-demo-nextjs).
+### Importing demo content for Umbraco v8
+
+Download the **[enterspeed-demo-umbraco-content.zip](https://github.com/enterspeedhq/enterspeed-demo-nextjs/raw/master/example-data/enterspeed-umbraco-v8/enterspeed-demo-umbraco-content.zip)** - file from our [Github-repo](https://github.com/enterspeedhq/enterspeed-demo-nextjs).
 
 Click on the **Packages** tab and select "**Install local**" on the right-hand side. Then drag the zip file onto the page, or click to select it from the dialog.
+
+### Importing demo content for Umbraco v9
+Since, Umbraco 9 has removed packages installation from the backoffice, we need to install [Enterspeed.Demos.UmbracoCms.V9.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.V9.FairyTales/) NuGet package, that will import content, data types and document types required for this demo on startup of your application.
+
+After package installation build and start you application.
+
+### Publishing and syncing imported demo content
 
 Publish the site by navigating to the **Content** tab, and select the **Home** node.
 
@@ -62,7 +79,7 @@ Go to the **Content** tab and click the three dots next to **Home**. Click the *
 
 Insert the same domain name as the one you entered when you configured your **hostname** in Enterspeed.
 
-![Umbraco Cloud Culture and Hostnames](../../../static/img/docs/examples/umbraco-cloud-culture-and-hostnames.png)
+![Umbraco Culture and Hostnames](../../../static/img/docs/examples/umbraco-culture-and-hostnames.png)
 
 
 ## Sending content to Enterspeed manually
@@ -73,4 +90,4 @@ To send content manually to Enterspeed go to the **Content** tab in the top menu
 
 To send published content to Enterspeed, click the **Seed** button. This will queue a transfer of all your Umbraco content to Enterspeed.
 
-![Umbraco Cloud Seed Content](../../../static/img/docs/examples/umbraco-cloud-enterspeed-seed.png)
+![Umbraco Seed Content](../../../static/img/docs/examples/umbraco-enterspeed-seed.png)

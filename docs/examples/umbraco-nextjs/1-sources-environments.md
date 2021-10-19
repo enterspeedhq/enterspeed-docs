@@ -37,7 +37,7 @@ Go to **Domains** and click the “**Create new**” button. Give your domain a 
 **Domains** are used in Enterspeed as a way of filtering your data if you have multiple data sources. You can name it whatever you like, but we recommend using the same name as your domain name for ease of use.
 :::
 
-Afterward, click on the three dots next to the domain name and select **Edit hostnames**. Click **Create new** and insert the URL you're going to use for your new project. We're going to use the same hostname when configuring Umbraco Cloud.
+Afterward, click on the three dots next to the domain name and select **Edit hostnames**. Click **Create new** and insert the URL you're going to use for your new project. We're going to use the same hostname when configuring Umbraco.
 
 ![Create hostname](../../../static/img/docs/examples/create-hostname.png)
 
