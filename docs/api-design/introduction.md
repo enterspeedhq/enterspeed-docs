@@ -106,10 +106,10 @@ The following types to create the schema mapping can be used:
 
 | Property       | Description                                                                  |
 | -------------- | ---------------------------------------------------------------------------- |
-| [String](#)    | Basic string mapping.                                                        |
-| [Number](#)    | Basic number or integer mapping.                                             |
-| [Boolean](#)   | Basic boolean mapping.                                                       |
-| [Array](#)     | Mapping of an array, defining the input to iterate and the items definition. |
-| [Object](#)    | Mapping of an object.                                                        |
-| [Reference](#) | Referencing another schema.                                                  |
-| [Partial](#)   | Referencing a partial schema to map the data into.                           |
+| [String](./properties#string)    | Basic string mapping.                                                        |
+| [Number](./properties#number)    | Basic number or integer mapping.                                             |
+| [Boolean](./properties#boolean)   | Basic boolean mapping.                                                       |
+| [Array](./properties#array)     | Mapping of an array, defining the input to iterate and the items definition. |
+| [Object](./properties#object)    | Mapping of an object.                                                        |
+| [Reference](./properties#reference) | Referencing another schema.                                                  |
+| [Partial](./properties#partial)   | Referencing a partial schema to map the data into.                           |
