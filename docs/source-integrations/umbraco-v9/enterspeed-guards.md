@@ -16,12 +16,12 @@ To extend guards with your own one, you need to implement the `IEnterspeedConten
 public interface IEnterspeedContentHandlingGuard
 {
     /// <summary>
-    /// Validates if content can be published.
+    /// Validates if content can be ingested.
     /// </summary>
-    /// <param name="content">Content for publishing.</param>
+    /// <param name="content">Content for ingest.</param>
     /// <param name="culture">Culture of content.</param>
-    /// <returns>True or false, if is valid for publishing or not.</returns>
-    bool CanPublish(IPublishedContent content, string culture);
+    /// <returns>True or false, if is valid for ingest or not.</returns>
+    bool CanIngest(IPublishedContent content, string culture);
 }
 ```
 
@@ -48,12 +48,12 @@ To extend dictionary item guards with your own one, you need to implement the `I
 public interface IEnterspeedDictionaryItemHandlingGuard
 {
     /// <summary>
-    /// Validates if dictionary item can be published.
+    /// Validates if dictionary item can be ingested.
     /// </summary>
-    /// <param name="dictionaryItem">Dictionary item for publishing.</param>
+    /// <param name="dictionaryItem">Dictionary item for ingest.</param>
     /// <param name="culture">Culture of dictionary item.</param>
-    /// <returns>True or false, if is valid for publishing or not.</returns>
-    bool CanPublish(IDictionaryItem dictionaryItem, string culture);
+    /// <returns>True or false, if is valid for ingest or not.</returns>
+    bool CanIngest(IDictionaryItem dictionaryItem, string culture);
 }
 ```
 
