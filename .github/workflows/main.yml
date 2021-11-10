@@ -5,10 +5,7 @@ on:
     branches:
       - '*'
   push:
-    branches:
-      - '*'
-  # push:
-  #   branches: [ master ]
+    branches: [ master ]
 
 jobs:
   scrape-site:
