@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  workflow_dispatch:
+    branches:
+      - '*'
+  push:
+    branches:
+      - '*'
+  # push:
+  #   branches: [ master ]
+
+jobs:
+  scrape-site:
+    name: Scrape latest deployed site version
+    runs-on: ubuntu-latest
+
+    env:
+      APPLICATION_ID: ${{ secrets.APPLICATION_ID }}
+      API_KEY: ${{ secrets.API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Docker container
+        run: |
+          docker run -e APPLICATION_ID -e API_KEY  -e CONFIG="$(cat ./algolia/config.json)" algolia/docsearch-scraper
