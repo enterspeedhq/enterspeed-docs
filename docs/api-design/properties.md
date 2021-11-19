@@ -7,11 +7,14 @@ sidebar_position: 3
 ## string
 
 ```json title="Property type: string"
+"title": "{properties.headline}"
+```
+
+```json title="Property type: string with value and default"
 "title": {
   "type": "string",
-  "value": {
-    "$exp": "{properties.headline}"
-  }
+  "value": "{properties.headline}",
+  "default": "Unknown title"
 }
 ```
 
@@ -20,9 +23,7 @@ sidebar_position: 3
 ```json title="Property type: number"
 "stock": {
   "type": "number",
-  "value": {
-    "$exp": "{variant.inventoryQuantity}"
-  }
+  "value": "{variant.inventoryQuantity}"
 }
 ```
 
@@ -31,10 +32,8 @@ sidebar_position: 3
 ```json title="Property type: boolean"
 "isPublished": {
   "type": "boolean",
-  "default": true,
-  "value": {
-    "$exp": "{properties.published}"
-  }
+  "value": "{properties.published}",
+  "default": true
 }
 ```
 
@@ -45,7 +44,7 @@ Array property type is designed for working with collections.
 | Property | Mandatory | Description                                                                                               |
 | -------- | --------- | --------------------------------------------------------------------------------------------------------- |
 | type     | true      | Constant value - array                                                                                    |
-| input    | true      | States input, where to retrieve items collection to work with from. Support input types: `$exp` `$lookup` |
+| input    | true      | States input, where to retrieve items collection to work with from. Support input types: `string` `$exp` `$lookup` |
 | var      | false     | Collection iteration variable name. Default value is - item.                                              |
 
 ### `$exp` input
@@ -55,25 +54,13 @@ With expression input, you can reference the desired property on the source enti
 ```json title="$exp input"
 "tabs": {
   "type": "array",
-  "input": {
-    "$exp": "{properties.tabs}"
-  },
+  "input": "{properties.tabs}",
   "var": "tab",
   "items": {
     "type": "object",
     "properties": {
-      "title": {
-        "type": "string",
-        "value": {
-          "$exp": "{tab.title}"
-        }
-      },
-      "content": {
-        "type": "string",
-        "value": {
-          "$exp": "{tab.content}"
-        }
-      }
+      "title": "{tab.title}",
+      "content": "{tab.content}"
     }
   }
 }
@@ -95,29 +82,25 @@ Lookup input comparing to $exp allows you to define query-like and criteria matc
 | top                  | false     | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression. |
 
 ```json title="$lookup with single property"
-"navigationItems":{
-   "type":"array",
-   "input":{
-      "$lookup":{
-         "operator":"equals",
-         "sourceEntityType":"*",
-         "sourceEntityProperty":"originParentId",
-         "matchValue":{
-            "$exp":"{originId}"
+"navigationItems": {
+   "type": "array",
+   "input": {
+      "$lookup": {
+         "operator": "equals",
+         "sourceEntityType": "*",
+         "sourceEntityProperty": "originParentId",
+         "matchValue": "{originId}",
+         "orderBy": {
+            "property": "properties.metaData.sortOrder",
+            "sort": "asc"
          },
-         "orderBy":{
-            "property":"properties.metaData.sortOrder",
-            "sort":"asc"
-         },
-         "top":5
+         "top": 5
       }
    },
-   "items":{
-      "type":"reference",
-      "gid":{
-         "$exp":"{input.id}"
-      },
-      "view":"NavigationItem"
+   "items": {
+      "type": "reference",
+      "id": "{input.id}",
+      "alias": "NavigationItem"
    }
 }
 ```
@@ -212,40 +195,74 @@ properties.articles/any(a: a.isFeatured eq true)
     "items": {
         "type": "object",
         "properties": {
-            "title": {
-                "type": "string",
-                "value": {
-                    "$exp": "{article.properties.title}"
-                }
-            },
-            "content": {
-                "type": "string",
-                "value": {
-                    "$exp": "{article.properties.content}"
-                }
-            }
+            "title": "{article.properties.title}",
+            "content": "{article.properties.content}"
         }
     }
 }
 ```
 
+### Additional
+
+Arrays have some additional properties available:
+
+- `root`
+    For schemas it will contain the source entity and for partial schemas the input.
+    It is possible to access everything from the source entity like `root.originId` or `root.properties.headline`.
+    All property values in `items` that supports expressions can access `root`.
+
+    ```json
+    "tabs": {
+      "type": "array",
+      "input": "{properties.tabs}",
+      "var": "tab",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": "{root.properties.headline}: {tab.title}",
+          "content": "{tab.content}"
+        }
+      }
+    }
+    ```
+
+- `parent`
+    If having multidimensional arrays `parent` can be used to access items of the parent array.
+    For the first array `parent` will be equal to `root`. For the next levels `parent` will be equal to `item` of the parent array.
+    All property values in `items` that supports expressions can use `parent`.
+
+    ```json
+    "tabs": {
+      "type": "array",
+      "input": "{properties.tabs}",
+      "var": "tab",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": "{tab.title}",
+          "content": "{tab.content}",
+          "subTabs": {
+            "type": "array",
+            "input": "{tab.tabs}",
+            "var": "subTab",
+            "items": {
+              "title": "{parent.title}: {subTab.title}",
+              "content": "{subTab.content}",
+            }
+          } 
+        }
+      }
+    }
+    ```
+
 ## object
+
 ```json title="Property type: object"
 "item": {
   "type": "object",
   "properties": {
-    "title": {
-      "type": "string",
-      "value": {
-        "$exp": "{properties.title}"
-      }
-    },
-    "content": {
-      "type": "string",
-      "value": {
-        "$exp": "{properties.content}"
-      }
-    }
+    "title":  "{properties.title}",
+    "content": "{properties.content}"
   }
 }
 ```
@@ -257,62 +274,49 @@ The partial mapping property type allows for dynamically including partial schem
 ```json title="Property type: partial"
 "blocks": {
   "type": "array",
-  "input": {
-    "$exp": "{properties.contentBlocks}"
-  },
+  "input": "{properties.contentBlocks}",
   "items": {
     "type": "partial",
-    "input": {
-      "$exp": "{item}"
-    },
-    "viewHandle": {
-      "$exp": "Block-{item.contentType}"
-    }
+    "input": "{item}",
+    "alias": "Block-{item.contentType}"
   }
 }
 ```
 
-The `input` defines what goes into the partial schema and the `viewHandle` is used to resolve what partial schema to use. So in this case we could have partial schema with viewHandle: Block-headline.
+The `input` defines what goes into the partial schema and the `alias` is used to resolve what partial schema to use. So in this case we could have partial schema with alias: Block-headline.
 
 ## reference
-The reference property type is a bit different than string, number, boolean, etc. 
 
-This property types allows to reference other views created from either this Source Entity or from another Source Entity. 
+The reference property type is a bit different than string, number, boolean, etc.
+
+This property types allows to reference other views created from either this Source Entity or from another source entity.
 
 When referenced Enterspeed will resolve the view when requested by the Delivery API, so that the data will stay up-to-date.
 
-In order to reference desired source entity, you can use `gid` or `originId`.
+In order to reference desired source entity, you can use `alias` of the schema and `id` or `originId` of the source entity.
 
 ```json title="Property type: reference (static value) with originId"
 "seoData": {
   "type": "reference",
-  "originId": {
-    "$exp": "{originId}"
-  },
-  "view": "Seo"
+  "originId": "{originId}",
+  "alias": "Seo"
 }
 ```
 
 ```json title="Property type: reference (static value)"
 "seoData": {
   "type": "reference",
-  "gid": {
-    "$exp": "{id}"
-  },
-  "view": "Seo"
+  "id": "{id}",
+  "alias": "Seo"
 }
 ```
 
 ```json title="Property type: reference (dynamic value)"
 "seoData": {
   "type": "reference",
-  "gid": {
-    "$exp": "{id}"
-  },
-  "view": {
-     "$exp": "{properties.seoAlias}"
-  }
+  "id": "{id}",
+  "alias": "{properties.seoAlias}"
 }
 ```
 
-The `view` can either be a static value, like "Seo" or it can be a dynamic value being resolved from the Source Entity that is being processed by Enterspeed. This allows for supporting almost any use case. 
+The `alias` can either be a static value, like "Seo" or it can be a dynamic value being resolved from the Source Entity that is being processed by Enterspeed. This allows for supporting almost any use case.

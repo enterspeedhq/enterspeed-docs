@@ -17,6 +17,7 @@ In our settings, we define:
 And in our data, we map our existing data to our new content. This is all done under the "properties"-object.
 
 ## Configuring the settings
+
 The first thing we need to define is our **sourceEntityTypes**, which tells the schema what kind of data it should use. You can find all available types under **Source entities**.
 
 :::info
@@ -40,11 +41,9 @@ Next, we need to define is how we can fetch the data. We do this under **route**
     "sourceEntityTypes": [
         "contentPage"
     ],
-	"route": { 
-		"url": { 
-			"$exp": "{url}" 
-		}
-	}
+    "route": { 
+        "url": "{url}" 
+    }
 }
 ```
 
@@ -53,13 +52,14 @@ To keep this example simple, we're not going to define any actions.
 Great, so we have defined our settings, where we chose which data our schema should use (sourceEntityTypes) and how we should be able to fetch it (routes).
 
 ## Defining the data
-Now it's time to tie our existing data to our new content. We do this under **properties**. 
+
+Now it's time to tie our existing data to our new content. We do this under **properties**.
 
 We can define as many properties as we wish. For this example, we are going to define just one: a title.
 
 First, we give our new property a name. Let's simply call it **title**. Next, we need to define which type we will use. In this case, it's a **string**.
 
-Lastly, we need to set the **value** for this property. We do this by mapping to the data we wish to use from our **sourceEntityTypes**, which we defined earlier. 
+Lastly, we need to set the **value** for this property. We do this by mapping to the data we wish to use from our **sourceEntityTypes**, which we defined earlier.
 
 :::info
 Click the **Source entities** button on the Schema page and click View next to the Source you want to use. Here you can see all the available data.
@@ -72,24 +72,18 @@ The title we wish to use is called **pageTitle** in the data source and is insid
     "sourceEntityTypes": [
         "contentPage"
     ],
-	"route": { 
-		"url": { 
-			"$exp": "{url}" 
-		}
-	}
-	"properties": {
-		"title": {
-			"type": "string",
-			"value": {
-				"$exp": "{properties.pageTitle}"
-			}
-		},
-	}
+    "route": { 
+        "url": "{url}" 
+    },
+    "properties": {
+        "title": "{properties.pageTitle}"
+    }
 }
 ```
 
 ## Deploying and testing your schema
-Let's deploy and test our new schema. 
+
+Let's deploy and test our new schema.
 
 Click on the **Deploy schema** button, select your data source and new version and click **Deploy schema**.
 

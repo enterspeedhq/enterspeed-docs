@@ -4,51 +4,43 @@ sidebar_position: 1
 
 # Introduction
 
-## View handle
+## Alias
 
-The view handle is the identifier of your schema. This is used when:
+The alias is the identifier of your schema. This is used when:
 
-- referencing the view from another schema with the reference type
+- referencing the schema from another schema with the [reference type](./properties#reference)
 
 ## Source Entity Types
 
-The source entity types is used to define what types of Source Entities you want this schema to trigger on.
+The `sourceEntityTypes` are used to define which types of **source entities** you want this schema to trigger on.
 
 ## Route
 
-The route property defines if you want this schema to be retrievable by a route.
+The `route` property defines if you want this schema to be retrievable by a route.
 
-A route is not specifically an URL, but it can be. The route property contains 2 different properties: url or handles.
+A route is not specifically an URL, but it can be. The route property contains 2 different properties: `url` or `handles`.
 
 ### Routing by URL
 
-If you want your schema to be routable by an URL, you can specify the URL to use in an `$exp`. Like the example below.
+If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below.
 
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
-    "url": {
-      "$exp": "{url}"
-    }
+    "url": "{url}"
   },
   "properties": {}
 }
 ```
 
-You are not limited to use the built in `url` property, you can also use custom properties defined by your source:
+You are not limited to use the built in `url` property, you can also use properties defined by your source entity:
 
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
-    "url": {
-      "$exp": "{properties.customFrontPageUrl}"
-    }
+    "url": "{properties.customFrontPageUrl}"
   },
   "properties": {}
 }
@@ -62,36 +54,24 @@ If you don't want your schema to be routable by an URL, but rather something mor
 
 The `handles` is an array, so you can specify multiple handles per schema.
 
-A handle gets its value by utilizing the `$exp`, as shown below.
-
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
-    "handles": [
-      {
-        "$exp": "front-page"
-      }
-    ]
+    "handles": ["front-page"]
   },
   "properties": {}
 }
 ```
 
-The handle can also contain Source Entity properties, like the URL:
+The handle supports expressions as described for `url`:
 
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
     "handles": [
-      {
-        "$exp": "front-page-{properties.culture}"
-      }
+      "front-page-{properties.culture}"
     ]
   },
   "properties": {}
