@@ -41,11 +41,11 @@ sidebar_position: 3
 
 Array property type is designed for working with collections.
 
-| Property | Mandatory | Description                                                                                               |
-| -------- | --------- | --------------------------------------------------------------------------------------------------------- |
-| type     | true      | Constant value - array                                                                                    |
+| Property | Mandatory | Description                                                                                                        |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type     | true      | Constant value - array                                                                                             |
 | input    | true      | States input, where to retrieve items collection to work with from. Support input types: `string` `$exp` `$lookup` |
-| var      | false     | Collection iteration variable name. Default value is - item.                                              |
+| var      | false     | Collection iteration variable name. Default value is - item.                                                       |
 
 ### `$exp` input
 
@@ -81,20 +81,20 @@ Lookup input comparing to $exp allows you to define query-like and criteria matc
 | orderBy              | false     | Allows you to specify your desired sorting order                                                     |
 | top                  | false     | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression. |
 
-```json title="$lookup with single property"
+```json title="$lookup with a single property"
 "navigationItems": {
    "type": "array",
    "input": {
       "$lookup": {
-         "operator": "equals",
-         "sourceEntityType": "*",
-         "sourceEntityProperty": "originParentId",
-         "matchValue": "{originId}",
-         "orderBy": {
+          "operator": "equals",
+          "sourceEntityType": "*",
+          "sourceEntityProperty": "originParentId",
+          "matchValue": "{originId}",
+          "orderBy": {
             "property": "properties.metaData.sortOrder",
             "sort": "asc"
-         },
-         "top": 5
+          },
+          "top": 5
       }
    },
    "items": {
@@ -185,8 +185,8 @@ properties.articles/any(a: a.isFeatured eq true)
         "$lookup": {
             "filter": "type eq 'article' and properties.tags/any(t: t eq 'sports')",
             "orderBy": {
-                "property": "properties.metaData.sortOrder",
-                "sort": "asc"
+              "property": "properties.metaData.sortOrder",
+              "sort": "asc"
             },
             "top": 5
         }
@@ -289,7 +289,7 @@ The `input` defines what goes into the partial schema and the `alias` is used to
 
 The reference property type is a bit different than string, number, boolean, etc.
 
-This property types allows to reference other views created from either this Source Entity or from another source entity.
+This property types allows referencing other views created from either this Source Entity or from another source entity.
 
 When referenced Enterspeed will resolve the view when requested by the Delivery API, so that the data will stay up-to-date.
 
