@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Expression
 
-Expressions will often be used a simple placeholders to map data from the source entity.
+Expressions will often be used as simple placeholders to map data from the **source entity**.
 Most values in schemas and partial schemas can be expressed. An expression is identified by using curly brackets `{}`:
 
 ```json
