@@ -18,7 +18,7 @@ We've made a demo website called [The Flying Trunk](https://enterspeed-demo-next
 You can choose to [clone the project from Github](https://github.com/enterspeedhq/enterspeed-demo-nextjs) and build this example site, or you can choose to start from scratch and build your own. 
 
 **So what do you need to get started? You’ll need:**
-- An Enterspeed account.
+- An Enterspeed account ([sign up here](https://app.enterspeed.com/signup))
 
 - A Umbraco Cloud account ([Start 14-day free trial here](https://umbraco.com/products/umbraco-cloud/)) or any other local installation of Umbraco.
 
