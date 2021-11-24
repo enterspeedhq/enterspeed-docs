@@ -4,51 +4,110 @@ sidebar_position: 1
 
 # Introduction
 
-## View handle
+## Creating a schema
 
-The view handle is the identifier of your schema. This is used when:
+A schema is created from [The Enterspeed Interface](./../general/the-enterspeed-interface#api-design).
 
-- referencing the view from another schema with the reference type
+### Alias
 
-## Source Entity Types
+The alias is the identifier of your schema. This is used when:
 
-The source entity types is used to define what types of Source Entities you want this schema to trigger on.
+- referencing the schema from another schema with the [reference type](./properties#reference).
 
-## Route
+### Example schema
 
-The route property defines if you want this schema to be retrievable by a route.
-
-A route is not specifically an URL, but it can be. The route property contains 2 different properties: url or handles.
-
-### Routing by URL
-
-If you want your schema to be routable by an URL, you can specify the URL to use in an `$exp`. Like the example below.
+Below is a simple example showing how a schema can look for transforming *source entities* with the type of `frontPage`.
+The schema will the `url` to the `route` and the `title` property of `frontPage` to `headline`.
 
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
-    "url": {
-      "$exp": "{url}"
+    "url": "{url}"
+  },
+  "properties": {
+    "headline": "{p.title}"
+  }
+}
+```
+
+Given the `frontPage` source entity have the following content:
+
+```json
+{
+  "url": "/frontPage",
+  "properties": {
+    "title": "Welcome"
+  }
+}
+```
+
+When querying the Delivery API with `url=/frontPage` the output will be:
+
+```json
+{
+  "title": "Welcome"
+}
+```
+
+### Shorthand
+
+In the above examples notice how `p` serves as a shorthand for `properties` on the **source entity**.
+When `p.title` is used it's equivalent to `properties.title`.
+
+`headline` defined as a string.
+It possible to be more explicit:
+
+```json
+{
+  "sourceEntityTypes": ["frontPage"],
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {
+    "headline": {
+      "type": "string",
+      "value": "{p.title}"
     }
+  }
+}
+```
+
+### Property types
+
+Read more about different property types [here](./properties).
+
+## Source Entity Types
+
+The `sourceEntityTypes` are used to define which types of **source entities** you want this schema to trigger on.
+
+## Route
+
+The `route` property defines if you want this schema to be retrievable by a route.
+
+A route is not specifically an URL, but it can be. The route property contains 2 different properties: `url` or `handles`.
+
+### Routing by URL
+
+If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below.
+
+```json
+{
+  "sourceEntityTypes": ["frontPage"],
+  "route": {
+    "url": "{url}"
   },
   "properties": {}
 }
 ```
 
-You are not limited to use the built in `url` property, you can also use custom properties defined by your source:
+You are not limited to use the built in `url` property, you can also use properties defined by your source entity:
 
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
-    "url": {
-      "$exp": "{properties.customFrontPageUrl}"
-    }
+    "url": "{p.customFrontPageUrl}"
   },
   "properties": {}
 }
@@ -62,36 +121,24 @@ If you don't want your schema to be routable by an URL, but rather something mor
 
 The `handles` is an array, so you can specify multiple handles per schema.
 
-A handle gets its value by utilizing the `$exp`, as shown below.
-
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
-    "handles": [
-      {
-        "$exp": "front-page"
-      }
-    ]
+    "handles": ["front-page"]
   },
   "properties": {}
 }
 ```
 
-The handle can also contain Source Entity properties, like the URL:
+The handle supports expressions as described for `url`:
 
 ```json
 {
-  "viewHandle": "Frontpage",
   "sourceEntityTypes": ["frontPage"],
-  "environments": [...],
   "route": {
     "handles": [
-      {
-        "$exp": "front-page-{properties.culture}"
-      }
+      "front-page-{p.culture}"
     ]
   },
   "properties": {}
@@ -104,12 +151,12 @@ When doing the schema, you have to define what properties you want your schema t
 
 The following types to create the schema mapping can be used:
 
-| Property       | Description                                                                  |
-| -------------- | ---------------------------------------------------------------------------- |
-| [String](./properties#string)    | Basic string mapping.                                                        |
-| [Number](./properties#number)    | Basic number or integer mapping.                                             |
-| [Boolean](./properties#boolean)   | Basic boolean mapping.                                                       |
-| [Array](./properties#array)     | Mapping of an array, defining the input to iterate and the items definition. |
-| [Object](./properties#object)    | Mapping of an object.                                                        |
+| Property                            | Description                                                                  |
+| ----------------------------------- | ---------------------------------------------------------------------------- |
+| [String](./properties#string)       | Basic string mapping.                                                        |
+| [Number](./properties#number)       | Basic number or integer mapping.                                             |
+| [Boolean](./properties#boolean)     | Basic boolean mapping.                                                       |
+| [Array](./properties#array)         | Mapping of an array, defining the input to iterate and the items definition. |
+| [Object](./properties#object)       | Mapping of an object.                                                        |
 | [Reference](./properties#reference) | Referencing another schema.                                                  |
-| [Partial](./properties#partial)   | Referencing a partial schema to map the data into.                           |
+| [Partial](./properties#partial)     | Referencing a partial schema to map the data into.                           |
