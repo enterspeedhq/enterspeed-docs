@@ -1,9 +1,9 @@
 ---
 sidebar_position: 2
 ---
-import ReactPlayer from 'react-player/lazy'
 
 # Creating my first schema
+
 Schemas are the glue that ties your existing data to your new layout. So when designing your schema, you get to choose which of your existing data you wish to use in your new layout- and how it should be structured.
 
 Our schema can be divided into two areas: “Settings” and the actual data. Just like an HTML documents ``<Head>`` and ``<Body>``.
@@ -82,6 +82,8 @@ The title we wish to use is called **pageTitle** in the data source and is insid
 ```
 
 ## Deploying and testing your schema
+
+import ReactPlayer from 'react-player/lazy'
 
 Let's deploy and test our new schema.
 
