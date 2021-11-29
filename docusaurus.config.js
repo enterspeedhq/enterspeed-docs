@@ -1,6 +1,7 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
@@ -56,6 +57,31 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           srcDark: 'img/logo_dark.svg',
         },
         items: [
+          {
+            to: '/',
+            docId: 'home',
+            label: 'Home',
+            position: 'left',
+            activeBaseRegex: '/(getting-started|ingest|transform|deliver|general)',
+          },
+          {
+            to: '/',
+            label: 'API',
+            position: 'left',
+            activeBasePath: 'api'
+          },
+          {
+            type: 'doc',
+            docId: 'integrations/overview',
+            label: 'Integrations',
+            position: 'left',
+          },
+          {
+            type: 'doc',
+            docId: 'tutorials/umbraco-nextjs/intro',
+            label: 'Tutorials',
+            position: 'left',
+          },
           {
             href: 'https://www.enterspeed.com/',
             label: 'Enterspeed.com',
