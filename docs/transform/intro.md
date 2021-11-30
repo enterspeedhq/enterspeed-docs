@@ -1,164 +1,96 @@
 ---
 sidebar_position: 1
 sidebar_label: Intro
-slug: /transform
 ---
 
-# Introduction
+# Transforming data
+import ReactPlayer from 'react-player/lazy'
 
-## Creating a schema
+All data transformation in Enterspeed is done from a set of schema definitions. Schemas are the glue that ties your existing data to your new layout. 
 
-A schema is created from [The Enterspeed Interface](../../general/the-enterspeed-interface).
+So when designing your schema, you get to choose which of your existing data you wish to use in your new layout- and how it should be structured.
 
-### Alias
+Our schema can be divided into two areas: “Settings” and the actual data. Just like an HTML documents ``<Head>`` and ``<Body>``.
 
-The alias is the identifier of your schema. This is used when:
+In our settings, we define:
 
-- referencing the schema from another schema with the [reference type](./properties#reference).
+1. Which source entity types to use
+2. Set if the schema should be available via routes
+3. Set if actions should occur when the schema is processed.
 
-### Example schema
+And in our data, we map our existing data to our new content. This is all done under the "properties"-object.
 
-Below is a simple example showing how a schema can look for transforming *source entities* with the type of `frontPage`.
-The schema will the `url` to the `route` and the `title` property of `frontPage` to `headline`.
+## Configuring the settings
 
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {
-    "headline": "{p.title}"
-  }
-}
-```
+The first thing we need to define is our **sourceEntityTypes**, which tells the schema what kind of data it should use. You can find all available types under **Source entities**.
 
-Given the `frontPage` source entity have the following content:
+:::info
+The Source entity types are fetched from your data source, e.g. your CMS.
+:::
+
+Let's have a look. Say we wish to use data from our **contentPage** type, we simply define it like this:
 
 ```json
 {
-  "url": "/frontPage",
-  "properties": {
-    "title": "Welcome"
-  }
-}
-```
-
-When querying the Delivery API with `url=/frontPage` the output will be:
-
-```json
-{
-  "title": "Welcome"
-}
-```
-
-### Shorthand
-
-In the above examples notice how `p` serves as a shorthand for `properties` on the **source entity**.
-When `p.title` is used it's equivalent to `properties.title`.
-
-`headline` defined as a string.
-It possible to be more explicit:
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {
-    "headline": {
-      "type": "string",
-      "value": "{p.title}"
-    }
-  }
-}
-```
-
-### Property types
-
-Read more about different property types [here](./properties).
-
-## Source Entity Types
-
-The `sourceEntityTypes` are used to define which types of **source entities** you want this schema to trigger on.
-
-## Route
-
-The `route` property defines if you want this schema to be retrievable by a route.
-
-A route is not specifically an URL, but it can be. The route property contains 2 different properties: `url` or `handles`.
-
-### Routing by URL
-
-If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below.
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {}
-}
-```
-
-You are not limited to use the built in `url` property, you can also use properties defined by your source entity:
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "url": "{p.customFrontPageUrl}"
-  },
-  "properties": {}
-}
-```
-
-The URL must be a valid URL: either relative `/about-us` or absolute `https://enterspeed.com/about-us`.
-
-### Routing by handles
-
-If you don't want your schema to be routable by an URL, but rather something more static, you can use a handle.
-
-The `handles` is an array, so you can specify multiple handles per schema.
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "handles": ["front-page"]
-  },
-  "properties": {}
-}
-```
-
-The handle supports expressions as described for `url`:
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "handles": [
-      "front-page-{p.culture}"
+    "sourceEntityTypes": [
+        "contentPage"
     ]
-  },
-  "properties": {}
 }
 ```
 
-## Properties
+Next, we need to define is how we can fetch the data. We do this under **route**. Fetching can be done by URL, Handle, and ID. In this example, we do it by URL.
 
-When doing the schema, you have to define what properties you want your schema to consist of.
+```json
+{
+    "sourceEntityTypes": [
+        "contentPage"
+    ],
+    "route": { 
+        "url": "{url}" 
+    }
+}
+```
 
-The following types to create the schema mapping can be used:
+To keep this example simple, we're not going to define any actions.
 
-| Property                            | Description                                                                  |
-| ----------------------------------- | ---------------------------------------------------------------------------- |
-| [String](./properties#string)       | Basic string mapping.                                                        |
-| [Number](./properties#number)       | Basic number or integer mapping.                                             |
-| [Boolean](./properties#boolean)     | Basic boolean mapping.                                                       |
-| [Array](./properties#array)         | Mapping of an array, defining the input to iterate and the items definition. |
-| [Object](./properties#object)       | Mapping of an object.                                                        |
-| [Reference](./properties#reference) | Referencing another schema.                                                  |
-| [Partial](./properties#partial)     | Referencing a partial schema to map the data into.                           |
+Great, so we have defined our settings, where we chose which data our schema should use (sourceEntityTypes) and how we should be able to fetch it (routes).
+
+## Defining the data
+
+Now it's time to tie our existing data to our new content. We do this under **properties**.
+
+We can define as many properties as we wish. For this example, we are going to define just one: a title.
+
+First, we give our new property a name. Let's simply call it **title**. Next, we need to define which type we will use. In this case, it's a **string**.
+
+Lastly, we need to set the **value** for this property. We do this by mapping to the data we wish to use from our **sourceEntityTypes**, which we defined earlier.
+
+:::info
+Click the **Source entities** button on the Schema page and click View next to the Source you want to use. Here you can see all the available data.
+:::
+
+The title we wish to use is called **pageTitle** in the data source and is inside the **properties**-object.
+
+```json
+{
+    "sourceEntityTypes": [
+        "contentPage"
+    ],
+    "route": { 
+        "url": "{url}" 
+    },
+    "properties": {
+        "title": "{properties.pageTitle}"
+    }
+}
+```
+
+## Deploying and testing your schema
+
+Let's deploy and test our new schema.
+
+Click on the **Deploy schema** button, select your data source and new version and click **Deploy schema**.
+
+You can now test your schema via Postman, Insomnia, etc.
+
+<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=jrGPa8lXbio' />
