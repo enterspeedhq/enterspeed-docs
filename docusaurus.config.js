@@ -1,7 +1,6 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
-
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (
@@ -29,22 +28,24 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           },
         }),
       ],
-    [
-      'redocusaurus',
-      {
-        specs: [{
-          spec: './_api-reference/openapi.yml',
-          routePath: '/api/',
-          apiDocComponent: '../src/components/redoc/ApiDoc.js'
-        }],
-        theme: {
-          redocOptions: {
-            disableSearch: true,
-          }
-        }
-      }
+      [
+        "redocusaurus",
+        {
+          specs: [
+            {
+              spec: "./_api-reference/openapi.yml",
+              routePath: "/api/",
+              apiDocComponent: "../src/components/redoc/ApiDoc.js",
+            },
+          ],
+          theme: {
+            redocOptions: {
+              disableSearch: true,
+            },
+          },
+        },
+      ],
     ],
-  ],
 
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
