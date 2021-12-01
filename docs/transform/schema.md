@@ -8,7 +8,7 @@ sidebar_position: 2
 
 The alias is the identifier of your schema. This is used when:
 
-- referencing the schema from another schema with the [reference type](./properties#reference).
+- referencing the schema from another schema with the [reference type](./property-types#reference).
 
 ## Shorthand
 
@@ -109,13 +109,13 @@ The following types to create the schema mapping can be used:
 
 | Property                            | Description                                                                  |
 | ----------------------------------- | ---------------------------------------------------------------------------- |
-| [String](./properties#string)       | Basic string mapping.                                                        |
-| [Number](./properties#number)       | Basic number or integer mapping.                                             |
-| [Boolean](./properties#boolean)     | Basic boolean mapping.                                                       |
-| [Array](./properties#array)         | Mapping of an array, defining the input to iterate and the items definition. |
-| [Object](./properties#object)       | Mapping of an object.                                                        |
-| [Reference](./properties#reference) | Referencing another schema.                                                  |
-| [Partial](./properties#partial)     | Referencing a partial schema to map the data into.                           |
+| [String](./property-types#string)       | Basic string mapping.                                                        |
+| [Number](./property-types#number)       | Basic number or integer mapping.                                             |
+| [Boolean](./property-types#boolean)     | Basic boolean mapping.                                                       |
+| [Array](./property-types#array)         | Mapping of an array, defining the input to iterate and the items definition. |
+| [Object](./property-types#object)       | Mapping of an object.                                                        |
+| [Reference](./property-types#reference) | Referencing another schema.                                                  |
+| [Partial](./property-types#partial)     | Referencing a partial schema to map the data into.                           |
 
 ## Example schema
 
