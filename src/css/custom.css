@@ -177,3 +177,7 @@ html[data-theme='dark'] .header-github-link:before {
 .redoc-wrap button span {
   font-family: 'Barlow';
 }
+
+.navbar__items:not(.navbar__items--right) .navbar__item {
+  font-weight: bold;
+}
