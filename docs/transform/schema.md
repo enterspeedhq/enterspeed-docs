@@ -12,7 +12,7 @@ The alias is the identifier of your schema. This is used when:
 
 ## Shorthand
 
-In the above examples notice how `p` serves as a shorthand for `properties` on the **source entity**.
+In the example below notice how `p` serves as a shorthand for `properties` on the **source entity**.
 When `p.title` is used it's equivalent to `properties.title`.
 
 `headline` defined as a string.
