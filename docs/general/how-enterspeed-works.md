@@ -19,7 +19,7 @@ The Enterspeed process works via a three-step process, we call the **ITD**-proce
 2. **T**ransform data
 3. **D**eliver data 
 
-![The Enterspeed process](../../static/img/docs/general/the-enterspeed-process.png)
+![The Enterspeed process](/img/docs/general/the-enterspeed-process.png)
 
 ### Step 1 - Data gets ingested
 In the first step, data gets ingested into Enterspeed from your current data source(s). This can be a CMS like Umbraco and a PIM system like Struct PIM.
