@@ -140,3 +140,40 @@ html[data-theme='dark'] .header-github-link:before {
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
+
+.redocusaurus h2, .redocusaurus h3, .redocusaurus h4 {
+  color: unset!important;
+}
+
+.scrollbar-container ul li label span {
+  font-family: 'Barlow', sans-serif;
+}
+
+.scrollbar-container ul li label {
+  padding: 6px 16px;
+  margin-top: 4px;
+  line-height: 1.25;
+}
+
+.scrollbar-container ul li label.active, .scrollbar-container ul li label:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+}
+
+.scrollbar-container ul li label.active {
+  color: #0b0f89;
+}
+.redocusaurus h1 {
+  font-size: 32px;
+}
+
+.redocusaurus h2 {
+  font-size: 24px;
+}
+
+.redocusaurus h3 {
+  font-size: 18px;
+}
+.redoc-wrap button span {
+  font-family: 'Barlow';
+}

@@ -4,7 +4,7 @@ The first step when working with Enterspeed is to get your current data sources 
 
 First, you need to set up a **Data source** in Enterspeed. Go to *Settings* --> *Data Sources* and create a one. This will generate an API key to use when ingesting data.
 
-## Way of ingesting data
+## How to ingest data
 There are three ways of doing this:
 1. Using one of our integrations
 2. Using our .NET SDK
@@ -19,7 +19,7 @@ We currently have integrations for Umbraco V7, Umbraco V8, and Umbraco V9.
 Another way of ingesting data is by using our .NET SDK. You'll find more information about it here: https://github.com/enterspeedhq/enterspeed-sdk-dotnet
 
 ### Ingesting data via our API
-Last but now least, you can of course use our API directly to ingest your data. You can find the API documentation right here.
+Last but now least, you can of course use our API directly to ingest your data. [You can find the API documentation right here.](./api#tag/Ingest)
 
 ## Viewing ingested data
 Once your data has been ingested into Enterspeed, it will be visible under Source Entities.

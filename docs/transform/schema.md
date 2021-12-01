@@ -1,57 +1,16 @@
 ---
 sidebar_position: 2
-sidebar_label: Options
 ---
 
-# Schema Options
+# Schema
 
-## Creating a schema
-
-A schema is created from [The Enterspeed Interface](../../general/the-enterspeed-interface).
-
-### Alias
+## Alias
 
 The alias is the identifier of your schema. This is used when:
 
 - referencing the schema from another schema with the [reference type](./properties#reference).
 
-### Example schema
-
-Below is a simple example showing how a schema can look for transforming *source entities* with the type of `frontPage`.
-The schema will the `url` to the `route` and the `title` property of `frontPage` to `headline`.
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {
-    "headline": "{p.title}"
-  }
-}
-```
-
-Given the `frontPage` source entity have the following content:
-
-```json
-{
-  "url": "/frontPage",
-  "properties": {
-    "title": "Welcome"
-  }
-}
-```
-
-When querying the Delivery API with `url=/frontPage` the output will be:
-
-```json
-{
-  "title": "Welcome"
-}
-```
-
-### Shorthand
+## Shorthand
 
 In the above examples notice how `p` serves as a shorthand for `properties` on the **source entity**.
 When `p.title` is used it's equivalent to `properties.title`.
@@ -73,10 +32,6 @@ It possible to be more explicit:
   }
 }
 ```
-
-### Property types
-
-Read more about different property types [here](./properties).
 
 ## Source Entity Types
 
@@ -161,3 +116,39 @@ The following types to create the schema mapping can be used:
 | [Object](./properties#object)       | Mapping of an object.                                                        |
 | [Reference](./properties#reference) | Referencing another schema.                                                  |
 | [Partial](./properties#partial)     | Referencing a partial schema to map the data into.                           |
+
+## Example schema
+
+Below is a simple example showing how a schema can look for transforming *source entities* with the type of `frontPage`.
+The schema will the `url` to the `route` and the `title` property of `frontPage` to `headline`.
+
+```json
+{
+  "sourceEntityTypes": ["frontPage"],
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {
+    "headline": "{p.title}"
+  }
+}
+```
+
+Given the `frontPage` source entity have the following content:
+
+```json
+{
+  "url": "/frontPage",
+  "properties": {
+    "title": "Welcome"
+  }
+}
+```
+
+When querying the Delivery API with `url=/frontPage` the output will be:
+
+```json
+{
+  "title": "Welcome"
+}
+```
