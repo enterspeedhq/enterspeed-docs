@@ -67,13 +67,17 @@ Document type representing site instance.
 | blocks   | Frontpage Block List | Our front page will consist of different blocks as - articles by tag, and potentially many others. |
 
 ## Data types
+
 ### Single Tag Picker
+
 Is a data type extending Umbraco default 'Content Picker', where we specify 'Tags' content node as a start node.
 
 ### Frontpage Block List
+
 Is a data type extending Umbraco default 'Block List', where we add a single available block - 'Articles By Tag', that we have created previously as part of Document types.
 
 ## Adding blocks to frontpage
+
 On the site node, we are going to add some blocks for displaying articles by different tag.
 
 ![Umbraco blocks](/img/docs/integrations/umbraco/umbraco-v8-blocks.png)
@@ -85,192 +89,138 @@ Each of them configured with their own criteria for display of articles:
 ![Umbraco blocks Content basketball](/img/docs/integrations/umbraco/umbraco-v8-blocks-content-basketball.png)
 
 ## Defining schemas in Enterspeed
+
 ### Creating a Site schema
+
 Site schema will work with source entities of type - 'site' since those are the ones where we have defined our blocks (in Umbraco) to describe what blocks we want to display.
 
 This schema doesn't contain much of the logic, its responsibility is to iterate over blocks defined on the source entity and pass each of the blocks in partial view, with matching name.
 
 ```json
 {
-   "route":{
-      "url":{
-         "$exp":"{url}"
+  "route": {
+    "url": "{url}"
+  },
+  "sourceEntityTypes": ["site"],
+  "properties": {
+    "blocks": {
+      "type": "array",
+      "input": "{p.blocks}",
+      "items": {
+        "type": "partial",
+        "input": "{item}",
+        "alias": "Block-{item.contentType}"
       }
-   },
-   "sourceEntityTypes":[
-      "site"
-   ],
-   "properties":{
-      "blocks":{
-         "type":"array",
-         "input":{
-            "$exp":"{properties.blocks}"
-         },
-         "items":{
-            "type":"partial",
-            "input":{
-               "$exp":"{item}"
-            },
-            "viewHandle":{
-               "$exp":"Block-{item.contentType}"
-            }
-         }
-      }
-   }
+    }
+  }
 }
 ```
 
-The only tricky part to remember is that now we have defined view handle match for partial schema view, where *'item.contentType'* value is an alias of our current block Element document type in Umbraco - *'articlesByTag'*.
+The only tricky part to remember is that now we have defined view handle match for partial schema view, where _'item.contentType'_ value is an alias of our current block Element document type in Umbraco - _'articlesByTag'_.
 
 ## Creating a partial schema - Articles By Tag Block
-We are halfway through, the previous schema iterated through blocks, this schema will handle a specific type of block - *Block-articlesByTag*.
+
+We are halfway through, the previous schema iterated through blocks, this schema will handle a specific type of block - _Block-articlesByTag_.
 
 As result, we want to display the following properties - alias and title of this block and collection of articles matching criteria defined on this block along with basic information about them - title, subheader, published at date and list of tags associated.
 
 ```json
 {
-   "viewHandle":"Block-articlesByTag",
-   "properties":{
-      "alias":{
-         "type":"string",
-         "value":{
-            "$exp":"{item.contentType}"
-         }
+  "alias": "Block-articlesByTag",
+  "properties": {
+    "alias": "{item.contentType}",
+    "title": "{item.content.title}",
+    "articles": {
+      "type": "array",
+      "input": {
+        "$lookup": {
+          "filter": "type eq 'article' and properties.tags/any(t: t.id eq '{item.content.tag}')",
+          "top": "{item.content.top}",
+          "orderBy": {
+            "property": "p.publishedAt",
+            "sort": "desc"
+          }
+        }
       },
-      "title":{
-         "type":"string",
-         "value":{
-            "$exp":"{item.content.title}"
-         }
-      },
-      "articles":{
-         "type":"array",
-         "input":{
-            "$lookup":{
-               "filter":"type eq 'article' and properties.tags/any(t: t.id eq '{item.content.tag}')",
-               "top":"{item.content.top}",
-               "orderBy":{
-                  "property":"properties.publishedAt",
-                  "sort":"desc"
-               }
-            }
-         },
-         "items":{
-            "type":"object",
-            "properties":{
-               "title":{
-                  "type":"string",
-                  "value":{
-                     "$exp":"{item.properties.title ?? item.properties.metaData.name}"
-                  }
-               },
-               "subheader":{
-                  "type":"string",
-                  "value":{
-                     "$exp":"{item.properties.subheader}"
-                  }
-               },
-               "publishedAt":{
-                  "type":"string",
-                  "value":{
-                     "$exp":"{item.properties.publishedAt}"
-                  }
-               },
-               "tags":{
-                  "type":"array",
-                  "input":{
-                     "$exp":"{item.properties.tags}"
-                  },
-                  "var":"tag",
-                  "items":{
-                     "type":"string",
-                     "value":{
-                        "$exp":"{tag.name}"
-                     }
-                  }
-               }
-            }
-         }
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": "{item.p.title ?? item.p.metaData.name}",
+          "subheader": "{item.p.subheader}",
+          "publishedAt": "{item.p.publishedAt}",
+          "tags": {
+            "type": "array",
+            "input": "{item.p.tags}",
+            "var": "tag",
+            "items": "{tag.name}"
+          }
+        }
       }
-   }
+    }
+  }
 }
 ```
 
-Notice how we are using *$lookup* in combination with *filter*, *top*, and *orderBy*. In simple words, we want to lookup all source entities that match our filter, meaning where the type of source entity is an article and it has a current block selected tag associated with it. 
+Notice how we are using _$lookup_ in combination with _filter_, _top_, and _orderBy_. In simple words, we want to lookup all source entities that match our filter, meaning where the type of source entity is an article and it has a current block selected tag associated with it.
 
-
-On our front page, we want to show the latest published news first, that is what we define our sorting criteria for all filter found source entities. Lastly, regarding lookup, we defined  limit how many articles to display for the current block.
+On our front page, we want to show the latest published news first, that is what we define our sorting criteria for all filter found source entities. Lastly, regarding lookup, we defined limit how many articles to display for the current block.
 
 ## Outcome
+
 After updating and deploying previously mentioned schemas and publishing all content data to Enterspeed, the outcome from Delivery API would look like this:
 
 ```json
 {
-   "meta":{
-      "status":200,
-      "redirect":null
-   },
-   "route":{
-      "blocks":[
-         {
-            "alias":"articlesByTag",
-            "title":"Hey Vancouver",
-            "articles":[
-               {
-                  "title":"Canucks camp notebook: Sporting new look, Boeser striving for consistency",
-                  "subheader":"Dan Murphy and Iain MacIntyre discuss the latest news surrounding Elias Pettersson and Quinn Hughes, as well as what's happening with Travis Hamonic",
-                  "publishedAt":"09/28/2021 00:00:00",
-                  "tags":[
-                     "Vancouver Canucks",
-                     "Ice hockey"
-                  ]
-               },
-               {
-                  "title":"Canucks Sign Forward Jason Dickinson",
-                  "subheader":"...to a three-year contract",
-                  "publishedAt":"09/02/2021 00:00:00",
-                  "tags":[
-                     "Ice hockey",
-                     "Vancouver Canucks"
-                  ]
-               },
-               {
-                  "title":"NHL expects full capacity in all cities except Vancouver and Montreal",
-                  "subheader":"",
-                  "publishedAt":"08/30/2021 00:00:00",
-                  "tags":[
-                     "Vancouver Canucks",
-                     "Ice hockey"
-                  ]
-               }
-            ]
-         },
-         {
-            "alias":"articlesByTag",
-            "title":"What is happening in #basketball?",
-            "articles":[
-               {
-                  "title":"Position breakdown: Maximizing Porzingis a priority among big men",
-                  "subheader":"When you have one of the tallest players in the NBA, one with a rare skill set of inside and outside capabilities, it makes sense to maximize his assets.",
-                  "publishedAt":"09/27/2021 00:00:00",
-                  "tags":[
-                     "Basketball"
-                  ]
-               },
-               {
-                  "title":"Will Kidd get the best out of Doncic?",
-                  "subheader":"The savvy former guard looks to bring his Hall of Fame expertise to Dallas.",
-                  "publishedAt":"09/14/2021 00:00:00",
-                  "tags":[
-                     "Basketball"
-                  ]
-               }
-            ]
-         }
-      ]
-   },
-   "views":{
-      
-   }
+  "meta": {
+    "status": 200,
+    "redirect": null
+  },
+  "route": {
+    "blocks": [
+      {
+        "alias": "articlesByTag",
+        "title": "Hey Vancouver",
+        "articles": [
+          {
+            "title": "Canucks camp notebook: Sporting new look, Boeser striving for consistency",
+            "subheader": "Dan Murphy and Iain MacIntyre discuss the latest news surrounding Elias Pettersson and Quinn Hughes, as well as what's happening with Travis Hamonic",
+            "publishedAt": "09/28/2021 00:00:00",
+            "tags": ["Vancouver Canucks", "Ice hockey"]
+          },
+          {
+            "title": "Canucks Sign Forward Jason Dickinson",
+            "subheader": "...to a three-year contract",
+            "publishedAt": "09/02/2021 00:00:00",
+            "tags": ["Ice hockey", "Vancouver Canucks"]
+          },
+          {
+            "title": "NHL expects full capacity in all cities except Vancouver and Montreal",
+            "subheader": "",
+            "publishedAt": "08/30/2021 00:00:00",
+            "tags": ["Vancouver Canucks", "Ice hockey"]
+          }
+        ]
+      },
+      {
+        "alias": "articlesByTag",
+        "title": "What is happening in #basketball?",
+        "articles": [
+          {
+            "title": "Position breakdown: Maximizing Porzingis a priority among big men",
+            "subheader": "When you have one of the tallest players in the NBA, one with a rare skill set of inside and outside capabilities, it makes sense to maximize his assets.",
+            "publishedAt": "09/27/2021 00:00:00",
+            "tags": ["Basketball"]
+          },
+          {
+            "title": "Will Kidd get the best out of Doncic?",
+            "subheader": "The savvy former guard looks to bring his Hall of Fame expertise to Dallas.",
+            "publishedAt": "09/14/2021 00:00:00",
+            "tags": ["Basketball"]
+          }
+        ]
+      }
+    ]
+  },
+  "views": {}
 }
 ```

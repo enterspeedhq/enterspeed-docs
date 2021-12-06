@@ -14,7 +14,7 @@ In this step, we're going to:
 
 ## Creating sources
 
-Go to **Sources** and click the “**Create new**” button. Give your source a name (e.g. Umbraco Cloud) and select **CMS** in type. Afterward, click on the **Create** button.
+Go to **Data sources** under *Settings* and click the **Create** button. Give your source a name (e.g. Umbraco Cloud) and select **CMS** in type. Afterward, click on the **Create** button.
 
 An API key is now generated. Save the API key for now (e.g., in a notepad document) - you'll need it when configuring your Umbraco project.
 
@@ -22,14 +22,14 @@ An API key is now generated. Save the API key for now (e.g., in a notepad docume
 
 ## Creating environments
 
-Now it’s time to configure your environments. Go to **Environments** and click the “**Create new**” button. Give your environment a name (e.g. Production) and click on the Create button.
+Now it’s time to configure your environments. Go to **Environments** under *Settings -> Environment settings* and click the **Create** button. Give your environment a name (e.g. Production) and click on the Create button.
 
 ![Create environment Enterspeed](/img/docs/examples/create-environment.png)
 
 
 ## Creating and configuring domains
 
-Go to **Domains** and click the “**Create new**” button. Give your domain a name (e.g. Production) and click on the **Create** button.
+Go to **Domains** under *Settings -> Environment settings* and click the **Create** button. Give your domain a name (e.g. DomainName.com) and click on the **Create** button.
 
 ![Create domain](/img/docs/examples/create-domain.png)
 
@@ -49,10 +49,12 @@ If you're working on an environment like Netlify you can insert the site URL for
 
 ## Creating environment clients
 
-Navigate to **Environment clients** and click the “**Create new**” button. Give your environment client a name (e.g. My Next.js Application) and select the **Environment** you just created. Afterward, click on the **Create** button.
+Navigate to **Environment clients** under *Settings -> Environment settings* and click the **Create** button. Give your environment client a name (e.g. My Next.js Application) and select the **Environment** you just created. Afterward, click on the **Create** button.
 
 ![Create environment client Enterspeed](/img/docs/examples/create-environment-client.png)
 
 Also save this API key for now (e.g., in a notepad document) - we’re going to use it in our Next.js application.
 
 Next to your new environment client click on the three dots and select **Edit domains**. Select the domain you just created and click the “**Save changes**” button.
+
+![Environment client Domains](/img/docs/examples/environment-client-domains.png)
