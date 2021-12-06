@@ -122,9 +122,8 @@ If you don't select any Sources, nothing will be deployed.
 	"name": "Block Text",
 	"alias": "umbraco-blockText",
 	"properties": {
-		"text": "{item.content.text}"
-	},
-	"alias": "{item.contentType}"
+		"text": "{item.content.text}",
+    "alias": "{item.contentType}"
 	}
 }
 ```
@@ -170,7 +169,7 @@ You can find all of the example schemas on [Github](https://github.com/enterspee
 - [ProductListingView](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/ProductListingView.json)
 - [Products](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Products.json)
 - [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/partial-schemas/umbraco-blockText.json) **(Partial schema)**
-:::
+  :::
 
 ## Testing your schemas
 
