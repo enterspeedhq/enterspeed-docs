@@ -1,19 +1,20 @@
 ---
-sidebar_position: 4
+sidebar_position: 2
+title: Property types
 ---
 
-# Property types
+# Reference: Property types
 
 ## string
 
 ```json title="Property type: string"
-"title": "{properties.headline}"
+"title": "{p.headline}"
 ```
 
 ```json title="Property type: string with value and default"
 "title": {
   "type": "string",
-  "value": "{properties.headline}",
+  "value": "{p.headline}",
   "default": "Unknown title"
 }
 ```
@@ -23,7 +24,7 @@ sidebar_position: 4
 ```json title="Property type: number"
 "stock": {
   "type": "number",
-  "value": "{variant.inventoryQuantity}"
+  "value": "{p.inventoryQuantity}"
 }
 ```
 
@@ -32,7 +33,7 @@ sidebar_position: 4
 ```json title="Property type: boolean"
 "isPublished": {
   "type": "boolean",
-  "value": "{properties.published}",
+  "value": "{p.published}",
   "default": true
 }
 ```
@@ -54,7 +55,7 @@ With expression input, you can reference the desired property on the source enti
 ```json title="$exp input"
 "tabs": {
   "type": "array",
-  "input": "{properties.tabs}",
+  "input": "{p.tabs}",
   "var": "tab",
   "items": {
     "type": "object",
@@ -122,7 +123,7 @@ Particular lookup filter type allows you to be more flexible with your matching 
 originId eq '100'
 
 // Property value equal to expressed string value
-originId eq '{properties.selectedOtherPageId}'
+originId eq '{p.selectedOtherPageId}'
 
 // Property value is null
 originParentId eq null
@@ -142,7 +143,7 @@ properties.isFeatured eq true
 originId ne '100'
 
 // Property value not equal to expressed string value
-originId ne '{properties.selectedOtherPageId}'
+originId ne '{p.selectedOtherPageId}'
 
 // Property value is not null
 originParentId ne null
@@ -172,7 +173,7 @@ type eq 'article' or type eq 'contentPage'
 redirects/any(r: r eq '/old-page')
 
 // Contains specific tag with expression string value
-properties.tags/any(t: t eq '{properties.selectedTag}')
+properties.tags/any(t: t eq '{p.selectedTag}')
 
 // Contains an articles that featured, matching constant boolean value
 properties.articles/any(a: a.isFeatured eq true)
@@ -195,8 +196,8 @@ properties.articles/any(a: a.isFeatured eq true)
     "items": {
         "type": "object",
         "properties": {
-            "title": "{article.properties.title}",
-            "content": "{article.properties.content}"
+            "title": "{article.p.title}",
+            "content": "{article.p.content}"
         }
     }
 }
@@ -214,12 +215,12 @@ Arrays have some additional properties available:
     ```json
     "tabs": {
       "type": "array",
-      "input": "{properties.tabs}",
+      "input": "{p.tabs}",
       "var": "tab",
       "items": {
         "type": "object",
         "properties": {
-          "title": "{root.properties.headline}: {tab.title}",
+          "title": "{root.p.headline}: {tab.title}",
           "content": "{tab.content}"
         }
       }
@@ -234,7 +235,7 @@ Arrays have some additional properties available:
     ```json
     "tabs": {
       "type": "array",
-      "input": "{properties.tabs}",
+      "input": "{p.tabs}",
       "var": "tab",
       "items": {
         "type": "object",
@@ -261,8 +262,8 @@ Arrays have some additional properties available:
 "item": {
   "type": "object",
   "properties": {
-    "title":  "{properties.title}",
-    "content": "{properties.content}"
+    "title":  "{p.title}",
+    "content": "{p.content}"
   }
 }
 ```
@@ -274,7 +275,7 @@ The partial mapping property type allows for dynamically including partial schem
 ```json title="Property type: partial"
 "blocks": {
   "type": "array",
-  "input": "{properties.contentBlocks}",
+  "input": "{p.contentBlocks}",
   "items": {
     "type": "partial",
     "input": "{item}",
@@ -315,7 +316,7 @@ In order to reference desired source entity, you can use `alias` of the schema a
 "seoData": {
   "type": "reference",
   "id": "{id}",
-  "alias": "{properties.seoAlias}"
+  "alias": "{p.seoAlias}"
 }
 ```
 
