@@ -33,7 +33,7 @@ Let's have a look. Say we wish to use data from our **contentPage** type, we sim
 }
 ```
 
-Next, we need to define is how we can fetch the data. We do this under **route**. Fetching can be done by URL, Handle, and ID. In this example, we do it by URL.
+Next, we need to define how we can fetch the data. We do this under **route**. Fetching can be done by URL, Handle, and ID. In this example, we do it by URL.
 
 ```json
 {
@@ -59,7 +59,7 @@ We can define as many properties as we wish. For this example, we are going to d
 First, we give our new property a name. Let's simply call it **title**. 
 
 
-Lastly, we need to set the **value** for this property. We do this by mapping to the data we wish to use from our **sourceEntityTypes**, which we defined earlier.
+Next, we need to set the **value** for this property. We do this by mapping to the data we wish to use from our **sourceEntityTypes**, which we defined earlier.
 
 :::info
 Click the **Source entities** button on the Schema page and click View next to the Source you want to use. Here you can see all the available data.
