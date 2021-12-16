@@ -6,6 +6,8 @@ First, you need to set up an **Environment client** in Enterspeed.
 
 Go to *Settings* --> *Environment settings* --> *Environment clients* and create a one. This will generate an API key to use when getting data delivered.
 
+![Environment Client](../static/img/docs/deliver/environment-clients.png)
+
 ## How to get data delivered
 There are currently two ways of getting data delivered from the Enterspeed:
 1. Using our Delivery .NET SDK
@@ -20,3 +22,12 @@ You can of course use our API directly to get your data delivered. [You can find
 :::tip
 Want to see an example? See how we [fetched Enterspeed-data in Next.js](./tutorials/umbraco-nextjs/4-fetching-data-in-nextjs.md)
 :::
+
+## Domains
+Say you have ingested data from a multisite setup into Enterspeed. Now you have a lot of source entities, which belong to separate "sub-sites". How do you fetch the correct data?
+
+You do this by using domains.  
+
+Domains in Enterspeed are linked to Environment Clients. Each domain can have multiple hostnames under it.
+
+When fetching data from your Environment client, only data from this specific domain will be fetched.

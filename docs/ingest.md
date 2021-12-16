@@ -4,6 +4,8 @@ The first step when working with Enterspeed is to get your current data sources 
 
 First, you need to set up a **Data source** in Enterspeed. Go to *Settings* --> *Data Sources* and create a one. This will generate an API key to use when ingesting data.
 
+![Data sources](../static/img/docs/ingest/data-sources.png)
+
 ## How to ingest data
 There are three ways of doing this:
 1. Using one of our integrations

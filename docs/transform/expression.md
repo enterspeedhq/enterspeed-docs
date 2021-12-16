@@ -8,19 +8,19 @@ Expressions will often be used as simple placeholders to map data from the **sou
 Most values in schemas and partial schemas can be expressed. An expression is identified by using curly brackets `{}`:
 
 ```json
-"headline": "{properties.title}"
+"headline": "{p.title}"
 ```
 
 A value that support expression can have multiple expressions:
 
 ```json
-"headline": "{properties.title}: {properties.subTitle}"
+"headline": "{p.title}: {p.subTitle}"
 ```
 
 In combination with regular text:
 
 ```json
-"headline": "Blog post: {properties.title}"
+"headline": "Blog post: {p.title}"
 ```
 
 ## Null check
@@ -28,27 +28,60 @@ In combination with regular text:
 Trying to access properties of a none existing object will cause the view generation to fail.
 If that's not intended add a null check using `?`.
 
-In the following example `headline` will be set to the value of `properties.meta.description`.
-If `properties.meta` is null (or doesn't exist) `headline`.
+In the following example `headline` will be set to the value of `p.meta.description`.
+If `p.meta` is null (or doesn't exist) `headline`.
 
 ```json
-"description": "{properties.meta?.description}"
+"description": "{p.meta?.description}"
 ```
 
 ### Null coalescing
 
 ```json
-"headline": "{properties.title ?? properties.header}"
+"headline": "{p.title ?? p.header}"
 ```
 
 Combined with null check:
 
 ```json
-"headline": "{properties.meta?.description ?? properties.description}"
+"headline": "{p.meta?.description ?? p.description}"
 ```
 
 The expression can also be grouped using parentheses:
 
 ```json
-"x": "{(properties.a ?? properties.b) ?? properties.c}"
+"x": "{(p.a ?? p.b) ?? p.c}"
+```
+
+## Accessing properties
+
+Accessing properties can be done by typing `p.` followed by the name of the property.
+
+```json title="Property with default type (string)"
+{
+  "sourceEntityTypes": ["frontPage"],
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {
+    "headline": "{p.title}"
+  }
+}
+```
+
+The default type of a property is a **string**. If you need another property type, simply change your property to an object and use `type` and `value`.
+
+```json title="Property with type number"
+{
+  "sourceEntityTypes": ["frontPage"],
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {
+    "stock": {
+      "type": "number",
+      "value": "{p.inventoryQuantity}"
+    }
+  }
+}
 ```

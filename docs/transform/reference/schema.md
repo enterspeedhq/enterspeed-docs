@@ -1,40 +1,17 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
+title: Schema
 ---
 
-# Schema
+# Reference: Schema
+import { Badge } from '../../../src/components/badge';
 
 ## Alias
-
 The alias is the identifier of your schema. This is used when:
 
 - referencing the schema from another schema with the [reference type](./property-types#reference).
 
-## Shorthand
-
-In the example below notice how `p` serves as a shorthand for `properties` on the **source entity**.
-When `p.title` is used it's equivalent to `properties.title`.
-
-`headline` defined as a string.
-It possible to be more explicit:
-
-```json
-{
-  "sourceEntityTypes": ["frontPage"],
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {
-    "headline": {
-      "type": "string",
-      "value": "{p.title}"
-    }
-  }
-}
-```
-
-## Source Entity Types
-
+## Source Entity Types <Badge type="required" />
 The `sourceEntityTypes` are used to define which types of **source entities** you want this schema to trigger on.
 
 ## Route
@@ -101,7 +78,7 @@ The handle supports expressions as described for `url`:
 }
 ```
 
-## Properties
+## Properties <Badge type="required" />
 
 When doing the schema, you have to define what properties you want your schema to consist of.
 
@@ -117,38 +94,63 @@ The following types to create the schema mapping can be used:
 | [Reference](./property-types#reference) | Referencing another schema.                                                  |
 | [Partial](./property-types#partial)     | Referencing a partial schema to map the data into.                           |
 
-## Example schema
+## Actions
 
-Below is a simple example showing how a schema can look for transforming *source entities* with the type of `frontPage`.
-The schema will the `url` to the `route` and the `title` property of `frontPage` to `headline`.
+`actions` is used when a new view has been generated from the schema. It defines which specific actions to take following the newly generated view.
+Currently, Enterspeed supports triggering the `process` of another schema.
 
-```json
+A common use case for `actions`: To give an example, you can use `actions` when you want to update a list in a new view, that you have generated from other schemas.
+
+For example, having a `product` and `category` source entity type.
+When you ingest a `product`, the list of products should be updated in the generated category view and include the changes.
+Consider the following examples where the ingest of `product` will both generate a new view for the product *and* trigger the process of the category schema to generate a new category view including the updated product:
+
+### Examples
+
+```json title="Schema alias product"
 {
-  "sourceEntityTypes": ["frontPage"],
+  "sourceEntityTypes": [
+    "product"
+  ],
+  "actions": [
+    {
+      "type": "process",
+      "alias": "category",
+      "originId": "{p.categoryId}"
+    }
+  ],
+  "properties": {
+    "name": "{p.name}"
+  }
+}
+```
+
+```json title="Schema alias category"
+{
+  "sourceEntityTypes": [
+    "category"
+  ],
   "route": {
-    "url": "{url}"
+    "url": "/categories/{p.slug}"
   },
   "properties": {
-    "headline": "{p.title}"
+    "title": "{p.name}",
+    "description": "{p.description}", 
+    "products": {
+      "type": "array",
+      "input": {
+        "$lookup": {
+          "filter": "type eq 'product' and properties.categoryId eq '{originId}'"
+        }
+      },
+      "var": "product",
+      "items": {
+        "type": "object",
+        "properties": {
+          "headline": "{product.p.name}"
+        }
+      }
+    }
   }
-}
-```
-
-Given the `frontPage` source entity have the following content:
-
-```json
-{
-  "url": "/frontPage",
-  "properties": {
-    "title": "Welcome"
-  }
-}
-```
-
-When querying the Delivery API with `url=/frontPage` the output will be:
-
-```json
-{
-  "title": "Welcome"
 }
 ```
