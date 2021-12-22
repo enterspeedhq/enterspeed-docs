@@ -169,8 +169,9 @@ You can find all of the example schemas on [Github](https://github.com/enterspee
 - [ProductListingView](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/ProductListingView.json)
 - [Products](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Products.json)
 - [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/partial-schemas/umbraco-blockText.json) **(Partial schema)**
-  :::
+
+:::
 
 ## Testing your schemas
 
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=jrGPa8lXbio' />
+<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
