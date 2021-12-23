@@ -102,4 +102,4 @@ Click on the **Deploy schema** button, select your data source and new version a
 
 You can now test your schema via Postman, Insomnia, etc.
 
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=jrGPa8lXbio' />
+<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
