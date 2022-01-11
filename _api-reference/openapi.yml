@@ -10,7 +10,7 @@ info:
     email: support@enterspeed.com
     url: https://www.enterspeed.com/
   x-logo:
-    url: 'https://www.enterspeed.com/assets/uploads/2020/03/enterspeed-logo.svg'
+    url: "https://www.enterspeed.com/assets/uploads/2020/03/enterspeed-logo.svg"
     altText: Enterspeed Logo
 tags:
   - name: Delivery
@@ -190,11 +190,15 @@ paths:
                         items:
                           [
                             {
-                              headline:
+                              type: "object",
+                              properties:
                                 {
-                                  type: "string",
-                                  name: "headline",
-                                  value: "Red product",
+                                  headline:
+                                    {
+                                      type: "string",
+                                      name: "headline",
+                                      value: "Red product",
+                                    },
                                 },
                             },
                           ],
@@ -471,8 +475,8 @@ components:
         views:
           type: object
           example:
-            ? gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/BlogPostTile
-            : "title": "How to increase performace"
+            gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/BlogPostTile:
+              "title": "How to increase performace"
               "image": "/media-path/performance.jpg"
               "url": "/blog/how-to-increase-performance/"
             Navigation:
@@ -520,8 +524,8 @@ components:
         views:
           type: object
           example:
-            ? gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/Navigation
-            : "items":
+            gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/Navigation:
+              "items":
                 [
                   {
                     "title": "How to increase performace",
