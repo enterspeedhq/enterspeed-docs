@@ -1,5 +1,7 @@
 # Ingesting data
 
+import ReactPlayer from 'react-player/lazy'
+
 The first step when working with Enterspeed is to get your current data sources into Enterspeed.
 
 First, you need to set up a **Data source** in Enterspeed. Go to *Settings* --> *Data Sources* and create a one. This will generate an API key to use when ingesting data.
@@ -22,6 +24,7 @@ Another way of ingesting data is by using our .NET SDK. You'll find more informa
 
 ### Ingesting data via our API
 Last but now least, you can of course use our API directly to ingest your data. [You can find the API documentation right here.](./api#tag/Ingest)
+<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=QtZoAz8k14Q' />
 
 ## Viewing ingested data
 Once your data has been ingested into Enterspeed, it will be visible under Source Entities.

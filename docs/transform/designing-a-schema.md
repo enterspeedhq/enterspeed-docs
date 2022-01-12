@@ -15,6 +15,8 @@ In our settings, we define:
 
 And in our data, we map our existing data to our new content. This is all done under the "properties"-object.
 
+<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=_Q-0VWkHtxE' />
+
 ## Configuring the settings
 
 The first thing we need to define is our **sourceEntityTypes**, which tells the schema what kind of data it should use. You can find all available types under **Source entities**.
