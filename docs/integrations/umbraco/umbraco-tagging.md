@@ -3,11 +3,15 @@ sidebar_position: 1
 title: Tagging in Umbraco
 ---
 
+
 # Tagging in Umbraco
+import ReactPlayer from 'react-player/lazy'
 
 The following article describes an example of tagging implementation for content in Umbraco, and how to filter source entities by tag in Enterspeed.
 
 As an example, we are going to build a basic news portal about sports, named "Sports Central".
+
+<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=HwqqW46XzA4' />
 
 ## Content preparation in Umbraco
 
