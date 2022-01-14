@@ -116,7 +116,7 @@ This schema doesn't contain much of the logic, its responsibility is to iterate 
 }
 ```
 
-The only tricky part to remember is that now we have defined view handle match for partial schema view, where _'item.contentType'_ value is an alias of our current block Element document type in Umbraco - _'articlesByTag'_.
+The only tricky part to remember is that now we have defined alias match for partial schema view, where _'item.contentType'_ value is an alias of our current block Element document type in Umbraco - _'articlesByTag'_.
 
 ## Creating a partial schema - Articles By Tag Block
 
