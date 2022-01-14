@@ -34,7 +34,7 @@ Used for article content nodes themselves, with the following properties:
 
 ### Period Group
 
-Is a document type without any properties, in the content tree, it will be used a grouping folder for articles per month, f.x. 09/2021.
+Is a document type without any properties, in the content tree, it will be used a grouping folder for articles per month, e.g. 09/2021.
 
 ### Articles
 
@@ -82,7 +82,7 @@ Is a data type extending Umbraco default 'Block List', where we add a single ava
 
 ## Adding blocks to frontpage
 
-On the site node, we are going to add some blocks for displaying articles by different tag.
+On the site node, we are going to add some blocks for displaying articles by different tags.
 
 ![Umbraco blocks](/img/docs/integrations/umbraco/umbraco-v8-blocks.png)
 
@@ -120,13 +120,13 @@ This schema doesn't contain much of the logic, its responsibility is to iterate 
 }
 ```
 
-The only tricky part to remember is that now we have defined alias match for partial schema view, where _'item.contentType'_ value is an alias of our current block Element document type in Umbraco - _'articlesByTag'_.
+The only tricky part to remember is that now we have defined an alias match for partial schema view, where `'item.contentType'` value is an alias of our current block Element document type in Umbraco - `'articlesByTag'`.
 
 ## Creating a partial schema - Articles By Tag Block
 
-We are halfway through, the previous schema iterated through blocks, this schema will handle a specific type of block - _Block-articlesByTag_.
+We are halfway through. The previous schema iterated through blocks, this schema will handle a specific type of block - `Block-articlesByTag`.
 
-As result, we want to display the following properties - alias and title of this block and collection of articles matching criteria defined on this block along with basic information about them - title, subheader, published at date and list of tags associated.
+As result, we want to display the following properties - `alias` and `title` of this block and collection of `articles` matching criteria defined on this block along with basic information about them - `title`, `subheader`, `publishedAt` date and a list of `tags` associated.
 
 ```json
 {
@@ -165,13 +165,13 @@ As result, we want to display the following properties - alias and title of this
 }
 ```
 
-Notice how we are using _$lookup_ in combination with _filter_, _top_, and _orderBy_. In simple words, we want to lookup all source entities that match our filter, meaning where the type of source entity is an article and it has a current block selected tag associated with it.
+Notice how we are using `$lookup` in combination with `filter`, `top`, and `orderBy`. In simple words, we want to lookup all source entities that match our filter, meaning where the type of source entity is an article and it has a current block selected tag associated with it.
 
-On our front page, we want to show the latest published news first, that is what we define our sorting criteria for all filter found source entities. Lastly, regarding lookup, we defined limit how many articles to display for the current block.
+On our front page, we want to show the latest published news first. That is what we define in our sorting criteria for all filters found in source entities. Lastly, regarding lookup, we defined a limit on how many articles will be displayed for the current block.
 
 ## Outcome
 
-After updating and deploying previously mentioned schemas and publishing all content data to Enterspeed, the outcome from Delivery API would look like this:
+After updating and deploying previously mentioned schemas and publishing all content data to Enterspeed, the outcome from the Delivery API would look like this:
 
 ```json
 {
