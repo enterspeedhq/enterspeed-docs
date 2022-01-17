@@ -174,4 +174,4 @@ You can find all of the example schemas on [Github](https://github.com/enterspee
 
 ## Testing your schemas
 
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />

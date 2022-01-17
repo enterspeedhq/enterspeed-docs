@@ -11,7 +11,7 @@ The following article describes an example of tagging implementation for content
 
 As an example, we are going to build a basic news portal about sports, named "Sports Central".
 
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=HwqqW46XzA4' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=HwqqW46XzA4' />
 
 ## Content preparation in Umbraco
 

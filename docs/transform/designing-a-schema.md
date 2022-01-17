@@ -15,7 +15,7 @@ In our settings, we define:
 
 And in our data, we map our existing data to our new content. This is all done under the "properties"-object.
 
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=_Q-0VWkHtxE' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=_Q-0VWkHtxE' />
 
 ## Configuring the settings
 
@@ -104,4 +104,4 @@ Click on the **Deploy schema** button, select your data source and new version a
 
 You can now test your schema via Postman, Insomnia, etc.
 
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />

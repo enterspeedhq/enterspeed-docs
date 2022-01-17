@@ -18,14 +18,14 @@ There are three ways of doing this:
 Using one of our [integrations](./integrations/overview.md) is the easiest way to get data ingested. This integration takes care of calling the Enterspeed Ingest API when changes occur in your CMS.
 
 We currently have integrations for Umbraco V7, Umbraco V8, and Umbraco V9.
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=H0allL98evA' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=H0allL98evA' />
 
 ### Ingesting data via our .NET SDK
 Another way of ingesting data is by using our .NET SDK. You'll find more information about it here: https://github.com/enterspeedhq/enterspeed-sdk-dotnet
 
 ### Ingesting data via our API
 Last but now least, you can of course use our API directly to ingest your data. [You can find the API documentation right here.](./api#tag/Ingest)
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=QtZoAz8k14Q' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=QtZoAz8k14Q' />
 
 ## Viewing ingested data
 Once your data has been ingested into Enterspeed, it will be visible under Source Entities.
