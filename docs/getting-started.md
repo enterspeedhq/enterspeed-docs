@@ -36,7 +36,7 @@ The data is now available to fetch via the Enterspeed Delivery API.
 A tenant is like a property for your website. You can have multiple tenants on your Enterspeed account.
 
 In the video below we'll show you how to set up your tenant.
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=q9iaK7CiYB0' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=q9iaK7CiYB0' />
 
 ## Use the Enterspeed starter template
 If you want to test out Enterspeed with some "real data" you can use our starter template.
@@ -44,4 +44,4 @@ If you want to test out Enterspeed with some "real data" you can use our starter
 Our starter template is built around a fictional Umbraco store. 
 
 To use the starter template, click the "Use Enterspeed Starter template"-box when creating a new tenant.
-<ReactPlayer url='https://www.youtube-nocookie.com/watch?v=MUGZBGbtv8E' />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=MUGZBGbtv8E' />
