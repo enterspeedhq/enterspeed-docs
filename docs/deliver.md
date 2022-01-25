@@ -17,7 +17,7 @@ There are currently two ways of getting data delivered from the Enterspeed:
 You can find more information about it here: https://github.com/enterspeedhq/enterspeed-sdk-delivery-dotnet
 
 ### Getting data delivered via our API
-You can of course use our API directly to get your data delivered. [You can find the API documentation right here](./api#tag/Delivery).
+You can of course use our API directly to get your data delivered. [You can find the API documentation right here](../api#tag/Delivery).
 
 :::tip
 Want to see an example? See how we [fetched Enterspeed-data in Next.js](./tutorials/umbraco-nextjs/4-fetching-data-in-nextjs.md)
