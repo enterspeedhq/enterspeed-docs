@@ -11,7 +11,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
-    favicon: "img/favicon.png",
+    favicon: "img/favicon.svg",
     organizationName: "enterspeedhq", // Usually your GitHub org/user name.
     projectName: "enterspeed-docs", // Usually your repo name.
     presets: [
@@ -129,8 +129,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           id: "support_header",
           content:
             'Need help? Feel free to drop us an email at <a href="mailto:support@enterspeed.com">support@enterspeed.com</a>',
-          backgroundColor: "#0b0f89",
-          textColor: "#fff",
+          backgroundColor: "#ebf8ff",
+          textColor: "#1a202c",
           isCloseable: true,
         },
         prism: {

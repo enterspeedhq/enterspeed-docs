@@ -8,19 +8,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:wght@600&display=swap');
 
 :root {
-  --ifm-color-primary: #0b0f89;
-  --ifm-color-primary-dark: #0a0e7b;
-  --ifm-color-primary-darker: #090d74;
-  --ifm-color-primary-darkest: #080b60;
-  --ifm-color-primary-light: #0c1197;
-  --ifm-color-primary-lighter: #0d119e;
-  --ifm-color-primary-lightest: #0e14b2;
+    --ifm-color-primary: #1356fb;
+  --ifm-color-primary-dark: #0446e8;
+  --ifm-color-primary-darker: #043cc7;
+  --ifm-color-primary-darkest: #0332a6;
+  --ifm-color-primary-light: #356efb;
+  --ifm-color-primary-lighter: #5686fc;
+  --ifm-color-primary-lightest: #779efd;
   --ifm-code-font-size: 95%;
-  --ifm-heading-font-family: 'EB Garamond', serif;
+  --ifm-heading-font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+p, h1, h2, h3, h4, h5, h6 {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
-body, h5 {
-  font-family: 'Barlow', sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 32px;
 }
 
 p {
@@ -85,18 +96,39 @@ b.navbar__title {
   height: 1.5rem;
 }
 
+html[data-theme='light'] .navbar__link {
+  color: #4A5568;
+}
+
+html[data-theme='light'] .navbar__link:hover, .navbar__link--active {
+  color: #043cc7!important;
+}
+
+html[data-theme='light'] .menu__link--active {
+  color: #043cc7;
+}
+
+html[data-theme='light'] .menu__link--active:not(.menu__link--sublist), .menu__link:hover {
+  background-color: #dbe6fe;
+  color: #043cc7;
+}
+
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 html[data-theme='dark'] {
-  --ifm-color-primary: #7175ef;
-  --ifm-color-primary-darker: #a4a8ff;
-  --ifm-color-primary-darkest: #d7dbff;
+  --ifm-color-primary: #99b6fd;
+  --ifm-color-primary-darker: #bacefe;
+  --ifm-color-primary-darkest: #dbe6fe;
 }
 
 html[data-theme='dark'] .header-github-link:before {
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
     no-repeat;
+}
+
+html[data-theme='dark'] .api-content {
+  color: #fff;
 }
 
 .es-card {
@@ -145,23 +177,21 @@ html[data-theme='dark'] .header-github-link:before {
   color: unset!important;
 }
 
-.scrollbar-container ul li label span {
-  font-family: 'Barlow', sans-serif;
-}
-
 .scrollbar-container ul li label {
   padding: 6px 16px;
   margin-top: 4px;
   line-height: 1.25;
+  font-weight: 500;
 }
 
 .scrollbar-container ul li label.active, .scrollbar-container ul li label:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: #dbe6fe;
   border-radius: 0.25rem;
+  color: #043cc7;
 }
 
 .scrollbar-container ul li label.active {
-  color: #0b0f89;
+  color: #043cc7;
 }
 .redocusaurus h1 {
   font-size: 32px;

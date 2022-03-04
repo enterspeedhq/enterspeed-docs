@@ -26,15 +26,15 @@ export default ApiDoc;
 const lightThemeOverride = {
   typography: {
     fontSize: "17px",
-    fontFamily: "Barlow",
+    fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
     headings: {
-      fontFamily: "EB Garamond",
+      fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
       fontWeight: "700",
     },
     links: {
-      color: "#0b0f89",
-      visited: "#0b0f89",
-      hover: "#0b0f89",
+      color: "#1356fb",
+      visited: "#1356fb",
+      hover: "#1356fb",
     },
   },
   rightPanel: {
@@ -46,22 +46,22 @@ const lightThemeOverride = {
     },
     responses: {
       success: {
-        color: "rgba(38, 222, 129, 1)",
-        backgroundColor: "rgba(38,222,129,0.1)",
+        color: "#1c4532",
+        backgroundColor: "#c6f6d5",
       },
       error: {
-        color: "rgba(255, 136, 136, 1)",
-        backgroundColor: "rgba(255,136,136,0.1)",
+        color: "#63171b",
+        backgroundColor: "#fed7d7",
       },
       redirect: {
-        color: "rgba(241, 196, 15, 1)",
-        backgroundColor: "rgba(241,196,15,0.1)",
+        color: "#5f370e",
+        backgroundColor: "#fefcbf",
       },
     },
     http: {
-      get: "rgba(21, 137, 78, 1)",
-      post: "rgba(70, 63, 229, 1)",
-      delete: "rgba(255, 85, 85, 1)",
+      get: "#38a169",
+      post: "#5686fc",
+      delete: "#e53e3e",
     },
   },
 };
@@ -69,15 +69,15 @@ const lightThemeOverride = {
 const darkThemeOverride = {
   typography: {
     fontSize: "17px",
-    fontFamily: "Barlow",
+    fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
     headings: {
-      fontFamily: "EB Garamond",
+      fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
       fontWeight: "700",
     },
     links: {
-      color: "#7175ef",
-      visited: "#7175ef",
-      hover: "#7175ef",
+      color: "#99b6fd",
+      visited: "#99b6fd",
+      hover: "#99b6fd",
     },
   },
   rightPanel: {
@@ -85,26 +85,26 @@ const darkThemeOverride = {
   },
   colors: {
     primary: {
-      main: "#1c1e21",
+      main: "#ffffff",
     },
     responses: {
       success: {
-        color: "rgba(38, 222, 129, 1)",
-        backgroundColor: "rgba(38,222,129,0.1)",
+        color: "#1c4532",
+        backgroundColor: "#c6f6d5",
       },
       error: {
-        color: "rgba(255, 136, 136, 1)",
-        backgroundColor: "rgba(255,136,136,0.1)",
+        color: "#63171b",
+        backgroundColor: "#fed7d7",
       },
       redirect: {
-        color: "rgba(241, 196, 15, 1)",
-        backgroundColor: "rgba(241,196,15,0.1)",
+        color: "#5f370e",
+        backgroundColor: "#fefcbf",
       },
     },
     http: {
-      get: "rgba(21, 137, 78, 1)",
-      post: "rgba(70, 63, 229, 1)",
-      delete: "rgba(255, 85, 85, 1)",
+      get: "#38a169",
+      post: "#5686fc",
+      delete: "#e53e3e",
     },
   },
 };
