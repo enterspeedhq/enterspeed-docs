@@ -36,7 +36,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs>
-<TabItem value="ingest" label="1. Ingest: Source entity" default>
+<TabItem value="ingest" label="Source entity" default>
 
 Given the `frontPage` source entity have the following content.
 
@@ -52,7 +52,7 @@ Given the `frontPage` source entity have the following content.
 ```
 
 </TabItem>
-<TabItem value="transform" label="2. Transform: Schema design">
+<TabItem value="transform" label="Schema design">
 
 When designing our we access the **title** property using `p.title`.
 
@@ -71,7 +71,7 @@ We make the schema **routable** by using `route` and using the `url` from the so
 ```
 
 </TabItem>
-<TabItem value="deliver" label="3. Deliver: Output data">
+<TabItem value="deliver" label="Output data">
 
 When querying the Delivery API with `url=/frontPage` the output will be:
 
