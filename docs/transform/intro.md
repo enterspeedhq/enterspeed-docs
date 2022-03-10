@@ -4,7 +4,7 @@ sidebar_label: Intro
 slug: '/transform'
 ---
 
-# Transforming data
+# 2 - Transforming data
 All data transformation in Enterspeed is done from a set of schema definitions. Schemas are the glue that ties your existing data to your new layout. 
 
 So when designing your schema, you get to choose which of your existing data you wish to use in your new layout- and how it should be structured.

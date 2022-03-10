@@ -25,10 +25,15 @@ Once the data have been ingested into Enterspeed, we can start transforming it.
 
 We do this by using our Schema designer. Here you can combine data from multiple sources and select which data you want to be available to the front-end.
 
+Once the data is transformed it gets stored in a high-performance Redis database across multiple geographical regions.
+
 ***[Go to the Transforming data section.](./transform)***
 
 ### Delivering data
 The data is now available to fetch via the Enterspeed Delivery API.
+
+Like working with any other APIs, it's extremely easy to integrate into your front-end project.
+
 
 ***[Go to the Delivering data section.](./deliver)***
 

@@ -1,4 +1,4 @@
-# Delivering data
+# 3 - Delivering data
 
 Your data has been ingested into Enterspeed and transformed using our schema definitions, now it's time for the final step - delivering the data.
 
