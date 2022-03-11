@@ -15,7 +15,7 @@ You start by choosing which data sources you want to use (`sourceEntityTypes`).
 
 Afterward, you begin designing your schema by mapping which data from your data sources you want to use, e.g., a *title*. The actual schema design is done in the `properties` object.
 
-If you want to make your schema routable you define a [`route`](./transform/reference/schema#route). By defining a `route`, you can fetch it via the [Delivery API](./api#tag/Delivery).
+If you want to make your schema routable you define a [`route`](../reference/fields#route). By defining a `route`, you can fetch it via the [Delivery API](./api#tag/Delivery).
 
 When you finish designing your schema, it's time to deploy it. Deploying the schema will automatically generate a **View** for each Source Entity Type.
 

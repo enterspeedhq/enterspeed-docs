@@ -79,7 +79,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               label: "Home",
               position: "left",
               activeBaseRegex:
-                "/(getting-started|ingest|transform|deliver|general)",
+                "/(getting-started|ingest|transform|deliver)",
+            },
+            {
+              to: "/reference/fields",
+              label: "Schema reference",
+              position: "left",
+              activeBasePath: "reference",
             },
             {
               to: "/api",
@@ -98,16 +104,6 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               docId: "tutorials/umbraco-nextjs/intro",
               label: "Tutorials",
               position: "left",
-            },
-            {
-              href: "https://www.enterspeed.com/",
-              label: "Enterspeed.com",
-              position: "right",
-            },
-            {
-              href: "https://app.enterspeed.com/",
-              label: "Log in",
-              position: "right",
             },
             {
               href: "https://github.com/enterspeedhq",
