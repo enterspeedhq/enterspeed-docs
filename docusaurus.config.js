@@ -9,6 +9,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     tagline: "Documentation for Enterspeed",
     url: "https://docs.enterspeed.com",
     baseUrl: "/",
+    trailingSlash: "false",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.svg",
