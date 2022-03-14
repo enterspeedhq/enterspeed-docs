@@ -27,11 +27,6 @@ hr {
   margin: clamp(2.5rem, 2.5vw, 3.5rem) 0;
 }
 
-code {
-  border: 1px solid rgba(4, 60, 199, 0.1);
-  background-color: #ebf8ff;
-}
-
 p,
 h1,
 h2,
@@ -122,6 +117,11 @@ b.navbar__title {
   height: 1.5rem;
 }
 
+html[data-theme="light"] code {
+  border: 1px solid rgba(4, 60, 199, 0.1);
+  background-color: #ebf8ff;
+}
+
 html[data-theme="light"] .navbar__link {
   color: #4a5568;
 }
@@ -139,6 +139,10 @@ html[data-theme="light"] .menu__link--active:not(.menu__link--sublist),
 .menu__link:hover {
   background-color: #dbe6fe;
   color: #043cc7;
+}
+
+html[data-theme="dark"] .es-card__title {
+  color: #fff;
 }
 
 html[data-theme="dark"] .docusaurus-highlight-code-line {

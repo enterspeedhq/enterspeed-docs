@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import Redoc from '@theme/Redoc';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-const STATIC_SPEC = './_api-reference/openapi.yml';
+const STATIC_SPEC = './_api-reference/openapi.yaml';
 
 function CustomPage() {
   return (
