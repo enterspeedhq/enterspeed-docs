@@ -24,7 +24,7 @@ We currently have integrations for Umbraco V7, Umbraco V8, and Umbraco V9.
 Another way of ingesting data is by using our .NET SDK. You'll find more information about it here: https://github.com/enterspeedhq/enterspeed-sdk-dotnet
 
 ### Ingesting data via our API
-Last but now least, you can of course use our API directly to ingest your data. [You can find the API documentation right here.](./api#tag/Ingest)
+Last but now least, you can of course use our API directly to ingest your data. [You can find the API documentation right here.](../api#tag/Ingest)
 <ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=QtZoAz8k14Q' />
 
 ## Viewing ingested data

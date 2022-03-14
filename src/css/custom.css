@@ -117,11 +117,6 @@ b.navbar__title {
   height: 1.5rem;
 }
 
-html[data-theme="light"] code {
-  border: 1px solid rgba(4, 60, 199, 0.1);
-  background-color: #ebf8ff;
-}
-
 html[data-theme="light"] .navbar__link {
   color: #4a5568;
 }
