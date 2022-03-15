@@ -12,7 +12,6 @@ title: Fields
 | `sourceEntityTypes` | Array  | **Yes**   | The types of source entities you want this schema to trigger on.                                                 |
 | `properties`        | Object | **Yes**   | The properties you want your schema to consist of. See [properties types](./property-types) for supported types. |
 | `route` | Object | No | Defines if you want this schema to be retrievable by a route. A route is not specifically an URL, but it can be. <br /><br /> The route property contains 2 different properties: `url` or `handles`. |
-| `alias` | String | No | Alias is the identifier of your schema. This is used when referencing the schema from another schema with the [`reference` property type.](./property-types#reference) |
 | `actions` | Array | No | Actions is used when a new view has been generated from the schema. It defines which specific actions to take following the newly generated view. <br /><br /> The Array takes an object with the properties: `type` `alias` `originId`. <br /><br /> Currently, Enterspeed supports triggering the `process`  of another schema. This is done via using the `process` type, like this: `"type": "process"`
 
 ## Examples
