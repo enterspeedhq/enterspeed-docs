@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
-title: 3. Recursive
+title: 3. Going further
 ---
 
-# Recursive
+# Going further: Hamburger navigation
 
-If you have a more than one level of items, the schema will cover that as well. E.g. if you have something like this:
+If you have a more than one level of items, the schema will cover that as well. E.g. if you need to create a hamburger navigation with deeper levels:
 
 ![Create source Enterspeed](/img/docs/examples/multilevel-navigation/cms-structure-multiple.png)
 
