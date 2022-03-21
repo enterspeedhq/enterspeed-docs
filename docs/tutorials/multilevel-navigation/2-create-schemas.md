@@ -111,13 +111,13 @@ To make sure we get the output we are looking for, generate a curl request by te
 
 (replace “[your_environment_key]” with your key)
 
-```
+```curl
 curl -L -X GET 'https://delivery.enterspeed.com/v1?handle=mainNavigation' -H 'X-Api-Key: [your_environment_key]'
 ```
 
 You should get a response that looks like this:
 
-```
+```json
 {
 	"meta": {
 		"status": 200,
@@ -166,5 +166,3 @@ You should get a response that looks like this:
 ```
 
 Now you can go to your web app start creating your navigation!
-
-**Note:** that if you have multiple levels of navigationItems, the schemas will cover those as well!
