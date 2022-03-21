@@ -34,7 +34,7 @@ The output like this:
 ![Create source Enterspeed](/img/docs/examples/multilevel-navigation/output-example.png)
 
 And finally the data we are working with:
-```
+```json
 {
 	"id": "1",
 	"type": "navigationGroup",
@@ -85,5 +85,22 @@ And finally the data we are working with:
 			"value": "Book 2"
 		}
 	}	
+}
+```
+
+This is what the data will look like when ingested into Enterspeed:
+
+```json
+{
+	"sourceId": "gid://Source/0edb780d-e053-46b1-bed9-d8fbb3417d37",
+	"id": "gid://Source/0edb780d-e053-46b1-bed9-d8fbb3417d37/Entity/1",
+	"type": "navigationGroup",
+	"originId": "1",
+	"originParentId": null,
+	"url": null,
+	"redirects": [],
+	"properties": {
+		"title": "Main navigation"
+	}
 }
 ```
