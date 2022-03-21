@@ -11,7 +11,7 @@ Now to the fun part: creating schemas and transforming our data into something w
 
 Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. Navigate to the schema and replace the content with this snippet:
 
-```
+```json
 {
 	"sourceEntityTypes": [
 		"navigationItem"
@@ -51,7 +51,7 @@ Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. 
 **Actions**
 The key part of the schema is actions:
 
-```
+```json
 	"actions": [
 		{
 			"type": "process",
@@ -70,7 +70,7 @@ Next we want to create a schema called “Get Main Navigation”, so hit that cr
 
 Replace the content with this snippet:
 
-```
+```json
 {
 	"sourceEntityTypes": [
 		"navigationGroup"
