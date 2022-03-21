@@ -33,7 +33,7 @@ The output like this:
 
 ![Create source Enterspeed](/img/docs/examples/multilevel-navigation/output-example.png)
 
-And finally the data we are working with:
+And finally the (simplified) data we are working with:
 ```json
 {
 	"id": "1",
@@ -88,7 +88,7 @@ And finally the data we are working with:
 }
 ```
 
-This is what the data will look like when ingested into Enterspeed:
+This is what a single data entity will look like when ingested into Enterspeed:
 
 ```json
 {
