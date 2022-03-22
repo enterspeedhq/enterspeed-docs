@@ -132,7 +132,6 @@ html[data-theme='dark'] .api-content {
 }
 
 .es-card {
-  max-width: 250px;
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
   border-radius: 4px;
 }
