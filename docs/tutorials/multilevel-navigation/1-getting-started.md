@@ -5,7 +5,7 @@ title: 1. Getting started
 
 # Create a multilevel navigation from your CMS
 
-:::info 
+:::info
 This is a how-to for creating a simple two-level navigation for you website using data from your CMS.
 
 We are assuming you are familiar with Enterspeed and will focus on transforming your data it using schemas so it fits a web app.
@@ -54,7 +54,7 @@ And finally the (simplified) data we are working with:
 			"name": "title",
 			"value": "Home"
 		}
-	},	
+	},
 	"id": "3",
 	"parentId": "1",
 	"type": "navigationItem",
@@ -64,7 +64,7 @@ And finally the (simplified) data we are working with:
 			"name": "title",
 			"value": "Books"
 		}
-	},	
+	},
 	"id": "4",
 	"parentId": "3",
 	"type": "navigationItem",
@@ -74,7 +74,7 @@ And finally the (simplified) data we are working with:
 			"name": "title",
 			"value": "Book 1"
 		}
-	},	
+	},
 	"id": "5",
 	"parentId": "3",
 	"type": "navigationItem",
@@ -84,7 +84,7 @@ And finally the (simplified) data we are working with:
 			"name": "title",
 			"value": "Book 2"
 		}
-	}	
+	}
 }
 ```
 
