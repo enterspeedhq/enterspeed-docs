@@ -3,7 +3,7 @@ sidebar_position: 1
 slug: /tutorials
 sidebar_label: Overview
 ---
-# Integrations
+# Tutorials
 import {Card, CardContainer} from '../../src/components/card';
 import UmbracoLogoWhite from '../../static/img/docs/integrations/logos/umbraco-logo-white.png';
 import MultilevelCard from '../../static/img/docs/examples/multilevel-navigation/overview-card.png';
