@@ -204,6 +204,12 @@ html[data-theme="dark"] .api-content {
   color: unset !important;
 }
 
+.redocusaurus h2,
+.redocusaurus h3,
+.redocusaurus h4 {
+  color: unset !important;
+}
+
 .scrollbar-container ul li label {
   padding: 6px 16px;
   margin-top: 4px;
@@ -244,35 +250,65 @@ html[data-theme="dark"] .api-content {
   display: none;
 }
 
-/* Enterspeed Card List */
+/* Enterspeed Cards */
 
-.es-card-list {
+.es-card-container {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.es-card {
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+  border-radius: 4px;
+}
+
+.es-card:hover,
+.es-card-list-item:hover {
+  opacity: 0.8;
+}
+
+.es-card a,
+.es-card-list-item a {
+  text-decoration: none;
+}
+
+.es-card__image {
+  border-radius: 4px 4px 0 0;
+}
+
+.es-card__title {
+  padding: 16px;
+}
+
+.es-card__title,
+.es-card-list-item__title,
+.es-card-list-item__content {
+  color: #333;
+}
+
+.es-card-list-item {
   --ifm-alert-background-color: var(--ifm-color-info-contrast-background);
-  --ifm-alert-border-color: var(--ifm-color-info-dark);
   --ifm-alert-foreground-color: var(--ifm-color-info-contrast-foreground);
 
   background-color: var(--ifm-alert-background-color);
-  border-color: var(--ifm-alert-border-color);
-  border-style: solid;
-  border-width: var(--ifm-alert-border-width);
-  border-left-width: var(--ifm-alert-border-left-width);
   border-radius: var(--ifm-alert-border-radius);
   box-shadow: var(--ifm-alert-shadow);
   color: var(--ifm-alert-foreground-color);
   padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
 }
 
-.es-card-list__heading {
+.es-card-list-item__heading {
   margin-top: 0;
   margin-bottom: 8px;
   text-transform: uppercase;
 }
 
-.es-card-list > :last-child {
+.es-card-list-item > :last-child {
   margin-bottom: 0;
 }
 
-.es-card-list {
+.es-card-list-item {
   margin-bottom: 1em;
 }
 
