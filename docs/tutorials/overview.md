@@ -4,11 +4,9 @@ slug: /tutorials
 sidebar_label: Overview
 ---
 # Tutorials
-import {Card, CardContainer} from '../../src/components/card';
-import UmbracoLogoWhite from '../../static/img/docs/integrations/logos/umbraco-logo-white.png';
-import MultilevelCard from '../../static/img/docs/examples/multilevel-navigation/overview-card.png';
+import {CardList, CardListContainer} from '../../src/components/card-list';
 
-<CardContainer>
-    <Card class="test" title="Multilevel navigation" link="tutorials/multilevel-navigation/getting-started" image={MultilevelCard} />
-    <Card class="test" title="Umbraco & Next.js" link="tutorials/umbraco-nextjs/intro" image={UmbracoLogoWhite} imageBg="umbraco-darkblue-bg" />
-</CardContainer>
+<CardListContainer>
+    <CardList title="Multilevel navigation" content="Learn how to create a multilevel navigation for your website." link="tutorials/multilevel-navigation/getting-started" />
+    <CardList title="Umbraco & Next.js" content="Learn how to use Enterspeed with Umbraco V8 and Umbraco V9" link="tutorials/umbraco-nextjs/intro" />
+</CardListContainer>
