@@ -4,9 +4,13 @@ slug: /tutorials
 sidebar_label: Overview
 ---
 # Tutorials
-import {CardList, CardListContainer} from '../../src/components/card-list';
+import {CardListItem, CardListContainer} from '../../src/components/card-list';
 
 <CardListContainer>
-    <CardList title="Multilevel navigation" content="Learn how to create a multilevel navigation for your website." link="tutorials/multilevel-navigation/getting-started" />
-    <CardList title="Umbraco & Next.js" content="Learn how to use Enterspeed with Umbraco V8 and Umbraco V9" link="tutorials/umbraco-nextjs/intro" />
+  <CardListItem title="Multilevel navigation" link="tutorials/multilevel-navigation/getting-started">
+    Learn how to create a multilevel navigation for your website.
+  </CardListItem>
+  <CardListItem title="Umbraco & Next.js" link="tutorials/umbraco-nextjs/intro">
+    Learn how to use Enterspeed with Umbraco V8 and Umbraco V9.
+  </CardListItem>
 </CardListContainer>
