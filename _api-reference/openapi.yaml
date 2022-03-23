@@ -8,6 +8,7 @@ info:
 tags:
   - name: Delivery
   - name: Ingest
+  - name: Ingest V2
   - name: Routes
 servers:
   - url: https://api.enterspeed.com
@@ -253,6 +254,121 @@ paths:
           description: No entity found with that id.
         '422':
           description: Missing id parameter.
+
+  /ingest/v2/{originId}:
+    post:
+      summary: Save entity
+      description: |
+        Starting the process for saving the entity.
+        
+        This endpoint can be used in two ways:
+
+        - **Raw**: The body contains the raw source entity and the required meta data is provided as header parameters.
+        - **Simplified**: The source entity is given `properties` of the body which also includes meta data.
+      tags:
+        - Ingest V2
+      parameters:
+        - name: originId
+          in: path
+          required: true
+          description: |
+            Id of the entity. Must be same format for all entities within the same source.
+            Eg. integers, guids, etc.
+          schema:
+            type: string
+            example: "1"
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your source.
+          schema:
+            type: string
+            example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+        - name: X-Enterspeed-Type
+          in: header
+          description: |
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+          schema:
+            type: string
+            example: "product"
+        - name: X-Enterspeed-Url
+          in: header
+          description: |
+            If the entity is routable send the URL. Skip if entity is not routable.
+            Only used for raw body
+          schema:
+            type: string
+            example: "/product-1"
+        - name: X-Enterspeed-OriginParentId
+          in: header
+          description: |
+            Allowed as null if no hierarchy exists.
+            Only used for raw body
+          schema:
+            type: string
+            example: "2"
+        - name: X-Enterspeed-Redirects
+          in: header
+          description: |
+            Comma separated list of URLs that redirects to the current page. Eg. https://enterspeed.com/product-1-old/ redirecting to https://enterspeed.com/product-1/.
+          schema:
+            type: string
+            example: "/product-old,/product-very-old"
+      requestBody:
+        description: The entity to process
+        content:
+          application/json:
+            schema:
+              oneOf: 
+                - $ref: '#/components/schemas/Raw'
+                - $ref: '#/components/schemas/Simplified'
+
+      responses:
+        '200':
+          description: Valid request. Processing of posted entity has begun.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Processing entity has begun
+        '401':
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+
+    delete:
+      summary: Delete entity
+      description: |
+        Starting the process for deleting the entity.  
+      tags:
+        - Ingest V2
+      parameters:
+        - name: originId
+          in: path
+          description: The entity id to delete
+          schema:
+            type: string
+            example: '1234'
+        - name: X-Api-Key
+          in: header
+          description: Api key to validate your source.
+          schema:
+            type: string
+            example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+      responses:
+        '200':
+          description: Valid request. Processing of deleting the entity has begun.
+        '401':
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        '404':
+          description: No entity found with that id.
+
   /routes/v1:
     get:
       summary: Get Routes
@@ -438,6 +554,91 @@ components:
       example:
         title: Enterspeed
         logo: /media-path/enterspeed.svg
+    Raw: 
+      type: object
+      description: Headers required
+      example: {
+            "name": "Cool product FTW",
+            "price": 199.99,
+            "features": [
+                {
+                    "name": "color",
+                    "value": "yellow"
+                },
+                {
+                    "name": "size",
+                    "value": "M"
+                }
+            ],
+            "information": {
+                "short": "Nice t-shirt",
+                "long": "Nice t-shirt in cotton"
+            }
+          }      
+      additionalProperties: 
+        anyOf:
+        - type: string
+        - type: number
+        - type: array
+        - type: object
+    Simplified:
+      type: object
+      required: 
+      - type
+      - url
+      - properties
+      properties:
+        type: 
+          type: string
+          description: >
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+        url:
+          type: string
+          description: >
+            If the entity is routable send the URL. Otherwise leave as
+            null.  
+
+            Allowed as null if entity is not routable.
+        originParentId:
+          type: string
+          example: '123'
+          description: Allowed as null if no hierarchy exists.
+        redirects:
+          type: array
+          description: >
+            URLs that redirects to the current page. Eg.
+            https://enterspeed.com/product-blue-old/ redirecting to
+            https://enterspeed.com/product-blue/.
+          items:
+            type: string
+            example: https://enterspeed.com/product-blue-old/
+        properties:
+          example: {
+            "name": "Cool product FTW",
+            "price": 199.99,
+            "features": [
+                {
+                    "name": "color",
+                    "value": "yellow"
+                },
+                {
+                    "name": "size",
+                    "value": "M"
+                }
+            ],
+            "information": {
+                "short": "Nice t-shirt",
+                "long": "Nice t-shirt in cotton"
+            }
+          }
+          additionalProperties: 
+            anyOf:
+            - type: string
+            - type: number
+            - type: array
+            - type: object
     RouteResponse:
       type: object
       properties:
