@@ -13,36 +13,36 @@ Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. 
 
 ```json
 {
-	"sourceEntityTypes": [
-		"navigationItem"
-	],
-	"actions": [
-		{
-			"type": "process",
-			"alias": "getNavigationItem",
-			"originId": "{originParentId}"
-		}
-	],
-	"properties": {
-		"title": "{p.title}",
-		"children": {
-			"type": "array",
-			"input": {
-				"$lookup": {
-					"filter": "originParentId eq '{originId}'",
-					"orderBy": {
-						"property": "{item.metaData.sortOrder}",
-						"sort": "desc"
-					}
-				}
-			},
-			"items": {
-				"type": "reference",
-				"gid": "{item.id}",
-				"alias": "getNavigationItem"
-			}
-		}
-	}
+  "sourceEntityTypes": [
+    "navigationItem"
+  ],
+  "actions": [
+    {
+      "type": "process",
+      "alias": "getNavigationItem",
+      "originId": "{originParentId}"
+    }
+  ],
+  "properties": {
+    "title": "{p.title}",
+    "children": {
+      "type": "array",
+      "input": {
+        "$lookup": {
+          "filter": "originParentId eq '{originId}'",
+          "orderBy": {
+            "property": "{item.metaData.sortOrder}",
+            "sort": "desc"
+          }
+        }
+      },
+      "items": {
+        "type": "reference",
+        "gid": "{item.id}",
+        "alias": "getNavigationItem"
+      }
+    }
+  }
 }
 ```
 
@@ -52,13 +52,13 @@ Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. 
 The key part of the schema is actions:
 
 ```json
-	"actions": [
-		{
-			"type": "process",
-			"alias": "getNavigationItem",
-			"originId": "{originParentId}"
-		}
-	],
+  "actions": [
+    {
+      "type": "process",
+      "alias": "getNavigationItem",
+      "originId": "{originParentId}"
+    }
+  ],
 ```
 
 In short this tells another schema to update if this one affected.
@@ -72,33 +72,33 @@ Replace the content with this snippet:
 
 ```json
 {
-	"sourceEntityTypes": [
-		"navigationGroup"
-	],
-	"route": {
-		"handles": [
-			"mainNavigation"
-		]
-	},
-	"properties": {
-		"children": {
-			"type": "array",
-			"input": {
-				"$lookup": {
-					"filter": "originParentId eq '{originId}'",
-					"orderBy": {
-						"property": "{item.metaData.sortOrder}",
-						"sort": "desc"
-					}
-				}
-			},
-			"items": {
-				"type": "reference",
-				"gid": "{item.id}",
-				"alias": "getNavigationItem"
-			}
-		}
-	}
+  "sourceEntityTypes": [
+    "navigationGroup"
+  ],
+  "route": {
+    "handles": [
+      "mainNavigation"
+    ]
+  },
+  "properties": {
+    "children": {
+      "type": "array",
+      "input": {
+        "$lookup": {
+          "filter": "originParentId eq '{originId}'",
+          "orderBy": {
+            "property": "{item.metaData.sortOrder}",
+            "sort": "desc"
+          }
+        }
+      },
+      "items": {
+        "type": "reference",
+        "gid": "{item.id}",
+        "alias": "getNavigationItem"
+      }
+    }
+  }
 }
 ```
 The key part here is reference for the children. This will make sure to resolve the view when referenced.
@@ -119,49 +119,49 @@ You should get a response that looks like this:
 
 ```json
 {
-	"meta": {
-		"status": 200,
-		"redirect": null
-	},
-	"views": {
-		"getMainNavigation": {
-			"children": [
-				{
-					"id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1079-en-us/View/getNavigationItem",
-					"view": {
-						"title": "Home",
-						"children": []
-					},
-					"type": "ViewReference"
-				},
-				{
-					"id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1067-en-us/View/getNavigationItem",
-					"view": {
-						"title": "Books",
-						"children": [
-							{
-								"id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1068-en-us/View/getNavigationItem",
-								"view": {
-									"title": "Book 1",
-									"children": []
-								},
-								"type": "ViewReference"
-							},
-							{
-								"id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1069-en-us/View/getNavigationItem",
-								"view": {
-									"title": "Book 2",
-									"children": []
-								},
-								"type": "ViewReference"
-							}
-						]
-					},
-					"type": "ViewReference"
-				}
-			]
-		}
-	}
+  "meta": {
+    "status": 200,
+    "redirect": null
+  },
+  "views": {
+    "getMainNavigation": {
+      "children": [
+        {
+          "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1079-en-us/View/getNavigationItem",
+          "view": {
+            "title": "Home",
+            "children": []
+          },
+          "type": "ViewReference"
+        },
+        {
+          "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1067-en-us/View/getNavigationItem",
+          "view": {
+            "title": "Books",
+            "children": [
+              {
+                "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1068-en-us/View/getNavigationItem",
+                "view": {
+                  "title": "Book 1",
+                  "children": []
+                },
+                "type": "ViewReference"
+              },
+              {
+                "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1069-en-us/View/getNavigationItem",
+                "view": {
+                  "title": "Book 2",
+                  "children": []
+                },
+                "type": "ViewReference"
+              }
+            ]
+          },
+          "type": "ViewReference"
+        }
+      ]
+    }
+  }
 }
 ```
 
