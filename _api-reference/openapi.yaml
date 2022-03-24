@@ -33,7 +33,7 @@ paths:
           required: false
           schema:
             type: string
-            default: ''
+            default: ""
         - name: id
           in: query
           description: |
@@ -46,7 +46,7 @@ paths:
           required: false
           schema:
             type: string
-            default: ''
+            default: ""
         - name: handle
           in: query
           description: >
@@ -61,7 +61,7 @@ paths:
           required: false
           schema:
             type: string
-            default: ''
+            default: ""
         - name: X-Api-Key
           in: header
           description: Api key to validate your environment.
@@ -69,18 +69,18 @@ paths:
             type: string
             example: environment-1637c4d0-e878-4738-b866-152106a4f88c
       responses:
-        '200':
+        "200":
           description: Valid request.
           content:
             application/json:
               schema:
                 type: object
                 oneOf:
-                  - $ref: '#/components/schemas/RouteResponse'
-                  - $ref: '#/components/schemas/NoRouteFoundResponse'
-        '401':
+                  - $ref: "#/components/schemas/RouteResponse"
+                  - $ref: "#/components/schemas/NoRouteFoundResponse"
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '422':
+        "422":
           description: >-
             Invalid request. Server responded but the request was in an invalid
             format.
@@ -88,15 +88,15 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/TooManyUrlsResponse'
-                  - $ref: '#/components/schemas/NoParametersResponse'
+                  - $ref: "#/components/schemas/TooManyUrlsResponse"
+                  - $ref: "#/components/schemas/NoParametersResponse"
 
   /ingest/v2/{originId}:
     post:
       summary: Save entity
       description: |
         Starting the process for saving the entity.
-        
+
         This endpoint can be used in two ways:
 
         - **Raw**: The body contains the raw source entity and the required meta data is provided as header parameters.
@@ -157,12 +157,12 @@ paths:
         content:
           application/json:
             schema:
-              oneOf: 
-                - $ref: '#/components/schemas/Raw'
-                - $ref: '#/components/schemas/Simplified'
+              oneOf:
+                - $ref: "#/components/schemas/Raw"
+                - $ref: "#/components/schemas/Simplified"
 
       responses:
-        '200':
+        "200":
           description: Valid request. Processing of posted entity has begun.
           content:
             application/json:
@@ -175,13 +175,13 @@ paths:
                   message:
                     type: string
                     example: Processing entity has begun
-        '401':
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
 
     delete:
       summary: Delete entity
       description: |
-        Starting the process for deleting the entity.  
+        Starting the process for deleting the entity.
       tags:
         - Ingest
       parameters:
@@ -190,7 +190,7 @@ paths:
           description: The entity id to delete
           schema:
             type: string
-            example: '1234'
+            example: "1234"
         - name: X-Api-Key
           in: header
           description: Api key to validate your source.
@@ -198,11 +198,11 @@ paths:
             type: string
             example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
       responses:
-        '200':
+        "200":
           description: Valid request. Processing of deleting the entity has begun.
-        '401':
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '404':
+        "404":
           description: No entity found with that id.
 
   /routes/v1:
@@ -246,12 +246,12 @@ paths:
             type: string
             example: environment-1637c4d0-e878-4738-b866-152106a4f88c
       responses:
-        '200':
+        "200":
           description: Valid request.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoutesResponse'
+                $ref: "#/components/schemas/RoutesResponse"
               example:
                 total: 16,
                 pageInfo:
@@ -262,10 +262,10 @@ paths:
                 results:
                   - url: /about-us
                     redirect: null
-                    updatedAt: '2021-05-21T10:22:21.262781Z'
-        '401':
+                    updatedAt: "2021-05-21T10:22:21.262781Z"
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '422':
+        "422":
           description: |
             Can be either of these: 
               * first and last is not allowed at the same time (Parameter 'first', 'last')
@@ -292,41 +292,37 @@ components:
       example:
         title: Enterspeed
         logo: /media-path/enterspeed.svg
-    Raw: 
+    Raw:
       type: object
       description: Headers required
-      example: {
-            "name": "Cool product FTW",
-            "price": 199.99,
-            "features": [
-                {
-                    "name": "color",
-                    "value": "yellow"
-                },
-                {
-                    "name": "size",
-                    "value": "M"
-                }
+      example:
+        {
+          "name": "Official Enterspeed T-shirt",
+          "price": 199.99,
+          "inStock": true,
+          "features":
+            [
+              { "name": "color", "value": "blue" },
+              { "name": "size", "value": "M" },
             ],
-            "information": {
-                "short": "Nice t-shirt",
-                "long": "Nice t-shirt in cotton"
-            }
-          }      
-      additionalProperties: 
+          "information":
+            { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton." },
+        }
+      additionalProperties:
         anyOf:
-        - type: string
-        - type: number
-        - type: array
-        - type: object
+          - type: string
+          - type: number
+          - type: boolean
+          - type: array
+          - type: object
     Simplified:
       type: object
-      required: 
-      - type
-      - url
-      - properties
+      required:
+        - type
+        - url
+        - properties
       properties:
-        type: 
+        type:
           type: string
           description: >
             The type or alias of the type of entity being send to process.
@@ -341,42 +337,38 @@ components:
             Allowed as null if entity is not routable.
         originParentId:
           type: string
-          example: '123'
+          example: "123"
           description: Allowed as null if no hierarchy exists.
         redirects:
           type: array
           description: >
             URLs that redirects to the current page. Eg.
-            https://enterspeed.com/product-blue-old/ redirecting to
-            https://enterspeed.com/product-blue/.
+            https://enterspeed.com/product-enterspeed-tshirt-old/ redirecting to
+            https://enterspeed.com/product-enterspeed-tshirt/.
           items:
             type: string
-            example: https://enterspeed.com/product-blue-old/
+            example: https://enterspeed.com/product-enterspeed-tshirt-old/
         properties:
-          example: {
-            "name": "Cool product FTW",
-            "price": 199.99,
-            "features": [
-                {
-                    "name": "color",
-                    "value": "yellow"
-                },
-                {
-                    "name": "size",
-                    "value": "M"
-                }
-            ],
-            "information": {
-                "short": "Nice t-shirt",
-                "long": "Nice t-shirt in cotton"
+          example:
+            {
+              "name": "Official Enterspeed T-shirt",
+              "price": 199.99,
+              "inStock": true,
+              "features":
+                [
+                  { "name": "color", "value": "blue" },
+                  { "name": "size", "value": "M" },
+                ],
+              "information":
+                { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton" },
             }
-          }
-          additionalProperties: 
+          additionalProperties:
             anyOf:
-            - type: string
-            - type: number
-            - type: array
-            - type: object
+              - type: string
+              - type: number
+              - type: boolean
+              - type: array
+              - type: object
     RouteResponse:
       type: object
       properties:
@@ -389,12 +381,12 @@ components:
               description: Returns code 200
         route:
           type: object
-          $ref: '#/components/schemas/ViewProperties'
+          $ref: "#/components/schemas/ViewProperties"
         views:
           type: object
           example:
             gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/BlogPostTile:
-              title: How to increase performace
+              title: How to increase performance
               image: /media-path/performance.jpg
               url: /blog/how-to-increase-performance/
             Navigation:
@@ -492,8 +484,8 @@ components:
         totalCount:
           type: number
         pageInfo:
-          $ref: '#/components/schemas/PageInfoResponse'
+          $ref: "#/components/schemas/PageInfoResponse"
         results:
           type: array
     RoutesResponse:
-      $ref: '#/components/schemas/PagedResult'
+      $ref: "#/components/schemas/PagedResult"
