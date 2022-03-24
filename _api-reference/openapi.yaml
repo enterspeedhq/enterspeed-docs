@@ -90,107 +90,77 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/TooManyUrlsResponse'
                   - $ref: '#/components/schemas/NoParametersResponse'
-  /ingest/v1:
+
+  /ingest/v2/{originId}:
     post:
       summary: Save entity
       description: |
-        Starting the process for saving the entity.  
+        Starting the process for saving the entity.
+        
+        This endpoint can be used in two ways:
+
+        - **Raw**: The body contains the raw source entity and the required meta data is provided as header parameters.
+        - **Simplified**: The source entity is given `properties` of the body which also includes meta data.
       tags:
         - Ingest
       parameters:
+        - name: originId
+          in: path
+          required: true
+          description: |
+            Id of the entity. Must be same format for all entities within the same source.
+            Eg. integers, guids, etc.
+          schema:
+            type: string
+            example: "1"
         - name: X-Api-Key
+          required: true
           in: header
           description: Api key to validate your source.
           schema:
             type: string
             example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+        - name: X-Enterspeed-Type
+          in: header
+          description: |
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+          schema:
+            type: string
+            example: "product"
+        - name: X-Enterspeed-Url
+          in: header
+          description: |
+            If the entity is routable send the URL. Skip if entity is not routable.
+            Only used for raw body
+          schema:
+            type: string
+            example: "/product-1"
+        - name: X-Enterspeed-OriginParentId
+          in: header
+          description: |
+            Allowed as null if no hierarchy exists.
+            Only used for raw body
+          schema:
+            type: string
+            example: "2"
+        - name: X-Enterspeed-Redirects
+          in: header
+          description: |
+            Comma separated list of URLs that redirects to the current page. Eg. https://enterspeed.com/product-1-old/ redirecting to https://enterspeed.com/product-1/.
+          schema:
+            type: string
+            example: "/product-old,/product-very-old"
       requestBody:
         description: The entity to process
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-                - type
-              properties:
-                id:
-                  type: string
-                  example: '1234'
-                  description: >
-                    Id of the entity. Must be same format for all entities
-                    within the same source.  
+              oneOf: 
+                - $ref: '#/components/schemas/Raw'
+                - $ref: '#/components/schemas/Simplified'
 
-                    Eg. integers, guids, etc.
-                parentId:
-                  type: string
-                  example: '123'
-                  description: Allowed as null if no hierarchy exists.
-                type:
-                  type: string
-                  example: product
-                  description: >
-                    The type or alias of the type of entity being send to
-                    process.  
-
-                    Eg. blogList, blogPage, frontPage, etc.
-                url:
-                  type: string
-                  example: https://enterspeed.com/product-blue/
-                  description: >
-                    If the entity is routable send the URL. Otherwise leave as
-                    null.  
-
-                    Allowed as null if entity is not routable.
-                redirects:
-                  type: array
-                  description: >-
-                    URLs that redirects to the current page. Eg.
-                    https://enterspeed.com/product-blue-old/ redirecting to
-                    https://enterspeed.com/product-blue/.
-                  items:
-                    type: string
-                    example: https://enterspeed.com/product-blue-old/
-                properties:
-                  type: object
-                  additionalProperties:
-                    anyOf:
-                      - $ref: '#/components/schemas/StringProperty'
-                      - $ref: '#/components/schemas/NumberProperty'
-                      - $ref: '#/components/schemas/BooleanProperty'
-                      - $ref: '#/components/schemas/ObjectProperty'
-                      - $ref: '#/components/schemas/ArrayProperty'
-                  example:
-                    headline:
-                      type: string
-                      name: headline
-                      value: Blue product
-                    price:
-                      type: number
-                      name: price
-                      precision: 2
-                      value: 19.95
-                    isPublished:
-                      type: boolean
-                      name: isPublished
-                      value: true
-                    image:
-                      type: object
-                      name: image
-                      properties:
-                        url:
-                          type: string
-                          name: url
-                          value: /media/image.jpg
-                    variants:
-                      type: array
-                      name: variants
-                      items:
-                        - headline:
-                            type: string
-                            name: headline
-                            value: Red product
       responses:
         '200':
           description: Valid request. Processing of posted entity has begun.
@@ -207,24 +177,7 @@ paths:
                     example: Processing entity has begun
         '401':
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '422':
-          description: Body is incorrect or required properties are missing.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: number
-                    example: 422
-                  message:
-                    type: string
-                    example: Invalid request
-                  errors:
-                    type: object
-                    example:
-                      title: Is required
-                      price: Precision is required
+
     delete:
       summary: Delete entity
       description: |
@@ -232,8 +185,8 @@ paths:
       tags:
         - Ingest
       parameters:
-        - name: id
-          in: query
+        - name: originId
+          in: path
           description: The entity id to delete
           schema:
             type: string
@@ -251,8 +204,7 @@ paths:
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
         '404':
           description: No entity found with that id.
-        '422':
-          description: Missing id parameter.
+
   /routes/v1:
     get:
       summary: Get Routes
@@ -335,109 +287,96 @@ paths:
                       'first', 'last')
 components:
   schemas:
-    StringProperty:
-      type: object
-      required:
-        - name
-        - type
-        - value
-      properties:
-        name:
-          type: string
-          example: title
-        type:
-          type: string
-          description: String
-        value:
-          type: string
-          example: Welcome to Enterspeed
-      xml:
-        name: string
-    NumberProperty:
-      type: object
-      required:
-        - name
-        - type
-        - value
-      properties:
-        name:
-          type: string
-          example: price
-        type:
-          type: string
-          description: Number
-        value:
-          type: number
-          example: 19.95
-        precision:
-          type: number
-          description: The decimal precision. If null, defaults to 0.
-          example: 2
-    BooleanProperty:
-      type: object
-      required:
-        - name
-        - type
-        - value
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          description: Boolean
-        value:
-          type: boolean
-          example: true
-    ObjectProperty:
-      type: object
-      required:
-        - name
-        - type
-        - properties
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          description: Object
-        properties:
-          type: object
-          additionalProperties:
-            anyOf:
-              - $ref: '#/components/schemas/StringProperty'
-              - $ref: '#/components/schemas/NumberProperty'
-              - $ref: '#/components/schemas/BooleanProperty'
-              - $ref: '#/components/schemas/ObjectProperty'
-              - $ref: '#/components/schemas/ArrayProperty'
-    ArrayProperty:
-      type: object
-      required:
-        - name
-        - type
-        - items
-      properties:
-        name:
-          type: string
-          example: image
-        type:
-          type: string
-          description: Array
-        items:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              anyOf:
-                - $ref: '#/components/schemas/StringProperty'
-                - $ref: '#/components/schemas/NumberProperty'
-                - $ref: '#/components/schemas/BooleanProperty'
-                - $ref: '#/components/schemas/ObjectProperty'
-                - $ref: '#/components/schemas/ArrayProperty'
     ViewProperties:
       type: object
       example:
         title: Enterspeed
         logo: /media-path/enterspeed.svg
+    Raw: 
+      type: object
+      description: Headers required
+      example: {
+            "name": "Cool product FTW",
+            "price": 199.99,
+            "features": [
+                {
+                    "name": "color",
+                    "value": "yellow"
+                },
+                {
+                    "name": "size",
+                    "value": "M"
+                }
+            ],
+            "information": {
+                "short": "Nice t-shirt",
+                "long": "Nice t-shirt in cotton"
+            }
+          }      
+      additionalProperties: 
+        anyOf:
+        - type: string
+        - type: number
+        - type: array
+        - type: object
+    Simplified:
+      type: object
+      required: 
+      - type
+      - url
+      - properties
+      properties:
+        type: 
+          type: string
+          description: >
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+        url:
+          type: string
+          description: >
+            If the entity is routable send the URL. Otherwise leave as
+            null.  
+
+            Allowed as null if entity is not routable.
+        originParentId:
+          type: string
+          example: '123'
+          description: Allowed as null if no hierarchy exists.
+        redirects:
+          type: array
+          description: >
+            URLs that redirects to the current page. Eg.
+            https://enterspeed.com/product-blue-old/ redirecting to
+            https://enterspeed.com/product-blue/.
+          items:
+            type: string
+            example: https://enterspeed.com/product-blue-old/
+        properties:
+          example: {
+            "name": "Cool product FTW",
+            "price": 199.99,
+            "features": [
+                {
+                    "name": "color",
+                    "value": "yellow"
+                },
+                {
+                    "name": "size",
+                    "value": "M"
+                }
+            ],
+            "information": {
+                "short": "Nice t-shirt",
+                "long": "Nice t-shirt in cotton"
+            }
+          }
+          additionalProperties: 
+            anyOf:
+            - type: string
+            - type: number
+            - type: array
+            - type: object
     RouteResponse:
       type: object
       properties:
