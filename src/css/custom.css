@@ -136,10 +136,6 @@ html[data-theme="light"] .menu__link--active:not(.menu__link--sublist),
   color: #043cc7;
 }
 
-html[data-theme="dark"] .es-card__title {
-  color: #fff;
-}
-
 html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
@@ -156,46 +152,6 @@ html[data-theme="dark"] .header-github-link:before {
 
 html[data-theme="dark"] .api-content {
   color: #fff;
-}
-
-.es-card {
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
-  border-radius: 4px;
-}
-
-.es-card:hover {
-  opacity: 0.8;
-}
-
-.es-card a {
-  text-decoration: none;
-}
-
-.es-card__image {
-  border-radius: 4px 4px 0 0;
-}
-
-.umbraco-blue-bg {
-  background-color: #3544b1;
-}
-
-.umbraco-orange-bg {
-  background-color: #f79c37;
-}
-
-.umbraco-darkblue-bg {
-  background-color: #1b264f;
-}
-
-.es-card__title {
-  padding: 16px;
-  color: #333;
-}
-
-.es-card-container {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
 
 .redocusaurus h2,
@@ -250,8 +206,12 @@ html[data-theme="dark"] .api-content {
   display: none;
 }
 
-/* Enterspeed Cards */
+.pagination-nav {
+  max-width: 700px;
+  margin: 3rem auto 0 auto;
+}
 
+/* Enterspeed Cards --- START */
 .es-card-container {
   display: grid;
   grid-gap: 1rem;
@@ -263,13 +223,16 @@ html[data-theme="dark"] .api-content {
   border-radius: 4px;
 }
 
-.es-card:hover,
-.es-card-list-item:hover {
+.es-card:hover {
   opacity: 0.8;
+  text-decoration: none;
 }
 
-.es-card a,
-.es-card-list-item a {
+.es-card--simple-layout {
+  border-top: 5px solid var(--ifm-color-primary);
+}
+
+.es-card a {
   text-decoration: none;
 }
 
@@ -277,43 +240,33 @@ html[data-theme="dark"] .api-content {
   border-radius: 4px 4px 0 0;
 }
 
-.es-card__title {
+.es-card__content {
   padding: 16px;
-}
-
-.es-card__title,
-.es-card-list-item__title,
-.es-card-list-item__content {
   color: #333;
 }
 
-.es-card-list-item {
-  --ifm-alert-background-color: var(--ifm-color-info-contrast-background);
-  --ifm-alert-foreground-color: var(--ifm-color-info-contrast-foreground);
-
-  background-color: var(--ifm-alert-background-color);
-  border-radius: var(--ifm-alert-border-radius);
-  box-shadow: var(--ifm-alert-shadow);
-  color: var(--ifm-alert-foreground-color);
-  padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
+.es-card__title {
+  font-weight: 500;
 }
 
-.es-card-list-item__heading {
-  margin-top: 0;
-  margin-bottom: 8px;
-  text-transform: uppercase;
+.es-card__body {
+  padding-top: 16px;
 }
 
-.es-card-list-item > :last-child {
-  margin-bottom: 0;
+html[data-theme="dark"] .es-card__title {
+  color: #fff;
 }
 
-.es-card-list-item {
-  margin-bottom: 1em;
+/* Colors used on "Integrations"-overview */
+.umbraco-blue-bg {
+  background-color: #3544b1;
 }
 
-.es-card-list__container {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+.umbraco-orange-bg {
+  background-color: #f79c37;
 }
+
+.umbraco-darkblue-bg {
+  background-color: #1b264f;
+}
+/* Enterspeed Cards --- END */
