@@ -19,6 +19,10 @@ info:
   x-logo:
     url: https://docs.enterspeed.com/img/logo.svg
     altText: Enterspeed Logo
+  
+  license: 
+    name: "See Enterspeed Terms of service"
+    url: "https://www.enterspeed.com/terms-of-service"
 tags:
   - name: Delivery
     description: The Delivery API is what you use to `GET` your data from Enterspeed to your frontend project. Before you can fetch your content from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
@@ -45,11 +49,12 @@ paths:
       - url: https://delivery.enterspeed.com
         description: Delivery API
     get:
-      summary: By URL, IDs, or handle
+      summary: Get content by URL, IDs, or handle
       tags:
         - Delivery
+      operationId: getContent
       parameters:
-        - name: url
+        - name: url 
           in: query
           description: |
             The URL to get data from.
@@ -130,6 +135,7 @@ paths:
         - **Simplified**: The source entity is given `properties` of the body which also includes meta data.
       tags:
         - Ingest
+      operationId: saveEntity
       parameters:
         - name: originId
           in: path
@@ -211,6 +217,7 @@ paths:
         Starting the process for deleting the entity.
       tags:
         - Ingest
+      operationId: deleteEntity
       parameters:
         - name: originId
           in: path
@@ -240,6 +247,7 @@ paths:
         Get all the routes for a specific environment.
       tags:
         - Routes
+      operationId: getRoutes
       parameters:
         - name: first
           in: query
@@ -281,7 +289,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/RoutesResponse"
               example:
-                total: 16,
+                total: 16
                 pageInfo:
                   hasNextPage: true
                   hasPreviousPage: false
@@ -464,29 +472,6 @@ components:
               items:
                 - title: How to increase performance
                   url: /how-to-increase-performance/
-    PaginationRequestBase:
-      type: object
-      properties:
-        first:
-          type: number
-          description: >
-            Get the first of the paginated list, aka. get the list in ascending
-            order.
-          example: 100
-        last:
-          type: number
-          description: >
-            Get the last of the paginated list, aka. get the list in descending
-            order.
-          example: 100
-        before:
-          type: string
-          description: |
-            The cursor to get data before.
-        after:
-          type: string
-          description: |
-            The cursor to get data after.
     PageInfoResponse:
       type: object
       properties:
@@ -505,7 +490,7 @@ components:
     PagedResult:
       type: object
       properties:
-        totalCount:
+        total:
           type: number
         pageInfo:
           $ref: "#/components/schemas/PageInfoResponse"
