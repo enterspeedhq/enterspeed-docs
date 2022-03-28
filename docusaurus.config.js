@@ -102,7 +102,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             },
             {
               type: "doc",
-              docId: "tutorials/umbraco-nextjs/intro",
+              docId: "tutorials/overview",
               label: "Tutorials",
               position: "left",
             },

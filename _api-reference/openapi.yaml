@@ -333,20 +333,22 @@ components:
       description: Headers required
       example:
         {
-          "name": "Cool product FTW",
+          "name": "Official Enterspeed T-shirt",
           "price": 199.99,
+          "inStock": true,
           "features":
             [
-              { "name": "color", "value": "yellow" },
+              { "name": "color", "value": "blue" },
               { "name": "size", "value": "M" },
             ],
           "information":
-            { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton" },
+            { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton." },
         }
       additionalProperties:
         anyOf:
           - type: string
           - type: number
+          - type: boolean
           - type: array
           - type: object
     Simplified:
@@ -377,19 +379,20 @@ components:
           type: array
           description: >
             URLs that redirects to the current page. Eg.
-            https://enterspeed.com/product-blue-old/ redirecting to
-            https://enterspeed.com/product-blue/.
+            https://enterspeed.com/product-enterspeed-tshirt-old/ redirecting to
+            https://enterspeed.com/product-enterspeed-tshirt/.
           items:
             type: string
-            example: https://enterspeed.com/product-blue-old/
+            example: https://enterspeed.com/product-enterspeed-tshirt-old/
         properties:
           example:
             {
-              "name": "Cool product FTW",
+              "name": "Official Enterspeed T-shirt",
               "price": 199.99,
+              "inStock": true,
               "features":
                 [
-                  { "name": "color", "value": "yellow" },
+                  { "name": "color", "value": "blue" },
                   { "name": "size", "value": "M" },
                 ],
               "information":
@@ -399,6 +402,7 @@ components:
             anyOf:
               - type: string
               - type: number
+              - type: boolean
               - type: array
               - type: object
     RouteResponse:

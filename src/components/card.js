@@ -1,20 +1,44 @@
 import React from "react";
 
-const Card = ({ title, link, image, imageBg }) => {
+const Card = ({ title, link, image, imageBg, children }) => {
   return (
-    <div className="es-card">
+    <div
+      className={`es-card ${
+        image ? "es-card--image-layout" : "es-card--simple-layout"
+      }`}
+    >
       <a href={link}>
-        <div className={"es-card__image " + imageBg}>
-          <img src={image} />
+        {image && (
+          <div className={"es-card__image " + imageBg}>
+            <img src={image} />
+          </div>
+        )}
+        <div className="es-card__content">
+          <div className="es-card__title">{title}</div>
+          {children && <div className="es-card__body">{children}</div>}
         </div>
-        <div className="es-card__title">{title}</div>
       </a>
     </div>
   );
 };
 
-const CardContainer = ({ children }) => {
-  return <div className="es-card-container">{children}</div>;
+const CardContainer = ({ children, size }) => {
+  return (
+    <div
+      className="es-card-container"
+      style={{
+        gridTemplateColumns: `repeat(auto-fit, minmax(${cardSizes[size]}, 1fr))`,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const cardSizes = {
+  small: "150px",
+  medium: "200px",
+  large: "250px",
 };
 
 export { Card, CardContainer };
