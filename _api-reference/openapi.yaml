@@ -64,7 +64,7 @@ paths:
         - name: id
           in: query
           description: |
-            Specific gids to get data from.
+            Specific guids to get data from.
 
             **Maximum**: unlimited  
             **Required**: false
@@ -214,6 +214,7 @@ paths:
       parameters:
         - name: originId
           in: path
+          required: true
           description: The entity id to delete
           schema:
             type: string
@@ -409,7 +410,7 @@ components:
           type: object
           example:
             gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/BlogPostTile:
-              title: How to increase performace
+              title: How to increase performance
               image: /media-path/performance.jpg
               url: /blog/how-to-increase-performance/
             Navigation:
