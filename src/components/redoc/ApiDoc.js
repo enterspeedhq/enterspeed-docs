@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Layout from "@theme/Layout";
 
 import { usePluginData } from "@docusaurus/useGlobalData";
-import useThemeContext from "@theme/hooks/useThemeContext";
+import {useColorMode} from '@docusaurus/theme-common';
 import { Redoc as RedocComponent, RedocStandalone, AppStore } from "redoc";
 
 function ApiDoc({ layoutProps, spec: propSpec }) {
@@ -110,7 +110,7 @@ const darkThemeOverride = {
 };
 
 function Redoc(props) {
-  const { isDarkTheme } = useThemeContext();
+  const { isDarkTheme } = useColorMode();
 
   const { lightTheme, darkTheme, redocOptions } = usePluginData(
     "docusaurus-theme-redoc"

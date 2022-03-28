@@ -1,0 +1,491 @@
+openapi: 3.0.0
+info:
+  version: 0.3.0
+  title: API documentation
+  x-logo:
+    url: https://docs.enterspeed.com/img/logo.svg
+    altText: Enterspeed Logo
+tags:
+  - name: Delivery
+  - name: Ingest
+  - name: Routes
+servers:
+  - url: https://api.enterspeed.com
+    description: General API
+paths:
+  /v1:
+    servers:
+      - url: https://delivery.enterspeed.com
+        description: Delivery API
+    get:
+      summary: By URL or Ids
+      tags:
+        - Delivery
+      parameters:
+        - name: url
+          in: query
+          description: |
+            The URL to get data from.
+
+            **Maximum**: 1  
+            **Required**: false
+          example: https://enterspeed.com/about-us/
+          required: false
+          schema:
+            type: string
+            default: ""
+        - name: id
+          in: query
+          description: |
+            Specific gids to get data from.
+
+            **Maximum**: unlimited  
+            **Required**: false
+          example: >-
+            gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/ContentPage
+          required: false
+          schema:
+            type: string
+            default: ""
+        - name: handle
+          in: query
+          description: >
+            Specific handles to get data from. Handles will be returned in the
+            __views__ object and must be unique.
+
+
+            **Maximum**: unlimited  
+
+            **Required**: false
+          example: Navigation
+          required: false
+          schema:
+            type: string
+            default: ""
+        - name: X-Api-Key
+          in: header
+          description: Api key to validate your environment.
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+      responses:
+        "200":
+          description: Valid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                oneOf:
+                  - $ref: "#/components/schemas/RouteResponse"
+                  - $ref: "#/components/schemas/NoRouteFoundResponse"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "422":
+          description: >-
+            Invalid request. Server responded but the request was in an invalid
+            format.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/TooManyUrlsResponse"
+                  - $ref: "#/components/schemas/NoParametersResponse"
+
+  /ingest/v2/{originId}:
+    post:
+      summary: Save entity
+      description: |
+        Starting the process for saving the entity.
+
+        This endpoint can be used in two ways:
+
+        - **Raw**: The body contains the raw source entity and the required meta data is provided as header parameters.
+        - **Simplified**: The source entity is given `properties` of the body which also includes meta data.
+      tags:
+        - Ingest
+      parameters:
+        - name: originId
+          in: path
+          required: true
+          description: |
+            Id of the entity. Must be same format for all entities within the same source.
+            Eg. integers, guids, etc.
+          schema:
+            type: string
+            example: "1"
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your source.
+          schema:
+            type: string
+            example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+        - name: X-Enterspeed-Type
+          in: header
+          description: |
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+          schema:
+            type: string
+            example: "product"
+        - name: X-Enterspeed-Url
+          in: header
+          description: |
+            If the entity is routable send the URL. Skip if entity is not routable.
+            Only used for raw body
+          schema:
+            type: string
+            example: "/product-1"
+        - name: X-Enterspeed-OriginParentId
+          in: header
+          description: |
+            Allowed as null if no hierarchy exists.
+            Only used for raw body
+          schema:
+            type: string
+            example: "2"
+        - name: X-Enterspeed-Redirects
+          in: header
+          description: |
+            Comma separated list of URLs that redirects to the current page. Eg. https://enterspeed.com/product-1-old/ redirecting to https://enterspeed.com/product-1/.
+          schema:
+            type: string
+            example: "/product-old,/product-very-old"
+      requestBody:
+        description: The entity to process
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Raw"
+                - $ref: "#/components/schemas/Simplified"
+
+      responses:
+        "200":
+          description: Valid request. Processing of posted entity has begun.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Processing entity has begun
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+
+    delete:
+      summary: Delete entity
+      description: |
+        Starting the process for deleting the entity.
+      tags:
+        - Ingest
+      parameters:
+        - name: originId
+          in: path
+          description: The entity id to delete
+          schema:
+            type: string
+            example: "1234"
+        - name: X-Api-Key
+          in: header
+          description: Api key to validate your source.
+          schema:
+            type: string
+            example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+      responses:
+        "200":
+          description: Valid request. Processing of deleting the entity has begun.
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "404":
+          description: No entity found with that id.
+
+  /routes/v1:
+    get:
+      summary: Get Routes
+      description: |
+        Get all the routes for a specific environment.
+      tags:
+        - Routes
+      parameters:
+        - name: first
+          in: query
+          description: >-
+            Get the first of the paginated list, aka. get the list in ascending
+            order.
+          schema:
+            type: number
+            example: 100
+        - name: last
+          in: query
+          description: >-
+            Get the last of the paginated list, aka. get the list in descending
+            order.
+          schema:
+            type: number
+            example: 100
+        - name: before
+          in: query
+          description: The cursor to get data before, eg. previous page.
+          schema:
+            type: number
+        - name: after
+          in: query
+          description: The cursor to get data after, eg. next page.
+          schema:
+            type: number
+        - name: X-Api-Key
+          in: header
+          description: Api key to validate your environment.
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+      responses:
+        "200":
+          description: Valid request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoutesResponse"
+              example:
+                total: 16,
+                pageInfo:
+                  hasNextPage: true
+                  hasPreviousPage: false
+                  startCursor: YmQ2YTY0NTgtZmU1Ny00MDZmLTlkMzgtNGNjMTczYWZmNzg2
+                  endCursor: ZjJlNmY5NWYtOWM3ZS00N2I5LWI0N2ItMGY4M2YxYjMzZjQ1
+                results:
+                  - url: /about-us
+                    redirect: null
+                    updatedAt: "2021-05-21T10:22:21.262781Z"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "422":
+          description: |
+            Can be either of these: 
+              * first and last is not allowed at the same time (Parameter 'first', 'last')
+              * first or last must be set between 100 - 500 (Parameter 'first', 'last')
+              * first must be set between 100 - 500 (Parameter 'first'')
+              * last must be set between 100 - 500 (Parameter 'last')
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 422
+                  message:
+                    type: string
+                    example: >-
+                      first and last is not allowed at the same time (Parameter
+                      'first', 'last')
+components:
+  schemas:
+    ViewProperties:
+      type: object
+      example:
+        title: Enterspeed
+        logo: /media-path/enterspeed.svg
+    Raw:
+      type: object
+      description: Headers required
+      example:
+        {
+          "name": "Official Enterspeed T-shirt",
+          "price": 199.99,
+          "inStock": true,
+          "features":
+            [
+              { "name": "color", "value": "blue" },
+              { "name": "size", "value": "M" },
+            ],
+          "information":
+            { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton." },
+        }
+      additionalProperties:
+        anyOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - type: array
+          - type: object
+    Simplified:
+      type: object
+      required:
+        - type
+        - url
+        - properties
+      properties:
+        type:
+          type: string
+          description: >
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+        url:
+          type: string
+          description: >
+            If the entity is routable send the URL. Otherwise leave as
+            null.  
+
+            Allowed as null if entity is not routable.
+        originParentId:
+          type: string
+          example: "123"
+          description: Allowed as null if no hierarchy exists.
+        redirects:
+          type: array
+          description: >
+            URLs that redirects to the current page. Eg.
+            https://enterspeed.com/product-enterspeed-tshirt-old/ redirecting to
+            https://enterspeed.com/product-enterspeed-tshirt/.
+          items:
+            type: string
+            example: https://enterspeed.com/product-enterspeed-tshirt-old/
+        properties:
+          example:
+            {
+              "name": "Official Enterspeed T-shirt",
+              "price": 199.99,
+              "inStock": true,
+              "features":
+                [
+                  { "name": "color", "value": "blue" },
+                  { "name": "size", "value": "M" },
+                ],
+              "information":
+                { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton" },
+            }
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+              - type: boolean
+              - type: array
+              - type: object
+    RouteResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: number
+              example: 200
+              description: Returns code 200
+        route:
+          type: object
+          $ref: "#/components/schemas/ViewProperties"
+        views:
+          type: object
+          example:
+            gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/BlogPostTile:
+              title: How to increase performance
+              image: /media-path/performance.jpg
+              url: /blog/how-to-increase-performance/
+            Navigation:
+              items:
+                - text: Contact us
+                  link: /contact-us/
+    NoParametersResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: number
+              description: HttpStatus code 422
+              example: 422
+        message:
+          type: string
+          description: Missing id, handle or url query parameter.
+    TooManyUrlsResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: number
+              description: HttpStatus code 422
+              example: 422
+        message:
+          type: string
+          description: Request contains xxx url parameters. Maximum is 1.
+    NoRouteFoundResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: number
+              example: 404
+              description: Returns code 404
+        route:
+          type: object
+          example: null
+          description: no route returned
+        views:
+          type: object
+          example:
+            gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/Navigation:
+              items:
+                - title: How to increase performance
+                  url: /how-to-increase-performance/
+    PaginationRequestBase:
+      type: object
+      properties:
+        first:
+          type: number
+          description: >
+            Get the first of the paginated list, aka. get the list in ascending
+            order.
+          example: 100
+        last:
+          type: number
+          description: >
+            Get the last of the paginated list, aka. get the list in descending
+            order.
+          example: 100
+        before:
+          type: string
+          description: |
+            The cursor to get data before.
+        after:
+          type: string
+          description: |
+            The cursor to get data after.
+    PageInfoResponse:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        hasPreviousPage:
+          type: boolean
+        startCursor:
+          type: string
+          description: |
+            Cursor for the first element in the list.
+        endCursor:
+          type: string
+          description: |
+            Cursor for the last element in the list.
+    PagedResult:
+      type: object
+      properties:
+        totalCount:
+          type: number
+        pageInfo:
+          $ref: "#/components/schemas/PageInfoResponse"
+        results:
+          type: array
+    RoutesResponse:
+      $ref: "#/components/schemas/PagedResult"

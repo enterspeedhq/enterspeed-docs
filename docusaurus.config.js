@@ -9,6 +9,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     tagline: "Documentation for Enterspeed",
     url: "https://docs.enterspeed.com",
     baseUrl: "/",
+    trailingSlash: "false",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.svg",
@@ -33,7 +34,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
         {
           specs: [
             {
-              spec: "./_api-reference/openapi.yml",
+              spec: "./_api-reference/openapi.yaml",
               routePath: "/api/",
               apiDocComponent: "../src/components/redoc/ApiDoc.js",
             },
@@ -79,7 +80,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               label: "Home",
               position: "left",
               activeBaseRegex:
-                "/(getting-started|ingest|transform|deliver|general)",
+                "/(getting-started|ingest|transform|deliver)",
+            },
+            {
+              to: "/reference/fields",
+              label: "Schema reference",
+              position: "left",
+              activeBasePath: "reference",
             },
             {
               to: "/api",
@@ -98,16 +105,6 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               docId: "tutorials/overview",
               label: "Tutorials",
               position: "left",
-            },
-            {
-              href: "https://www.enterspeed.com/",
-              label: "Enterspeed.com",
-              position: "right",
-            },
-            {
-              href: "https://app.enterspeed.com/",
-              label: "Log in",
-              position: "right",
             },
             {
               href: "https://github.com/enterspeedhq",
