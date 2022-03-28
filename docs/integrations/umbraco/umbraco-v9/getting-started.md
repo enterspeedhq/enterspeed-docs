@@ -45,12 +45,22 @@ The Media domain is to tell the Enterspeed integration where you have your media
 
 If you leave it empty, it will just use your current Umbraco installation domain.
 
-#### Api key
+### Api key
 Before you can insert an API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/source).
 
 The API key looks something like this: source-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. When you have gotten it, insert it in the Api key input field.
 
-When you have inserted the Enterspeed endpoint and the Api key click on Test connection and make sure that you get a successful response. When you do go ahead and Save configuration.
+### Preview API key
+
+Optional API key, serves the purpose of ingesting draft and unpublished content to the secondary (preview) source. Can be leveraged for your content editors to preview content, similarly to in-built 'Save & Preview' functionality in Umbraco.
+
+Before you can insert a Preview API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/source).
+
+Enterspeeds connector will automatically push data to relevant primary or secondary sources based on actions performed in Umbraco backoffice, such as - Unpublish, trash, save, publish, etc.
+
+### Testing connection
+
+When you have inserted the Enterspeed endpoint and the API key(-s) click on Test connection and make sure that you get a successful response. When you do go ahead and Save the configuration. 
 
 ## App settings
 
