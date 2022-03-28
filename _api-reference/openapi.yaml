@@ -2,13 +2,44 @@ openapi: 3.0.0
 info:
   version: 0.3.0
   title: API documentation
+  description: The Enterspeed API are based on REST principles.
+
+    
+    Before you start you will need to [create an Enterspeed-account](https://app.enterspeed.com/signup) and set up a tenant (a property for your website). Here you can create
+      
+      - A data source (provides you with an API key for the **Ingest API**).
+       
+      - An environment client (provides you with an API key for the **Delivery API**).
+
+      - A domain (ensure the correct data gets fetched).
+
+
+      🎉 Have fun using our API. Make sure to [contact us](https://www.enterspeed.com/contact) if you need any help. We're happy assist!
+
   x-logo:
     url: https://docs.enterspeed.com/img/logo.svg
     altText: Enterspeed Logo
+  
+  license: 
+    name: "See Enterspeed Terms of service"
+    url: "https://www.enterspeed.com/terms-of-service"
 tags:
   - name: Delivery
+    description: The Delivery API is what you use to `GET` your data from Enterspeed to your frontend project. Before you can fetch your content from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
+
+     
+      You can find an example of how to fetch data [Umbraco & Next.js tutorial](https://docs.enterspeed.com/tutorials/umbraco-nextjs/fetching-data-in-nextjs).
+  
   - name: Ingest
+    description: The Ingest API is used to `POST` your current data sources into Enterspeed. Before you can start ingesting data, you'll need to create a **Data source** inside Enterspeed, which generates an API key. This is done under *Settings --> Data sources*. 
+    
+     
+     The Ingest API can also be used to `DELETE` already ingested data from Enterspeed.
   - name: Routes
+    description: The routes API is what you use to `GET` all available routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap. 
+
+      
+      Before you can fetch your routes from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
 servers:
   - url: https://api.enterspeed.com
     description: General API
@@ -18,11 +49,12 @@ paths:
       - url: https://delivery.enterspeed.com
         description: Delivery API
     get:
-      summary: By URL or Ids
+      summary: Get content by URL, IDs, or handle
       tags:
         - Delivery
+      operationId: getContent
       parameters:
-        - name: url
+        - name: url 
           in: query
           description: |
             The URL to get data from.
@@ -33,11 +65,11 @@ paths:
           required: false
           schema:
             type: string
-            default: ''
+            default: ""
         - name: id
           in: query
           description: |
-            Specific gids to get data from.
+            Specific guids to get data from.
 
             **Maximum**: unlimited  
             **Required**: false
@@ -46,7 +78,7 @@ paths:
           required: false
           schema:
             type: string
-            default: ''
+            default: ""
         - name: handle
           in: query
           description: >
@@ -61,7 +93,7 @@ paths:
           required: false
           schema:
             type: string
-            default: ''
+            default: ""
         - name: X-Api-Key
           in: header
           description: Api key to validate your environment.
@@ -69,18 +101,18 @@ paths:
             type: string
             example: environment-1637c4d0-e878-4738-b866-152106a4f88c
       responses:
-        '200':
+        "200":
           description: Valid request.
           content:
             application/json:
               schema:
                 type: object
                 oneOf:
-                  - $ref: '#/components/schemas/RouteResponse'
-                  - $ref: '#/components/schemas/NoRouteFoundResponse'
-        '401':
+                  - $ref: "#/components/schemas/RouteResponse"
+                  - $ref: "#/components/schemas/NoRouteFoundResponse"
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '422':
+        "422":
           description: >-
             Invalid request. Server responded but the request was in an invalid
             format.
@@ -88,21 +120,22 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/TooManyUrlsResponse'
-                  - $ref: '#/components/schemas/NoParametersResponse'
+                  - $ref: "#/components/schemas/TooManyUrlsResponse"
+                  - $ref: "#/components/schemas/NoParametersResponse"
 
   /ingest/v2/{originId}:
     post:
       summary: Save entity
       description: |
         Starting the process for saving the entity.
-        
+
         This endpoint can be used in two ways:
 
         - **Raw**: The body contains the raw source entity and the required meta data is provided as header parameters.
         - **Simplified**: The source entity is given `properties` of the body which also includes meta data.
       tags:
         - Ingest
+      operationId: saveEntity
       parameters:
         - name: originId
           in: path
@@ -157,12 +190,12 @@ paths:
         content:
           application/json:
             schema:
-              oneOf: 
-                - $ref: '#/components/schemas/Raw'
-                - $ref: '#/components/schemas/Simplified'
+              oneOf:
+                - $ref: "#/components/schemas/Raw"
+                - $ref: "#/components/schemas/Simplified"
 
       responses:
-        '200':
+        "200":
           description: Valid request. Processing of posted entity has begun.
           content:
             application/json:
@@ -175,22 +208,24 @@ paths:
                   message:
                     type: string
                     example: Processing entity has begun
-        '401':
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
 
     delete:
       summary: Delete entity
       description: |
-        Starting the process for deleting the entity.  
+        Starting the process for deleting the entity.
       tags:
         - Ingest
+      operationId: deleteEntity
       parameters:
         - name: originId
           in: path
+          required: true
           description: The entity id to delete
           schema:
             type: string
-            example: '1234'
+            example: "1234"
         - name: X-Api-Key
           in: header
           description: Api key to validate your source.
@@ -198,11 +233,11 @@ paths:
             type: string
             example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
       responses:
-        '200':
+        "200":
           description: Valid request. Processing of deleting the entity has begun.
-        '401':
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '404':
+        "404":
           description: No entity found with that id.
 
   /routes/v1:
@@ -212,6 +247,7 @@ paths:
         Get all the routes for a specific environment.
       tags:
         - Routes
+      operationId: getRoutes
       parameters:
         - name: first
           in: query
@@ -246,14 +282,14 @@ paths:
             type: string
             example: environment-1637c4d0-e878-4738-b866-152106a4f88c
       responses:
-        '200':
+        "200":
           description: Valid request.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoutesResponse'
+                $ref: "#/components/schemas/RoutesResponse"
               example:
-                total: 16,
+                total: 16
                 pageInfo:
                   hasNextPage: true
                   hasPreviousPage: false
@@ -262,10 +298,10 @@ paths:
                 results:
                   - url: /about-us
                     redirect: null
-                    updatedAt: '2021-05-21T10:22:21.262781Z'
-        '401':
+                    updatedAt: "2021-05-21T10:22:21.262781Z"
+        "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
-        '422':
+        "422":
           description: |
             Can be either of these: 
               * first and last is not allowed at the same time (Parameter 'first', 'last')
@@ -292,41 +328,35 @@ components:
       example:
         title: Enterspeed
         logo: /media-path/enterspeed.svg
-    Raw: 
+    Raw:
       type: object
       description: Headers required
-      example: {
-            "name": "Cool product FTW",
-            "price": 199.99,
-            "features": [
-                {
-                    "name": "color",
-                    "value": "yellow"
-                },
-                {
-                    "name": "size",
-                    "value": "M"
-                }
+      example:
+        {
+          "name": "Cool product FTW",
+          "price": 199.99,
+          "features":
+            [
+              { "name": "color", "value": "yellow" },
+              { "name": "size", "value": "M" },
             ],
-            "information": {
-                "short": "Nice t-shirt",
-                "long": "Nice t-shirt in cotton"
-            }
-          }      
-      additionalProperties: 
+          "information":
+            { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton" },
+        }
+      additionalProperties:
         anyOf:
-        - type: string
-        - type: number
-        - type: array
-        - type: object
+          - type: string
+          - type: number
+          - type: array
+          - type: object
     Simplified:
       type: object
-      required: 
-      - type
-      - url
-      - properties
+      required:
+        - type
+        - url
+        - properties
       properties:
-        type: 
+        type:
           type: string
           description: >
             The type or alias of the type of entity being send to process.
@@ -341,7 +371,7 @@ components:
             Allowed as null if entity is not routable.
         originParentId:
           type: string
-          example: '123'
+          example: "123"
           description: Allowed as null if no hierarchy exists.
         redirects:
           type: array
@@ -353,30 +383,24 @@ components:
             type: string
             example: https://enterspeed.com/product-blue-old/
         properties:
-          example: {
-            "name": "Cool product FTW",
-            "price": 199.99,
-            "features": [
-                {
-                    "name": "color",
-                    "value": "yellow"
-                },
-                {
-                    "name": "size",
-                    "value": "M"
-                }
-            ],
-            "information": {
-                "short": "Nice t-shirt",
-                "long": "Nice t-shirt in cotton"
+          example:
+            {
+              "name": "Cool product FTW",
+              "price": 199.99,
+              "features":
+                [
+                  { "name": "color", "value": "yellow" },
+                  { "name": "size", "value": "M" },
+                ],
+              "information":
+                { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton" },
             }
-          }
-          additionalProperties: 
+          additionalProperties:
             anyOf:
-            - type: string
-            - type: number
-            - type: array
-            - type: object
+              - type: string
+              - type: number
+              - type: array
+              - type: object
     RouteResponse:
       type: object
       properties:
@@ -389,12 +413,12 @@ components:
               description: Returns code 200
         route:
           type: object
-          $ref: '#/components/schemas/ViewProperties'
+          $ref: "#/components/schemas/ViewProperties"
         views:
           type: object
           example:
             gid://Environment/f0edd7b7-23dd-4177-a98a-313127601e97/Source/32ebdcab-ae19-4a71-a09e-a93257b807b7/Entity/4573/BlogPostTile:
-              title: How to increase performace
+              title: How to increase performance
               image: /media-path/performance.jpg
               url: /blog/how-to-increase-performance/
             Navigation:
@@ -448,29 +472,6 @@ components:
               items:
                 - title: How to increase performance
                   url: /how-to-increase-performance/
-    PaginationRequestBase:
-      type: object
-      properties:
-        first:
-          type: number
-          description: >
-            Get the first of the paginated list, aka. get the list in ascending
-            order.
-          example: 100
-        last:
-          type: number
-          description: >
-            Get the last of the paginated list, aka. get the list in descending
-            order.
-          example: 100
-        before:
-          type: string
-          description: |
-            The cursor to get data before.
-        after:
-          type: string
-          description: |
-            The cursor to get data after.
     PageInfoResponse:
       type: object
       properties:
@@ -489,11 +490,11 @@ components:
     PagedResult:
       type: object
       properties:
-        totalCount:
+        total:
           type: number
         pageInfo:
-          $ref: '#/components/schemas/PageInfoResponse'
+          $ref: "#/components/schemas/PageInfoResponse"
         results:
           type: array
     RoutesResponse:
-      $ref: '#/components/schemas/PagedResult'
+      $ref: "#/components/schemas/PagedResult"
