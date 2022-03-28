@@ -32,6 +32,10 @@ tags:
      
      The Ingest API can also be used to `DELETE` already ingested data from Enterspeed.
   - name: Routes
+    description: The routes API is what you use to `GET` all available routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap. 
+
+      
+      Before you can fetch your routes from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
 servers:
   - url: https://api.enterspeed.com
     description: General API
