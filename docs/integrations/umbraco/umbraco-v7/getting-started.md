@@ -89,4 +89,3 @@ Here is an overview of what is processed and send to Enterspeed and what is not.
 - Media
 - Dictionary
 - Members
-- Draft content (unpublished content/saved content)
