@@ -136,10 +136,6 @@ html[data-theme="light"] .menu__link--active:not(.menu__link--sublist),
   color: #043cc7;
 }
 
-html[data-theme="dark"] .es-card__title {
-  color: #fff;
-}
-
 html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
@@ -158,45 +154,10 @@ html[data-theme="dark"] .api-content {
   color: #fff;
 }
 
-.es-card {
-  max-width: 250px;
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
-  border-radius: 4px;
-}
-
-.es-card:hover {
-  opacity: 0.8;
-}
-
-.es-card a {
-  text-decoration: none;
-}
-
-.es-card__image {
-  border-radius: 4px 4px 0 0;
-}
-
-.umbraco-blue-bg {
-  background-color: #3544b1;
-}
-
-.umbraco-orange-bg {
-  background-color: #f79c37;
-}
-
-.umbraco-darkblue-bg {
-  background-color: #1b264f;
-}
-
-.es-card__title {
-  padding: 16px;
-  color: #333;
-}
-
-.es-card-container {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+.redocusaurus h2,
+.redocusaurus h3,
+.redocusaurus h4 {
+  color: unset !important;
 }
 
 .redocusaurus h2,
@@ -241,6 +202,71 @@ html[data-theme="dark"] .api-content {
   font-weight: bold;
 }
 
-.table-of-contents__link+ul {
+.table-of-contents__link + ul {
   display: none;
 }
+
+.pagination-nav {
+  max-width: 700px;
+  margin: 3rem auto 0 auto;
+}
+
+/* Enterspeed Cards --- START */
+.es-card-container {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.es-card {
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+  border-radius: 4px;
+}
+
+.es-card:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.es-card--simple-layout {
+  border-top: 5px solid var(--ifm-color-primary);
+}
+
+.es-card a {
+  text-decoration: none;
+}
+
+.es-card__image {
+  border-radius: 4px 4px 0 0;
+}
+
+.es-card__content {
+  padding: 16px;
+  color: #333;
+}
+
+.es-card__title {
+  font-weight: 500;
+}
+
+.es-card__body {
+  padding-top: 16px;
+}
+
+html[data-theme="dark"] .es-card__title {
+  color: #fff;
+}
+
+/* Colors used on "Integrations"-overview */
+.umbraco-blue-bg {
+  background-color: #3544b1;
+}
+
+.umbraco-orange-bg {
+  background-color: #f79c37;
+}
+
+.umbraco-darkblue-bg {
+  background-color: #1b264f;
+}
+/* Enterspeed Cards --- END */
