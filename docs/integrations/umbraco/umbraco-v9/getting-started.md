@@ -84,6 +84,7 @@ Here is an overview of what is processed and send to Enterspeed and what is not.
 ### Processed entities
 - Published content
 - Dictionary
+- Draft content (unpublished content/saved content)
 
 ### Not processed entities
 - Media
