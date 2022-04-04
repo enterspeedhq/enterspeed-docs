@@ -175,7 +175,7 @@ Particular lookup filter type allows you to be more flexible with your matching 
 | orderBy  | No        | Allows you to specify your desired sorting order                                                     |
 | top      | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression. |
 
-**Examples of supported binary operators:**
+**Examples of supported binary operators, expressions & lambda operators:**
 
 ```javascript title="EQUALS operator"
 // Property value equal to constant string value
@@ -225,8 +225,6 @@ type eq 'article' and properties.isFeatured eq true
 type eq 'article' or type eq 'contentPage'
 ```
 
-**Examples of supported lambda operators:**
-
 ```javascript title="An array contains any matching value:"
 // Contains specific redirect with constant string value
 redirects/any(r: r eq '/old-page')
@@ -236,6 +234,20 @@ properties.tags/any(t: t eq '{p.selectedTag}')
 
 // Contains an articles that featured, matching constant boolean value
 properties.articles/any(a: a.isFeatured eq true)
+```
+
+```javascript title="Check whether the element exists in this collection"
+// Finds matches in favorites selection (array of integers)
+originId in {properties.favoriteIds}
+
+// Finds matches in colors selection (array of strings)
+properties.color in {properties.selectedColors}
+
+// Finds matches in predefined integers array
+originId in (100, 200)
+
+// Finds matches in predefined strings array
+properties.color in ('blue', 'red', 'green')
 ```
 
 ```json title="Lambda operator"
