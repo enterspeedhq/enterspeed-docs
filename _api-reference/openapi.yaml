@@ -345,6 +345,11 @@ components:
             { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton." },
         }
       additionalProperties:
+        description: |
+          Property names:
+            - cannot start with a digit
+            - cannot consist only of underscores
+            - can contain A-Z, a-z letters, digits and underscores
         anyOf:
           - type: string
           - type: number
@@ -385,6 +390,11 @@ components:
             type: string
             example: https://enterspeed.com/product-enterspeed-tshirt-old/
         properties:
+          description: |
+            Property names:
+              - cannot start with a digit
+              - cannot consist only of underscores
+              - can contain A-Z, a-z letters, digits and underscores
           example:
             {
               "name": "Official Enterspeed T-shirt",
