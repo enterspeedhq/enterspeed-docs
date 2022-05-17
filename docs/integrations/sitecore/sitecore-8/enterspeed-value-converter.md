@@ -1,17 +1,17 @@
 ---
 sidebar_position: 11
-title: Value Converter
+title: Field Value Converter
 ---
 
-# Enterspeed Value Converter
-A property value converter is a class that will convert the input value from Umbraco into an [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/tree/master/documentation/entities/properties). To implement your own converter you need to implement the IEnterspeedPropertyValueConverter interface
+# Enterspeed Field Value Converter
+A field value converter is a class that will convert the input value from Sitecore into an [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/tree/master/documentation/entities/properties). To implement your own converter you need to implement the IEnterspeedPropertyValueConverter interface
 
-## IEnterspeedPropertyValueConverter
-This interface contains two methods that needs to be implemented
+## IEnterspeedFieldValueConverter
+This interface contains two methods that need to be implemented
 
 ### IsConverter
 ```csharp
-bool IsConverter(IPublishedPropertyType propertyType);
+bool CanConvert(Field field);
 ```
 
 This method is called when the EnterspeedPropertyService tries to find the proper converter for this property.
@@ -19,51 +19,70 @@ This method is called when the EnterspeedPropertyService tries to find the prope
 An implementation of this method could look like this:
 
 ```csharp
-public bool IsConverter(IPublishedPropertyType propertyType)
+public bool CanConvert(Field field)
 {
-    return propertyType.EditorAlias.Equals("Umbraco.TextBox");
+    return field != null && field.TypeKey.Equals("number", StringComparison.OrdinalIgnoreCase);
 }
 ```
 
 ### Convert
 ```csharp
-IEnterspeedProperty Convert(IPublishedProperty property, string culture);
+IEnterspeedProperty Convert(Item item, Field field, EnterspeedSiteInfo siteInfo, List<IEnterspeedFieldValueConverter> fieldValueConverters, EnterspeedSitecoreConfiguration configuration);
 ```
 
-This is the method that is converting the Umbraco property to an IEnterspeedProperty.
+This is the method that is converting the Sitecore field to an IEnterspeedProperty.
 
 An implementation of this method could look like this:
 
 ```csharp
-public IEnterspeedProperty Convert(IPublishedProperty property, string culture)
+public IEnterspeedProperty Convert(Item item, Field field, EnterspeedSiteInfo siteInfo, List<IEnterspeedFieldValueConverter>    fieldValueConverters, EnterspeedSitecoreConfiguration configuration)
 {
-    var value = property.GetValue<string>(culture);
-    return new StringEnterspeedProperty(property.Alias, value);
+    if (string.IsNullOrEmpty(field.Value))
+    {
+            return null;
+    }
+
+    var value = 0d;
+
+    if (field.Value.Contains("."))
+    {
+        double.TryParse(field.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+    }
+    else if (field.Value.Contains(","))
+    {
+        double.TryParse(field.Value, NumberStyles.Any, new CultureInfo("da-DK"), out value);
+    }
+
+    return new NumberEnterspeedProperty(_fieldService.GetFieldName(field), value);
 }
 ```
 
 ## Registering a converter
-Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
+Converters are registered in a service configurator. You can roll your own service configurator, and register your own converters in this.
 
 Example:
 ```csharp
-[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-public class MyCustomerPropertyValueConverterComposer : IUserComposer
+public class ServicesConfigurator : IServicesConfigurator
 {
-    composition.EnterspeedPropertyValueConverters()
-                .Append<MyCustomPropertyValueConverter>();
+    public void Configure(IServiceCollection services)
+    {
+        services.AddSingleton<IEnterspeedFieldValueConverter, DefaultChecklistFieldValueConverter>();
+    }
 }
 ```
 
-Note that the EnterspeedPropertyService will find the converters in the order that they are registered, which means that if you want to replace a default converter with your own, you need to insert your converter like this:
+Note if you want to override a default converter, you would have to register your own configurator, after the default Enterspeed configurator. This can be done with a patch config file. 
 
-```csharp
-[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-public class MyCustomerPropertyValueConverterComposer : IUserComposer
-{
-    composition.EnterspeedPropertyValueConverters()
-    .InsertBefore<DefaultTextboxPropertyValueConverter,MyCustomPropertyValueConverter>();
-}
+Here is an example of the default configurator being set up in a config file.
+
+```xml
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore>
+        <services>
+            <configurator type="Enterspeed.Source.SitecoreCms.V9.DependencyInjection.ServicesConfigurator, Enterspeed.Source.SitecoreCms.V9" />
+        </services>
+    </sitecore>
+</configuration>
 ```
 
 ## Default converters
