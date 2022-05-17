@@ -3,7 +3,7 @@ sidebar_position: 1
 title: Getting started
 ---
 
-# Getting started Sitecore V9 & Enterspeed
+# Getting started Sitecore V8 & Enterspeed
 
 The easiest way to get started with Sitecore and Enterspeed is using the pre-built Sitecore integration. 
 
@@ -26,7 +26,7 @@ Install-Package Enterspeed.Source.SitecoreCms.V8
 
 **Install specific version**
 
-```bash
+```bash3
 Install-Package Enterspeed.Source.SitecoreCms.V8 -Version <version>  
 ```
 
