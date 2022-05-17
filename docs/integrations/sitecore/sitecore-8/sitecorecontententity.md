@@ -11,14 +11,14 @@ The SitecoreContentEntity is the concrete Sitecore specific implementation of th
 
 ### Abstract
 
-| Name       | Type                                    | Description                                                                 |
-| ---------- | --------------------------------------- | --------------------------------------------------------------------------- |
-| Id         | string                                  | Unique identifier ie. "1078-en-us"                                          |
-| Type       | string                                  | ContentType alias                                                           |
-| Url        | string                                  | The current URL of the content, either relative or absolute                 |
-| Redirects  | string[]                                | Array of redirects for the node                                             |
-| ParentId   | string                                  | Unique identifier of the parent ie. "1078-en-us"                            |
-| Properties | Dictionary<string, [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/blob/master/documentation/entities/properties/README.md)> | Dictionary of property alias and value is the converted Enterspeed property |
+| Name       | Type                                                                                                                                                     | Description                                                                      |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Id         | string                                                                                                                                                   | Unique identifier ie. "e61ddc8e-90ad-4d31-bb00-024987a5f2d1"                     |
+| Type       | string                                                                                                                                                   | ContentType alias                                                                |
+| Url        | string                                                                                                                                                   | The current URL of the content, either relative or absolute                      |
+| Redirects  | string[]                                                                                                                                                 | Array of redirects for the item                                                  |
+| ParentId   | string                                                                                                                                                   | Unique identifier of the parent ie. "e61ddc8e-90ad-4d31-bb00-024987a5f2d1-en-us" |
+| Properties | Dictionary<string, [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/blob/master/documentation/entities/properties/README.md)> | Dictionary of property alias and value is the converted Enterspeed property      |
 
 ### Example
 
@@ -26,7 +26,7 @@ The SitecoreContentEntity is the concrete Sitecore specific implementation of th
 {
   "id": "e61ddc8e-90ad-4d31-bb00-024987a5f2d1",
   "type": "site",
-  "parentId": "16841a71-fdec-4a7d-bc5c-f5d257d95206",
+  "parentId": "e61ddc8e-90ad-4d31-bb00-024987a5f2d1-en-us",
   "url": "https://example.com/about-us",
   "redirects": ["/about"],
   "properties": {
@@ -48,83 +48,49 @@ The SitecoreContentEntity is the concrete Sitecore specific implementation of th
 ### Meta data
 To process Sitecore specific properties we have added a `metaData` object that contains:
 
-| Name       | Type     | Description                                  |
-|------------|----------|----------------------------------------------|
-| name    | string   | ie. en-us                                    |
-| displayName   | string   | Name of the node                             |
-| sitecoreId | string   | Date for when the node has been created      |
-| language | string   | Date for when the node has last been updated |
-| sortOrder   | string[] | Path to ancestor nodes in the tree           |
-| level      | number   | What level in the tree the node has          |
-| createDate      | number   | What level in the tree the node has          |
-| updateDate      | number   | What level in the tree the node has          |
-| updatedBy      | number   | What level in the tree the node has          |
-| fullPath      | number   | What level in the tree the node has          |
-| languages      | number   | What level in the tree the node has          |
-| isAccessRestricted      | number   | What level in the tree the node has          |
-| accessRestrictions      | number   | What level in the tree the node has          |
+| Name               | Type                     | Description                                                              |
+| ------------------ | ------------------------ | ------------------------------------------------------------------------ |
+| name               | string                   | Name of the item                                                         |
+| displayName        | string                   | DisplayName of the item                                                  |
+| sitecoreId         | string                   | Id of the Sitecore Item                                                  |
+| language           | string                   | ie. en-us                                                                |
+| sortOrder          | number                   | What order the item is sorted in                                         |
+| level              | number                   | What level in the tree the item is in                                    |
+| createDate         | string                   | Date for when the item has been created                                  |
+| updateDate         | string                   | Date for when the node has last been updated                             |
+| updatedBy          | string                   | Name of the user that has updated the item                               |
+| fullPath           | string[]                 | Ancestors id's                                                           |
+| languages          | string[]                 | Langauge versions available                                              |
+| isAccessRestricted | boolean                  | Value determining if the item is restricted for anonymous users/visitors |
+| accessRestrictions | Dictionary<string, bool> | List of users and, and if they can read                                  |
 
 ```json
 {
   "properties": {
-    "metaData": {
-      "culture": {
-        "name": "culture",
-        "type": "string",
-        "value": "en-US"
-      },
-      "nodeName": {
-        "name": "nodeName",
-        "type": "string",
-        "value": "This is the name of a node"
-      },
-      "createDate": {
-        "name": "createDate",
-        "type": "string",
-        "value": "09-12-2020T10:49:01:00"
-      },
-      "updateDate": {
-        "name": "updateDate",
-        "type": "string",
-        "value": "10-12-2020T10:49:01:00"
-      },
-      "nodePath": {
-        "name": "nodePath",
-        "type": "array",
-        "items": [
-          {
-            "name": null,
-            "type": "number",
-            "value": 1061,
-            "precision": 0
-          },
-          {
-            "name": null,
-            "type": "number",
-            "value": 1062,
-            "precision": 0
-          },
-          {
-            "name": null,
-            "type": "number",
-            "value": 1063,
-            "precision": 0
-          },
-        ]
-      },
-      "sortOrder": {
-          "name": "sortOrder",
-          "type": "number",
-          "value": 1,
-          "precision": 0
-      },
-      "level": {
-          "name": "level",
-          "type": "number",
-          "value": 1,
-          "precision": 0
-      },
-    },
-  }
+      "metaData": {
+          "name": "Name of the item",
+          "displayName": "displayName of the item",
+          "sitecoreId": "{0138AB78-5146-4A0C-82F5-DD2FB786C381}",
+          "language": "en",
+          "sortOrder": -463,
+          "level": 4,
+          "createDate": "2022-05-02T12:33:40",
+          "updateDate": "2022-05-09T13:03:58",
+          "updatedBy": "sitecore\\admin",
+          "fullPath": [
+            "984169440b16415e8a04d19ca522caed-en",
+            "a5fb76a88b9341c19d9f7ec0f04c654b-en",
+            "4228f830dbc64303ba22fbb5faae4af6-en",
+            "92a5b6dec6474ee4bce685475d10a650-en",
+            "0138ab7851464a0c82f5dd2fb786c381-en"
+          ],
+          "languages": [
+            "sv-SE",
+            "en"
+          ],
+          "isAccessRestricted": false,
+          "accessRestrictions": []
+        },
+    }
 }
 ```
