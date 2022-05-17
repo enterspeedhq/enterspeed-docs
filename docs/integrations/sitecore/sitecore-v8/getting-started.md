@@ -3,104 +3,74 @@ sidebar_position: 1
 title: Getting started
 ---
 
-# Getting started Umbraco V8 & Enterspeed
+# Getting started Sitecore V9 & Enterspeed
 
-The easiest way getting started with Umbraco and Enterspeed is using the pre-built Umbraco integration. 
+The easiest way to get started with Sitecore and Enterspeed is using the pre-built Sitecore integration. 
 
-**GitHub: [Enterspeed Source Umbraco CMS](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms)**
+**GitHub: [Enterspeed Source Sitecore CMS](https://github.com/enterspeedhq/enterspeed-source-sitecore-cms)**
 
-This integration takes care of calling the Enterspeed Ingest API when changes occurs in Umbraco. For a full overview of what Umbraco entities are send to Enterspeed, please see Umbraco entities.
+This integration takes care of calling the Enterspeed Ingest API when changes occur in Sitecore.
 
 ## Installation
-**Prerequisite:** Umbraco 8.7 or above.
+**Prerequisite:** Sitecore 8 or above.
 
-The fastest way to get up and running, is to install the Enterspeed Umbraco integration with NuGet.
+The fastest way to get up and running is to install the Enterspeed Sitecore integration with NuGet.
 
-**NuGet:** [Enterspeed.Source.UmbracoCms.V8](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V8/)
+**NuGet:** [Enterspeed.Source.SitecoreCms.V8](https://www.nuget.org/packages/Enterspeed.Source.SitecoreCms.V8/)
 
 You can either install it manually from the NuGet manager in Visual Studio or execute the Install-Package command:
 
 ```bash
-Install-Package Enterspeed.Source.UmbracoCms.V8
+Install-Package Enterspeed.Source.SitecoreCms.V8
 ```
 
 **Install specific version**
 
 ```bash
-Install-Package Enterspeed.Source.UmbracoCms.V8 -Version <version>  
+Install-Package Enterspeed.Source.SitecoreCms.V8 -Version <version>  
 ```
 
-:::info
-Using Umbraco Cloud? If you have used the Umbraco Cloud UaaS.cmd tool to setup your solution, 
-you need to manually update the referenced dlls after installing the Enterspeed NuGet package. Specifically Microsoft.Bcl.AsyncInterfaces.dll needs to be updated. 
+The NuGet package installs config files into this directory; verify that this folder contains config files.
 
-From Visual Studio navigate to the [Namespace].Web\bin folder, and right click on Microsoft.Bcl.AsyncInterfaces.dll, and select "Update Reference".
-:::
-
-When the installation above has completed two new dashboards has been added to your Umbraco solution. 
-
-- **Content:** To seed and check errors when data is ingested
-- **Settings:** To configure Enterspeed in Umbraco
+```bash
+~\App_Config\Include\Enterspeed
+```
 
 ## Configuration
-Before Umbraco starts sending data to Enterspeed you will need to add a little piece of configuration.
+Once installed, your Sitecore instance will be loaded with a new item in ```/Sitecore/system``` called "Enterspeed Configuration".
 
-Luckily this can easily be done within Umbraco itself or via [Web.config](#webconfig).
+You will have to create a Site configuration, for each Enterspeed configuration you would like to create. 
 
-### Source API key and Ingest endpoint
-Firstly go to Settings and then select the Enterspeed Settings dashboard in your Umbraco backoffice.
+In the Site configuration file, we have 7 fields
+* API Base Url
 
-You should see something like this:
+    > This is the api url for Enterspeed. Unless you have gotten a specific Enterspeed endpoint to call, please use: https://api.enterspeed.com
 
-![Umbraco v8 Enterspeed Settings](/img/docs/integrations/umbraco/umbraco-v8-enterspeed-settings.png)
+* API Key
+   
+    > This is the Source API key. This API key can be found in the settings section of your tenant in https://app.enterspeed.com/ (Settings/Data sources)
 
-#### Enterspeed endpoint
-The Enterspeed endpoint is the ingest endpoint, that Umbraco will use to send content to Enterspeed.
+* Enabled Sites
 
-Unless you have gotten a specific Enterspeed endpoint to call, please use: [https://api.enterspeed.com](https://api.enterspeed.com/)
+    > With this field you are defining what area of the content is covered by the Site configuration. All items within this area, are pushed to the source defined in this configuration.
 
-#### Media domain
-The Media domain is to tell the Enterspeed integration where you have your media placed, e.g. if you have a CDN.
+* Media Base Url
+    
+    > Base url for media being pushed to Enterspeed. This would be typically be a url provided by your CDN for media and file hosting
 
-If you leave it empty, it will just use your current Umbraco installation domain.
+* Site Base Url
 
-### Api key
-Before you can insert an API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/source).
+    > Base Url for your site.
 
-The API key looks something like this: source-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. When you have gotten it, insert it in the Api key input field.
+* Publish Hook Url
 
-### Preview API key
+    > You can call an external hook, when publish has finished. This could for example trigger a build in Netlify. 
 
-Optional API key, serves the purpose of ingesting draft and unpublished content to the secondary (preview) source. Can be leveraged for your content editors to preview content, similarly to in-built 'Save & Preview' functionality in Umbraco.
-
-Before you can insert a Preview API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/source).
-
-Enterspeeds connector will automatically push data to relevant primary or secondary sources based on actions performed in Umbraco backoffice, such as - Unpublish, trash, save, publish, etc.
-
-### Testing connection
-
-When you have inserted the Enterspeed endpoint and the API key(-s) click on Test connection and make sure that you get a successful response. When you do go ahead and Save the configuration. 
-
-## Web.config
-
-For Web.config, please use the following appSettings:
-
-```xml
-<add key="Enterspeed.Endpoint" value="" />
-
-<add key="Enterspeed.MediaDomain" value="" />
-
-<add key="Enterspeed.Apikey" value="" />
-```
-
-## Processed Umbraco entities
-Here is an overview of what is processed and send to Enterspeed and what is not.
+* Enable Preview
+   
+    > With this checkbox you are defining where this configuration is for a preview site.
 
 ### Processed entities
 - Published content
 - Dictionary
-- Draft content (unpublished content/saved content)
-
-### Not processed entities
-- Media
-- Members
+- Draft content (unpublished content/saved content if a configuration is set as preview, and the content is targeted in Enabled sites)
