@@ -1,11 +1,11 @@
 ---
 sidebar_position: 5
-title: UmbracoContentEntity
+title: SitecoreContentEntity
 ---
 
-# UmbracoContentEntity
+# SitecoreContentEntity
 
-The UmbracoContentEntity is the concrete Umbraco specific implementation of the [IEnterspeedEntity](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/tree/master/documentation/entities).
+The SitecoreContentEntity is the concrete Sitecore specific implementation of the [IEnterspeedEntity](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/tree/master/documentation/entities).
 
 ## Implementation details
 
@@ -24,9 +24,9 @@ The UmbracoContentEntity is the concrete Umbraco specific implementation of the 
 
 ```json
 {
-  "id": "1055-en-us",
+  "id": "e61ddc8e-90ad-4d31-bb00-024987a5f2d1",
   "type": "site",
-  "parentId": "1054-en-us",
+  "parentId": "16841a71-fdec-4a7d-bc5c-f5d257d95206",
   "url": "https://example.com/about-us",
   "redirects": ["/about"],
   "properties": {
@@ -46,17 +46,23 @@ The UmbracoContentEntity is the concrete Umbraco specific implementation of the 
 ```
 
 ### Meta data
-To process Umbraco specific properties we have added a `metaData` object that contains:
+To process Sitecore specific properties we have added a `metaData` object that contains:
 
 | Name       | Type     | Description                                  |
 |------------|----------|----------------------------------------------|
-| culture    | string   | ie. en-us                                    |
-| nodeName   | string   | Name of the node                             |
-| createDate | string   | Date for when the node has been created      |
-| updateDate | string   | Date for when the node has last been updated |
-| nodePath   | string[] | Path to ancestor nodes in the tree           |
-| sortOrder  | number   | What order the nodes are sorted in           |
+| name    | string   | ie. en-us                                    |
+| displayName   | string   | Name of the node                             |
+| sitecoreId | string   | Date for when the node has been created      |
+| language | string   | Date for when the node has last been updated |
+| sortOrder   | string[] | Path to ancestor nodes in the tree           |
 | level      | number   | What level in the tree the node has          |
+| createDate      | number   | What level in the tree the node has          |
+| updateDate      | number   | What level in the tree the node has          |
+| updatedBy      | number   | What level in the tree the node has          |
+| fullPath      | number   | What level in the tree the node has          |
+| languages      | number   | What level in the tree the node has          |
+| isAccessRestricted      | number   | What level in the tree the node has          |
+| accessRestrictions      | number   | What level in the tree the node has          |
 
 ```json
 {
