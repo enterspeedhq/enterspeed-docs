@@ -14,9 +14,13 @@ Each rendering reference sent to Enterspeed could have these properties:
 * ```parameters``` - an array of key/values inserted on the rendering options
 * ```datasource``` - a reference to the inserted datasource item
 
+### Dictionaries
+
+Published dictionary items will be pushed to Enterspeed and exist as datasources of type dictionaryEntry.
+
 ### Renderings
 
-Renderings are processed separately, as well, but only if the rendering is inserted on the presentation details of a content item which resides in an enabled site. This means that newly created renderings are not processed until they're inserted to be rendered on content for which you have enabled.
+Renderings are processed separately, as well, but only if the rendering is inserted on the presentation details of a content item that resides in an enabled site. This means that newly created renderings are not processed until they're inserted to be rendered on content for which you have enabled.
 
 ### Supported field types
 
