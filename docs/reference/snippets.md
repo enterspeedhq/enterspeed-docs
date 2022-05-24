@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # ✂️ Schema snippets
@@ -11,6 +11,24 @@ Below you'll find a collection of useful schema snippets. Use these as a startin
 These snippets are meant as examples and are meant to be modified to fit your own data structure.
 
 :::
+
+## Map all source entity properties
+
+```json
+{
+  "sourceEntityTypes": [
+    "product"
+  ],
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {
+    "product": {
+      "*": "p"
+    }
+  }
+}
+```
 
 ## Site settings
 
