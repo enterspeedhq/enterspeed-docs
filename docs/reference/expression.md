@@ -59,7 +59,9 @@ Accessing properties can be done by typing `p.` followed by the name of the prop
 
 ```json title="Property with default type (string)"
 {
-  "sourceEntityTypes": ["frontPage"],
+  "triggers": {
+    "umbraco": ["frontPage"]
+  },
   "route": {
     "url": "{url}"
   },
@@ -73,7 +75,9 @@ The default type of a property is a **string**. If you need another property typ
 
 ```json title="Property with type number"
 {
-  "sourceEntityTypes": ["frontPage"],
+  "triggers": {
+    "umbraco": ["frontPage"]
+  },
   "route": {
     "url": "{url}"
   },

@@ -13,9 +13,9 @@ Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. 
 
 ```json
 {
-  "sourceEntityTypes": [
-    "navigationItem"
-  ],
+  "triggers": {
+    "umbraco": ["navigationItem"]
+  },
   "actions": [
     {
       "type": "process",
@@ -46,7 +46,7 @@ Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. 
 }
 ```
 
-*Save* the draft and *deploy* your schema.
+_Save_ the draft and _deploy_ your schema.
 
 **Actions**
 The key part of the schema is actions:
@@ -66,19 +66,18 @@ In short this tells another schema to update if this one affected.
 [Read more about actions](https://docs.enterspeed.com/reference/fields#actions)
 
 ## Navigation Group schema
+
 Next we want to create a schema called “Get Main Navigation”, so hit that create button again.
 
 Replace the content with this snippet:
 
 ```json
 {
-  "sourceEntityTypes": [
-    "navigationGroup"
-  ],
+  "triggers": {
+    "umbraco": ["navigationGroup"]
+  },
   "route": {
-    "handles": [
-      "mainNavigation"
-    ]
+    "handles": ["mainNavigation"]
   },
   "properties": {
     "children": {
@@ -101,6 +100,7 @@ Replace the content with this snippet:
   }
 }
 ```
+
 The key part here is reference for the children. This will make sure to resolve the view when referenced.
 
 [Read more about reference](https://docs.enterspeed.com/reference/property-types#reference)

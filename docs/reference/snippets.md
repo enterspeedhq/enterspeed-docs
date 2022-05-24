@@ -37,7 +37,9 @@ A schema containing essential site settings, here Site name, Logo and Login page
 ```json title="Site settings"
 {
   "alias": "settings",
-  "sourceEntityTypes": ["site"],
+  "triggers": {
+    "umbraco": ["site"]
+  },
   "route": {
     "handles": ["settings"]
   },
@@ -61,7 +63,9 @@ This schema can be used in other schemas using the [reference type](../reference
 
 ```json title="SEO Composition"
 {
-  "sourceEntityTypes": ["frontpage", "article", "articles"],
+  "triggers": {
+    "umbraco": ["frontpage", "article", "articles"]
+  },
   "properties": {
     "title": {
       "type": "string",
@@ -92,17 +96,17 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 
 ```json title="SEO Composition used in another schema"
 {
-    "sourceEntityTypes": [
-        "article"
-    ],
-    "properties": {
-        "seoComposition": {
-            "type": "reference",
-            "gid": "{id}",
-            "view": "seoComposition"
-        },
-        ...
-    }
+  "triggers": {
+    "umbraco": ["article"]
+  },
+  "properties": {
+      "seoComposition": {
+          "type": "reference",
+          "gid": "{id}",
+          "view": "seoComposition"
+      },
+      ...
+  }
 }
 ```
 
@@ -112,7 +116,9 @@ A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/
 
 ```json
 {
-  "sourceEntityTypes": ["frontpage", "page"],
+  "triggers": {
+    "umbraco": ["frontpage", "page"]
+  },
   "properties": {
     "name": "{properties.breadcrumbNameOverride ?? properties.metaData.name}",
     "url": "{url}",
@@ -131,7 +137,9 @@ A schema for listing all the products related to a specific category.
 
 ```json
 {
-  "sourceEntityTypes": ["category"],
+  "triggers": {
+    "umbraco": ["category"]
+  },
   "route": {
     "url": "/categories/{p.slug}"
   },
@@ -163,7 +171,9 @@ A schema for listing the 3 highest rated product reviews.
 
 ```json
 {
-  "sourceEntityTypes": ["reviews"],
+  "triggers": {
+    "umbraco": ["reviews"]
+  },
   "properties": {
     "reviews": {
       "type": "array",
