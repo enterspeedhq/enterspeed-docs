@@ -1,11 +1,9 @@
 ---
 sidebar_position: 4
-title: 3. Designing your API's
+title: 3. Designing your APIs
 ---
 
-import ReactPlayer from 'react-player/lazy'
-
-# Designing your API's in Enterspeed
+# Designing your APIs in Enterspeed
 
 :::info
 If you get stuck on the way, don't hesitate to reach out to us. We're more than happy to help! You can contact us at [support@enterspeed.com](mailto:support@enterspeed.com).
@@ -19,13 +17,15 @@ You find the schema editor in Enterspeed under **Schemas** and **Partial schemas
 
 The powerful thing about setting up schemas yourself is you get to decide precisely which data you need and how it gets structured.
 
-Let's take a look at how a schema can be structured. In _Example schemas & pertial schemas_ below you'll see three examples from this project. We'll look at the **contentPage** example.
+Let's take a look at how a schema can be structured. In _Example schemas & partial schemas_ below you'll see three examples from this project. We'll look at the **contentPage** example.
 
-The first thing you need to define is your **sourceEntityTypes** - what kind of data should this schema use? You can find a list of all the Source Entity Types in the **Source entities** table in your Enterspeed-project under **Type**.
+The first thing you need to define is your **triggers**. Triggers consist of one or more source groups, which contain one or more source entity types (the data your schema should use). You can find a list of all the Source Entity Types in the **Source entities** table in your Enterspeed-project under **Type**.
 
 ```json
 {
-  "sourceEntityTypes": ["contentPage"]
+  "triggers": {
+    "umbracoCloud": ["contentPage"]
+  }
 }
 ```
 
@@ -76,26 +76,24 @@ If we don't create this partial schema, the ContentPage-schema won't work.
 ```
 
 :::tip
-When designing your schema, use the **Source entities** button to both tests and view your Source entities.
+When designing your schema, use the **Source entities** button to both test and view your Source entities.
 :::
 
-When you're finished designing your schema, it's time to deploy it. Click the **Deploy schema** and choose the version of your schema you wish to deploy.
+When you're finished designing your schema, it's time to deploy it. Click the **Save draft** button. Next click the **Deploy schemas** button in the top right corner.
 
-:::caution
-Remember to check the box of your Sources. In the example below, our source is Umbraco Cloud.
-
-If you don't select any Sources, nothing will be deployed.
-:::
+This will open the deploy pane. Choose the environment you wish to deploy to (e.g. Production) and click the **Deploy 1 change**-button.
 
 ![Deploy schema](/img/docs/examples/deploy-schema.png)
 
-## Example schemas & pertial schemas
+## Example schemas & partial schemas
 
 ### ContentPage
 
 ```json title="Example schema: ContentPage"
 {
-  "sourceEntityTypes": ["contentPage"],
+  "triggers": {
+    "umbracoCloud": ["contentPage"]
+  },
   "route": {
     "url": "{url}"
   },
@@ -119,12 +117,12 @@ If you don't select any Sources, nothing will be deployed.
 
 ```json title="Example partial schema: umbraco-blockText"
 {
-	"name": "Block Text",
-	"alias": "umbraco-blockText",
-	"properties": {
-		"text": "{item.content.text}",
+  "name": "Block Text",
+  "alias": "umbraco-blockText",
+  "properties": {
+    "text": "{item.content.text}",
     "alias": "{item.contentType}"
-	}
+  }
 }
 ```
 
@@ -132,7 +130,9 @@ If you don't select any Sources, nothing will be deployed.
 
 ```json title="Example schema: Navigation"
 {
-  "sourceEntityTypes": ["home"],
+  "triggers": {
+    "umbracoCloud": ["home"]
+  },
   "route": {
     "handles": ["navigation"]
   },
@@ -171,7 +171,3 @@ You can find all of the example schemas on [Github](https://github.com/enterspee
 - [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/partial-schemas/umbraco-blockText.json) **(Partial schema)**
 
 :::
-
-## Testing your schemas
-
-<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
