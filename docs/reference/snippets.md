@@ -14,11 +14,13 @@ These snippets are meant as examples and are meant to be modified to fit your ow
 
 ## Map all source entity properties
 
+A schema which dynamically maps all properties from your source entities to the `product`-object.
+
 ```json
 {
-  "sourceEntityTypes": [
-    "product"
-  ],
+  "triggers": {
+    "umbraco": ["product"]
+  },
   "route": {
     "url": "{url}"
   },

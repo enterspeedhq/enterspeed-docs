@@ -7,8 +7,8 @@ sidebar_position: 4
 The path selector is based on JSON Path. It can be used to select and filter data from the source entity.
 This is available as input for [array](./property-types#path-input) and for the [dynamic property type](./property-types#dynamic) to map data from the source entity.
 
-For dynamic mapping the selector should result in a property value (single token).
-When using `$path` for the array input the result is expected to be list of property values (multiple tokens).
+For dynamic mapping, the selector should result in a property value (single token).
+When using `$path` for the array input the result is expected to be a list of property values (multiple tokens).
 
 Mapping all source entity properties:
 
@@ -18,7 +18,7 @@ Mapping all source entity properties:
 }
 ```
 
-Consider, you want the entire list of product features:
+Consider, that you want the entire list of product features:
 
 ```json
 "features": {
