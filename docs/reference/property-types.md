@@ -14,6 +14,7 @@ title: Property types
 | [Object](#object)       | Mapping of an object. <br /><br />Required fields: `type` `properties`                                                                                                                                        |
 | [Reference](#reference) | Referencing another schema. <br /><br /> Required fields: `type` `alias` - use `id` **OR** `originId`                                                                                                         |
 | [Partial](#partial)     | Referencing a partial schema to map the data into. <br /><br />Required fields: `type` `input` `alias`                                                                                                        |
+| [Dynamic](#dynamic)     | Dynamic mapping using the [path selector](./path-selector). <br /><br />Required fields: `*`                                                                                                                                                             |
 
 ## string
 
@@ -115,6 +116,46 @@ With expression input, you can reference the desired property on the source enti
 "tabs": {
   "type": "array",
   "input": "{p.tabs}",
+  "var": "tab",
+  "items": {
+    "type": "object",
+    "properties": {
+      "title": "{tab.title}",
+      "content": "{tab.content}"
+    }
+  }
+}
+```
+
+### `$path` input
+
+With path input, you can select the desired items on the source entity using the [path selector](./path-selector).
+
+```json title="$path input"
+"tabs": {
+  "type": "array",
+  "input": {
+    "$path": "p.tabs[*]"
+  },
+  "var": "tab",
+  "items": {
+    "type": "object",
+    "properties": {
+      "title": "{tab.title}",
+      "content": "{tab.content}"
+    }
+  }
+}
+```
+
+Filter items:
+
+```json title="$path input with filter"
+"tabs": {
+  "type": "array",
+  "input": {
+    "$path": "p.tabs[?(@.display==true)]"
+  },
   "var": "tab",
   "items": {
     "type": "object",
@@ -434,3 +475,24 @@ The partial mapping property type allows for dynamically including partial schem
 ```
 
 The `input` defines what goes into the partial schema and the `alias` is used to resolve what partial schema to use. So in this case we could have partial schema with alias: Block-headline.
+
+---
+
+## dynamic
+
+
+
+### Fields
+
+| Property | Required? | Description                                   |
+| -------- | --------- | --------------------------------------------- |
+| `*`      | **Yes**   | [Path selector](./path-selector)           |
+
+
+### Examples
+
+```json title="Property type: dynamic"
+"blocks": {
+  "*": "p.contentBlocks"
+}
+```

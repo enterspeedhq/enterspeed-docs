@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # ✂️ Schema snippets
@@ -11,6 +11,26 @@ Below you'll find a collection of useful schema snippets. Use these as a startin
 These snippets are meant as examples and are meant to be modified to fit your own data structure.
 
 :::
+
+## Map all source entity properties
+
+A schema which dynamically maps all properties from your source entities to the `product`-object.
+
+```json
+{
+  "triggers": {
+    "umbraco": ["product"]
+  },
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {
+    "product": {
+      "*": "p"
+    }
+  }
+}
+```
 
 ## Site settings
 
