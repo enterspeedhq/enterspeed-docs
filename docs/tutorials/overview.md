@@ -15,4 +15,7 @@ import {Card, CardContainer} from '../../src/components/card';
   <Card title="Umbraco & Next.js" link="tutorials/umbraco-nextjs/intro">
     Learn how to use Enterspeed with Umbraco V8 and Umbraco V9.
   </Card>
+  <Card title="Product list with CMS and PIM" link="tutorials/product-list-cms-pim/getting-started">
+    Learn how to create a product list with data from your CMS and PIM.
+  </Card>
 </CardContainer>
