@@ -5,14 +5,89 @@ title: 4. Create schemas
 
 # Create schemas
 
-This is of course a pretty basic example, but the concept behind it can be extended and modified to fit a lot of different cases.
+Now lets transform that data and create the output we need for our frontend.
 
-If you haven't already, you can take a look at our [Setting up Enterspeed with Umbraco and Next.js
-](https://docs.enterspeed.com/tutorials/umbraco-nextjs/intro) tutorial.
+## PIM categories
 
-## 🙋 Don't get stuck - we're here to help
-If you have any questions, don't hesitate to contact us. You have several options, you can:
+First create a schema names _PimCategory_:
 
-- Send us an email: [support@enterspeed.com](mailto:support@enterspeed.com)
-- Submit a ticket: [Create a new ticket](https://support.enterspeed.com/support/tickets/new)
-- Use our contact form: Go to [Enterspeed.com](https://enterspeed.com)
+```json
+{
+	"sourceEntityTypes": [
+		"PimCategory"
+	],
+	"properties": {
+		"image": "{p.image}",
+		"title": "{p.title}",
+		"lead": "{p.lead}",
+		"button": "{p.button}"
+	}
+}
+```
+
+This will hold the structure of our category coming from the PIM.
+
+## Product Categories
+
+```json
+{
+	"sourceEntityTypes": [
+		"productList"
+	],
+	"route": {
+		"url": "{url}"
+	},
+	"properties": {
+		"headline": "{p.headline}",
+		"lead": "{p.lead}",
+		"listing": {
+			"type": "array",
+			"input": {
+				"$lookup": {
+					"operator": "equals",
+					"sourceEntityType": "CategoryList",
+					"sourceEntityProperty": "originId",
+					"matchValue": {
+						"$exp": "CategoryList"
+					}
+				}
+			},
+			"items": {
+				"type": "reference",
+				"gid": {
+					"$exp": "{item.id}"
+				},
+				"view": "productCategoryList"
+			}
+		}
+	}
+}
+```
+
+## Product Category List
+
+```json
+{
+	"sourceEntityTypes": [
+		"CategoryList"
+	],
+	"properties": {
+		"vacationHouses": {
+			"type": "array",
+			"input": {
+				"$lookup": {
+					"filter": "type eq 'PimCategory'",
+					"top": 4
+				}
+			},
+			"items": {
+				"type": "reference",
+				"gid": {
+					"$exp": "{item.id}"
+				},
+				"alias": "PimCategory"
+			}
+		}
+	}
+}
+```
