@@ -1,0 +1,18 @@
+---
+sidebar_position: 3
+title: 4. Create schemas
+---
+
+# Create schemas
+
+This is of course a pretty basic example, but the concept behind it can be extended and modified to fit a lot of different cases.
+
+If you haven't already, you can take a look at our [Setting up Enterspeed with Umbraco and Next.js
+](https://docs.enterspeed.com/tutorials/umbraco-nextjs/intro) tutorial.
+
+## 🙋 Don't get stuck - we're here to help
+If you have any questions, don't hesitate to contact us. You have several options, you can:
+
+- Send us an email: [support@enterspeed.com](mailto:support@enterspeed.com)
+- Submit a ticket: [Create a new ticket](https://support.enterspeed.com/support/tickets/new)
+- Use our contact form: Go to [Enterspeed.com](https://enterspeed.com)
