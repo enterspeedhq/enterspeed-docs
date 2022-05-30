@@ -9,7 +9,7 @@ Now lets transform that data and create the output we need for our frontend.
 
 ## PIM categories
 
-First create a schema names _PimCategory_:
+First create a schema named _PimCategory_:
 
 ```json
 {
@@ -27,7 +27,41 @@ First create a schema names _PimCategory_:
 
 This will hold the structure of our category coming from the PIM.
 
+## Product Category List
+
+Now create a _ProductCategoryList_ schema:
+
+```json
+{
+	"sourceEntityTypes": [
+		"CategoryList"
+	],
+	"properties": {
+		"vacationHouses": {
+			"type": "array",
+			"input": {
+				"$lookup": {
+					"filter": "type eq 'PimCategory'",
+					"top": 4
+				}
+			},
+			"items": {
+				"type": "reference",
+				"gid": {
+					"$exp": "{item.id}"
+				},
+				"alias": "PimCategory"
+			}
+		}
+	}
+}
+```
+
+This is where we control number of items, based on a _PimCategory_ lookup filter.
+
 ## Product Categories
+
+Finally we need a _ProductCategories_ schema, that references our _ProductCategoryList_ schema.
 
 ```json
 {
@@ -64,30 +98,4 @@ This will hold the structure of our category coming from the PIM.
 }
 ```
 
-## Product Category List
-
-```json
-{
-	"sourceEntityTypes": [
-		"CategoryList"
-	],
-	"properties": {
-		"vacationHouses": {
-			"type": "array",
-			"input": {
-				"$lookup": {
-					"filter": "type eq 'PimCategory'",
-					"top": 4
-				}
-			},
-			"items": {
-				"type": "reference",
-				"gid": {
-					"$exp": "{item.id}"
-				},
-				"alias": "PimCategory"
-			}
-		}
-	}
-}
-```
+This schema holds the data from our CMS (_headline_ and _lead_) and looks up the PIM data and matches the _originId_.
