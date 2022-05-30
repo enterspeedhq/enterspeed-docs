@@ -166,7 +166,8 @@ paths:
           in: header
           description: |
             If the entity is routable send the URL. Skip if entity is not routable.
-            Only used for raw body
+            Only used for raw body. 
+            Note: The URL needs to begin with a leading slash.
           schema:
             type: string
             example: "/product-1"
@@ -210,6 +211,8 @@ paths:
                     example: Processing entity has begun
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "422":
+          description: Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors.
 
     delete:
       summary: Delete entity
@@ -371,11 +374,13 @@ components:
             Only used for raw body
         url:
           type: string
-          description: >
+          description: |
             If the entity is routable send the URL. Otherwise leave as
             null.  
 
             Allowed as null if entity is not routable.
+
+            Note: The URL needs to begin with a leading slash.
         originParentId:
           type: string
           example: "123"

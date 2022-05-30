@@ -14,7 +14,7 @@ title: Property types
 | [Object](#object)       | Mapping of an object. <br /><br />Required fields: `type` `properties`                                                                                                                                        |
 | [Reference](#reference) | Referencing another schema. <br /><br /> Required fields: `type` `alias` - use `id` **OR** `originId`                                                                                                         |
 | [Partial](#partial)     | Referencing a partial schema to map the data into. <br /><br />Required fields: `type` `input` `alias`                                                                                                        |
-| [Dynamic](#dynamic)     | Dynamic mapping using the [path selector](./path-selector). <br /><br />Required fields: `*`                                                                                                                                                             |
+| [Dynamic](#dynamic)     | Dynamic mapping using the [path selector](./path-selector). <br /><br />Required fields: `*`                                                                                                                  |
 
 ## string
 
@@ -107,6 +107,21 @@ Array property type is designed for working with collections.
 | `input`  | **Yes**   | States input, where to retrieve items collection to work with from. Support input types: `string` `$exp` `$lookup` |
 | `items`  | No        | Used for mapping results.                                                                                          |
 | `var`    | No        | Collection iteration variable name. Default value is - `item`.                                                     |
+
+### `string` type
+
+A simple example showing how to use a `string` type in `items`.
+
+```json title="string simple example"
+"categories": {
+  "type": "array",
+  "input": "{p.categories}",
+  "items": {
+    "type": "string",
+    "value": "{item}"
+  }
+},
+```
 
 ### `$exp` input
 
@@ -480,14 +495,11 @@ The `input` defines what goes into the partial schema and the `alias` is used to
 
 ## dynamic
 
-
-
 ### Fields
 
-| Property | Required? | Description                                   |
-| -------- | --------- | --------------------------------------------- |
-| `*`      | **Yes**   | [Path selector](./path-selector)           |
-
+| Property | Required? | Description                      |
+| -------- | --------- | -------------------------------- |
+| `*`      | **Yes**   | [Path selector](./path-selector) |
 
 ### Examples
 
