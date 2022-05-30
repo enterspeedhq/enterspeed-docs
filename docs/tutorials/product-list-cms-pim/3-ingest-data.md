@@ -7,11 +7,13 @@ title: 3. Ingest data
 
 Now for ingesting some data. As mentionened this is dummy data, so feel free to change it as you see fit. For an real-life solution an integration is of course required, you can see which we already have saving you the trouble.
 
-[Integrations](https://docs.enterspeed.com/integrations)
+[See our integrations](https://docs.enterspeed.com/integrations)
+
+## CMS Product List
 
 First we want to create the _Product list_ that comes from the CMS and holds settings such as which URL it should be available at.
 
-Use this snippet:
+Use this snippet for ingesting:
 
 ```json
 {
@@ -23,11 +25,34 @@ Use this snippet:
   }
 }
 ```
-Then we need to create the PIM categories, you can create as many as you want. Here is one for your inspiration:
+![CMS Product List](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-mockup-cms-product-list.png)
+Use the ``API key`` from your _Product List Demo (CMS)_ when ingesting and note the ``id``.
+
+## PIM Category List
+For now, we need a source entity for handling data updates when working with multiple sources. Use the snippet below.
+
+```json
+/* id: pim-category-list */
+{
+  "type": "CategoryList",
+  "url": null,
+  "properties": {
+  }
+}
+```
+
+We have an update on the way, that will make this step obsolete.
+
+[See and subscribe to Enterspeed Product Updates](https://updates.enterspeed.com/)
+
+## PIM categories
+
+Then we need to create the PIM categories, you can create as many as you want.
 
 And here's some snippets:
 
 ```json
+/* id: pim-category-1 */
 {
   "type": "PimCategory",
   "url": null,
@@ -41,6 +66,7 @@ And here's some snippets:
 ```
 
 ```json
+/* id: pim-category-2 */
 {
   "type": "PimCategory",
   "url": null,
@@ -54,6 +80,7 @@ And here's some snippets:
 ```
 
 ```json
+/* id: pim-category-3 */
 {
   "type": "PimCategory",
   "url": null,
@@ -67,6 +94,7 @@ And here's some snippets:
 ```
 
 ```json
+/* id: pim-category-4 */
 {
   "type": "PimCategory",
   "url": null,
@@ -80,6 +108,7 @@ And here's some snippets:
 ```
 
 ```json
+/* id: pim-category-5 */
 {
   "type": "PimCategory",
   "url": null,
@@ -93,6 +122,7 @@ And here's some snippets:
 ```
 
 ```json
+/* id: pim-category-6 */
 {
   "type": "PimCategory",
   "url": null,

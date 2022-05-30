@@ -9,13 +9,15 @@ Now lets transform that data and create the output we need for our frontend.
 
 ## PIM categories
 
-First create a schema named _PimCategory_:
+First create a schema named _Pim Category_:
 
 ```json
 {
-	"sourceEntityTypes": [
-		"PimCategory"
-	],
+	"triggers": {
+		"pim": [
+			"PimCategory"
+		]
+	},
 	"properties": {
 		"image": "{p.image}",
 		"title": "{p.title}",
@@ -25,11 +27,11 @@ First create a schema named _PimCategory_:
 }
 ```
 
-This will hold the structure of our category coming from the PIM.
+This will hold the data model for our category coming from the PIM, creating a view for each individual category.
 
 ## Product Category List
 
-Now create a _ProductCategoryList_ schema:
+Now create a _Product Category List_ schema:
 
 ```json
 {
@@ -57,11 +59,13 @@ Now create a _ProductCategoryList_ schema:
 }
 ```
 
-This is where we control number of items, based on a _PimCategory_ lookup filter.
+This is where we list the product categories. We use the `filter` feature in the `input` type `$lookup`.
+
+In the `items` we reference the _Pim Category_ schema (see above), se that each view for each individual category is applied.
 
 ## Product Categories
 
-Finally we need a _ProductCategories_ schema, that references our _ProductCategoryList_ schema.
+Finally we need a _Product Categories_ schema, that references our _Product Category List_ schema.
 
 ```json
 {
@@ -78,12 +82,7 @@ Finally we need a _ProductCategories_ schema, that references our _ProductCatego
 			"type": "array",
 			"input": {
 				"$lookup": {
-					"operator": "equals",
-					"sourceEntityType": "CategoryList",
-					"sourceEntityProperty": "originId",
-					"matchValue": {
-						"$exp": "CategoryList"
-					}
+          "filter": "type eq CategoryList and originId eq pim-category-list"
 				}
 			},
 			"items": {
@@ -98,4 +97,11 @@ Finally we need a _ProductCategories_ schema, that references our _ProductCatego
 }
 ```
 
-This schema holds the data from our CMS (_headline_ and _lead_) and looks up the PIM data and matches the _originId_.
+This schema holds the data model for our CMS data (_headline_ and _lead_) and looks up the PIM.
+
+## Deploy and test output
+
+Now we are ready to deploy the schemas and make sure the output, is as expected.
+
+**TODO:** Add descrioption of how to deply with the new update
+**TODO:** Add screenshot after update
