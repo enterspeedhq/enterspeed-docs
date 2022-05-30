@@ -7,9 +7,7 @@ title: 2. Data sources and environment
 
 First off we need to create the required data sources and setup environment settings.
 
-Remember to check the docs for details not covered here.
-
-[Enterspeed documentation](https://docs.enterspeed.com)
+Remember to check our [docs](https://docs.enterspeed.com) for details not covered here.
 
 ## Data sources
 
