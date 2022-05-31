@@ -5,15 +5,17 @@ title: 2. Data sources and environment
 
 # Data sources and environment
 
-First off we need to create the required data sources and setup environment settings.
+First off we need to create the required data sources and set up environment settings.
 
 Remember to check our [docs](https://docs.enterspeed.com) for details not covered here.
 
 ## Data sources
 
-Go to https://app.enterspeed.com/settings/data-sources and create a data sources named _Product List Demo (CMS)_ and _Product List Demo (PIM)_.
+Go to https://app.enterspeed.com/settings/data-sources and create a data source named _Product_ List Demo (CMS)_ and \_Product List Demo (PIM)_.
 
+:::danger
 **TODO:** Add data source/environment mapping
+:::
 
 ## Environment settings
 
