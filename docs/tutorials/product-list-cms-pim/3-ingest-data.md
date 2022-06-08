@@ -5,11 +5,17 @@ title: 3. Ingest data
 
 # Ingest data
 
-Now for ingesting some data. As mentioned this is dummy data, so feel free to change it as you see fit. For a real-life solution, an integration is of course required, you can see which integrations we already have saving you the trouble.
+Now for ingesting some data. As mentioned this is dummy data, so feel free to change it as you see fit. For a real-life solution, an integration is of course required, you can see which [integrations we already have](https://docs.enterspeed.com/integrations) saving you the trouble.
 
-[See our integrations](https://docs.enterspeed.com/integrations)
+Take a look at how to ingest data here: https://docs.enterspeed.com/api#tag/Ingest
 
-## CMS Product List
+## CMS
+
+:::info
+Use the `API key` from your _Product List Demo (**CMS**)_ when ingesting.
+:::
+
+### CMS Product List
 
 First, we want to create the _Product list_ that comes from the CMS and holds settings such as which URL it should be available at.
 
@@ -17,7 +23,7 @@ Use this snippet for ingesting:
 
 ```json
 {
-  "type": "product-list",
+  "type": "ProductList",
   "url": "/product-list",
   "properties": {
     "headline": "Browse our categories",
@@ -29,7 +35,13 @@ Use this snippet for ingesting:
 ![CMS Product List](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-mockup-cms-product-list.png)
 Use the `API key` from your _Product List Demo (CMS)_ when ingesting and note the `id`.
 
-## PIM Category List
+## PIM
+
+:::info
+Use the `API key` from your _Product List Demo (**PIM**)_.
+:::
+
+### PIM Category List
 
 For now, we need a source entity for handling data updates when working with multiple sources. Use the snippet below.
 
@@ -45,7 +57,7 @@ We have an update on the way, that will make this step obsolete.
 
 [See and subscribe to Enterspeed Product Updates](https://updates.enterspeed.com/)
 
-## PIM categories
+### PIM categories
 
 Then we need to create the PIM categories, you can create as many as you want.
 
@@ -128,5 +140,3 @@ And here are some snippets:
   }
 }
 ```
-
-Take a look at how to ingest data here: https://docs.enterspeed.com/api#tag/Ingest

@@ -14,7 +14,7 @@ First, create a schema named _Pim Category_:
 ```json
 {
   "triggers": {
-    "pim": ["PimCategory"]
+    "productListDemoPIM": ["PimCategory"]
   },
   "properties": {
     "image": "{p.image}",
@@ -25,10 +25,6 @@ First, create a schema named _Pim Category_:
 }
 ```
 
-:::danger
-**TODO:** Update the schemas below to use triggers instead of sourceEntityTypes
-:::
-
 This will hold the data model for our category coming from the PIM, creating a view for each individual category.
 
 ## Product Category List
@@ -37,7 +33,9 @@ Now create a _Product Category List_ schema:
 
 ```json
 {
-  "sourceEntityTypes": ["CategoryList"],
+  "triggers": {
+    "productListDemoPIM": ["CategoryList"]
+  },
   "properties": {
     "vacationHouses": {
       "type": "array",
@@ -61,15 +59,17 @@ Now create a _Product Category List_ schema:
 
 This is where we list the product categories. We use the `filter` feature in the `input` type `$lookup`.
 
-In the `items` we reference the _Pim Category_ schema (see above), se that each view for each individual category is applied.
+In the `items` we reference the _Pim Category_ schema (see above), so that each view for each individual category is applied.
 
 ## Product Categories
 
-Finally we need a _Product Categories_ schema, that references our _Product Category List_ schema.
+Finally, we need a _Product Categories_ schema, that references our _Product Category List_ schema.
 
 ```json
 {
-  "sourceEntityTypes": ["productList"],
+  "triggers": {
+    "productListDemoCMS": ["ProductList"]
+  },
   "route": {
     "url": "{url}"
   },
@@ -101,8 +101,9 @@ This schema holds the data model for our CMS data (_headline_ and _lead_) and lo
 
 Now we are ready to deploy the schemas and make sure the output, is as expected.
 
-:::danger
-**TODO:** Add descrioption of how to deply with the new update
+Click on the "**Deploy changes**"-button in the top right corner. Choose your environment and click on the "**Deploy 3 changes**"-button.
+![Deploy changes](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-deploy.png)
 
-**TODO:** Add screenshot after update
-:::
+Once the changes have been deployed, you will be able to view them under **Generated Views**.
+
+![Generated views](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-generated-views.png)

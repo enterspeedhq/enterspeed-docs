@@ -253,7 +253,7 @@ html[data-theme="dark"] .api-content {
   padding-top: 16px;
 }
 
-html[data-theme="dark"] .es-card__title {
+html[data-theme="dark"] .es-card__title, html[data-theme="dark"] .es-card__body {
   color: #fff;
 }
 
