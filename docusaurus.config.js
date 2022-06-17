@@ -13,8 +13,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.svg",
-    organizationName: "enterspeedhq", // Usually your GitHub org/user name.
-    projectName: "enterspeed-docs", // Usually your repo name.
+    organizationName: "enterspeedhq",
+    projectName: "enterspeed-docs",
+    plugins: [require.resolve("docusaurus-plugin-image-zoom")],
     presets: [
       [
         "@docusaurus/preset-classic",
@@ -50,7 +51,16 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+
       ({
+        zoom: {
+          selector: ".markdown :not(em) > img",
+          background: {
+            light: "rgb(255, 255, 255)",
+            dark: "rgb(50, 50, 50)",
+          },
+          config: {},
+        },
         algolia: {
           apiKey: "0332d636b5100c042414e8625668f55a",
           indexName: "enterspeed_docs",
@@ -79,8 +89,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               docId: "home",
               label: "Home",
               position: "left",
-              activeBaseRegex:
-                "/(getting-started|ingest|transform|deliver)",
+              activeBaseRegex: "/(getting-started|ingest|transform|deliver)",
             },
             {
               to: "/reference/fields",
