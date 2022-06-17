@@ -188,14 +188,15 @@ Lookup input comparing to $exp allows you to define query-like and criteria matc
 
 #### `$lookup` with single property value match
 
-| Property             | Required? | Description                                                                                          |
-| -------------------- | --------- | ---------------------------------------------------------------------------------------------------- |
-| operator             | **Yes**   | The operator for the lookup. Supported operators: `equals` `contains`                                |
-| sourceEntityType     | **Yes**   | Type of source entity to use for lookup. To include all entity types available use - \*              |
-| sourceEntityProperty | **Yes**   | The property to match the value on                                                                   |
-| matchValue           | **Yes**   | The value to match the sourceEntityProperty                                                          |
-| orderBy              | No        | Allows you to specify your desired sorting order                                                     |
-| top                  | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression. |
+| Property             | Required? | Description                                                                                                                                                                                                                      |
+| -------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| operator             | **Yes**   | The operator for the lookup. Supported operators: `equals` `contains`                                                                                                                                                            |
+| sourceEntityType     | **Yes**   | Type of source entity to use for lookup. To include all entity types available use - \*                                                                                                                                          |
+| sourceEntityProperty | **Yes**   | The property to match the value on                                                                                                                                                                                               |
+| matchValue           | **Yes**   | The value to match the sourceEntityProperty                                                                                                                                                                                      |
+| orderBy              | No        | Allows you to specify your desired sorting order                                                                                                                                                                                 |
+| top                  | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression.                                                                                                                             |
+| source               | No        | Allows you to define a different source as the property. The `source` should be equal to the desired source group alias, where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
 
 ```json title="$lookup with a single property"
 "navigationItems": {
@@ -225,11 +226,12 @@ Lookup input comparing to $exp allows you to define query-like and criteria matc
 
 Particular lookup filter type allows you to be more flexible with your matching criteria.
 
-| Property | Required? | Description                                                                                          |
-| -------- | --------- | ---------------------------------------------------------------------------------------------------- |
-| filter   | **Yes**   | Your filtering criteria                                                                              |
-| orderBy  | No        | Allows you to specify your desired sorting order                                                     |
-| top      | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression. |
+| Property | Required? | Description                                                                                                                                                                                                                      |
+| -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| filter   | **Yes**   | Your filtering criteria                                                                                                                                                                                                          |
+| orderBy  | No        | Allows you to specify your desired sorting order                                                                                                                                                                                 |
+| top      | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression.                                                                                                                             |
+| source   | No        | Allows you to define a different source as the property. The `source` should be equal to the desired source group alias, where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
 
 **Examples of supported binary operators, expressions & lambda operators:**
 
@@ -490,6 +492,10 @@ The partial mapping property type allows for dynamically including partial schem
 ```
 
 The `input` defines what goes into the partial schema and the `alias` is used to resolve what partial schema to use. So in this case we could have partial schema with alias: Block-headline.
+
+:::tip
+If you want to pass the entire current source entity to input, you can use `{root}`.
+:::
 
 ---
 
