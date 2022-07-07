@@ -21,45 +21,18 @@ First, create a schema named _Pim Category_:
     "title": "{p.title}",
     "lead": "{p.lead}",
     "button": "{p.button}"
-  }
+  },
+  "action": [
+    {
+      "type": "process",
+      "alias": "productCategories",
+      "source": "productListDemoCMS"
+    }
+  ]
 }
 ```
 
 This will hold the data model for our category coming from the PIM, creating a view for each individual category.
-
-## Product Category List
-
-Now create a _Product Category List_ schema:
-
-```json
-{
-  "triggers": {
-    "productListDemoPIM": ["CategoryList"]
-  },
-  "properties": {
-    "vacationHouses": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "filter": "type eq 'PimCategory'",
-          "top": 4
-        }
-      },
-      "items": {
-        "type": "reference",
-        "gid": {
-          "$exp": "{item.id}"
-        },
-        "alias": "PimCategory"
-      }
-    }
-  }
-}
-```
-
-This is where we list the product categories. We use the `filter` feature in the `input` type `$lookup`.
-
-In the `items` we reference the _Pim Category_ schema (see above), so that each view for each individual category is applied.
 
 ## Product Categories
 
@@ -76,11 +49,13 @@ Finally, we need a _Product Categories_ schema, that references our _Product Cat
   "properties": {
     "headline": "{p.headline}",
     "lead": "{p.lead}",
-    "listing": {
+    "categories": {
       "type": "array",
       "input": {
         "$lookup": {
-          "filter": "type eq CategoryList and originId eq pim-category-list"
+          "filter": "type eq 'PimCategory'",
+          "top": 4,
+          "source": "productListDemoPIM"
         }
       },
       "items": {
@@ -88,7 +63,7 @@ Finally, we need a _Product Categories_ schema, that references our _Product Cat
         "gid": {
           "$exp": "{item.id}"
         },
-        "view": "productCategoryList"
+        "alias": "PimCategory"
       }
     }
   }

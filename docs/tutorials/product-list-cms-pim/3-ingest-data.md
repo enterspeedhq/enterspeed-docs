@@ -41,22 +41,6 @@ Use the `API key` from your _Product List Demo (CMS)_ when ingesting and note th
 Use the `API key` from your _Product List Demo (**PIM**)_.
 :::
 
-### PIM Category List
-
-For now, we need a source entity for handling data updates when working with multiple sources. Use the snippet below.
-
-```json title="id: pim-category-list"
-{
-  "type": "CategoryList",
-  "url": null,
-  "properties": {}
-}
-```
-
-We have an update on the way, that will make this step obsolete.
-
-[See and subscribe to Enterspeed Product Updates](https://updates.enterspeed.com/)
-
 ### PIM categories
 
 Then we need to create the PIM categories, you can create as many as you want.
