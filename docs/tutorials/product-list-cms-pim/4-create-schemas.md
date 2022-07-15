@@ -36,7 +36,7 @@ This will hold the data model for our category coming from the PIM, creating a v
 
 ## Product Categories
 
-Finally, we need a _Product Categories_ schema, that references our _Product Category List_ schema.
+Finally, we need a _Product Categories_ schema.
 
 ```json
 {
