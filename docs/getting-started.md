@@ -5,8 +5,6 @@ title: Getting started
 
 # Getting started
 
-import ReactPlayer from 'react-player/lazy'
-
 ## The ITD-process
 
 To get started using Enterspeed, we need to go through a three-step process - the ITD-process:
