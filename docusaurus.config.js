@@ -36,13 +36,56 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           specs: [
             {
               spec: "./_api-reference/openapi.yaml",
-              routePath: "/api/",
-              apiDocComponent: "../src/components/redoc/ApiDoc.js",
+              route: "/api/",
             },
           ],
           theme: {
-            redocOptions: {
+            options: {
               disableSearch: true,
+            },
+            theme: {
+              typography: {
+                fontSize: "17px",
+                fontFamily:
+                  '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                headings: {
+                  fontFamily:
+                    '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                  fontWeight: "700",
+                },
+                links: {
+                  color: "#1356fb",
+                  visited: "#1356fb",
+                  hover: "#1356fb",
+                },
+              },
+              rightPanel: {
+                textColor: "#ffffff",
+              },
+              colors: {
+                primary: {
+                  main: "#1c1e21",
+                },
+                responses: {
+                  success: {
+                    color: "#1c4532",
+                    backgroundColor: "#c6f6d5",
+                  },
+                  error: {
+                    color: "#63171b",
+                    backgroundColor: "#fed7d7",
+                  },
+                  redirect: {
+                    color: "#5f370e",
+                    backgroundColor: "#fefcbf",
+                  },
+                },
+                http: {
+                  get: "#38a169",
+                  post: "#5686fc",
+                  delete: "#e53e3e",
+                },
+              },
             },
           },
         },
