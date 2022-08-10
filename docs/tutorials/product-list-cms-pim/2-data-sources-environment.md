@@ -5,18 +5,26 @@ title: 2. Data sources and environment
 
 # Data sources and environment
 
-First off we need to create the required data sources and set up environment settings.
-
-## Data sources
-
-Go to https://app.enterspeed.com/settings/data-sources and create a data source named _Product List Demo (CMS)_ and _Product List Demo (PIM)_.
-
-![Data sources](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-data-sources.png)
+First off we need to set up environment settings and then create the required data sources.
 
 ## Environment settings
 
-Go to https://app.enterspeed.com/settings/environment-settings and create a domain called _localhost_, an Environment client named _Web_ and finally an Environment called _Demo_.
+Go to https://app.enterspeed.com/settings/environment-settings.
+
+Create a domain called _localhost_. Once you have created the domain, click the three dots next to the domain name (settings) and select _Edit hostnames_. Create a hostname called _root.tld_ and click save.
+
+Create an Environment client named _Web_ and select the _localhost_ domain when prompted.
+
+Finally, create an Environment called _Demo_.
 
 You should end up with something like this:
 
 ![Environment settings](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-environment-settings.png)
+
+## Data sources
+
+Go to https://app.enterspeed.com/settings/data-sources and create a data source group named _Product List Demo (CMS)_ and _Product List Demo (PIM)_.
+
+In the _Product List Demo (CMS)_-group created a data source called _Product List Demo (CMS) - DEMO_ and select the _Demo_ environment. For the _Product List Demo (PIM)_-group create a data source called _Product List Demo (PIM) - Demo_ and select the _Demo_ environment.
+
+![Data sources](/img/docs/examples/product-list-cms-pim/product-list-cms-pim-data-sources.png)
