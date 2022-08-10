@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # Designing a schema
 
+import ReactPlayer from 'react-player/lazy'
+
 Our schema can be divided into two areas: “Settings” and the actual data.
 
 In our settings, we define:
