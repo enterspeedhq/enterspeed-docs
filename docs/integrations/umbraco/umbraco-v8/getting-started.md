@@ -111,5 +111,4 @@ Here is an overview of what is processed and send to Enterspeed and what is not.
 
 ### Not processed entities
 
-- Media
 - Members
