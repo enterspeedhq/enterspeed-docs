@@ -99,8 +99,12 @@ The default type of a property is a **string**. If you need another [property ty
 
 Let's deploy and test our new schema.
 
-Click on the **Deploy schema** button, select your data source and new version and click **Deploy schema**.
+Click on the _Deploy schemas_-button in the top right corner. This will open a pane where you can see current active deployments per environment and deploy changes to your desired environment.
 
 You can now test your schema via Postman, Insomnia, etc.
 
 <ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
+
+:::info
+There have been some updates to the UI and deployment flow since this video, but the testing functionality remains the same.
+:::
