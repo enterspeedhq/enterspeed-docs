@@ -1,6 +1,7 @@
 ---
-slug: /getting-started
-title: Getting started
+slug: /getting-started/
+title: Intro
+sidebar_position: 1
 ---
 
 # Getting started
@@ -13,13 +14,13 @@ To get started using Enterspeed, we need to go through a three-step process - th
 2. **T**ransform data
 3. **D**eliver data
 
-![The Enterspeed process](../static/img/docs/general/the-enterspeed-process.png)
+![The Enterspeed process](../../static/img/docs/general/the-enterspeed-process.png)
 
 ### Ingesting data
 
-In this step, we ingest the data from your current data source(s) into Enterspeed. You can do this by using one of our [integrations](./integrations) or by using our [API](./api).
+In this step, we ingest the data from your current data source(s) into Enterspeed. You can do this by using one of our [integrations](./integrations) or by using our [API](../api).
 
-**_[Go to the Ingest data section.](./ingest)_**
+**_[Go to the Ingest data section.](../ingest)_**
 
 ### Transforming data
 
@@ -29,7 +30,7 @@ We do this by using our Schema designer. Here you can combine data from multiple
 
 Once the data is transformed it gets stored in a high-performance Redis database across multiple geographical regions.
 
-**_[Go to the Transforming data section.](./transform)_**
+**_[Go to the Transforming data section.](../transform)_**
 
 ### Delivering data
 
@@ -37,4 +38,16 @@ The data is now available to fetch via the Enterspeed Delivery API.
 
 Like working with any other APIs, it's extremely easy to integrate into your front-end project.
 
-**_[Go to the Delivering data section.](./deliver)_**
+**_[Go to the Delivering data section.](../deliver)_**
+
+## Configuring Enterspeed
+
+However, before we can start the ITD-process, we need to do some configuration first.
+
+We need to set up:
+
+- Domains and hostnames
+- Environment and environment clients
+- Data sources
+
+You will learn about this in the next sections.

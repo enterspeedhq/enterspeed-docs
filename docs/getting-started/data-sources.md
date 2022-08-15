@@ -1,0 +1,37 @@
+---
+sidebar_position: 5
+---
+
+# Adding data sources
+
+Data sources are where a connection is created to your data source. This can be a CMS, a PIM-system, or perhaps a development instance of your CMS.
+
+![Data sources](../../static/img/docs/getting-started/data-sources.png)
+
+Data sources are always part of a source group. A source group can have multiple data sources attached and each data source have its own unique API key.
+
+:::info
+The reason data sources are wrapped in source groups is to make it easier to reference in schemas.
+
+That way you only have to make a single reference, even though you may have multiple sources spread across environments (e.g. _Development_, _Staging_, _Production_).
+:::
+
+A data source is connected to one or more environments. You can have multiple data sources in the same source group, but these can't share environments.
+
+On each data source, you can see how many source entities have been ingested. A source entity is a single "instance" from your data source, e.g. a page, an article, a product, etc.
+
+You can delete all these entities by clicking on the three dots next to the data source and clicking _Delete all entities_.
+
+:::warning
+Deleting entities, deleting a source group or deleting a data source will permanently delete the data and can't be undone.
+:::
+
+## Creating a data source
+
+Click the _Settings_-tab and then click the _Data sources_-tab in the sidemenu. Next, click the _Create group_-button in the right corner.
+
+Give your source group a name and select a type (_the type is only used to better help you differentiate your source groups_).
+
+Next, give your data source a name, select one or more environments and then click the _Add_-button. Once you have added your data sources, click the _Create_-button.
+
+Your source group containing your data source(s) is now created. Each of your data sources will have its own unique API key you can use to ingest data into Enterspeed.
