@@ -21,6 +21,6 @@ If you have an existing site, have installed Enterspeed later in the development
 
 This can simply be done by going to the Enterspeed Content dashboard and then go to Seed and press the button. In theory the same happens when you press Save and publish. The seeding pulls all the content from the published cache and inserts a new EnterspeedJob in the database for each piece of content. 
 
-![Umbraco v9 Seed Content](/img/docs/integrations/umbraco/umbraco-v8-enterspeed-seed.png)
+![Umbraco v10 Seed Content](/img/docs/integrations/umbraco/umbraco-v8-enterspeed-seed.png)
 
 Every minute the database is checked for pending entities and if it has any it will be sent to the Enterspeed Ingest API, equivalent to the process from step 3 to 7 in Publishing step by step. You can read more about the jobs in the reference section. 

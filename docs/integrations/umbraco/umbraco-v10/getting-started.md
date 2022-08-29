@@ -3,7 +3,7 @@ sidebar_position: 1
 title: Getting started
 ---
 
-# Getting started Umbraco V9 & Enterspeed
+# Getting started Umbraco v10 & Enterspeed
 
 The easiest way getting started with Umbraco and Enterspeed is using the pre-built Umbraco integration.
 
@@ -13,11 +13,11 @@ This integration takes care of calling the Enterspeed Ingest API when changes oc
 
 ## Installation
 
-**Prerequisite:** Umbraco 9.0 or above.
+**Prerequisite:** Umbraco 10.0 or above.
 
 The fastest way to get up and running, is to install the Enterspeed Umbraco integration with NuGet.
 
-**NuGet:** [Enterspeed.Source.UmbracoCms.V9](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V9/)
+**NuGet:** [Enterspeed.Source.UmbracoCms.v10](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v10/)
 
 When the installation above has completed two new dashboards has been added to your Umbraco solution.
 
@@ -36,7 +36,7 @@ Firstly go to Settings and then select the Enterspeed Settings dashboard in your
 
 You should see something like this:
 
-![Umbraco v9 Enterspeed Settings](/img/docs/integrations/umbraco/umbraco-v8-enterspeed-settings.png)
+![Umbraco v10 Enterspeed Settings](/img/docs/integrations/umbraco/umbraco-v8-enterspeed-settings.png)
 
 #### Enterspeed endpoint
 
