@@ -5,11 +5,11 @@ title: Getting started
 
 # Getting started Umbraco v10 & Enterspeed
 
-The easiest way getting started with Umbraco and Enterspeed is using the pre-built Umbraco integration.
+The easiest way to get started with Umbraco and Enterspeed is using the pre-built Umbraco integration.
 
 **GitHub: [Enterspeed Source Umbraco CMS](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms)**
 
-This integration takes care of calling the Enterspeed Ingest API when changes occurs in Umbraco. For a full overview of what Umbraco entities are send to Enterspeed, please see Umbraco entities.
+This integration takes care of calling the Enterspeed Ingest API when changes occur in Umbraco. For a full overview of what Umbraco entities are sent to Enterspeed, please see Umbraco entities.
 
 ## Installation
 
@@ -19,7 +19,7 @@ The fastest way to get up and running, is to install the Enterspeed Umbraco inte
 
 **NuGet:** [Enterspeed.Source.UmbracoCms.v10](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v10/)
 
-When the installation above has completed two new dashboards has been added to your Umbraco solution.
+When the installation above has been completed two new dashboards have been added to your Umbraco solution.
 
 - **Content:** To seed and check errors when data is ingested
 - **Settings:** To configure Enterspeed in Umbraco
@@ -58,7 +58,7 @@ The API key looks something like this: source-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx
 
 ### Preview API key
 
-Optional API key, serves the purpose of ingesting draft and unpublished content to the secondary (preview) source. Can be leveraged for your content editors to preview content, similarly to in-built 'Save & Preview' functionality in Umbraco.
+Optional API key serves the purpose of ingesting draft and unpublished content to the secondary (preview) source. Can be leveraged for your content editors to preview content, similarly to the in-built 'Save & Preview' functionality in Umbraco.
 
 Before you can insert a Preview API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/settings/data-sources).
 
@@ -70,7 +70,7 @@ When you have inserted the Enterspeed endpoint and the API key(-s) click on Test
 
 ## App settings
 
-For appsettings.json or environment specific settings file, please use the following appSettings:
+For appsettings.json or environment-specific settings file, please use the following appSettings:
 
 ```json
 {

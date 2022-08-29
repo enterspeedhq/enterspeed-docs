@@ -4,19 +4,20 @@ title: Publishing
 ---
 
 # Publishing step by step
+
 When the editor publishes a node the cache refreshed event is triggered and the Enterspeed Umbraco integration listens to this event, to send the updated content to Enterspeed. When this event is triggered these steps are executed synchronously:
 
 1. a new EnterspeedJob is added to a database for processing
 2. the newly added job is requested to be processed immediately
 3. the published content from Umbraco is fetched from the cache
 4. each property on the IPublishedContent is converted to an IEnterspeedProperty with an IEnterspeedPropertyValueConverter
-5. a UmbracoContentEntity is created 
+5. a UmbracoContentEntity is created
 6. the content entity is sent to the Enterspeed Ingest API
 7. if the response is successful nothing happens, if it is not:
-    1. the EnterspeedJob is re-inserted in the database as failed
-    2. the failed jobs can be viewed on the content dashboard
+   1. the EnterspeedJob is re-inserted in the database as failed
+   2. the failed jobs can be viewed on the content dashboard
 
-If you wish you can checkout the sequence diagram for the process here:
+If you wish you can check out the sequence diagram for the process here:
 
 ```bash
 @startuml

@@ -4,12 +4,15 @@ title: Value Converter
 ---
 
 # Enterspeed Value Converter
+
 A property value converter is a class that will convert the input value from Umbraco into an [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/tree/master/documentation/entities/properties). To implement your own converter you need to implement the IEnterspeedPropertyValueConverter interface
 
 ## IEnterspeedPropertyValueConverter
-This interface contains two methods that needs to be implemented
+
+This interface contains two methods that need to be implemented
 
 ### IsConverter
+
 ```csharp
 bool IsConverter(IPublishedPropertyType propertyType);
 ```
@@ -26,6 +29,7 @@ public bool IsConverter(IPublishedPropertyType propertyType)
 ```
 
 ### Convert
+
 ```csharp
 IEnterspeedProperty Convert(IPublishedProperty property, string culture);
 ```
@@ -43,9 +47,11 @@ public IEnterspeedProperty Convert(IPublishedProperty property, string culture)
 ```
 
 ## Registering a converter
+
 Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
 
 Example:
+
 ```csharp
 public class MyCustomerPropertyValueConverterComposer : IComposer
 {
@@ -71,4 +77,5 @@ public class MyCustomerPropertyValueConverterComposer : IComposer
 ```
 
 ## Default converters
+
 Enterspeed ships with [default property value converters](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/documentation/enterspeed-value-converters/property-value-converters/defaults/README.md) for all the built-in property editors that Umbraco ships with out of the box.

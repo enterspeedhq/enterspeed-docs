@@ -8,10 +8,11 @@ title: Database
 ## Tables
 
 ### EnterspeedJobs table
-This table contains the jobs that needs to be executed, in order to sync with Enterspeed.
+
+This table contains the jobs that need to be executed, in order to sync with Enterspeed.
 
 | Name      | Type     | Description                             |
-|-----------|----------|-----------------------------------------|
+| --------- | -------- | --------------------------------------- |
 | Id        | integer  | Unique identifier, autoincrements       |
 | ContentId | integer  | Id of the Umbraco node                  |
 | Culture   | string   | Culture of the Umbraco node             |

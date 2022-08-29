@@ -4,6 +4,7 @@ title: Grid Editor Value Converters
 ---
 
 # Enterspeed Grid Editor Value Converters
+
 A grid editor value converter is a class that will convert the input value from an Umbraco grid editor into an [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/tree/master/documentation/entities/properties).
 
 To implement your own converter you need to implement the IEnterspeedGridEditorValueConverter interface
@@ -13,9 +14,11 @@ If no converter is registered for the grid editor, the DefaultGridLayoutProperty
 to convert it into an IEnterspeedProprety automatically, by looking at the types.
 
 ## IEnterspeedGridEditorValueConverter
-This interface contains two methods that needs to be implemented
+
+This interface contains two methods that need to be implemented
 
 ### IsConverter
+
 ```csharp
 bool IsConverter(string alias);
 ```
@@ -32,6 +35,7 @@ public bool IsConverter(string alias)
 ```
 
 ### Convert
+
 ```csharp
 IEnterspeedProperty Convert(GridControl editor, string culture)
 ```
@@ -48,9 +52,11 @@ public IEnterspeedProperty Convert(GridControl editor, string culture)
 ```
 
 ## Registering a converter
+
 Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
 
 Example:
+
 ```csharp
 public class MyCustomerGridEditorValueConverterComposer : IComposer
 {
@@ -76,4 +82,5 @@ public class MyCustomerPropertyValueConverterComposer : IComposer
 ```
 
 ## Default converters
+
 Enterspeed ships with [default grid editor value converters](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/documentation/enterspeed-value-converters/grid-editor-value-converters/defaults) for some of the built-in grid editors that Umbraco ships with out of the box.
