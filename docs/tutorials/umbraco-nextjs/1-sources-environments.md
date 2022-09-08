@@ -24,12 +24,6 @@ An API key is now generated. Save the API key for now (e.g., in a notepad docume
 
 ![Create source Enterspeed](/img/docs/examples/create-source-group.png)
 
-## Creating environments
-
-Now it’s time to configure your environments. Go to **Environments** under _Settings -> Environment settings_ and click the **Create** button. Give your environment a name (e.g. Production) and click on the Create button.
-
-![Create environment Enterspeed](/img/docs/examples/create-environment.png)
-
 ## Creating and configuring domains
 
 Go to **Domains** under _Settings -> Environment settings_ and click the **Create** button. Give your domain a name (e.g. DomainName.com) and click on the **Create** button.
