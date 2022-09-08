@@ -6,7 +6,7 @@ title: Intro
 # Setting up Enterspeed with Umbraco and Next.js
 
 :::info 
-This tutorial describes how to use it with Umbraco V8 and Umbraco V9.
+This tutorial describes how to use it with Umbraco V8, Umbraco V9 and  Umbraco V10.
 
 Feel free to use Umbraco Cloud or different installation.
 :::

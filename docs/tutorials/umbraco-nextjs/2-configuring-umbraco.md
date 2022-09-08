@@ -22,9 +22,12 @@ In order to send data to Enterspeed, we need to install the Enterspeed Umbraco p
 For production setups, we recommend installing the NuGet package instead. You can find it here: [https://www.nuget.org/profiles/Enterspeed](https://www.nuget.org/profiles/Enterspeed) 
 :::
 
-### Installation for Umbraco 9
+### Installation for Umbraco 9 and 10
 
-Since, Umbraco 9 has removed packages installation from the backoffice, we need to install [Enterspeed.Source.UmbracoCms.V9](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V9/) NuGet package.
+Since Umbraco 9 the packages installation from the backoffice has been removed. Because of that we need to install one of the following NuGet packages, depending on which Umbraco version you are running:
+
+[Enterspeed.Source.UmbracoCms.V9](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V9/)  
+[Enterspeed.Source.UmbracoCms.V10](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V10/)
 
 ## Configuring 
 
@@ -55,8 +58,13 @@ Download the **[enterspeed-demo-umbraco-content.zip](https://github.com/enterspe
 
 Click on the **Packages** tab and select "**Install local**" on the right-hand side. Then drag the zip file onto the page, or click to select it from the dialog.
 
-### Importing demo content for Umbraco v9
-Since, Umbraco 9 has removed packages installation from the backoffice, we need to install [Enterspeed.Demos.UmbracoCms.V9.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.V9.FairyTales/) NuGet package, that will import content, data types and document types required for this demo on startup of your application.
+### Importing demo content for Umbraco v9 and v10
+Since Umbraco 9 the packages installation from the backoffice has been removed. Because of that we need to install one of the following NuGet packages, depending on which Umbraco version you are running:
+
+[Enterspeed.Demos.UmbracoCms.V9.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.V9.FairyTales/)  
+[Enterspeed.Demos.UmbracoCms.V10.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.V10.FairyTales/)
+
+The NuGet package will import content, data types and document types required for this demo on startup of your application.
 
 After package installation build and start you application.
 
