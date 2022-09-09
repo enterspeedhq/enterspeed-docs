@@ -10,9 +10,8 @@ Start by logging into Enterspeed: [https://app.enterspeed.com](https://app.enter
 In this step, we're going to:
 
 1. Create sources
-2. Create environments
-3. Create and configure domains
-4. Create environment clients
+2. Create and configure domains
+3. Create environment clients
 
 ## Creating sources
 
