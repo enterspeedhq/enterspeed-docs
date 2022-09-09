@@ -115,10 +115,14 @@ This will open the deploy pane. Choose the environment you wish to deploy to (e.
 
 ### umbraco-blockText (Partial schema)
 
+:::caution
+Notice how the alias is automatically generated as **umbracoBlockText**. 
+
+Click the lock to the right in the **Create new partial schema** dialog and change the alias to **umbraco-blockText**, so that it matches the reference we created in the ContentPage-schema.
+:::
+
 ```json title="Example partial schema: umbraco-blockText"
 {
-  "name": "Block Text",
-  "alias": "umbraco-blockText",
   "properties": {
     "text": "{item.content.text}",
     "alias": "{item.contentType}"

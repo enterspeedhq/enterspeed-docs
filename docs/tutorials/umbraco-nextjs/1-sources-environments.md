@@ -10,9 +10,8 @@ Start by logging into Enterspeed: [https://app.enterspeed.com](https://app.enter
 In this step, we're going to:
 
 1. Create sources
-2. Create environments
-3. Create and configure domains
-4. Create environment clients
+2. Create and configure domains
+3. Create environment clients
 
 ## Creating sources
 
@@ -23,12 +22,6 @@ Give your source a name (e.g. Umbraco Cloud) and select **CMS** in type. Afterwa
 An API key is now generated. Save the API key for now (e.g., in a notepad document) - you'll need it when configuring your Umbraco project.
 
 ![Create source Enterspeed](/img/docs/examples/create-source-group.png)
-
-## Creating environments
-
-Now it’s time to configure your environments. Go to **Environments** under _Settings -> Environment settings_ and click the **Create** button. Give your environment a name (e.g. Production) and click on the Create button.
-
-![Create environment Enterspeed](/img/docs/examples/create-environment.png)
 
 ## Creating and configuring domains
 
