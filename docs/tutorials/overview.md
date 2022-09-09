@@ -13,7 +13,7 @@ import {Card, CardContainer} from '../../src/components/card';
     Learn how to create a multilevel navigation for your website.
   </Card>
   <Card title="Umbraco & Next.js" link="tutorials/umbraco-nextjs/intro">
-    Learn how to use Enterspeed with Umbraco V8 and Umbraco V9.
+    Learn how to use Enterspeed with Umbraco V8,  Umbraco V9, and Umbraco V10.
   </Card>
   <Card title="Product list with CMS and PIM" link="tutorials/product-list-cms-pim/getting-started">
     Learn how to create a product list with data from your CMS and PIM.
