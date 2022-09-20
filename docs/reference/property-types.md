@@ -17,7 +17,7 @@ title: Property types
 | [Dynamic](#dynamic)     | Dynamic mapping using the [path selector](./path-selector). <br /><br />Required fields: `*`                                                                                                                  |
 
 :::tip
-There is no `Date` property type. But if you ingest your dates as strings in the following format `yyyy-MM-ddTHH:mm:ss`, you can still sort by date and the value can easily be parsed to Date on the client in javascript and other languages.
+There is no `Date` property type. But if you ingest your dates as strings in the following format `yyyy-MM-ddTHH:mm:ss`, you can still sort by date and the value can easily be parsed to Date on the client in JavaScript and other languages.
 :::
 
 ## string
@@ -197,7 +197,7 @@ Lookup input comparing to $exp allows you to define query-like and criteria matc
 | operator             | **Yes**   | The operator for the lookup. Supported operators: `equals` `contains`                                                                                                                                                            |
 | sourceEntityProperty | **Yes**   | The property to match the value on                                                                                                                                                                                               |
 | matchValue           | **Yes**   | The value to match the sourceEntityProperty                                                                                                                                                                                      |
-| sourceEntityType     | No   | Type of source entity to use for lookup. Default value is include all entity types available - \*                                                                                                                                          |
+| sourceEntityType     | No        | Type of source entity to use for lookup. Default value is include all entity types available: `*`                                                                                                                                |
 | orderBy              | No        | Allows you to specify your desired sorting order                                                                                                                                                                                 |
 | top                  | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression.                                                                                                                             |
 | source               | No        | Allows you to define a different source as the property. The `source` should be equal to the desired source group alias, where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
