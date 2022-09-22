@@ -21,7 +21,7 @@ title: Fields
 
 #### Routing by URL
 
-If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below.
+If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below:
 
 ```json
 {
