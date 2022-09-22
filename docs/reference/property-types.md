@@ -435,7 +435,7 @@ In order to reference desired source entity, you can use `alias` of the schema a
 | `type`     | **Yes**      | The property type - here `alias`                            |
 | `alias`    | **Yes**      | The alias of the schema you wish to reference               |
 | `id`       | **Yes** / No | The id of the source entity. `originId` can be used instead |
-| `originid` | **Yes** / No | The originId of the source entity. `id` can be used instead |
+| `originId` | **Yes** / No | The originId of the source entity. `id` can be used instead |
 
 ### Examples
 
