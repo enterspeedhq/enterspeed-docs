@@ -51,6 +51,10 @@ You are not limited to use the built in `url` property, you can also use propert
 
 The URL must be a valid URL: either relative `/about-us` or absolute `https://enterspeed.com/about-us`.
 
+:::info
+If you use relative URL's you must add a wildcard hostname, see more in [Setting up domains](../getting-started/domains.md)
+:::
+
 #### Routing by handles
 
 If you don't want your schema to be routable by an URL, but rather something more static, you can use a handle.
