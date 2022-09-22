@@ -63,7 +63,7 @@ Finally, we need a _Product Categories_ schema.
         "gid": {
           "$exp": "{item.id}"
         },
-        "alias": "PimCategory"
+        "alias": "pimCategory"
       }
     }
   }
