@@ -13,7 +13,7 @@ We are assuming you are familiar with Enterspeed and will focus on transforming 
 
 **Prerequisites:**
 
-- You have an Enterspeed user and is logged in
+- You have an Enterspeed user and are logged in
 - You have created a tenant
 - You have Postman, Insomnia or similar app installed
 - You are comfortable getting and posting data
