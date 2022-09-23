@@ -11,7 +11,7 @@ For this tutorial, we assume you already have some knowledge of setting up a Nex
 
 If you don't wish to set up the demo project, simply skip this step.
 
-Go to Github ([https://github.com/enterspeedhq/enterspeed-demo-nextjs](https://github.com/enterspeedhq/enterspeed-demo-nextjs)) and clone the project.
+Go to GitHub ([https://github.com/enterspeedhq/enterspeed-demos/tree/master/umbraco-next](https://github.com/enterspeedhq/enterspeed-demos/tree/master/umbraco-next)) and clone the project.
 
 cd into the **next** folder and run:
 
@@ -23,11 +23,11 @@ npx next dev
 Create a file called **.env.local** and insert your environment API key generated in the Enterspeed-app under Environments like this:
 
 ```javascript title=".env.local"
-ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE]
+ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
 
 // If you're using preview-mode, also insert the following:
-ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE]
-ENTERSPEED_PREVIEW_SECRET = [A_SECRET_TOKEN_OF_YOUR_CHOICE]
+ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
+ENTERSPEED_PREVIEW_SECRET = [A_SECRET_TOKEN_OF_YOUR_CHOICE];
 ```
 
 :::warning

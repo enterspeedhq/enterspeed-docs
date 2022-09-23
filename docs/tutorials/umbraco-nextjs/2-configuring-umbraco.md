@@ -53,13 +53,7 @@ You can view synced data in Enterspeed by navigating to **Source Entities** and 
 
 ## Importing content from the demo project
 
-If you wish, you can import the Umbraco content from our [demo project](https://enterspeed-demo-nextjs.netlify.app/).
-
-### Importing demo content for Umbraco v8
-
-Download the **[enterspeed-demo-umbraco-content.zip](https://github.com/enterspeedhq/enterspeed-demo-nextjs/raw/master/example-data/enterspeed-umbraco-v8/enterspeed-demo-umbraco-content.zip)** - file from our [Github-repo](https://github.com/enterspeedhq/enterspeed-demo-nextjs).
-
-Click on the **Packages** tab and select "**Install local**" on the right-hand side. Then drag the zip file onto the page, or click to select it from the dialog.
+If you wish, you can import the Umbraco content from our [demo project](https://enterspeed-umbraco-nextjs.netlify.app/).
 
 ### Importing demo content for Umbraco v9 and v10
 

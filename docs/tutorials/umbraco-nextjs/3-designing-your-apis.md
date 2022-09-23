@@ -116,7 +116,7 @@ This will open the deploy pane. Choose the environment you wish to deploy to (e.
 ### umbraco-blockText (Partial schema)
 
 :::caution
-Notice how the alias is automatically generated as **umbracoBlockText**. 
+Notice how the alias is automatically generated as **umbracoBlockText**.
 
 Click the lock to the right in the **Create new partial schema** dialog and change the alias to **umbraco-blockText**, so that it matches the reference we created in the ContentPage-schema.
 :::
@@ -161,17 +161,17 @@ Click the lock to the right in the **Create new partial schema** dialog and chan
 ```
 
 :::info
-You can find all of the example schemas on [Github](https://github.com/enterspeedhq/enterspeed-demo-nextjs/tree/master/example-data/enterspeed-schemas). The project consists of the following schemas and partial schemas:
+You can find all of the example schemas on [Github](https://github.com/enterspeedhq/enterspeed-demos/tree/master/umbraco-next/DEMO-DATA/enterspeed-schemas). The project consists of the following schemas and partial schemas:
 
-- [ContentPage](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/ContentPage.json)
-- [Currency](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Currency.json)
-- [Home](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Home.json)
-- [Link](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Link.json)
-- [Navigation](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Navigation.json)
-- [NavigationItem](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/NavigationItem.json)
-- [Product](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Product.json)
-- [ProductListingView](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/ProductListingView.json)
-- [Products](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/schemas/Products.json)
-- [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demo-nextjs/blob/master/example-data/enterspeed-schemas/partial-schemas/umbraco-blockText.json) **(Partial schema)**
+- [ContentPage](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-contentPage.json)
+- [Currency](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-curreny.json)
+- [Home](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-home.json)
+- [Link](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-link.json)
+- [Navigation](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-navigation.json)
+- [NavigationItem](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-navigationItem.json)
+- [Product](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-product.json)
+- [ProductListingView](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-ProductListingView.json)
+- [Products](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-products.json)
+- [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-partial-umbraco-blockText.json) **(Partial schema)**
 
 :::
