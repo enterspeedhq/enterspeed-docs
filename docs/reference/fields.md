@@ -164,7 +164,8 @@ If you want to trigger actions across schemas, you must specify the source. The 
 }
 ```
 
-```json title="Schema alias category"
+The schema that we are processing in the above examples.
+```json title="Schema alias category - "
 {
   "triggers": {
     "umbraco": ["category"]
