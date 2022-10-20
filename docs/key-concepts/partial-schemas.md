@@ -1,19 +1,25 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
+sidebar_label: Partial schemas
 ---
 
-# Designing a partial schema
+
+# Partial schemas
 
 import ReactPlayer from 'react-player/lazy'
 
 Partial schemas are a bit different from the typical schema.
-A partial schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas.
+A partial schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas. 
+
+The difference between using a partial schema versus referencing another schema, is that a referenced schema is stored as a separate view. 
+
+Using a partial schema with your schema, gives the output of a single view when processed.
 
 ## Configure a partial schema
 
 When using a partial schema, you are giving it a data object. This data object is typically the value of a specific part of the data source you are working on. It is also possible to use `root`, which allows the whole data source to be used in the partial schema.
 
-In the below example, we are referencing a partial schema called `seo`, and giving it a value of `p.seo` <small>(a complex json object with seo properties and data)</small>
+In the below example, we are using a partial schema called `seo`, and passing it the value of `p.seo` <small>(a complex json object with seo properties and data)</small>
 
 
 ## Examples
