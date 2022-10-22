@@ -9,16 +9,16 @@ To understand the concept of Enterspeed, you would have to look at it as a 3 ste
 2. Transform data
 3. Delivering data
 
-
 ## Ingesting data
-
+To get started ingesting data we need to do a few things first. 
 ### Environment settings
+The first thing to do is ensure that we have an environment available.
 Enterspeed will automatically create two environments for you. You can view them under Environment settings in the [settings section](https://app.enterspeed.com/settings/environment-settings)
 
 You can create new environments, edit the name of your environments or delete them. Beware of deleting environments, since this is an irreversible action that will remove all data attached to the environment.
 
 ### Data source settings
-We need to prepare Enterspeed, so your tenant can receive data. This is done by creating a data source. Data sources are where a connection is created to your CMS, PIM-system, or perhaps a development instance of your CMS.
+Then we also need to prepare Enterspeed, so your tenant can receive data. This is done by creating a data source. Data sources are where a connection is created to your CMS, PIM-system, or perhaps a development instance of your CMS.
 
 Go to [data sources](https://app.enterspeed.com/settings/data-sources) and create a data source group. (e.g. Demo CMS), and your data sources. 
 
@@ -61,7 +61,6 @@ Routing is set up in Schemas and is a part of setting up schemas and API's. We c
 - [Handles](/docs/key-concepts/schemas.md)
 
 ### Partial Schemas
-
 Partial schemas are a bit different from the typical schema.
 A partial schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas. 
 You can read more about partials [here](/docs/key-concepts/partial-schemas.md) and how it is used.
@@ -72,7 +71,7 @@ Currently, Enterspeed supports triggering the `process` of another schema.
 
 Imagine the following.
 You have a _product_ and _category_ source entity type.
-When you ingest a _product_, the list of products should be updated in the generated category view and include the changes. This is a typical use case scenario for actions.
+When you ingest a _product_, the list of products should be updated in the generated category view and include the changes. This is a typical use-case scenario for actions.
 
 Read more about [Actions](/docs/key-concepts/actions.md)
 
@@ -87,8 +86,21 @@ A benefit of a reference field is that the referenced view is resolved when requ
 Read more about the Reference property [here](/docs/key-concepts/referencing-schemas.md) with a more in-depth explanation and examples.
 
 ### Views
-
+A view should be considered as the output. Data is mapped in a Schema from source entities. When a source entity is created, updated or deleted, all schemas that is set up for the type of this source entity will create, update or delete the view accordingly.
+In short, the view is the response when calling the Delivery API.
 
 ## Delivering data
-### Environment settings
-### Getting started guides
+Your data has now been ingested as source entities and transformed using schemas. 
+
+### Environment clients
+You need to set up an environment client. 
+Navigate to Environment clients under Settings -> Environment settings and click the Create button. Give your environment client a name (e.g. My My Client Application) and select one of the environments that you have created. Afterward, click on the Create button.
+
+A Delivery API key has now been created. Copy and save it for use in your client application. 
+
+Next to your environment client, select edit domains. Select the Domain and press save changes. 
+
+You should now be ready to call the Enterspeed Delivery API. Go to the [docs](https://docs.enterspeed.com/api#tag/Delivery) for requirements regarding this. We also have an example [here](/docs/tutorials/umbraco-nextjs/4-fetching-data-in-nextjs.md)
+
+### Final notes
+We would suggest going to the [tutorials section](/docs/tutorials/overview.md) for examples and some in-depth samples of getting started.
