@@ -56,11 +56,12 @@ Basic number or integer mapping.
 
 ### Fields
 
-| Property  | Required? | Description                       |
-| --------- | --------- | --------------------------------- |
-| `type`    | **Yes**   | The property type - here `number` |
-| `value`   | **Yes**   | The value of the property         |
-| `default` | No        | The default value of the property |
+| Property    | Required? | Description                       |
+| ----------- | --------- | --------------------------------- |
+| `type`      | **Yes**   | The property type - here `number` |
+| `value`     | **Yes**   | The value of the property         |
+| `default`   | No        | The default value of the property |
+| `precision` | No        | Rounds a decimal value to a specified number of fractional digits, and rounds midpoint values to the nearest even number. Default value is 0 |
 
 ### Examples
 
