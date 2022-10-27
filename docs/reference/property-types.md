@@ -10,9 +10,9 @@ title: Property types
 | [String](#string)       | Basic string mapping. <br /><br />Accepts the following fields: `type` `value` `default` <br /><br />Note: `type` and `value` are required if you aren't using the shorthand - e.g. `"title": "{p.headline}"` |
 | [Number](#number)       | Basic number or integer mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default` `precision`                                                                                            |
 | [Boolean](#boolean)     | Basic boolean mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default`                                                                                                     |
-| [Array](#array)         | Mapping of an array, defining the input to iterate and the items definition. <br /><br />Required fields: `type` `input` <br /><br />Optional fields: `items` `var`                                           |
+| [Array](#array)         | Mapping of an array, defining the input to iterate and the items definition. <br /><br />Required fields: `type` `input` `items` <br /><br />Optional fields: `var`                                           |
 | [Object](#object)       | Mapping of an object. <br /><br />Required fields: `type` `properties`                                                                                                                                        |
-| [Reference](#reference) | Referencing another schema. <br /><br /> Required fields: `type` `alias` - use `id` **OR** `originId`                                                                                                         |
+| [Reference](#reference) | Referencing another schema. <br /><br /> Required fields: `type` `alias` - use `id` **OR** `originId`     <br /><br />Optional fields: `source`                                                                                                                                                |
 | [Partial](#partial)     | Referencing a partial schema to map the data into. <br /><br />Required fields: `type` `input` `alias`                                                                                                        |
 | [Dynamic](#dynamic)     | Dynamic mapping using the [path selector](./path-selector). <br /><br />Required fields: `*`                                                                                                                  |
 
@@ -427,7 +427,7 @@ This property types allows referencing other views created from either this Sour
 
 When referenced Enterspeed will resolve the view when requested by the Delivery API, so that the data will stay up-to-date.
 
-In order to reference desired source entity, you can use `alias` of the schema and `id` or `originId` of the source entity.
+In order to reference desired source entity, you can use `alias` of the schema and `id` or `originId` of the source entity and optionally a different source than the current source entity.
 
 ### Fields
 
@@ -437,6 +437,7 @@ In order to reference desired source entity, you can use `alias` of the schema a
 | `alias`    | **Yes**      | The alias of the schema you wish to reference               |
 | `id`       | **Yes** / No | The id of the source entity. `originId` can be used instead |
 | `originId` | **Yes** / No | The originId of the source entity. `id` can be used instead |
+| `source`   | No           | Allows you to define a different source. The source should be equal to the desired source group alias, where the view is located.<br/><br/>If not defined, it uses the current source group.<br/><br/>Note: This property is only used if `originId` is used. If `id` is used the source of the id will take priority over the source |
 
 ### Examples
 
@@ -444,7 +445,8 @@ In order to reference desired source entity, you can use `alias` of the schema a
 "seoData": {
   "type": "reference",
   "originId": "{originId}",
-  "alias": "Seo"
+  "alias": "Seo",
+  "source": "anotherSourceGroupAlias"
 }
 ```
 
