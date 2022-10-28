@@ -8,7 +8,7 @@ title: Property types
 | Property                | Description                                                                                                                                                                                                   |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [String](#string)       | Basic string mapping. <br /><br />Accepts the following fields: `type` `value` `default` <br /><br />Note: `type` and `value` are required if you aren't using the shorthand - e.g. `"title": "{p.headline}"` |
-| [Number](#number)       | Basic number or integer mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default`                                                                                           |
+| [Number](#number)       | Basic number or integer mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default` `precision`                                                                                            |
 | [Boolean](#boolean)     | Basic boolean mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default`                                                                                                     |
 | [Array](#array)         | Mapping of an array, defining the input to iterate and the items definition. <br /><br />Required fields: `type` `input` <br /><br />Optional fields: `items` `var`                                           |
 | [Object](#object)       | Mapping of an object. <br /><br />Required fields: `type` `properties`                                                                                                                                        |
@@ -56,11 +56,12 @@ Basic number or integer mapping.
 
 ### Fields
 
-| Property  | Required? | Description                       |
-| --------- | --------- | --------------------------------- |
-| `type`    | **Yes**   | The property type - here `number` |
-| `value`   | **Yes**   | The value of the property         |
-| `default` | No        | The default value of the property |
+| Property    | Required? | Description                       |
+| ----------- | --------- | --------------------------------- |
+| `type`      | **Yes**   | The property type - here `number` |
+| `value`     | **Yes**   | The value of the property         |
+| `default`   | No        | The default value of the property |
+| `precision` | No        | Rounds a decimal value to a specified number of fractional digits, and rounds midpoint values to the nearest even number. Default value is 0 |
 
 ### Examples
 
