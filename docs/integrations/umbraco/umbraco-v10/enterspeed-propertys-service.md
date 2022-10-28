@@ -15,11 +15,12 @@ Examples could be site settings or domain name data.
 To extend the meta-data on sources, you would need to create your custom property service. This is easily done by inheriting the default property service. In this example, all default behavior of the `EnterspeedPropertyService` is preserved but grants us the option to extend meta-data.
 
 As you can see, the `MapAdditionalMetaData` can be overridden. Here you only need to add your logic and include your own property + data.
+You can also override `MapAdditionalMediaMetaData` to extend media source entities. 
 
 Note that we in this example are using `StringEnterspeedProperty`. You can choose between multiple property types.
 (Array, boolean, number, object and so on.)
 
-### IEnterspeedContentHandlingGuard
+### Example
 
 ```csharp
 public class CustomPropertyService : EnterspeedPropertyService
@@ -29,6 +30,12 @@ public class CustomPropertyService : EnterspeedPropertyService
     }
 
     protected override void MapAdditionalMetaData(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
+    {
+        metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
+    }
+
+	// You can also set additional properties for media sources. 
+	protected override void MapAdditionalMediaMetaData(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
     {
         metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
     }
