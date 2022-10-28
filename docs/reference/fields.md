@@ -101,10 +101,11 @@ If you want to trigger actions across schemas, you must specify the source. The 
 
 
 
-```json title="Schema alias product with origin id and source."
+```json title="Schema with origin id"
 {
   // This example will process a category schema where the category 
-  // id == category id of the data source. All matching schemas are processed in the source group "umbraco".
+  // id == category id of the data source. Schema is 
+  // processed in the source group "umbraco".
 
   "triggers": {
     "umbraco": ["product"]
@@ -112,7 +113,6 @@ If you want to trigger actions across schemas, you must specify the source. The 
   "actions": [
     {
       "type": "process",
-      "source": "umbraco",
       "alias": "category",
       "originId": "{p.categoryId}"
     }
@@ -123,10 +123,10 @@ If you want to trigger actions across schemas, you must specify the source. The 
 }
 ```
 
-```json title="Schema alias with source, but without originId."
+```json title="Schema with source and without originId."
 {
-  // This example will process all category schemas
-  // in the "umbraco" source group
+  // This example will process the category schema in the "myCustomSourceGroup" source group.
+  // This is due to the source property.
 
   "triggers": {
     "umbraco": ["product"]
@@ -134,7 +134,7 @@ If you want to trigger actions across schemas, you must specify the source. The 
   "actions": [
     {
       "type": "process",
-      "source": "umbraco",
+      "source": "myCustomSourceGroup",
       "alias": "category"
     }
   ],
@@ -144,11 +144,9 @@ If you want to trigger actions across schemas, you must specify the source. The 
 }
 ```
 
-```json title="Schema alias with originId, but without source."
+```json title="Schema without source and originId "
 {
-  // This example will process a category schema where the category 
-  // id == category id of the data source. 
-
+  // This example will process the category schema in the source group "umbraco".
   "triggers": {
     "umbraco": ["product"]
   },
