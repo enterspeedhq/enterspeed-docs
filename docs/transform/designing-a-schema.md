@@ -16,6 +16,11 @@ In our settings, we define:
 
 And in our data, we map our existing data to our new content. This is all done under the "properties"-object.
 
+:::tip
+When creating schemas, Enterspeed will automatically generate an alias in camel case based on the name you provide. You can set your own alias by clicking the lock to the left of the alias.<br/><br/>
+![Deploy schema](/img/docs/transform/create-schema-with-custom-alias.png)
+:::
+
 ## Configuring the settings
 
 The first thing you need to define is your **triggers**. Triggers consist of one or more source groups, which contain one or more source entity types (the data your schema should use). You can find a list of all the Source Entity Types in the Source entities table in your Enterspeed-project under Type.
