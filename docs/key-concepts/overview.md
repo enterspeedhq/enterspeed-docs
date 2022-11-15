@@ -34,6 +34,36 @@ We currently have multiple options to get started with pushing source entities t
 2. Premade [connectors](https://docs.enterspeed.com/integrations) so you can get started immediately.
 3. Our .NET SDK. https://github.com/enterspeedhq/enterspeed-sdk-dotnet
 
+```json title="Example of data sent to the ingest API"
+{
+  "type": "string",
+  "url": "string",
+  "originParentId": "123",
+  "redirects": [
+    "https://enterspeed.com/product-enterspeed-tshirt-old/"
+  ],
+  "properties": {
+    "name": "Official Enterspeed T-shirt",
+    "price": 199.99,
+    "inStock": true,
+    "features": [
+      {
+        "name": "color",
+        "value": "blue"
+      },
+      {
+        "name": "size",
+        "value": "M"
+      }
+    ],
+    "information": {
+      "short": "Nice t-shirt",
+      "long": "Nice t-shirt in cotton"
+    }
+  }
+}
+```
+
 ### Source entities
 When the above steps have been applied successfully you are ready to push data to Enterspeed. 
 Data in Enterspeed is called Source Entities. Source entities conform to a specific format. The important thing to know about source entities is that these are not representing the final output of your Enterspeed routes, but should be seen as the data that is available for you to work with and [transform](#transforming-data) to your needs through your schemas.
@@ -54,6 +84,23 @@ Data in Enterspeed is called Source Entities. Source entities conform to a speci
 ### Schemas 
 The data now exists as source entities in Enterspeed and can be formed and modeled easily with data mapping in Enterspeed schemas. 
 Read more about [schemas](/docs/key-concepts/schemas.md).
+```json title="Schema"
+{
+  "triggers": {
+    "umbraco": ["product"]
+  },
+  "actions": [
+    {
+      "type": "process",
+      "alias": "category",
+      "originId": "{p.categoryId}"
+    }
+  ],
+  "properties": {
+    "name": "{p.name}"
+  }
+}
+```
 
 ### Routing 
 Routing is set up in Schemas and is a part of setting up schemas and API's. We currently offer 2 ways of setting up routing. 
@@ -86,11 +133,37 @@ A benefit of a reference field is that the referenced view is resolved when requ
 Read more about the Reference property [here](/docs/key-concepts/referencing-schemas.md) with a more in-depth explanation and examples.
 
 ### Views
-A view should be considered as the output. Data is mapped in a Schema from source entities. When a source entity is created, updated or deleted, all schemas that is set up for the type of this source entity will create, update or delete the view accordingly.
+A view should be considered as the output. Data is mapped in a Schema from source entities. When a source entity is created, updated or deleted, all schemas that are set up for the type of this source entity will create, update or delete the view accordingly.
 In short, the view is the response when calling the Delivery API.
 
 ## Delivering data
 Your data has now been ingested as source entities and transformed using schemas. 
+An example of calling the delivery API can be found [here](/tutorials/umbraco-nextjs/fetching-data-in-nextjs). 
+```js title="JavaScript example of calling the delivery API"
+const call = async (query, preview) => {
+  const url = `https://delivery.enterspeed.com/v1?${query}`;
+  const response = await fetch(new Request(url), {
+    headers: {
+      "Content-Type": "application/json",
+      "X-Api-Key": preview
+        ? process.env.ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY
+        : process.env.ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY,
+    },
+  });
+
+  return response.json();
+};
+
+export const getByHandle = async (handle, preview) => {
+  const response = await call(`handle=${handle}`, preview);
+  return response.views[handle];
+};
+
+export const getByUrl = async (url, preview) => {
+  const response = await call(`url=${url}`, preview);
+  return response.route;
+};
+```
 
 ### Environment clients
 You need to set up an environment client. 
