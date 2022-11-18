@@ -132,19 +132,14 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               docId: "home",
               label: "Home",
               position: "left",
-              activeBaseRegex: "/(getting-started|ingest|transform|deliver)",
+              activeBaseRegex:
+                "/(getting-started|ingest|transform|deliver|faq|key-concepts)/",
             },
             {
               to: "/reference/fields",
               label: "Schema reference",
               position: "left",
               activeBasePath: "reference",
-            },
-            {
-              to: "key-concepts/overview",
-              docId: "key-concepts/overview",
-              label: "Key concepts",
-              position: "left",
             },
             {
               to: "/api",
@@ -164,7 +159,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               label: "Tutorials",
               position: "left",
             },
-        
+
             {
               href: "https://github.com/enterspeedhq",
               position: "right",
