@@ -120,7 +120,7 @@ Imagine the following.
 You have a _product_ and _category_ source entity type.
 When you ingest a _product_, the list of products should be updated in the generated category view and include the changes. This is a typical use-case scenario for actions.
 
-Read more about [Actions](/docs/key-concepts/actions.md)
+Read more about [Actions](/docs/reference/fields.md#actions)
 
 ### References
 Referencing another schema.
