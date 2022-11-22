@@ -29,7 +29,7 @@ Example of a schema that is referencing a partial schema
   "properties": {
     "headline": "{p.title}",
     "seo": {
-      "type": "string",
+      "type": "partial",
       "value": "{p.seo}", // Seo property from below data source example.
       "alias": "seo" // Alias of the partial schema that you are referencing
     },

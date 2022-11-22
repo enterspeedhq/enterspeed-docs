@@ -37,7 +37,7 @@ We currently have multiple options to get started with pushing source entities t
 ```json title="Example of data sent to the ingest API"
 {
   "type": "string",
-  "url": "string",
+  "url": "https://enterspeed.com/product-enterspeed-tshirt-old-xs/",
   "originParentId": "123",
   "redirects": [
     "https://enterspeed.com/product-enterspeed-tshirt-old/"
