@@ -3,15 +3,16 @@ sidebar_position: 5
 sidebar_label: Routing
 ---
 
-
 # Routing
 
 You can do routing by either Url or Handle
 
 ## URL
-If you want your schema to be routable by an URL, you can specify the `url` as an expression. 
 
-If we take a look at this example we can see that we have a Url property available in the Data Source 
+If you want your schema to be routable by an URL, you can specify the `url` as an expression.
+
+If we take a look at this example we can see that we have a Url property available in the Data Source
+
 ```json title="Source entity example"
 {
   "id": "1044-en-us",
@@ -24,8 +25,8 @@ If we take a look at this example we can see that we have a Url property availab
 }
 ```
 
-In the below example of the schema for this Data Source, we can see that the route is mapped to the url property on the Data Source. This means that you can get the data from this source 
-by making a request to https://delivery.enterspeed.com/v1?url=/frontpage
+In the below example of the schema for this Data Source, we can see that the route is mapped to the url property on the Data Source. This means that you can get the data from this source
+by making a request to `https://delivery.enterspeed.com/v1?url=/frontpage`
 
 ```json
 {
@@ -39,10 +40,11 @@ by making a request to https://delivery.enterspeed.com/v1?url=/frontpage
 }
 ```
 
-## Handle 
-I handle differentiates a bit from Url routing. A handle can be what every you would like.
-In this example we a navigation structure is being returned. The schema returns an array of navigation items and utilizes the lookup and [reference](../key-concepts/referencing-schemas.md) fields.
-This handle would be called like this : https://delivery.enterspeed.com/v1?handle=mainNavigation
+## Handle
+
+Handle differentiates a bit from URL routing. A handle can be whatever you would like.
+In this example, a navigation structure is returned. The schema returns an array of navigation items and utilizes the lookup and [reference](../key-concepts/referencing-schemas.md) fields.
+This handle would be called like this: `https://delivery.enterspeed.com/v1?handle=mainNavigation`
 
 ```json
 {
@@ -72,3 +74,4 @@ This handle would be called like this : https://delivery.enterspeed.com/v1?handl
     }
   }
 }
+```
