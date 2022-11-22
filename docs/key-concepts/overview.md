@@ -64,9 +64,9 @@ We currently have multiple options to get started with pushing source entities t
 }
 ```
 
-### Source entities
+### Source Entities
 When the above steps have been applied successfully you are ready to push data to Enterspeed. 
-Data in Enterspeed is called Source Entities. Source entities conform to a specific format. The important thing to know about source entities is that these are not representing the final output of your Enterspeed routes, but should be seen as the data that is available for you to work with and [transform](#transforming-data) to your needs through your schemas.
+Data in Enterspeed is called Source Entities. Source Entities conform to a specific format. The important thing to know about source entities is that these are not representing the final output of your Enterspeed routes, but should be seen as the data that is available for you to work with and [transform](#transforming-data) to your needs through your schemas.
 
 ```json title="Source entity example"
 {

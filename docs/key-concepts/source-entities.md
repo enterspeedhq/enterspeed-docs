@@ -1,8 +1,13 @@
 ---
 sidebar_position: 4
-sidebar_label: Source entities
+sidebar_label: Source Entities
 ---
 
 
-# Source entities
+# Source Entities
 
+When pushing to Enterspeed from your source system, data exists in Enterspeed as Source Entities. Source Entities are not a representation of the final output. They should be seen as the data that is available for you to work with. 
+
+The important thing to remember is that we are not going to see the output of the Source Entities, since you are specifying the output of your Source Entities through schema mappings. These schema mappings generate views of data, based on the mappings that you have done in the schema.
+
+Read more about [schemas](//docs/key-concepts/schemas.md) and how to get started working with mapping data from your Source Entities.
