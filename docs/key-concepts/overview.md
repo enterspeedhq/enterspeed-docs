@@ -113,7 +113,7 @@ Read more about [schemas](/docs/key-concepts/schemas.md).
 
 ### Routing
 
-Routing is set up in Schemas and is a part of setting up schemas and API's. We currently offer 2 ways of setting up routing.
+Routing is set up in Schemas and is a part of setting up schemas and API's. We currently offer two ways of setting up routing:
 
 - [Url routing](/docs/key-concepts/schemas.md)
 - [Handles](/docs/key-concepts/schemas.md)
@@ -191,7 +191,7 @@ A Delivery API key has now been created. Copy and save it for use in your client
 
 Next to your environment client, select edit domains. Select the Domain and press save changes.
 
-You should now be ready to call the Enterspeed Delivery API. Go to the [docs](https://docs.enterspeed.com/api#tag/Delivery) for requirements regarding this. We also have an example [here](/docs/tutorials/umbraco-nextjs/4-fetching-data-in-nextjs.md)
+You should now be ready to call the Enterspeed Delivery API. Go to the [docs](../api#tag/Delivery) for requirements regarding this. We also have an example [here](/docs/tutorials/umbraco-nextjs/4-fetching-data-in-nextjs.md)
 
 ### Final notes
 
