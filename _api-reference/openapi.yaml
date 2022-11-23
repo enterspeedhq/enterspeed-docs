@@ -154,6 +154,7 @@ paths:
             type: string
             example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
         - name: X-Enterspeed-Type
+          required: true
           in: header
           description: |
             The type or alias of the type of entity being send to process.
