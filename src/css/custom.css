@@ -154,6 +154,11 @@ html[data-theme="dark"] .api-content {
   color: #fff;
 }
 
+.redocusaurus .menu-content {
+  top: 60px !important;
+  height: calc(100vh - 60px) !important;
+}
+
 .redocusaurus h2,
 .redocusaurus h3,
 .redocusaurus h4 {
