@@ -13,7 +13,7 @@ A schema acts as a middleman, grabbing the data from the source entities and gen
 
 [Views](/docs/key-concepts/views.md) are the result of the above, and what we receive as a response when calling the Enterspeed API.
 
-Schema is key in setting up and defining API's, property mapping, [routes](/docs/key-concepts/routing.md), [actions](/docs/key-concepts/actions.md) and more.
+Schema is key in setting up and defining API's, property mapping, [routes](/docs/key-concepts/routing.md), [actions](/docs/reference/fields.md#actions) and more.
 
 ## Important topics
 
@@ -21,7 +21,7 @@ Schema is key in setting up and defining API's, property mapping, [routes](/docs
 
 [Referencing schemas](/docs/key-concepts/referencing-schemas.md)
 
-[Actions](/docs/key-concepts/actions.md)
+[Actions](/docs/reference/fields.md#actions)
 
 [Routing](/docs/key-concepts/routing.md)
 

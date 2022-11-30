@@ -30,7 +30,7 @@ Go to [data sources](https://app.enterspeed.com/settings/data-sources) and creat
 
 You should now have an API key available for you. The data source API key is a unique key used for both authentication when pushing data and also as an id for the data source that you will be pushing source entities to.
 
-Read more about data sources and how to manage them [here](/key-concepts/overview).
+Read more about data sources and how to manage them [here](/docs/getting-started/data-sources.md).
 
 ### Preparing your system
 
@@ -78,7 +78,7 @@ Data in Enterspeed is called Source Entities. Source Entities conform to a speci
 {
   "id": "1044-en-us",
   "type": "frontPage",
-  "url": "/frontPage",
+  "url": "https://www.example.com/",
   "properties": {
     "title": "Welcome",
     "description": "description value"
