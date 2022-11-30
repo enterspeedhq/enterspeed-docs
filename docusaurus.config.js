@@ -132,7 +132,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               docId: "home",
               label: "Home",
               position: "left",
-              activeBaseRegex: "/(getting-started|ingest|transform|deliver)",
+              activeBaseRegex:
+                "/(getting-started|ingest|transform|deliver|faq|key-concepts)/",
             },
             {
               to: "/reference/fields",
@@ -158,6 +159,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               label: "Tutorials",
               position: "left",
             },
+
             {
               href: "https://github.com/enterspeedhq",
               position: "right",
