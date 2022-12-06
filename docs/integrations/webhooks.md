@@ -22,7 +22,7 @@ The request til the client configured url will be made with the following config
 | Retry count | 3           | How many times the webhook will try to send the request |
 | Timeout     | 10          | The request timeout in seconds              |
 | HTTP method | POST        | Teh requests is made as a POST |
-| Headers     | X-Api-Key<br /><br />X-Enterspeed-Webhook-Name<br /><br />X-Enterspeed-System   | Two headers will be send with the request.<br /><br />X-Api-Key will hold a key so that the client can validate that the request is actually comming from Enterspeed<br /><br />X-Enterspeed-Webhook-Name will hold the name of the webhook<br /><br />X-Enterspeed-System will hold the version number of the webhook
+| Headers     | `X-Api-Key`<br /><br />`X-Enterspeed-Webhook-Name`<br /><br />`X-Enterspeed-System`  | Two headers will be send with the request.<br /><br />X-Api-Key will hold a key so that the client can validate that the request is actually coming from Enterspeed<br /><br />X-Enterspeed-Webhook-Name will hold the name of the webhook<br /><br />X-Enterspeed-System will hold the version number of the webhook
 
 ### Payload
 
