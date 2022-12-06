@@ -468,6 +468,61 @@ In order to reference desired source entity, you can use `alias` of the schema a
 
 The `alias` can either be a static value, like "Seo" or it can be a dynamic value being resolved from the Source Entity that is being processed by Enterspeed. This allows for supporting almost any use case.
 
+### Reference reponse
+
+The reponse of references differs in V1 and V2+ of the delivery API. V1 return the id, type and wraps the properties from the referenced view in a `view` property. The reponse of references in V2+ is much more clean and only return the actual properties from the referenced schema. If a reference is not found in V2+ the reference informations are added in the `missingViewReference` property in the `meta` object for debug purpose.
+
+```json title="Delivery API V1 uses a nested view property"
+{
+  // This example shows a response of a view with two schema references. 
+  // image1 is referencing a found view with a url and name property
+  // and image2 is referencing a view that doesn't exist.
+
+  "meta": {
+    "missingViewReferences": []
+  },
+  "route": {
+    "image1": {
+      "id": "gid://Environment/8ef2bdc0-c352-4190-a344-c51d1f5e72ea/Source/dc5d9518-b96a-428a-a9b3-31fb601376c2/Entity/1234/View/image",
+      "view": {
+        "url": "https://test.com/how-to-write-a-good-blog-post.png",
+        "name": "How To Write A Good Blog Post"
+      },
+      "type": "ViewReference"
+    },
+    "image2": {
+      "id": "gid://Environment/8ef2bdc0-c352-4190-a344-c51d1f5e72ea/Source/dc5d9518-b96a-428a-a9b3-31fb601376c2/Entity/1235/View/image",
+      "view": null,
+      "type": "ViewReference"
+    }
+  }
+}
+```
+
+```json title="Delivery API V2+ only returns the actual view properties"
+{
+  // This example shows a response of a view with two schema references. 
+  // image1 is referencing a found view with a url and name property
+  // and image2 is referencing a view that doesn't exist.
+
+  "meta": {
+    "missingViewReferences": [
+      {
+        "path": "image2",
+        "viewId": "gid://Environment/8ef2bdc0-c352-4190-a344-c51d1f5e72ea/Source/dc5d9518-b96a-428a-a9b3-31fb601376c2/Entity/1235/View/image"
+      }
+    ]
+  },
+  "route": {
+    "image1": {
+      "url": "https://test.com/how-to-write-a-good-blog-post.png",
+      "name": "How To Write A Good Blog Post"
+    },
+    "image2": null
+  }
+}
+```
+
 ---
 
 ## partial

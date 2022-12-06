@@ -44,7 +44,7 @@ servers:
   - url: https://api.enterspeed.com
     description: General API
 paths:
-  /v1:
+  /v2:
     servers:
       - url: https://delivery.enterspeed.com
         description: Delivery API
