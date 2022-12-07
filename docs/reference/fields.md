@@ -7,13 +7,13 @@ title: Fields
 
 ## Schema fields
 
-| Field               | Type   | Required? | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ------------------- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `triggers`          | Object | **Yes**   | The source groups you want this schema to trigger on. A source group should contain one or more source entity types (`array`). <br /><br />You can add as many source groups and source entity types as you wish.                                                                                                                                                                                                                                                                                                                                                   |
-| `properties`        | Object | **Yes**   | The properties you want your schema to consist of. See [properties types](./property-types) for supported types.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `route`             | Object | No        | Defines if you want this schema to be retrievable by a route. A route is not specifically an URL, but it can be. <br /><br /> The route property contains 2 different properties: `url` or `handles`.                                                                                                                                                                                                                                                                                                                                                               |
-| `actions`           | Array  | No        | Actions is used when a new view has been generated from a schema. It defines which specific actions to take following the newly generated view. Currently, Enterspeed supports triggering the `process` of another schema.<br /> <br /> The Array takes an object with the properties: <br />`type` <small>(e.g. process)</small><br />`alias` <small>(Alias of the schema to process)</small><br />`originId` <small>(Optional. id of source to trigger)</small><br />`source` <small>(Optional. Alias of destination source group)</small><br />|
-| `sourceEntityTypes` | Array  | -         | **DEPRECATED** <br /><br /> <strike>The types of source entities you want this schema to trigger on.</strike>                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Field               | Type   | Required? | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------- | ------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `triggers`          | Object | **Yes**   | The source groups you want this schema to trigger on. A source group should contain one or more source entity types (`array`). <br /><br />You can add as many source groups and source entity types as you wish.                                                                                                                                                                                                                                                                                                                                  |
+| `properties`        | Object | **Yes**   | The properties you want your schema to consist of. See [properties types](./property-types) for supported types.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `route`             | Object | No        | Defines if you want this schema to be retrievable by a route. A route is not specifically an URL, but it can be. <br /><br /> The route property contains 2 different properties: `url` or `handles`.                                                                                                                                                                                                                                                                                                                                              |
+| `actions`           | Array  | No        | Actions is used when a new view has been generated from a schema. It defines which specific actions to take following the newly generated view. Currently, Enterspeed supports triggering the `process` of another schema.<br /> <br /> The Array takes an object with the properties: <br />`type` <small>(e.g. process)</small><br />`alias` <small>(Alias of the schema to process)</small><br />`originId` <small>(Optional. id of source to trigger)</small><br />`source` <small>(Optional. Alias of destination source group)</small><br /> |
+| `sourceEntityTypes` | Array  | -         | **DEPRECATED** <br /><br /> <strike>The types of source entities you want this schema to trigger on.</strike>                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## Examples
 
@@ -87,16 +87,16 @@ The handle supports expressions as described for `url`:
 }
 ```
 
-##### Handle reponse
+##### Handle response
 
-The reponse of the handles differs in V1 and V2+ of the delivery API. The structure is the same but V1 uses the schema alias as key for each handle where as V2+ uses the handle name as key. This means that in V1 you can only request one handle pr schema in order to not have a duplicate key. Where as in V2 you can request multiple handles from the same schema.
+The response of the handles differs in V1 and V2+ of the delivery API. The structure is the same but V1 uses the schema alias as key for each handle where as V2+ uses the handle name as key. This means that in V1 you can only request one handle per schema in order to not have a duplicate key, where as in V2+ you can request multiple handles from the same schema.
 
 ```json title="Delivery API V1 uses the schema alias as key"
 {
-  // This example shows a response of a handle generated by a schema called 
+  // This example shows a response of a handle generated by a schema called
   // front-page. Because of that the handle key is front-page as well
 
-  "views": { 
+  "views": {
     // The handle key is the schema alias
     "front-page": {
       "headline": "My headline"
@@ -107,15 +107,15 @@ The reponse of the handles differs in V1 and V2+ of the delivery API. The struct
 
 ```json title="Delivery API V2+ uses the handle name as key"
 {
-  // This example shows a response of two handle generated by the same 
-  // schema called front-page. In v2+ the handle keys is the handle names
+  // This example shows a response of two handles generated by the same
+  // schema called front-page. In V2+ the handle keys is the handle names
 
   "views": {
-     // The handle key is the handle name
+    // The handle key is the handle name
     "front-page-da-dk": {
       "headline": "My danish headline"
     },
-     // The handle key is the handle name
+    // The handle key is the handle name
     "front-page-en-gb": {
       "headline": "My english headline"
     }
@@ -135,12 +135,10 @@ Consider the following examples where the ingest of _product_ will both generate
 If you want to trigger actions across schemas, you must specify the source. The value of `source` is the alias of the destination source group.
 :::
 
-
-
 ```json title="Schema with origin id"
 {
-  // This example will process a category schema where the category 
-  // id == category id of the data source. Schema is 
+  // This example will process a category schema where the category
+  // id == category id of the data source. Schema is
   // processed in the source group "umbraco".
 
   "triggers": {
@@ -199,6 +197,7 @@ If you want to trigger actions across schemas, you must specify the source. The 
 ```
 
 The schema that we are processing in the above examples.
+
 ```json title="Schema alias category - "
 {
   "triggers": {
