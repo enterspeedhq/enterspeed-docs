@@ -9,13 +9,13 @@ title: Webhooks
 Webhooks is still in preview, contact us if would like to try it out.
 :::
 
-Webhooks In Enterspeed is HTTP callbacks that will send the all generated views by schemas with the [destinations field](../reference/fields.md) to a url configured in the Webhook. This means that you can decide on schema level which views you wan't to send to the webhook.
+Webhooks in Enterspeed are HTTP callbacks that will send all generated views by schemas with the [destinations field](../reference/fields.md) to a URL configured in the Webhook. This means that you can decide on the schema level which views you want to send to the webhook.
 
-You will only have to set the destination field on the entity schema you want to send to the webhook. All schema references are automatically resolve so you don't have to set it on all referenced schemas.
+You will only have to set the destination field on the entity schema you want to send to the webhook. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
 
 ## Request
 
-The request til the client configured url will be made with the following configuration.
+The request to the client-configured URL will be made with the following configuration.
 
 | Setting     | Value       | Description                            |
 | ----------- | ----------- | -------------------------------------- |
