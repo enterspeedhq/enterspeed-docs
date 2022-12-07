@@ -8,11 +8,11 @@ title: Property types
 | Property                | Description                                                                                                                                                                                                   |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [String](#string)       | Basic string mapping. <br /><br />Accepts the following fields: `type` `value` `default` <br /><br />Note: `type` and `value` are required if you aren't using the shorthand - e.g. `"title": "{p.headline}"` |
-| [Number](#number)       | Basic number or integer mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default` `precision`                                                                                            |
+| [Number](#number)       | Basic number or integer mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default` `precision`                                                                               |
 | [Boolean](#boolean)     | Basic boolean mapping. <br /><br />Required fields: `type` `value` <br /><br />Optional fields: `default`                                                                                                     |
 | [Array](#array)         | Mapping of an array, defining the input to iterate and the items definition. <br /><br />Required fields: `type` `input` `items` <br /><br />Optional fields: `var`                                           |
 | [Object](#object)       | Mapping of an object. <br /><br />Required fields: `type` `properties`                                                                                                                                        |
-| [Reference](#reference) | Referencing another schema. <br /><br /> Required fields: `type` `alias` - use `id` **OR** `originId`     <br /><br />Optional fields: `source`                                                                                                                                                |
+| [Reference](#reference) | Referencing another schema. <br /><br /> Required fields: `type` `alias` - use `id` **OR** `originId` <br /><br />Optional fields: `source`                                                                   |
 | [Partial](#partial)     | Referencing a partial schema to map the data into. <br /><br />Required fields: `type` `input` `alias`                                                                                                        |
 | [Dynamic](#dynamic)     | Dynamic mapping using the [path selector](./path-selector). <br /><br />Required fields: `*`                                                                                                                  |
 
@@ -56,11 +56,11 @@ Basic number or integer mapping.
 
 ### Fields
 
-| Property    | Required? | Description                       |
-| ----------- | --------- | --------------------------------- |
-| `type`      | **Yes**   | The property type - here `number` |
-| `value`     | **Yes**   | The value of the property         |
-| `default`   | No        | The default value of the property |
+| Property    | Required? | Description                                                                                                                                  |
+| ----------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`      | **Yes**   | The property type - here `number`                                                                                                            |
+| `value`     | **Yes**   | The value of the property                                                                                                                    |
+| `default`   | No        | The default value of the property                                                                                                            |
 | `precision` | No        | Rounds a decimal value to a specified number of fractional digits, and rounds midpoint values to the nearest even number. Default value is 0 |
 
 ### Examples
@@ -431,12 +431,12 @@ In order to reference desired source entity, you can use `alias` of the schema a
 
 ### Fields
 
-| Property   | Required?    | Description                                                 |
-| ---------- | ------------ | ----------------------------------------------------------- |
-| `type`     | **Yes**      | The property type - here `alias`                            |
-| `alias`    | **Yes**      | The alias of the schema you wish to reference               |
-| `id`       | **Yes** / No | The id of the source entity. `originId` can be used instead |
-| `originId` | **Yes** / No | The originId of the source entity. `id` can be used instead |
+| Property   | Required?    | Description                                                                                                                                                                                                                                                                                                                           |
+| ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`     | **Yes**      | The property type - here `alias`                                                                                                                                                                                                                                                                                                      |
+| `alias`    | **Yes**      | The alias of the schema you wish to reference                                                                                                                                                                                                                                                                                         |
+| `id`       | **Yes** / No | The id of the source entity. `originId` can be used instead                                                                                                                                                                                                                                                                           |
+| `originId` | **Yes** / No | The originId of the source entity. `id` can be used instead                                                                                                                                                                                                                                                                           |
 | `source`   | No           | Allows you to define a different source. The source should be equal to the desired source group alias, where the view is located.<br/><br/>If not defined, it uses the current source group.<br/><br/>Note: This property is only used if `originId` is used. If `id` is used the source of the id will take priority over the source |
 
 ### Examples
@@ -467,6 +467,61 @@ In order to reference desired source entity, you can use `alias` of the schema a
 ```
 
 The `alias` can either be a static value, like "Seo" or it can be a dynamic value being resolved from the Source Entity that is being processed by Enterspeed. This allows for supporting almost any use case.
+
+### Reference response
+
+The response of references differs in V1 and V2+ of the delivery API. V1 return the id, type and wraps the properties from the referenced view in a `view` property. The response of references in V2+ is much more clean and only return the actual properties from the referenced schema. If a reference is not found in V2+ the reference information are added in the `missingViewReference` property in the `meta` object for debug purpose.
+
+```json title="Delivery API V1 uses a nested view property"
+{
+  // This example shows a response of a view with two schema references.
+  // image1 is referencing a found view with a url and name property
+  // and image2 is referencing a view that doesn't exist.
+
+  "meta": {
+    "missingViewReferences": []
+  },
+  "route": {
+    "image1": {
+      "id": "gid://Environment/8ef2bdc0-c352-4190-a344-c51d1f5e72ea/Source/dc5d9518-b96a-428a-a9b3-31fb601376c2/Entity/1234/View/image",
+      "view": {
+        "url": "https://test.com/how-to-write-a-good-blog-post.png",
+        "name": "How To Write A Good Blog Post"
+      },
+      "type": "ViewReference"
+    },
+    "image2": {
+      "id": "gid://Environment/8ef2bdc0-c352-4190-a344-c51d1f5e72ea/Source/dc5d9518-b96a-428a-a9b3-31fb601376c2/Entity/1235/View/image",
+      "view": null,
+      "type": "ViewReference"
+    }
+  }
+}
+```
+
+```json title="Delivery API V2+ only returns the actual view properties"
+{
+  // This example shows a response of a view with two schema references.
+  // image1 is referencing a found view with a url and name property
+  // and image2 is referencing a view that doesn't exist.
+
+  "meta": {
+    "missingViewReferences": [
+      {
+        "path": "image2",
+        "viewId": "gid://Environment/8ef2bdc0-c352-4190-a344-c51d1f5e72ea/Source/dc5d9518-b96a-428a-a9b3-31fb601376c2/Entity/1235/View/image"
+      }
+    ]
+  },
+  "route": {
+    "image1": {
+      "url": "https://test.com/how-to-write-a-good-blog-post.png",
+      "name": "How To Write A Good Blog Post"
+    },
+    "image2": null
+  }
+}
+```
 
 ---
 
