@@ -140,13 +140,13 @@ public class MyCustomJobHandlersComposer : IComposer
 | EnterspeedPreviewDictionaryItemPublishJobHandler | Ingest - save   | Saved dictionary item             |
 | EnterspeedPreviewDictionaryItemDeleteJobHandler  | Ingest - delete | Deleted dictionary item           |
 
-[Source code of Job handling related classes](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/src/Enterspeed.Source.UmbracoCms.v10/Handlers)
+[Source code of Job handling related classes (Umbraco 8)](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/src/Enterspeed.Source.UmbracoCms.V8/Handlers)
+
+[Source code of Job handling related classes (Umbraco 9+)](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/src/Enterspeed.Source.UmbracoCms.V10/Handlers)
 
 ## In case, of more customization
 
-If, specifying new job handlers is not enough, or you want to change flow how job handlers are assigned and jobs are handled - [`IEnterspeedJobsHandler`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.v10/Handlers/EnterspeedJobsHandler.cs) is a good place to start.
+If specifying new job handlers is not enough, or you want to change flow how job handlers are assigned and jobs are handled-
 
-### Inspiration:
-
-- [Enterspeed.Contrib.Source.UmbracoCms.v10.RootDictionaryItem](https://github.com/elglogins/Enterspeed.Contrib.Source.UmbracoCms.v10.RootDictionaryItem)
-- [Enterspeed.Contrib.Source.UmbracoCms.v10.GroupedDictionaries](https://github.com/elglogins/Enterspeed.Contrib.Source.UmbracoCms.v10.GroupedDictionaries)
+[`IEnterspeedJobsHandler Umbraco 8`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V8/Handlers/EnterspeedJobsHandler.cs).  
+[`IEnterspeedJobsHandler Umbraco 9+`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V10/Handlers/EnterspeedJobsHandler.cs).
