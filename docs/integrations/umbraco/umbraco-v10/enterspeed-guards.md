@@ -26,9 +26,9 @@ public interface IEnterspeedContentHandlingGuard
 ```
 
 ### Registering a content handling guard
-Guards are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
+Guards are registered in Umbraco via the [Composing](https://our.umbraco.com/documentation/implementation/composing/) functionality.
 
-Example:
+Umbraco 9+
 ```csharp
 public class MyCustomerGuardsComposer : IComposer
 {
@@ -36,6 +36,19 @@ public class MyCustomerGuardsComposer : IComposer
     {
         builder.EnterspeedContentHandlingGuards()
                 .Append<MyCustomContentHandlingGuard>();
+    }
+}
+```
+
+Umbraco 8
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomerGuardsComposer : IUserComposer
+{
+    public void Compose(Composition composition)
+    {
+        composition.EnterspeedContentHandlingGuards()
+            .Append<MyCustomContentHandlingGuard>();
     }
 }
 ```
@@ -58,9 +71,9 @@ public interface IEnterspeedDictionaryItemHandlingGuard
 ```
 
 ### Registering a dictionary item handling guard
-Guards are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
+Guards are registered in Umbraco via the [Composing](https://our.umbraco.com/documentation/implementation/composing/) functionality.
 
-Example:
+Umbraco 9+
 ```csharp
 public class MyCustomerGuardsComposer : IComposer
 {
@@ -68,6 +81,19 @@ public class MyCustomerGuardsComposer : IComposer
     {
         builder.EnterspeedDictionaryItemHandlingGuards()
                 .Append<MyCustomDictionaryItemHandlingGuard>();
+    }
+}
+```
+
+Umbraco 8
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomerGuardsComposer : IUserComposer
+{
+    public void Compose(Composition composition)
+    {
+        composition.EnterspeedDictionaryItemHandlingGuards()
+            .Append<MyCustomDictionaryItemHandlingGuard>();
     }
 }
 ```

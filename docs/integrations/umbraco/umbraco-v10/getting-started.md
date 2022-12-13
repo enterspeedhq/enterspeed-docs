@@ -20,8 +20,8 @@ The fastest way to get up and running, is to install the Enterspeed Umbraco inte
 **NuGet:**  
 [Umbraco 7](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v7/)  
 [Umbraco 8](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v8/)  
-[Umbraco 9](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v9/)  
-[Umbraco 10](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v10/) 
+[Umbraco 9+](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v9/)  
+
 
 :::info
 Using Umbraco Cloud? If you have used the Umbraco Cloud UaaS.cmd tool to setup your solution,

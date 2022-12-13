@@ -55,8 +55,7 @@ public IEnterspeedProperty Convert(GridControl editor, string culture)
 
 Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
 
-Example:
-
+Umbraco 9+
 ```csharp
 public class MyCustomerGridEditorValueConverterComposer : IComposer
 {
@@ -68,8 +67,19 @@ public class MyCustomerGridEditorValueConverterComposer : IComposer
 }
 ```
 
+Umbraco 8
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomerGridEditorValueConverterComposer : IUserComposer
+{
+    composition.EnterspeedGridEditorValueConverters()
+                .Append<MyCustomGridEditorValueConverter>();
+}
+```
+
 Note that the EnterspeedGridEditorService will find the converters in the order that they are registered, which means that, if you want to replace a default converter with your own, you need to insert your converter like this:
 
+Umbraco 9+
 ```csharp
 public class MyCustomerPropertyValueConverterComposer : IComposer
 {
@@ -78,6 +88,16 @@ public class MyCustomerPropertyValueConverterComposer : IComposer
         builder.EnterspeedGridEditorValueConverters()
             .InsertBefore<DefaultRichTextEditorGridEditorValueConverter, MyCustomGridEditorValueConverter>();
     }
+}
+```
+
+Umbraco 8
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomerPropertyValueConverterComposer : IUserComposer
+{
+    composition.EnterspeedGridEditorValueConverters()
+                .InsertBefore<DefaultRichTextEditorGridEditorValueConverter, MyCustomGridEditorValueConverter>();
 }
 ```
 

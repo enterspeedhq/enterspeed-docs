@@ -46,14 +46,25 @@ public class CustomPropertyService : EnterspeedPropertyService
 
 The property service is registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/). The `AddUnique` extension method replaces the normal property service and implements your own.
 
-Example:
-
+Umbraco 9+
 ```csharp
 public class MyCustomComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
     {
         builder.Services.AddUnique<IEnterspeedPropertyService, CustomPropertyService>(ServiceLifetime.Transient);
+    }
+}
+```
+
+Umbraco 8
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomComposer : IUserComposer
+{
+    public void Compose(Composition composition)
+    {
+        composition.RegisterUnique<IEnterspeedPropertyService, CustomPropertyService>();
     }
 }
 ```
