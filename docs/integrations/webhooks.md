@@ -30,9 +30,9 @@ The request will send the following data.
 
 ```json
 {
-  "id": "gid://Source/47009f7f-a619-4245-9k4h-29726e76fe40/Entity/1234", // the Enterspeed view id
+  "id": "gid://Environment/2052b78d-6c34-4f11-bea5-296cf2d26968/Source/053b598b-c3d1-46fb-91e3-53115169cdb2/Entity/1234/View/product", // the Enterspeed view id
   "OriginId": "1234", // the origin id of the entity
-  "Type": "1234", // the type of the entity
+  "Type": "product", // the type of the entity
   "Action": "Deploy", // can have the value of Deploy or Remove
   "properties": { } // contains all the data for the view
 }
