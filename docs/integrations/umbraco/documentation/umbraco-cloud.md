@@ -9,5 +9,4 @@ If you are building a new site or you are new to Umbraco Cloud, you should refer
 
 # Installation
 
-Described on [Getting started with Umbraco 10](/integrations/umbraco/umbraco-v10/getting-started#installation)
-
+Described in [Getting started](/integrations/umbraco/documentation/getting-started#installation)
