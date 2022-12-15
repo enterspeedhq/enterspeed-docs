@@ -7,13 +7,14 @@ title: Fields
 
 ## Schema fields
 
-| Field               | Type   | Required? | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ------------------- | ------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `triggers`          | Object | **Yes**   | The source groups you want this schema to trigger on. A source group should contain one or more source entity types (`array`). <br /><br />You can add as many source groups and source entity types as you wish.                                                                                                                                                                                                                                                                                                                                  |
-| `properties`        | Object | **Yes**   | The properties you want your schema to consist of. See [properties types](./property-types) for supported types.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `route`             | Object | No        | Defines if you want this schema to be retrievable by a route. A route is not specifically an URL, but it can be. <br /><br /> The route property contains 2 different properties: `url` or `handles`.                                                                                                                                                                                                                                                                                                                                              |
-| `actions`           | Array  | No        | Actions is used when a new view has been generated from a schema. It defines which specific actions to take following the newly generated view. Currently, Enterspeed supports triggering the `process` of another schema.<br /> <br /> The Array takes an object with the properties: <br />`type` <small>(e.g. process)</small><br />`alias` <small>(Alias of the schema to process)</small><br />`originId` <small>(Optional. id of source to trigger)</small><br />`source` <small>(Optional. Alias of destination source group)</small><br /> |
-| `sourceEntityTypes` | Array  | -         | **DEPRECATED** <br /><br /> <strike>The types of source entities you want this schema to trigger on.</strike>                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Field               | Type   | Required? | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `triggers`          | Object | **Yes**   | The source groups you want this schema to trigger on. A source group should contain one or more source entity types (`array`). <br /><br />You can add as many source groups and source entity types as you wish.                                                                                                                                                                                                                                                                                                                                                   |
+| `properties`        | Object | **Yes**   | The properties you want your schema to consist of. See [properties types](./property-types) for supported types.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `route`             | Object | No        | Defines if you want this schema to be retrievable by a route. A route is not specifically an URL, but it can be. <br /><br /> The route property contains 2 different properties: `url` or `handles`.                                                                                                                                                                                                                                                                                                                                                               |
+| `actions`           | Array  | No        | Actions is used when a new view has been generated from a schema. It defines which specific actions to take following the newly generated view. Currently, Enterspeed supports triggering the `process` of another schema.<br /> <br /> The Array takes an object with the properties: <br />`type` <small>(e.g. process)</small><br />`alias` <small>(Alias of the schema to process)</small><br />`originId` <small>(Optional. id of source to trigger)</small><br />`source` <small>(Optional. Alias of destination source group)</small><br />|
+| `destinations`      | Array  | No        | Destinations is a preview feature.<br /> <br />Destinations is used to push the generated views for a schema to a webhook or other third-party application.<br /> <br /> The Array takes an object with the properties: <br />`alias` <small>(e.g. webhook)</small><br /> |
+| `sourceEntityTypes` | Array  | -         | **DEPRECATED** <br /><br /> <strike>The types of source entities you want this schema to trigger on.</strike>                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ## Examples
 
@@ -224,6 +225,32 @@ The schema that we are processing in the above examples.
         }
       }
     }
+  }
+}
+```
+
+### Destinations
+
+:::info
+Webhooks is still in preview, contact us if would like to test it out.
+:::
+
+To give an example, you can use `destinations` when you want to send views for e.g. all content pages or all products to a third-party system for searching.
+
+```json title="Schema with destinations"
+{
+  // This example will send all generated views by this schema to the webhook.
+
+  "triggers": {
+    "umbraco": ["product"]
+  },
+  "destinations": [
+		{
+			"alias": "webhook"
+		}
+	],
+  "properties": {
+    "name": "{p.name}"
   }
 }
 ```
