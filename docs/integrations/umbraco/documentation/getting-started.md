@@ -3,7 +3,7 @@ sidebar_position: 1
 title: Getting started
 ---
 
-# Getting started Umbraco v10 & Enterspeed
+# Getting started with Umbraco & Enterspeed
 
 The easiest way to get started with Umbraco and Enterspeed is by using the pre-built Umbraco integration.
 
@@ -12,8 +12,6 @@ The easiest way to get started with Umbraco and Enterspeed is by using the pre-b
 This integration takes care of calling the Enterspeed Ingest API when changes occur in Umbraco. For a full overview of what Umbraco entities are sent to Enterspeed, please see Umbraco entities.
 
 ## Installation
-
-**Prerequisite:** Umbraco 10.0 or above.
 
 The fastest way to get up and running is to install the Enterspeed Umbraco integration with NuGet.
 
