@@ -5,7 +5,7 @@ title: Getting started
 
 # Getting started Umbraco v10 & Enterspeed
 
-The easiest way to get started with Umbraco and Enterspeed is using the pre-built Umbraco integration.
+The easiest way to get started with Umbraco and Enterspeed is by using the pre-built Umbraco integration.
 
 **GitHub: [Enterspeed Source Umbraco CMS](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms)**
 
@@ -15,19 +15,18 @@ This integration takes care of calling the Enterspeed Ingest API when changes oc
 
 **Prerequisite:** Umbraco 10.0 or above.
 
-The fastest way to get up and running, is to install the Enterspeed Umbraco integration with NuGet.
+The fastest way to get up and running is to install the Enterspeed Umbraco integration with NuGet.
 
 **NuGet:**  
 [Umbraco 7](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v7/)  
 [Umbraco 8](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v8/)  
-[Umbraco 9+](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v9/)  
-
+[Umbraco 9+](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v9/)
 
 :::info
-Using Umbraco Cloud? If you have used the Umbraco Cloud UaaS.cmd tool to setup your solution,
-you need to manually update the referenced dlls after installing the Enterspeed NuGet package. Specifically Microsoft.Bcl.AsyncInterfaces.dll needs to be updated.
+Using Umbraco Cloud? If you have used the Umbraco Cloud UaaS.cmd tool to set up your solution,
+you need to manually update the referenced dlls after installing the Enterspeed NuGet package. Specifically, Microsoft.Bcl.AsyncInterfaces.dll needs to be updated.
 
-From Visual Studio navigate to the [Namespace].Web\bin folder, and right click on Microsoft.Bcl.AsyncInterfaces.dll, and select "Update Reference".
+From Visual Studio navigate to the [Namespace].Web\bin folder, and right-click on Microsoft.Bcl.AsyncInterfaces.dll, and select "Update Reference".
 :::
 
 When the installation above has been completed two new dashboards have been added to your Umbraco solution.
@@ -61,15 +60,15 @@ The Media domain is to tell the Enterspeed integration where you have your media
 
 If you leave it empty, it will just use your current Umbraco installation domain.
 
-### Api key
+### API key
 
 Before you can insert an API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/settings/data-sources).
 
-The API key looks something like this: source-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. When you have gotten it, insert it in the Api key input field.
+The API key looks something like this: source-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. When you have gotten it, insert it in the API key input field.
 
 ### Preview API key
 
-Optional API key serves the purpose of ingesting draft and unpublished content to the secondary (preview) source. Can be leveraged for your content editors to preview content, similarly to the in-built 'Save & Preview' functionality in Umbraco.
+The optional API key serves the purpose of ingesting draft and unpublished content to the secondary (preview) source. Can be leveraged for your content editors to preview content, similarly to the in-built 'Save & Preview' functionality in Umbraco.
 
 Before you can insert a Preview API key, you must have created a Source within the [Enterspeed Management](https://app.enterspeed.com/settings/data-sources).
 
@@ -94,6 +93,7 @@ For appsettings.json or environment-specific settings file, please use the follo
     ...
 }
 ```
+
 ## Web.config (Umbraco 7 or 8)
 
 For Web.config, please use the following appSettings:

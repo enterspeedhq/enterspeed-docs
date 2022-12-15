@@ -13,7 +13,7 @@ This table contains the jobs that need to be executed, in order to sync with Ent
 
 | Name      | Type     | Description                             |
 | --------- | -------- | --------------------------------------- |
-| Id        | integer  | Unique identifier, autoincrements       |
+| Id        | integer  | Unique identifier, auto increments      |
 | ContentId | integer  | Id of the Umbraco node                  |
 | Culture   | string   | Culture of the Umbraco node             |
 | JobType   | integer  | 0 = Publish, 1 = Delete                 |

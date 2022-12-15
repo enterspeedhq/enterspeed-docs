@@ -145,7 +145,7 @@ public class MyCustomJobHandlersComposer : IComposer
 
 ## In case, of more customization
 
-If specifying new job handlers is not enough, or you want to change flow how job handlers are assigned and jobs are handled-
+If specifying new job handlers is not enough, or you want to change the flow of how job handlers are assigned and jobs are handled:
 
-[`IEnterspeedJobsHandler Umbraco 8`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V8/Handlers/EnterspeedJobsHandler.cs).  
-[`IEnterspeedJobsHandler Umbraco 9+`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V10/Handlers/EnterspeedJobsHandler.cs).
+- [`IEnterspeedJobsHandler Umbraco 8`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V8/Handlers/EnterspeedJobsHandler.cs)
+- [`IEnterspeedJobsHandler Umbraco 9+`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V10/Handlers/EnterspeedJobsHandler.cs)

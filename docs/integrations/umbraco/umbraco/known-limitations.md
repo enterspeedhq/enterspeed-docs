@@ -39,7 +39,7 @@ If you do require to have the same content and same language on multiple domains
 
 ### Domains in Enterspeed
 
-It is possible to add more domains in Enterspeed, if you wish your content to be available on multiple domains.
+It is possible to add more domains in Enterspeed if you wish your content to be available on multiple domains.
 
 ## Changing Culture and hostnames
 
