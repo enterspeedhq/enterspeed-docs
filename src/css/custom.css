@@ -287,4 +287,8 @@ html[data-theme="dark"] .es-card__body {
 .webhooks-red-bg {
   background-color: #c73a63;
 }
+
+.contentful-blue-bg {
+  background-color: #0033a3;
+}
 /* Enterspeed Cards --- END */

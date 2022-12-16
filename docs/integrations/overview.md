@@ -10,6 +10,7 @@ import {Card, CardContainer} from '../../src/components/card';
 import UmbracoLogoWhite from '../../static/img/docs/integrations/logos/umbraco-logo-white.png';
 import SiteCoreLogoWhite from '../../static/img/docs/integrations/logos/sitecore-logo-white.png';
 import WebhookLogoWhite from '../../static/img/docs/integrations/logos/webhook-icon.png';
+import ContentfulLogo from '../../static/img/docs/integrations/logos/contentful-logo.png';
 
 <CardContainer>
     <Card title="Umbraco V10" link="integrations/umbraco/umbraco-v10/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" />
@@ -20,4 +21,13 @@ import WebhookLogoWhite from '../../static/img/docs/integrations/logos/webhook-i
     <Card title="Sitecore V8" link="integrations/sitecore/sitecore-8/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
     <Card title="Webhooks" link="integrations/webhooks" image={WebhookLogoWhite} imageBg="webhooks-red-bg" />
 
+</CardContainer>
+
+## Integrations currently in beta
+
+<CardContainer>
+    <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" />
+    <div></div>
+    <div></div>
+    <div></div>
 </CardContainer>
