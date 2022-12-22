@@ -3,12 +3,11 @@ sidebar_position: 2
 title: Getting started
 ---
 
+import ReactPlayer from 'react-player/lazy'
+
 # Getting started
 
-import {Card, CardContainer} from '../../../src/components/card';
-import IntroducingEnterspeedCliVideo from '../../../static/img/docs/tooling/introducing-enterspeed-cli-video.png';
-
-<Card link="https://www.youtube.com/watch?v=KVPvNjcZLvc" image={IntroducingEnterspeedCliVideo} isExternal={true} />
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=KVPvNjcZLvc' />
 
 ## 1. Installation
 
