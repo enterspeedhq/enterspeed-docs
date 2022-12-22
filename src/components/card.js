@@ -13,10 +13,12 @@ const Card = ({ title, link, image, imageBg, children, isExternal }) => {
             <img src={image} />
           </div>
         )}
-        <div className="es-card__content">
-          <div className="es-card__title">{title}</div>
-          {children && <div className="es-card__body">{children}</div>}
-        </div>
+        {(title || children) && 
+          <div className="es-card__content">
+            <div className="es-card__title">{title}</div>
+            {children && <div className="es-card__body">{children}</div>}
+          </div>
+        }
       </a>
     </div>
   );
