@@ -149,6 +149,12 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             },
             {
               type: "doc",
+              docId: "tooling/cli/overview",
+              label: "CLI",
+              position: "left",
+            },
+            {
+              type: "doc",
               docId: "integrations/overview",
               label: "Integrations",
               position: "left",
