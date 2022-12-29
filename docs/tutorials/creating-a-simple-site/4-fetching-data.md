@@ -1,0 +1,176 @@
+---
+sidebar_position: 5
+title: 4. Fetching data
+---
+
+# Fetching data in the frontend
+
+For this tutorial, we assume you already have some knowledge of setting up a Next.js-project. If not, you can read the getting started guide here: [https://nextjs.org/docs/getting-started](https://nextjs.org/docs/getting-started).
+
+## Setting up the demo project
+
+If you don't wish to set up the demo project, simply skip this step.
+
+Go to GitHub ([https://github.com/enterspeedhq/enterspeed-demos/tree/master/umbraco-next](https://github.com/enterspeedhq/enterspeed-demos/tree/master/umbraco-next)) and clone the project.
+
+cd into the **next** folder and run:
+
+```bash
+npm install
+npx next dev
+```
+
+Create a file called **.env.local** and insert your environment API key generated in the Enterspeed-app under Environments like this:
+
+```javascript title=".env.local"
+ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
+
+// If you're using preview-mode, also insert the following:
+ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
+ENTERSPEED_PREVIEW_SECRET = [A_SECRET_TOKEN_OF_YOUR_CHOICE];
+```
+
+:::warning
+For a production environment, your API key should be injected on build time.
+:::
+
+## Ways of fetching data
+
+Fetching data from Enterspeed can be done in three different ways:
+
+- By using **Handle**
+- By using **URL**
+- By using **ID**
+
+On our demo site, we’ve used **handle** and **URL**.
+
+**Handle** and **ID** are good ways of fetching data for “non-site-specific data”, e.g. the navigation. In our demo, we’re using the **handle** method to fetch the navigation.
+
+We’re using the **URL** method to fetch all of our content- and product pages.
+
+When the data is fetched you can choose to either generate it client-side, server-side, or at build time. In or demo we have used all three methods to illustrate this:
+
+- The navigation is generated at build time.
+- The products are generated client-side.
+- Our homepage is generated server-side.
+
+Data can be fetched using the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) or a library like [Axios](https://www.npmjs.com/package/axios).
+
+:::info
+You can read more about fetching data in Next.js here: [https://nextjs.org/docs/basic-features/data-fetching](https://nextjs.org/docs/basic-features/data-fetching).
+:::
+
+In our demo, we have made a component that fetches the data. You’ll find it in the project under “app/lib/enterspeed.js”. The components look like this:
+
+```javascript title="Example: enterspeed.js"
+const call = async (query, preview) => {
+  const url = `https://delivery.enterspeed.com/v1?${query}`;
+  const response = await fetch(new Request(url), {
+    headers: {
+      "Content-Type": "application/json",
+      "X-Api-Key": preview
+        ? process.env.ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY
+        : process.env.ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY,
+    },
+  });
+
+  return response.json();
+};
+
+export const getByHandle = async (handle, preview) => {
+  const response = await call(`handle=${handle}`, preview);
+  return response.views[handle];
+};
+
+export const getByUrl = async (url, preview) => {
+  const response = await call(`url=${url}`, preview);
+  return response.route;
+};
+```
+
+## How to generate content dynamically
+
+In order to generate our content dynamically (this can be pages, blog posts, products, etc.) we need to create a component that does this for us.
+
+Luckily Next.js supports [Dynamic Routes](https://nextjs.org/docs/routing/dynamic-routes), meaning our slugs can get generated dynamically.
+
+In our demo project, we have created a file called **[..slug].js**. You will find it in the **pages** folder (you can also view it below).
+
+In the file, you'll find the following functions:
+
+- **getStaticPaths**: Fetches the routes that need to get build.
+- **getStaticProps**: Fetches the data for each route that needs to get build.
+- **buildPaths**: Sends the navigation paths to the generateNavBarPaths function.
+- **generateNavBarPaths**: Generates the navigation.
+- **generateSubMenu**: Generates the submenus.
+- **Content**: Inserts the data in a JSX-component.
+
+```javascript title="[...slug].js"
+import Entity from "../components/Entity";
+import { getByHandle, getByUrl } from "../lib/enterspeed";
+
+const paths = [];
+
+const generateSubMenu = (children) => {
+  children.forEach((child) => {
+    paths.push({
+      params: { slug: child.href.split("/").filter((a) => !!a) },
+    });
+
+    if (child.children) {
+      generateSubMenu(child.children);
+    }
+  });
+};
+
+const generateNavBarPaths = (navigation) => {
+  if (navigation) {
+    navigation.forEach((nav) => {
+      paths.push({
+        params: { slug: nav.view.href.split("/").filter((a) => !!a) },
+      });
+
+      if (nav.view.children) {
+        generateSubMenu(nav.view.children);
+      }
+    });
+  }
+};
+
+const buildPaths = (navigation) => {
+  generateNavBarPaths(navigation);
+
+  return paths;
+};
+
+export async function getStaticPaths() {
+  const data = await getByHandle("navigation");
+  buildPaths(data.navigationItems);
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+}
+
+export async function getStaticProps({ params, preview }) {
+  const data = await getByUrl(
+    encodeURIComponent(`/${params.slug.join("/")}/`),
+    preview
+  );
+
+  return {
+    props: {
+      view: data,
+      preview: preview || null,
+    },
+    revalidate: 60,
+  };
+}
+
+const Content = ({ view }) => {
+  return <Entity view={view} />;
+};
+
+export default Content;
+```
