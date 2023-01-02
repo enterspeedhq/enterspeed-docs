@@ -7,7 +7,7 @@ title: 2. Ingesting data
 
 Now it's time to ingest dummy data into Enterspeed. This is done via the [Enterspeed Ingest API](/api#tag/Ingest). We have created a [Postman collection](https://github.com/enterspeedhq/enterspeed-demos/blob/master/vanilla-js/DEMO-DATA/blog.postman_collection.json), so you can easily import it to Postman.
 
-If you prefer to do it manually, or if you're using another application, you can copy the cURL request below.
+If you prefer to do it manually, or if you're using another application, you can copy the cURL requests below.
 
 Start by ingesting what will be your blog collection page. Remember to replace the value of `X-Api-Key` with your Data Source API key.
 

@@ -21,11 +21,11 @@ Go to **Data sources** under _Settings_ and click the **Create group** button. T
 We will be using [Postman](https://www.postman.com/) to ingest data into Enterspeed, which we will cover in the next step. Feel free to use an alternative like [Insomnia](https://insomnia.rest/), etc.
 :::
 
-Give your source a name (e.g. _Postman_) and select a type (e.g. _Tool_). Afterward, add a data source by giving it a name (e.g. _Postman development_) and select an environment (e.g. Production), then click the **Add** button. Lastly, click on the **Create** button.
-
-An API key is now generated. Save the API key for now (e.g., in a Notepad document) – you'll need it in the next step.
+Give your source a name (e.g. _Postman_) and select a type (e.g. _Tool_). Afterward, add a data source by giving it a name (e.g. _Postman development_) and select an environment (e.g. _Production_), then click the **Add** button. Lastly, click on the **Create** button.
 
 ![Create source Enterspeed](/img/docs/examples/create-source-group-postman.png)
+
+An API key is now generated. Save the API key for now (e.g., in a Notepad document) – you'll need it in the next step.
 
 ## Creating and configuring domains
 
@@ -37,7 +37,7 @@ Go to **Domains** under _Settings -> Environment settings_ and click the **Creat
 **Domains** are used in Enterspeed as a way of filtering your data if you have multiple data sources. You can name it whatever you like, but we recommend using the same name as your domain name for ease of use.
 :::
 
-Afterward, click on the three dots next to the domain name and select **Edit hostnames**. Click **Create new** and insert the URL you're going to use for your new project. We're going to use the same hostname when configuring Umbraco.
+Afterward, click on the three dots next to the domain name and select **Edit hostnames**. Click **Create new** and insert the URL you're going to use for your new project.
 
 ![Create hostname](/img/docs/examples/create-hostname-8888.png)
 
@@ -55,7 +55,7 @@ Navigate to **Environment clients** under _Settings -> Environment settings_ and
 
 Also save this API key for now (e.g., in a Notepad document) - we’re going to use it in our JavaScript application.
 
-Next to your new environment client click on the three dots and select **Edit domains**. Select the domain you just created and click the “**Save changes**” button.
+Now, next to your new environment client click on the three dots and select **Edit domains**. Select the domain you just created and click the “**Save changes**” button.
 
 ![Environment client Domains](/img/docs/examples/environment-client-domains-frontend.png)
 
