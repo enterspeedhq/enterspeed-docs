@@ -73,9 +73,7 @@ In the actions below, we define that we want the schema which has the `originId`
 "actions": [
   {
     "type": "process",
-    "originId": {
-      "$exp": "{originParentId}"
-    }
+    "originId": "{originParentId}"
   }
 ]
 ```
@@ -121,9 +119,7 @@ This is how the finished schema will look:
   "actions": [
     {
       "type": "process",
-      "originId": {
-        "$exp": "{originParentId}"
-      }
+      "originId": "{originParentId}"
     }
   ],
   "properties": {

@@ -25,7 +25,7 @@ Give your source a name (e.g. _Postman_) and select a type (e.g. _Tool_). Afterw
 
 ![Create source Enterspeed](/img/docs/examples/create-source-group-postman.png)
 
-An API key is now generated. Save the API key for now (e.g., in a Notepad document) – you'll need it in the next step.
+An API key is now generated. Save the API key for now (e.g., in a Notepad document) – you'll need it in the next step. Don't worry, you can always access the key again under **Data sources**.
 
 ## Creating and configuring domains
 
@@ -53,7 +53,7 @@ Navigate to **Environment clients** under _Settings -> Environment settings_ and
 
 ![Create environment client Enterspeed](/img/docs/examples/create-environment-client-frontend.png)
 
-Also save this API key for now (e.g., in a Notepad document) - we’re going to use it in our JavaScript application.
+Also save this API key for now (e.g., in a Notepad document) - we’re going to use it in our JavaScript application. Don't worry, you can always access the key again under **Environment clients**.
 
 Now, next to your new environment client click on the three dots and select **Edit domains**. Select the domain you just created and click the “**Save changes**” button.
 

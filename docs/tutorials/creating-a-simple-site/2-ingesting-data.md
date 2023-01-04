@@ -27,6 +27,8 @@ The **originId** is the value provided after `v2` in the URL, in the example bel
 The **originId** must be unique, or else it will override the entity that has the **originId**.
 
 Example: `https://api.enterspeed.com/ingest/v2/THE-ORIGIN-ID-GOES-HERE`
+
+_You can read more about our [Delivery API here](../../api#tag/Delivery)._
 :::
 
 Next, it's time to ingest the individual blog posts. Remember to change the **originId** if you ingest multiple. Notice that the `originParentId` refers to the _Blog collection_ we ingested above.
