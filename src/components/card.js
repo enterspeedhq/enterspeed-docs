@@ -1,13 +1,13 @@
 import React from "react";
 
-const Card = ({ title, link, image, imageBg, children }) => {
+const Card = ({ title, link, image, imageBg, children, isExternal }) => {
   return (
     <div
       className={`es-card ${
         image ? "es-card--image-layout" : "es-card--simple-layout"
       }`}
     >
-      <a href={link}>
+      <a target={isExternal && "_blank"} href={link}>
         {image && (
           <div className={"es-card__image " + imageBg}>
             <img src={image} />
