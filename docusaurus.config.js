@@ -15,7 +15,15 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     favicon: "img/favicon.svg",
     organizationName: "enterspeedhq",
     projectName: "enterspeed-docs",
-    plugins: [require.resolve("docusaurus-plugin-image-zoom")],
+    plugins: [
+      require.resolve("docusaurus-plugin-image-zoom"),
+      [
+        require.resolve("docusaurus-gtm-plugin"),
+        {
+          id: "GTM-N32R9R7",
+        },
+      ],
+    ],
     presets: [
       [
         "@docusaurus/preset-classic",
@@ -27,9 +35,6 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           },
           theme: {
             customCss: require.resolve("./src/css/custom.css"),
-          },
-          gtag: {
-            trackingID: "GTM-N32R9R7",
           },
         }),
       ],
