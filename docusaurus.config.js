@@ -185,6 +185,12 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
         footer: {
           style: "light",
           copyright: `Copyright © ${new Date().getFullYear()} Enterspeed.`,
+          links: [
+            {
+              label: "Privacy Policy",
+              href: "https://www.enterspeed.com/privacy-policy",
+            },
+          ],
         },
         prism: {
           theme: lightCodeTheme,
