@@ -27,3 +27,13 @@ When a news item is updated the Enterspeed system updates the view of the indivi
 It is not possible to enable, but we can assist with a migration. The behind-the-scenes changes are quite big and require changes for all schemas. While these changes are being done no processing can happen, so even though the changes are small and simple, the migration process for a production tenant is not straightforward, unfortunately!
 
 The recommended migration path is to create a new tenant, copy over the schemas and then configure and update schemas in the new tenant. We can do the schema coping being the scenes, so there is no manual dummy work involved.
+
+### What does "No environment client configured to support domain name for source entity url `/relative-url/`" mean?
+
+If you are using relative URLs (_e.g. /about-us/_) and are trying to test the schema by making a CURL request, you might have seen this error message.
+
+The reason for this is that the URL doesn't have a domain that matches an environment client. Environment clients need to be able to match the URL in the source entity with the hostname provided for the environment client.
+
+The best way to solve this is to use absolute URLs in your schema (_e.g. https://my-domain.com/about-us/_).
+
+If you however want to use relative URLs, it can be done by adding a domain to your environment client with the hostname `root.tld`.
