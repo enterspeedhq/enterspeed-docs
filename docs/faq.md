@@ -37,3 +37,11 @@ The reason for this is that the URL doesn't have a domain that matches an enviro
 The best way to solve this is to use absolute URLs in your schema (_e.g. https://my-domain.com/about-us/_).
 
 If you however want to use relative URLs, it can be done by adding a domain to your environment client with the hostname `root.tld`.
+
+### Does updating on a root node in Umbraco trigger a re-ingest of the entire sub-tree?
+
+No. Changing a domain on a root node will not trigger a re-seed of the node and its descendants.
+
+If you want to trigger a re-seed in Umbraco after changing the domain, the best option is to use the "Publish with descendants"-feature in Umbraco.
+
+After updating the domain, click the node you changed the domain on and select "Publish with descendants". This will send the updates node and its descendants to Enterspeed.
