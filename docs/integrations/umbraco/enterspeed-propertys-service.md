@@ -12,7 +12,7 @@ Examples could be site settings or domain name data.
 
 ## Custom Property Service
 
-To extend the meta-data on sources, you would need to create your custom property service. This is easily done by inheriting the default property service. In this example, all default behavior of the `EnterspeedPropertyService` is preserved but grants us the option to extend meta-data.
+To extend the perperties or meta-data on sources, you would need to create your custom property service. This is easily done by inheriting the default property service. In this example, all default behavior of the `EnterspeedPropertyService` is preserved but grants us the option to extend meta-data.
 
 As you can see, the `MapAdditionalProperties` and `MapAdditionalMetaData` can be overridden. Here you only need to add your logic and include your own property + data.
 You can also override `MapAdditionalMediaProperties` and `MapAdditionalMediaMetaData` to extend media source entities. 
@@ -44,7 +44,7 @@ public class CustomPropertyService : EnterspeedPropertyService
         metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
     }
 
-	// You can also set additional properties for media sources. 
+	// You can also set additional properties for media sources.
 	protected override void MapAdditionalMediaMetaData(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
     {
         metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
@@ -56,7 +56,7 @@ public class CustomPropertyService : EnterspeedPropertyService
 
 The property service is registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/). The `AddUnique` extension method replaces the normal property service and implements your own.
 
-Example:
+**Umbraco 9+**
 
 ```csharp
 public class MyCustomComposer : IComposer
@@ -64,6 +64,19 @@ public class MyCustomComposer : IComposer
     public void Compose(IUmbracoBuilder builder)
     {
         builder.Services.AddUnique<IEnterspeedPropertyService, CustomPropertyService>(ServiceLifetime.Transient);
+    }
+}
+```
+
+**Umbraco 8**
+
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomComposer : IUserComposer
+{
+    public void Compose(Composition composition)
+    {
+        composition.RegisterUnique<IEnterspeedPropertyService, CustomPropertyService>();
     }
 }
 ```
@@ -83,6 +96,6 @@ You should now be able to see the data you have mapped, in the meta-data object 
 		"1098-en-us",
 		"1099-en-us"
 	],
-	"mySpecialKey": "my value fetched from my business logic"  <------------------
+	"mySpecialKey": "my value fetched from my business logic"  👈👈👈
 }
 ```
