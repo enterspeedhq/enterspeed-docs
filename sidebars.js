@@ -23,7 +23,6 @@ module.exports = {
       ],
     },
     "deliver",
-    "faq",
     {
       type: "category",
       label: "Key concepts",
