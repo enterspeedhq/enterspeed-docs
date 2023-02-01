@@ -256,6 +256,7 @@ html[data-theme="dark"] .api-content {
 
 .es-card__title {
   font-weight: 500;
+  font-size: 15px;
 }
 
 .es-card__body {
@@ -268,6 +269,10 @@ html[data-theme="dark"] .es-card__body {
 }
 
 /* Colors used on "Integrations"-overview */
+.gray-bg {
+  background-color: #edf2f7;
+}
+
 .umbraco-blue-bg {
   background-color: #3544b1;
 }

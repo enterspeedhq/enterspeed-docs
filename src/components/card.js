@@ -1,6 +1,14 @@
 import React from "react";
 
-const Card = ({ title, link, image, imageBg, children, isExternal }) => {
+const Card = ({
+  title,
+  link,
+  image,
+  imageBg,
+  children,
+  isExternal,
+  imagePadding,
+}) => {
   return (
     <div
       className={`es-card ${
@@ -10,7 +18,12 @@ const Card = ({ title, link, image, imageBg, children, isExternal }) => {
       <a target={isExternal && "_blank"} href={link}>
         {image && (
           <div className={"es-card__image " + imageBg}>
-            <img src={image} />
+            <img
+              src={image}
+              style={{
+                padding: imagePadding,
+              }}
+            />
           </div>
         )}
         <div className="es-card__content">
