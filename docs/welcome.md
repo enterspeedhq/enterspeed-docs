@@ -21,7 +21,9 @@ import TutorialsIcon from '../static/img/icons/chalkboard-user-regular.png';
 
 **👋 Welcome to the Enterspeed documentation**
 
-Enterspeed lets you sync all of your content from your CMS (_e.g. Umbraco Cloud_), PIM, etc to Enterspeed. This enables you to design a whole new front-end application, while still using data from your existing content system.
+At Enterspeed, we’re all about delivering high performance at scale with intelligent caching.
+
+Enterspeed lets you sync all of your content from your CMS (_e.g. Umbraco Cloud_), PIM, etc. to Enterspeed. This enables you to design a whole new front-end application, while still using data from your existing content system.
 
 _Not familiar with Entespeed yet? Check out [Enterspeed.com](https://www.enterspeed.com/) for use cases and more._
 
