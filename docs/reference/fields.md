@@ -136,6 +136,10 @@ Consider the following examples where the ingest of _product_ will both generate
 If you want to trigger actions across schemas, you must specify the source. The value of `source` is the alias of the destination source group.
 :::
 
+:::caution
+Actions without originId is only support on tenants with source groups and bulk deploy.
+:::
+
 ```json title="Schema with origin id"
 {
   // This example will process a category schema where the category

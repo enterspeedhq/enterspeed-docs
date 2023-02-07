@@ -19,7 +19,7 @@ A schema which dynamically maps all properties from your source entities to the 
 ```json
 {
   "triggers": {
-    "umbraco": ["product"]
+    "cms": ["product"]
   },
   "route": {
     "url": "{url}"
@@ -38,9 +38,8 @@ A schema containing essential site settings, here Site name, Logo and Login page
 
 ```json title="Site settings"
 {
-  "alias": "settings",
   "triggers": {
-    "umbraco": ["site"]
+    "cms": ["site"]
   },
   "route": {
     "handles": ["settings"]
@@ -66,17 +65,11 @@ This schema can be used in other schemas using the [reference type](../reference
 ```json title="SEO Composition"
 {
   "triggers": {
-    "umbraco": ["frontpage", "article", "articles"]
+    "cms": ["frontpage", "article", "articles"]
   },
   "properties": {
-    "title": {
-      "type": "string",
-      "value": "{p.seoTitle}"
-    },
-    "description": {
-      "type": "string",
-      "value": "{p.seoDescription}"
-    },
+    "title": "{p.seoTitle}",
+    "description": "{p.seoDescription}",
     "robots": {
       "type": "object",
       "properties": {
@@ -99,7 +92,7 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 ```json title="SEO Composition used in another schema"
 {
   "triggers": {
-    "umbraco": ["article"]
+    "cms": ["article"]
   },
   "properties": {
       "seoComposition": {
@@ -116,19 +109,49 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 
 A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation).
 
-```json
+This schema can be used in other schemas using the [reference type](../reference/property-types#reference) as you can see in the code below.
+
+```json title="Breadcrumb item"
 {
   "triggers": {
-    "umbraco": ["frontpage", "page"]
+	  "cms": ["homePage",	"contentPage"]
   },
   "properties": {
-    "name": "{properties.breadcrumbNameOverride ?? properties.metaData.name}",
-    "url": "{url}",
-    "parent": {
-      "type": "reference",
-      "originId": "{originParentId}",
-      "view": "breadcrumb"
+    "link": {
+      "type": "object",
+      "properties": {
+        "name": "{p.metaData.name}",
+        "url": "{url}",
+        "originId": "{originId}"
+      }
+    },
+    "level": {
+      "type": "number",
+      "value": "{p.metaData.level}"
     }
+  }
+}
+```
+
+How the _Breadcrumb item schema_ will be used in another schema afterwards:
+
+```json title="_Breadcrumb item used in another schema"
+{
+  "triggers": {
+    "cms": ["contentPage"]
+  },
+  "properties": {
+    "breadcrumbs": {
+      "type": "array",
+      "input": "{p.metaData.nodePath}",
+      "var": "breadcrumbItem",
+      "items": {
+        "type": "reference",
+        "originId": "{breadcrumbItem}",
+        "alias": "breadcrumbItem"
+      }
+    },
+    ...
   }
 }
 ```
@@ -140,7 +163,7 @@ A schema for listing all the products related to a specific category.
 ```json
 {
   "triggers": {
-    "umbraco": ["category"]
+    "cms": ["category"]
   },
   "route": {
     "url": "/categories/{p.slug}"
@@ -174,7 +197,7 @@ A schema for listing the 3 highest rated product reviews.
 ```json
 {
   "triggers": {
-    "umbraco": ["reviews"]
+    "cms": ["reviews"]
   },
   "properties": {
     "reviews": {
