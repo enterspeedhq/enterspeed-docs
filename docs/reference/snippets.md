@@ -135,7 +135,7 @@ This schema can be used in other schemas using the [reference type](../reference
 
 How the _Breadcrumb item schema_ will be used in another schema afterwards:
 
-```json title="_Breadcrumb item used in another schema"
+```json title="Breadcrumb item used in another schema"
 {
   "triggers": {
     "cms": ["contentPage"]
