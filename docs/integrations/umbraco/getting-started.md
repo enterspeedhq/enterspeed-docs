@@ -85,8 +85,8 @@ For appsettings.json or environment-specific settings file, please use the follo
     ...
     "Enterspeed": {
         "Endpoint": "https://api.enterspeed.com",
-        "MediaDomain": "", // optional
         "Apikey": "",
+        "MediaDomain": "", // optional
         "PreviewApikey": "" // optional
     }
     ...
@@ -98,10 +98,12 @@ For appsettings.json or environment-specific settings file, please use the follo
 For Web.config, please use the following appSettings example:
 
 ```xml
-<add key="Enterspeed.Endpoint" value="https://api.enterspeed.com" />
-<add key="Enterspeed.MediaDomain" value="" /> <!-- optional -->
-<add key="Enterspeed.Apikey" value="" />
-<add key="Enterspeed.PreviewApikey" value="" /> <!-- optional -->
+<appSettings>
+    <add key="Enterspeed.Endpoint" value="https://api.enterspeed.com" />
+    <add key="Enterspeed.Apikey" value="" />
+    <add key="Enterspeed.MediaDomain" value="" /> <!-- optional -->
+    <add key="Enterspeed.PreviewApikey" value="" /> <!-- optional -->
+</appSettings>
 ```
 
 ## Processed Umbraco entities
