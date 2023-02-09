@@ -4,42 +4,48 @@ info:
   title: API documentation
   description: The Enterspeed API are based on REST principles.
 
-    
+
     Before you start you will need to [create an Enterspeed-account](https://app.enterspeed.com/signup) and set up a tenant (a property for your website). Here you can create
-      
-      - A data source (provides you with an API key for the **Ingest API**).
-       
-      - An environment client (provides you with an API key for the **Delivery API**).
 
-      - A domain (ensure the correct data gets fetched).
+    - A data source (provides you with an API key for the **Ingest API**).
+
+    - An environment client (provides you with an API key for the **Delivery API**).
+
+    - A domain (ensure the correct data gets fetched).
 
 
-      🎉 Have fun using our API. Make sure to [contact us](https://www.enterspeed.com/contact) if you need any help. We're happy assist!
+    🎉 Have fun using our API. Make sure to [contact us](https://www.enterspeed.com/contact) if you need any help. We're happy assist!
 
   x-logo:
     url: https://docs.enterspeed.com/img/logo.svg
     altText: Enterspeed Logo
-  
-  license: 
+
+  license:
     name: "See Enterspeed Terms of service"
     url: "https://www.enterspeed.com/terms-of-service"
 tags:
   - name: Delivery
-    description: The Delivery API is what you use to `GET` your data from Enterspeed to your frontend project. Before you can fetch your content from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
+    description:
+      The Delivery API is what you use to `GET` your data from Enterspeed to your frontend project. Before you can fetch your content from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
 
-     
+
       You can find an example of how to fetch data [Umbraco & Next.js tutorial](https://docs.enterspeed.com/tutorials/umbraco-nextjs/fetching-data-in-nextjs).
-  
-  - name: Ingest
-    description: The Ingest API is used to `POST` your current data sources into Enterspeed. Before you can start ingesting data, you'll need to create a **Data source** inside Enterspeed, which generates an API key. This is done under *Settings --> Data sources*. 
-    
-     
-     The Ingest API can also be used to `DELETE` already ingested data from Enterspeed.
-  - name: Routes
-    description: The routes API is what you use to `GET` all available routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap. 
 
-      
+  - name: Ingest
+    description:
+      The Ingest API is used to `POST` your current data sources into Enterspeed. Before you can start ingesting data, you'll need to create a **Data source** inside Enterspeed, which generates an API key. This is done under *Settings --> Data sources*.
+
+
+      The Ingest API can also be used to `DELETE` already ingested data from Enterspeed.
+  - name: Routes
+    description:
+      The routes API is what you use to `GET` all available routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap.
+
+
       Before you can fetch your routes from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
+
+
+      **ℹ NOTE:** The `first` or `last` parameter is required and must be set between 100 - 500 (e.g. `first=250`). Both are not allowed at the same time.
 servers:
   - url: https://api.enterspeed.com
     description: General API
@@ -54,7 +60,7 @@ paths:
         - Delivery
       operationId: getContent
       parameters:
-        - name: url 
+        - name: url
           in: query
           description: |
             The URL to get data from.
