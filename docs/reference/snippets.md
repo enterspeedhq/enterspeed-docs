@@ -109,12 +109,12 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 
 A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation).
 
-This schema can be used in other schemas using the [reference type](../reference/property-types#reference) as you can see in the code below.
+This schema can be used in other schemas using the [reference type](../reference/property-types#reference), as you can see in the code below.
 
 ```json title="Breadcrumb item"
 {
   "triggers": {
-	  "cms": ["homePage",	"contentPage"]
+    "cms": ["homePage", "contentPage"]
   },
   "properties": {
     "link": {
@@ -133,7 +133,7 @@ This schema can be used in other schemas using the [reference type](../reference
 }
 ```
 
-How the _Breadcrumb item schema_ will be used in another schema afterwards:
+How the _Breadcrumb item schema_ will be used in another schema afterward:
 
 ```json title="Breadcrumb item used in another schema"
 {
