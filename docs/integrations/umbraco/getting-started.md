@@ -78,15 +78,16 @@ When you have inserted the Enterspeed endpoint and the API key(-s) click on Test
 
 ## App settings (Umbraco 9+)
 
-For appsettings.json or environment-specific settings file, please use the following appSettings:
+For appsettings.json or environment-specific settings file, please use the following appSettings example:
 
 ```json
 {
     ...
     "Enterspeed": {
-        "Endpoint": "",
-        "MediaDomain": "",
-        "Apikey": ""
+        "Endpoint": "https://api.enterspeed.com",
+        "MediaDomain": "", // optional
+        "Apikey": "",
+        "PreviewApikey": "" // optional
     }
     ...
 }
@@ -94,14 +95,13 @@ For appsettings.json or environment-specific settings file, please use the follo
 
 ## Web.config (Umbraco 7 or 8)
 
-For Web.config, please use the following appSettings:
+For Web.config, please use the following appSettings example:
 
 ```xml
-<add key="Enterspeed.Endpoint" value="" />
-
-<add key="Enterspeed.MediaDomain" value="" />
-
+<add key="Enterspeed.Endpoint" value="https://api.enterspeed.com" />
+<add key="Enterspeed.MediaDomain" value="" /> <!-- optional -->
 <add key="Enterspeed.Apikey" value="" />
+<add key="Enterspeed.PreviewApikey" value="" /> <!-- optional -->
 ```
 
 ## Processed Umbraco entities
@@ -111,10 +111,11 @@ Here is an overview of what is processed and send to Enterspeed and what is not.
 ### Processed entities
 
 - Published content
-- Dictionary
 - Draft content (unpublished content/saved content)
+- Media
+- Dictionary
 
 ### Not processed entities
 
-- Media
 - Members
+- Users
