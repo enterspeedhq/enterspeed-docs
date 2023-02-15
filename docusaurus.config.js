@@ -205,7 +205,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           isCloseable: true,
         },
         prism: {
-          additionalLanguages: ["csharp"],
+          additionalLanguages: ["csharp", "powershell"],
         },
       }),
   }
