@@ -7,8 +7,7 @@ import ReactPlayer from 'react-player/lazy'
 
 # Keep schemas in version control
 
-<!-- TODO the video will be changed to a new video about keeping schemas in version control -->
-<!-- <ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=KVPvNjcZLvc' /> -->
+<ReactPlayer controls="true" url='https://www.youtube.com/watch?v=5crm4rUMdxU' />
 
 ## Why would you have your schemas in version control
 
