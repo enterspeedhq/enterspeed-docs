@@ -141,7 +141,7 @@ Most form builders comes with templates to render the forms. This way you can ju
 
 For very simple forms you could also ingest the infomation about the form like submit url, a list of form fields and their type and render the form on the client.
 
-Once a user submits the form, the content is send to the server hosting the form, typically using a `POST` request.
+Once a user submits the form, the content is send to an endpoint handling the form submission, typically using a `POST` request. It could be a custom endpoint or the form builder software hosting the form
 
 </details>
 
