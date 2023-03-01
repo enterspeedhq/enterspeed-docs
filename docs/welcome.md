@@ -121,27 +121,27 @@ Enterspeed sets some upper limits to its services to ensure stability and perfor
 <details>
 <summary>How to handle forms when using Enterspeed?</summary>
 
-Forms comes in many shapes and sizes depending on the form builder you are using and how you want to render your forms.
+Forms come in many shapes and sizes depending on the form builder you are using and how you want to render your forms.
 
 Two common ways to add forms on the client are:
 
 **Using an iframe**
 
-This is the easiest way to handle forms. 
+This is the easiest way to handle forms.
 
-Using an iframe you can simply ingest the iframe as part of your content into Enterspeed and then render the iframe on the client as normal `HTML` content. 
+Using an iframe you can simply ingest the iframe as part of your content into Enterspeed and then render the iframe on the client as normal `HTML` content.
 
-Once a user submits the form, the content is send to the server hosting the form, typically using a `POST` request.
+Once a user submits the form, the content is sent to the server hosting the form, typically using a `POST` request.
 
 **Render the form on the server**
 
-The logic about forms and how they should be rendered can be very complex.
+The logic of forms and how they should be rendered can be very complex.
 
-Most form builders comes with templates to render the forms. This way you can just ingest the `url` or the id of the form into Enterspeed and let the form builder render the form and send back the `HTML` for you to render on the client.
+Most form builders come with templates to render the forms. This way you can just ingest the `url` or the id of the form into Enterspeed and let the form builder render the form and send back the `HTML` for you to render on the client.
 
-For very simple forms you could also ingest the infomation about the form like submit url, a list of form fields and their type and render the form on the client.
+For very simple forms you could also ingest the information about the form like submit url, a list of form fields and their type and render the form on the client.
 
-Once a user submits the form, the content is send to an endpoint handling the form submission, typically using a `POST` request. It could be a custom endpoint or the form builder software hosting the form
+Once a user submits the form, the content is sent to an endpoint handling the form submission, typically using a `POST` request. It could be a custom endpoint or the form builder software hosting the form
 
 </details>
 
