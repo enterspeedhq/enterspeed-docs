@@ -1,11 +1,25 @@
 ---
 sidebar_position: 4
-title: Known limitations
+title: Culture and hostnames
 ---
 
-# Known limitations
+# Culture and hostnames
 
-This is a list of known limitations in the Enterspeed Umbraco integration.
+## Domains for nodes that does not vary by culture
+
+Nodes based on content types that does not allow *vary by culture* uses the default language when trying to resolve the domain.
+
+**Example**  
+Your Umbraco installation has *en-US* as the default language. 
+
+The node you are ingesting or one of it's ancestors has the following setup for Culture and hostname.
+
+| Domain                  | Culture |
+| ----------------------- | ------- |
+| https://enterspeed.com/ | en-US   |
+| https://enterspeed.dk   | da-DK   |
+
+If the node you are ingesting is based on a content type that does not allow *vary by culture* it will you the default language and because of that use https://enterspeed.com/ as the domain when ingested into Enterspeed.
 
 ## Multiple domains per culture for the same site
 
