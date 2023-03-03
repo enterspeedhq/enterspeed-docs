@@ -32,7 +32,7 @@ Since string is the most commonly used property type you can access it without w
 | --------- | --------- | --------------------------------- |
 | `type`    | **Yes**   | The property type - here `string` |
 | `value`   | **Yes**   | The value of the property         |
-| `default` | No        | The default value of the property |
+| `default` | No        | The default value is used if `value` is null or an empty string |
 
 ### Examples
 
@@ -60,7 +60,7 @@ Basic number or integer mapping.
 | ----------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`      | **Yes**   | The property type - here `number`                                                                                                            |
 | `value`     | **Yes**   | The value of the property                                                                                                                    |
-| `default`   | No        | The default value of the property                                                                                                            |
+| `default`   | No        | The default value is used if `value` is null or can be parsed as a number                                                                                                            |
 | `precision` | No        | Rounds a decimal value to a specified number of fractional digits, and rounds midpoint values to the nearest even number. Default value is 0 |
 
 ### Examples
@@ -84,7 +84,7 @@ Basic boolean mapping.
 | --------- | --------- | ---------------------------------- |
 | `type`    | **Yes**   | The property type - here `boolean` |
 | `value`   | **Yes**   | The value of the property          |
-| `default` | No        | The default value of the property  |
+| `default` | No        | The default value is used if `value` is null or can be parsed as a boolean  |
 
 ### Examples
 
