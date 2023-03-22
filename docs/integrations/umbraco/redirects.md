@@ -18,12 +18,12 @@ If you are using a 3. party redirect plugin in your Umbraco installation you can
 ### Implementing interface
 
 ```csharp
-public class UmbracoRedirectsService : IUmbracoRedirectsService
+public class CustomUmbracoRedirectsService : IUmbracoRedirectsService
     {
         private readonly IRedirectUrlService _redirectUrlService;
         private readonly IUmbracoUrlService _umbracoUrlService;
 
-        public UmbracoRedirectsService(IRedirectUrlService redirectUrlService, IUmbracoUrlService umbracoUrlService)
+        public CustomUmbracoRedirectsService(IRedirectUrlService redirectUrlService, IUmbracoUrlService umbracoUrlService)
         {
             _redirectUrlService = redirectUrlService;
             _umbracoUrlService = umbracoUrlService;
