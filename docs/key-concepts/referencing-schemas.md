@@ -24,7 +24,7 @@ This means that your page view with the image data is outdated, which is not goo
 
 That's why you use reference schemas when mapping data from other entities.
 
-References are resolved on delivery request time. This means that the page schema is processed every time a page is ingested and the image schema is processed every time an image is ingested and when you make a delivery request to the page, the views are merged together and you view data is always up to date.
+References are resolved on delivery request time. This means that if you have a page schema being processed every time a page is ingested with a schema reference to the image and an image schema being processed every time an image is ingested, then when you make a delivery request to the page, the views are merged together and you view data is always up to date.
 
 ## Use cases
 Here is a list of examples of how to use the reference property and how it's used to reference schemas.
