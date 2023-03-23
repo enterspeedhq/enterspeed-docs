@@ -7,7 +7,7 @@ title: Culture and hostnames
 
 ## Domains for nodes that don't vary by culture
 
-Nodes based on content types that don't allow _vary by culture_ uses the default language when trying to resolve the domain.
+Nodes based on content types that don't allow _vary by culture_ will by default use the default language in Umbraco when trying to resolve the domain ([you can customize the logic needed](#customize-the-culture-logic)).
 
 **Example**  
 Your Umbraco installation has _en-US_ as the default language.
@@ -19,7 +19,7 @@ The node you are ingesting or one of its ancestors has the following setup for C
 | https://enterspeed.com/ | en-US   |
 | https://enterspeed.dk   | da-DK   |
 
-If the node you are ingesting is based on a content type that does not allow _vary by culture_ it will you the default language and because of that use https://enterspeed.com/ as the domain when ingested into Enterspeed.
+If the node you are ingesting is based on a content type that does not allow _vary by culture_ it will use the default language and because of that use https://enterspeed.com/ as the domain when ingested into Enterspeed.
 
 ## Multiple domains per culture for the same site
 
@@ -60,3 +60,36 @@ It is possible to add more domains in Enterspeed if you wish your content to be 
 When you change a hostname in Culture and hostnames, you will manually have to re-seed the content into Enterspeed.
 
 This is currently a manual step, so please bare with us while we figure out the best way to automate this.
+
+## Customize the culture logic
+
+If you want to customize the culture logic, eg. if you use another culture then the default culture for a specific site or node that does not vary by culture you can implement your own version of `UmbracoCultureProvider` either by implementing the `IUmbracoCultureProvider` interface or by extending the `UmbracoCultureProvider` class and override the methods you want to customize.
+
+```csharp
+public class CustomUmbracoCultureProvider : IUmbracoCultureProvider
+{
+    public IEnumerable<string> GetCulturesForCultureVariant(IContent content)
+    {
+        // My custom logic
+    }
+
+    public IEnumerable<string> GetCulturesForCultureVariant(IPublishedContent content)
+    {
+        // My custom logic
+    }
+
+    public string GetCultureForNonCultureVariant(IContent content)
+    {
+        // My custom logic
+    }
+
+    public string GetCultureForNonCultureVariant(IPublishedContent content)
+    {
+        // My custom logic
+    }
+}
+```
+
+### Registration
+
+See examples of how to register your custom implementations [here](//docs/integrations/umbraco/enterspeed-value-converter.md#registering-a-converter).
