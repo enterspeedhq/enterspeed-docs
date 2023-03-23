@@ -7,7 +7,7 @@ title: Culture and hostnames
 
 ## Domains for nodes that don't vary by culture
 
-Nodes based on content types that don't allow _vary by culture_ will by default use the default language in Umbraco when trying to resolve the domain ([you can customize the logic is needed](#customize-the-culture-logic)).
+Nodes based on content types that don't allow _vary by culture_ will by default use the default language in Umbraco when trying to resolve the domain ([you can customize the logic needed](#customize-the-culture-logic)).
 
 **Example**  
 Your Umbraco installation has _en-US_ as the default language.
@@ -63,7 +63,7 @@ This is currently a manual step, so please bare with us while we figure out the 
 
 ## Customize the culture logic
 
-If you want to customize the culture logic, eg. if you use another culture then the default culture for a specific site or node that does not vary by culture you can implement you own version of `UmbracoCultureProvider` either by implementing the `IUmbracoCultureProvider` interface or by extending the `UmbracoCultureProvider` class and override the methods you want to customize.
+If you want to customize the culture logic, eg. if you use another culture then the default culture for a specific site or node that does not vary by culture you can implement your own version of `UmbracoCultureProvider` either by implementing the `IUmbracoCultureProvider` interface or by extending the `UmbracoCultureProvider` class and override the methods you want to customize.
 
 ```csharp
 public class CustomUmbracoCultureProvider : IUmbracoCultureProvider
@@ -91,4 +91,5 @@ public class CustomUmbracoCultureProvider : IUmbracoCultureProvider
 ```
 
 ### Registration
+
 See examples of how to register your custom implementations [here](//docs/integrations/umbraco/enterspeed-value-converter.md#registering-a-converter).
