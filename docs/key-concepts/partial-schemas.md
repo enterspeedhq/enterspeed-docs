@@ -15,13 +15,11 @@ The difference between using a partial schema versus referencing another schema 
 Using a partial schema with your schema gives the output of a single view when processed.
 
 :::tip
-Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. Eg. meta data (title, description, ...) is the same across different entity types but the data lives on the entity it self.
+Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. Eg. metadata (title, description, ...) is the same across different entity types but the data lives on the entity itself.
 :::
 
 :::danger
-Don't use partial schemas for mapping data from another entity that's being referenced, as your views can be outdated if the referenced entity is updated.
-
-In this case you should use [reference schemas](//docs/key-concepts/referencing-schemas.md).
+Don't use partial schemas for mapping data from another entity that's being referenced, as your views can be outdated if the referenced entity is updated.In this case, you should use [reference schemas](//docs/key-concepts/referencing-schemas.md).
 :::
 
 ## Configure a partial schema
