@@ -429,6 +429,12 @@ When referenced Enterspeed will resolve the view when requested by the Delivery 
 
 In order to reference desired source entity, you can use `alias` of the schema and `id` or `originId` of the source entity and optionally a different source than the current source entity.
 
+:::tip
+Reference schemas are typically used when you are mapping data from another entity. Eg. a page has a reference another page entity or media entity. 
+
+Read more about reference schemas [here](//docs/key-concepts/referencing-schemas.md)
+:::
+
 ### Fields
 
 | Property   | Required?    | Description                                                                                                                                                                                                                                                                                                                           |
@@ -530,6 +536,12 @@ The response of references differs in V1 and V2+ of the delivery API. V1 return 
 Referencing a partial schema to map the data into.
 
 The partial mapping property type allows for dynamically including partial schemas into the main schema. This is useful when you need to iterate an array of different objects that has an identifier, like an ID, alias or similar.
+
+:::tip
+Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. Eg. meta data (title, description, ...) is the same across different entity types but the data lives on the entity it self.
+
+Read more about partial schemas [here](//docs/key-concepts/partial-schemas.md)
+:::
 
 ### Fields
 
