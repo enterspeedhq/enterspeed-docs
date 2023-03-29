@@ -84,8 +84,8 @@ For appsettings.json or environment-specific settings file, please use the follo
 {
     ...
     "Enterspeed": {
-        "Endpoint": "https://api.enterspeed.com",
-        "Apikey": "",
+        "Endpoint": "https://api.enterspeed.com", // required
+        "Apikey": "", // required
         "MediaDomain": "", // optional
         "PreviewApikey": "" // optional
     }
@@ -99,8 +99,8 @@ For Web.config, please use the following appSettings example:
 
 ```xml
 <appSettings>
-    <add key="Enterspeed.Endpoint" value="https://api.enterspeed.com" />
-    <add key="Enterspeed.Apikey" value="" />
+    <add key="Enterspeed.Endpoint" value="https://api.enterspeed.com" /> <!-- required -->
+    <add key="Enterspeed.Apikey" value="" /> <!-- required -->
     <add key="Enterspeed.MediaDomain" value="" /> <!-- optional -->
     <add key="Enterspeed.PreviewApikey" value="" /> <!-- optional -->
 </appSettings>
