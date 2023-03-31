@@ -141,11 +141,11 @@ public class MyCustomJobHandlersComposer : IComposer
 | EnterspeedPreviewDictionaryItemDeleteJobHandler  | Ingest - delete | Deleted dictionary item           |
 
 [Source code of Job handling related classes (Umbraco 8)](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/src/Enterspeed.Source.UmbracoCms.V8/Handlers)  
-[Source code of Job handling related classes (Umbraco 9+)](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/src/Enterspeed.Source.UmbracoCms.V10/Handlers)
+[Source code of Job handling related classes (Umbraco 9+)](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/tree/master/src/Enterspeed.Source.UmbracoCms/Handlers)
 
 ## In case, of more customization
 
 If specifying new job handlers is not enough, or you want to change the flow of how job handlers are assigned and jobs are handled:
 
 - [`IEnterspeedJobsHandler Umbraco 8`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V8/Handlers/EnterspeedJobsHandler.cs)
-- [`IEnterspeedJobsHandler Umbraco 9+`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms.V10/Handlers/EnterspeedJobsHandler.cs)
+- [`IEnterspeedJobsHandler Umbraco 9+`](https://github.com/enterspeedhq/enterspeed-source-umbraco-cms/blob/master/src/Enterspeed.Source.UmbracoCms/Handlers/EnterspeedJobsHandler.cs)
