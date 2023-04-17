@@ -92,6 +92,7 @@ Note that the EnterspeedPropertyService will find the converters in the order th
 **Umbraco 9+**
 
 ```csharp
+[ComposeAfter(typeof(EnterspeedComposer))]
 public class MyCustomerPropertyValueConverterComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
