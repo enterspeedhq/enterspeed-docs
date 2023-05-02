@@ -12,9 +12,11 @@ import SiteCoreLogoWhite from '../../static/img/docs/integrations/logos/sitecore
 import WebhookLogoWhite from '../../static/img/docs/integrations/logos/webhook-icon.png';
 import ContentfulLogo from '../../static/img/docs/integrations/logos/contentful-logo.png';
 import CommercetoolsLogo from '../../static/img/docs/integrations/logos/commercetools-logo.png';
+import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbraco-cloudinary.png';
 
 <CardContainer>
     <Card title="Umbraco" link="integrations/umbraco/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" />
+    <Card isExternal title="Umbraco & Cloudinary" link="https://github.com/enterspeedhq/enterspeed-source-umbraco-cms-cloudinary" image={UmbracoCloudinaryLogo} imageBg="umbraco-cloudinary-blue-bg" />
     <Card title="Sitecore V9" link="integrations/sitecore/sitecore-9/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
     <Card title="Sitecore V8" link="integrations/sitecore/sitecore-8/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
     <Card title="Commercetools" link="https://github.com/enterspeedhq/enterspeed-source-commercetools" isExternal image={CommercetoolsLogo} imageBg="commercetools-grey-bg" />
