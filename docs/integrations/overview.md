@@ -16,7 +16,7 @@ import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbr
 
 <CardContainer>
     <Card title="Umbraco" link="integrations/umbraco/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" />
-    <Card title="Umbraco and Cloudinary" link="https://github.com/enterspeedhq/enterspeed-source-umbraco-cms-cloudinary" image={UmbracoCloudinaryLogo} imageBg="umbraco-cloudinary-blue-bg" />
+    <Card isExternal title="Umbraco & Cloudinary" link="https://github.com/enterspeedhq/enterspeed-source-umbraco-cms-cloudinary" image={UmbracoCloudinaryLogo} imageBg="umbraco-cloudinary-blue-bg" />
     <Card title="Sitecore V9" link="integrations/sitecore/sitecore-9/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
     <Card title="Sitecore V8" link="integrations/sitecore/sitecore-8/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
     <Card title="Commercetools" link="https://github.com/enterspeedhq/enterspeed-source-commercetools" isExternal image={CommercetoolsLogo} imageBg="commercetools-grey-bg" />
