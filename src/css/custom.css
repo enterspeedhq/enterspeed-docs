@@ -289,6 +289,10 @@ html[data-theme="dark"] .es-card__body {
   background-color: #e43026;
 }
 
+.umbraco-cloudinary-blue-bg {
+  background-color: #3448c5;
+}
+
 .webhooks-red-bg {
   background-color: #c73a63;
 }
