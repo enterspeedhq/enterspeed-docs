@@ -23,11 +23,11 @@ npx next dev
 Create a file called **.env.local** and insert your environment API key generated in the Enterspeed-app under Environments like this:
 
 ```javascript title=".env.local"
-ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
+ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE]
 
 // If you're using preview-mode, also insert the following:
-ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
-ENTERSPEED_PREVIEW_SECRET = [A_SECRET_TOKEN_OF_YOUR_CHOICE];
+ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE]
+ENTERSPEED_PREVIEW_SECRET = [A_SECRET_TOKEN_OF_YOUR_CHOICE]
 ```
 
 :::warning
