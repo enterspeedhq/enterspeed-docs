@@ -75,3 +75,19 @@ You can combine dynamic mapping and arrays:
   }
 }
 ```
+
+If you want the feature with its `id` property equals to a dynamic value:
+
+```json
+"tabs": {
+  "type": "array",
+  "input": {
+    "$path": "p.features[?(@.display=='{p.primaryFeatureId}')]"
+  },
+  "var": "feature",
+  "items": {
+    "type": "string",
+    "value": "{item.name}"
+  }
+}
+```
