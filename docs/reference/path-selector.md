@@ -82,7 +82,7 @@ If you want the feature with its `id` property equals to a dynamic value:
 "tabs": {
   "type": "array",
   "input": {
-    "$path": "p.features[?(@.display=='{p.primaryFeatureId}')]"
+    "$path": "p.features[?(@.id=='{p.primaryFeatureId}')]"
   },
   "var": "feature",
   "items": {
