@@ -19,7 +19,7 @@ Partial schemas are typically used when you want a reusable schema for mapping d
 :::
 
 :::danger
-Don't use partial schemas for mapping data from another entity that's being referenced, as your views can be outdated if the referenced entity is updated.In this case, you should use [reference schemas](//docs/key-concepts/referencing-schemas.md).
+Don't use partial schemas for mapping data from another entity that's being referenced, as your views can be outdated if the referenced entity is updated. In this case, you should use [reference schemas](//docs/key-concepts/referencing-schemas.md).
 :::
 
 ## Configure a partial schema
