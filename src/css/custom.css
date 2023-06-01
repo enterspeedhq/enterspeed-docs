@@ -304,4 +304,8 @@ html[data-theme="dark"] .es-card__body {
 .contentful-blue-bg {
   background-color: #0033a3;
 }
+
+.algolia-blue-bg {
+  background-color: #003eff;
+}
 /* Enterspeed Cards --- END */
