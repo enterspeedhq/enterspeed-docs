@@ -13,6 +13,7 @@ import WebhookLogoWhite from '../../static/img/docs/integrations/logos/webhook-i
 import ContentfulLogo from '../../static/img/docs/integrations/logos/contentful-logo.png';
 import CommercetoolsLogo from '../../static/img/docs/integrations/logos/commercetools-logo.png';
 import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbraco-cloudinary.png';
+import AlgoliaLogo from '../../static/img/docs/integrations/logos/algolia-logo.png';
 
 <CardContainer>
     <Card title="Umbraco" link="integrations/umbraco/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" />
@@ -27,7 +28,7 @@ import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbr
 
 <CardContainer>
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" />
-    <div></div>
+    <Card title="Algolia" link="integrations/algolia" image={AlgoliaLogo} imageBg="algolia-blue-bg" />
     <div></div>
     <div></div>
 </CardContainer>
