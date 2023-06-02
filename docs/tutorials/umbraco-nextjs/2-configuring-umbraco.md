@@ -54,12 +54,11 @@ You can view synced data in Enterspeed by navigating to **Source Entities** and 
 
 If you wish, you can import the Umbraco content from our [demo project](https://enterspeed-umbraco-nextjs.netlify.app/).
 
-### Importing demo content for Umbraco v9 and v10
+### Importing demo content for Umbraco v9+
 
-Since Umbraco 9 the "packages installation"-feature from the backoffice has been removed. Because of that, we need to install one of the following NuGet packages, depending on which Umbraco version you are running:
+Since Umbraco 9 the "packages installation"-feature from the backoffice has been removed. Because of that, we need to install our NuGet package:
 
-[Enterspeed.Demos.UmbracoCms.V9.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.V9.FairyTales/)  
-[Enterspeed.Demos.UmbracoCms.V10.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.V10.FairyTales/)
+[Enterspeed.Demos.UmbracoCms.FairyTales](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.FairyTales/)  
 
 The NuGet package will import content, data types and document types required for this demo on startup of your application.
 
