@@ -9,6 +9,10 @@ Now for the fun part - designing the APIs we're going to use. This will be the g
 
 You find the schema editor in Enterspeed under **Schemas** and **Partial schemas**.
 
+:::info
+Partial schemas will soon be moved into the list of full schemas, bringing all the benefits you know from full schemas like the testing before deployment, environment specific deployments and versioning.
+:::
+
 ![Create new schema](/img/docs/examples/create-new-schema.png)
 
 The powerful thing about setting up schemas yourself is you get to decide precisely which data you need and how it gets structured.
