@@ -2,6 +2,9 @@
 sidebar_position: 5
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # ✂️ Schema snippets
 
 Below you'll find a collection of useful schema snippets. Use these as a starting point or inspiration when designing your next schema.
@@ -15,6 +18,9 @@ These snippets are meant as examples and are meant to be modified to fit your ow
 ## Map all source entity properties
 
 A schema which dynamically maps all properties from your source entities to the `product`-object.
+
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json
 {
@@ -32,9 +38,36 @@ A schema which dynamically maps all properties from your source entities to the 
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["contentPage"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        url: sourceEntity.url
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    return sourceEntity.properties
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Site settings
 
 A schema containing essential site settings, here Site name, Logo and Login page link.
+
+
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json title="Site settings"
 {
@@ -56,11 +89,42 @@ A schema containing essential site settings, here Site name, Logo and Login page
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Site settings"
+module.exports = {
+  triggers: {
+    "cms": ["site"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        handles: ["settings"]
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    let p = sourceEntity.properties;
+    return {
+      siteName: p.siteName,
+      logo: p.logo[0].url,
+      loginPage: context.reference("LinkItem", p.loginPage[0].id)
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## SEO Composition
 
 A schema for basic SEO settings, here meta title, meta description and meta robots (index/noindex and follow/nofollow).
 
 This schema can be used in other schemas using the [reference type](../reference/property-types#reference) as you can see in the code below.
+
+<Tabs groupId="seo-composition-example">
+<TabItem value="json" label="JSON" default>
 
 ```json title="SEO Composition"
 {
@@ -87,7 +151,36 @@ This schema can be used in other schemas using the [reference type](../reference
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="SEO Composition"
+module.exports = {
+  triggers: {
+    "cms": ["frontpage", "article", "articles"]
+  },
+  properties: async function (sourceEntity, context) {
+    let p = sourceEntity.properties;
+    return {
+      title: p.seoTitle,
+      description: p.seoDescription,
+      robots: {
+        follow: p.robotsFollow,
+        index: p.robotsIndex
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 How the _SEO Composition schema_ will be used in another schema afterwards:
+
+<Tabs groupId="seo-composition-example">
+<TabItem value="json" label="JSON" default>
 
 ```json title="SEO Composition used in another schema"
 {
@@ -105,11 +198,34 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="SEO Composition used in another schema"
+module.exports = {
+  triggers: {
+    "cms": ["article"]
+  },
+  properties: async function (sourceEntity, context) {
+    return {
+      seoComposition: context.reference("seoComposition", sourceEntity.id),
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Breadcrumb navigation
 
 A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation).
 
 This schema can be used in other schemas using the [reference type](../reference/property-types#reference), as you can see in the code below.
+
+<Tabs groupId="breadcrumb-navigation-example">
+<TabItem value="json" label="JSON" default>
 
 ```json title="Breadcrumb item"
 {
@@ -133,7 +249,35 @@ This schema can be used in other schemas using the [reference type](../reference
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="SEO Composition used in another schema"
+module.exports = {
+  triggers: {
+    "cms": ["homePage", "contentPage"]
+  },
+  properties: async function (sourceEntity, context) {
+    return {
+      link: {
+        name: sourceEntity.properties.metaData.name,
+        url: sourceEntity.url,
+        originId: sourceEntity.originId,
+      },
+      level: sourceEntity.properties.metaData.level
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 How the _Breadcrumb item schema_ will be used in another schema afterward:
+
+<Tabs groupId="breadcrumb-navigation-example">
+<TabItem value="json" label="JSON" default>
 
 ```json title="Breadcrumb item used in another schema"
 {
@@ -156,9 +300,32 @@ How the _Breadcrumb item schema_ will be used in another schema afterward:
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="SEO Composition used in another schema"
+module.exports = {
+  triggers: {
+    "cms": ["contentPage"]
+  },
+  properties: async function (sourceEntity, context) {
+    return {
+      breadcrumbs: sourceEntity.properties.metaData.nodePath.map(x => context.reference("seoComposition", x))
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Category products
 
 A schema for listing all the products related to a specific category.
+
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json
 {
@@ -190,9 +357,42 @@ A schema for listing all the products related to a specific category.
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["category"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        url: "/categories/" + sourceEntity.properties.slug
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.name,
+      description: sourceEntity.properties.description,
+      products: context.lookup("type eq 'product' and properties.categoryId eq '{originId}'").map(product => 
+      {
+        headline: product.properties.name
+      })
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Top 3 product reviews
 
 A schema for listing the 3 highest rated product reviews.
+
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json
 {
@@ -221,3 +421,32 @@ A schema for listing the 3 highest rated product reviews.
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["reviews"]
+  },
+  properties: async function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.name,
+      description: sourceEntity.properties.description,
+      products: context.lookup("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')", {
+          orderBy: {
+            property: properties.rating,
+            sort: "desc"
+          },
+          top: 3}).map(review => 
+        context.reference("Review", review.originId)
+      )
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
