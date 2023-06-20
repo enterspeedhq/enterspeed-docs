@@ -108,7 +108,7 @@ module.exports = {
     return {
       siteName: p.siteName,
       logo: p.logo[0].url,
-      loginPage: context.reference("LinkItem", p.loginPage[0].id)
+      loginPage: await context.referenceByOriginId("LinkItem", p.loginPage[0].id)
     }
   }
 }
@@ -209,7 +209,7 @@ module.exports = {
   },
   properties: async function (sourceEntity, context) {
     return {
-      seoComposition: context.reference("seoComposition", sourceEntity.id),
+      seoComposition: await context.referenceById("seoComposition", sourceEntity.id),
     }
   }
 }
@@ -311,7 +311,7 @@ module.exports = {
   },
   properties: async function (sourceEntity, context) {
     return {
-      breadcrumbs: sourceEntity.properties.metaData.nodePath.map(x => context.reference("seoComposition", x))
+      breadcrumbs: await Promise.all(sourceEntity.properties.metaData.nodePath.map(x => context.referenceByOriginId("seoComposition", x)))
     }
   }
 }
@@ -375,7 +375,7 @@ module.exports = {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: context.lookup("type eq 'product' and properties.categoryId eq '{originId}'").map(product => 
+      products: await context.lookup(`type eq 'product' and properties.categoryId eq '${originId}'`).map(product => 
       {
         headline: product.properties.name
       })
@@ -435,13 +435,8 @@ module.exports = {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: context.lookup("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')", {
-          orderBy: {
-            property: properties.rating,
-            sort: "desc"
-          },
-          top: 3}).map(review => 
-        context.reference("Review", review.originId)
+      products: context.lookup("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')", 3, { direction: "desc", propertyName: "rating" }).map(review => 
+        context.referenceByOriginId("Review", review.originId)
       )
     }
   }

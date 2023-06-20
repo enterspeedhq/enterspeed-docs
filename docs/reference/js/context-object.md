@@ -4,6 +4,10 @@ sidebar_position: 2
 
 # Context object
 
+:::info
+JavaScript schemas are still in preview, contact us if would like to try it out.
+:::
+
 Expressions will often be used as simple placeholders to map data from the **source entity**.
 Most values in schemas and partial schemas can be expressed. An expression is identified by using curly brackets `{}`:
 
