@@ -311,7 +311,7 @@ module.exports = {
   },
   properties: async function (sourceEntity, context) {
     return {
-      breadcrumbs: await Promise.all(sourceEntity.properties.metaData.nodePath.map(x => context.referenceByOriginId("seoComposition", x)))
+      breadcrumbs: await context.referenceByOriginIds("seoComposition", sourceEntity.properties.metaData.nodePath)
     }
   }
 }

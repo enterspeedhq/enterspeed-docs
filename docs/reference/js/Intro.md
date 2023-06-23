@@ -8,88 +8,31 @@ sidebar_position: 1
 JavaScript schemas are still in preview, contact us if would like to try it out.
 :::
 
-Expressions will often be used as simple placeholders to map data from the **source entity**.
-Most values in schemas and partial schemas can be expressed. An expression is identified by using curly brackets `{}`:
+With JavaScript schemas you can do everything you can do with JSON schemas and more.
 
-```json
-"headline": "{p.title}"
-```
+With JavaScript schemas you can build your schemas in a standard language most are already familiar with. This means that you have all the power and flexibility from JavaScript available when you are creating your schemas.
 
-A value that support expression can have multiple expressions:
-
-```json
-"headline": "{p.title}: {p.subTitle}"
-```
-
-In combination with regular text:
-
-```json
-"headline": "Blog post: {p.title}"
-```
-
-## Null check
-
-Trying to access properties of a none existing object will cause the view generation to fail.
-If that's not intended add a null check using `?`.
-
-In the following example `headline` will be set to the value of `p.meta.description`.
-If `p.meta` is null (or doesn't exist) `headline`.
-
-```json
-"description": "{p.meta?.description}"
-```
-
-### Null coalescing
-
-```json
-"headline": "{p.title ?? p.header}"
-```
-
-Combined with null check:
-
-```json
-"headline": "{p.meta?.description ?? p.description}"
-```
-
-The expression can also be grouped using parentheses:
-
-```json
-"x": "{(p.a ?? p.b) ?? p.c}"
-```
-
-## Accessing properties
-
-Accessing properties can be done by typing `p.` followed by the name of the property.
-
-```json title="Property with default type (string)"
-{
-  "triggers": {
-    "umbraco": ["frontPage"]
+```js title="JavaScript schema example"
+module.exports = {
+  triggers: {
+      'cms': ['page']
   },
-  "route": {
-    "url": "{url}"
+  route: async function(sourceEntity) {
+    return {
+      url: sourceEntity.url
+    }
   },
-  "properties": {
-    "headline": "{p.title}"
-  }
-}
-```
-
-The default type of a property is a **string**. If you need another property type, simply change your property to an object and use `type` and `value`.
-
-```json title="Property with type number"
-{
-  "triggers": {
-    "umbraco": ["frontPage"]
-  },
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {
-    "stock": {
-      "type": "number",
-      "value": "{p.inventoryQuantity}"
+  properties: async function (sourceEntity, context) {
+    let p = sourceEntity.properties;
+    return {
+      title: p.title,
+      blocks: await context.partial('blocks', {
+        blocks: p.blocks
+      }),
+      aboutUsPage: await context.referenceByOriginId('page', p.aboutUsPage.id)
     }
   }
 }
 ```
+
+The concepts in JavaScript schemas are simular to the concepts from JSON schema, with triggers, route, properties and so on. But since the source entity and a [Context object](/reference/js/context-object) (used for making references, partials, lookups, ...) are parsed in as parameters you can even create unit tests of your schemas if you want to.
