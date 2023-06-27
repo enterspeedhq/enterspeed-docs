@@ -94,7 +94,7 @@ Since string is the most commonly used property type you can access it without w
 Example: `"title": "{p.headline}"`
 :::
 
-If we don't want to map all individual properties, we can also use [**dynamic mapping**](reference/property-types#dynamic), which automatically maps all available properties. This is exactly what we are going to do here since we are going to use all the available properties, and since they're already conveniently named.
+If we don't want to map all individual properties, we can also use [**dynamic mapping**](reference/json/property-types#dynamic), which automatically maps all available properties. This is exactly what we are going to do here since we are going to use all the available properties, and since they're already conveniently named.
 
 Now all of our content will be available in the `content` object.
 
@@ -199,9 +199,9 @@ There's a _bit_ more going on here than in the last schema, but don't be scared.
 }
 ```
 
-Since we want our blog lists to be available via an array, we create an object called `content` and set the `type` to [`array`](/reference/property-types#array).
+Since we want our blog lists to be available via an array, we create an object called `content` and set the `type` to [`array`](/reference/json/property-types#array).
 
-Next, we need to define where it should retrieve the items from. We do this in `input` using the [`$lookup`](/reference/property-types#lookup-input) input.
+Next, we need to define where it should retrieve the items from. We do this in `input` using the [`$lookup`](/reference/json/property-types#lookup-input) input.
 
 ```json title="blogList schema -- properties: input"
 "input": {

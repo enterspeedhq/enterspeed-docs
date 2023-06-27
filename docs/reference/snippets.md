@@ -129,7 +129,7 @@ module.exports = {
 
 A schema for basic SEO settings, here meta title, meta description and meta robots (index/noindex and follow/nofollow).
 
-This schema can be used in other schemas using the [reference type](../reference/property-types#reference) as you can see in the code below.
+This schema can be used in other schemas using the [reference type](../reference/json/property-types#reference) as you can see in the code below.
 
 <BrowserOnly>
 {() =>
@@ -238,7 +238,7 @@ module.exports = {
 
 A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation).
 
-This schema can be used in other schemas using the [reference type](../reference/property-types#reference), as you can see in the code below.
+This schema can be used in other schemas using the [reference type](../reference/json/property-types#reference), as you can see in the code below.
 
 <BrowserOnly>
 {() =>
