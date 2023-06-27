@@ -28,6 +28,8 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below:
 
+<BrowserOnly>
+{() =>
 <Tabs>
 <TabItem value="json" label="JSON" default>
 
@@ -65,6 +67,8 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 You are not limited to using the built-in `url` property, you can also use properties defined by your source entity:
 <BrowserOnly>
