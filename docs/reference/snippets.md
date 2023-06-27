@@ -4,6 +4,7 @@ sidebar_position: 5
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # ✂️ Schema snippets
 
@@ -19,6 +20,8 @@ These snippets are meant as examples and are meant to be modified to fit your ow
 
 A schema which dynamically maps all properties from your source entities to the `product`-object.
 
+<BrowserOnly>
+{() =>
 <Tabs>
 <TabItem value="json" label="JSON" default>
 
@@ -60,12 +63,15 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 ## Site settings
 
 A schema containing essential site settings, here Site name, Logo and Login page link.
 
-
+<BrowserOnly>
+{() =>
 <Tabs>
 <TabItem value="json" label="JSON" default>
 
@@ -116,6 +122,8 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 ## SEO Composition
 
@@ -123,6 +131,8 @@ A schema for basic SEO settings, here meta title, meta description and meta robo
 
 This schema can be used in other schemas using the [reference type](../reference/property-types#reference) as you can see in the code below.
 
+<BrowserOnly>
+{() =>
 <Tabs groupId="seo-composition-example">
 <TabItem value="json" label="JSON" default>
 
@@ -176,9 +186,13 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 How the _SEO Composition schema_ will be used in another schema afterwards:
 
+<BrowserOnly>
+{() =>
 <Tabs groupId="seo-composition-example">
 <TabItem value="json" label="JSON" default>
 
@@ -217,6 +231,8 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 ## Breadcrumb navigation
 
@@ -224,6 +240,8 @@ A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/
 
 This schema can be used in other schemas using the [reference type](../reference/property-types#reference), as you can see in the code below.
 
+<BrowserOnly>
+{() =>
 <Tabs groupId="breadcrumb-navigation-example">
 <TabItem value="json" label="JSON" default>
 
@@ -273,9 +291,13 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 How the _Breadcrumb item schema_ will be used in another schema afterward:
 
+<BrowserOnly>
+{() =>
 <Tabs groupId="breadcrumb-navigation-example">
 <TabItem value="json" label="JSON" default>
 
@@ -319,11 +341,15 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 ## Category products
 
 A schema for listing all the products related to a specific category.
 
+<BrowserOnly>
+{() =>
 <Tabs>
 <TabItem value="json" label="JSON" default>
 
@@ -386,11 +412,15 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
 
 ## Top 3 product reviews
 
 A schema for listing the 3 highest rated product reviews.
 
+<BrowserOnly>
+{() =>
 <Tabs>
 <TabItem value="json" label="JSON" default>
 
@@ -445,3 +475,5 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+}
+</BrowserOnly>
