@@ -3,6 +3,9 @@ sidebar_position: 1
 title: Fields
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Fields
 
 ## Schema fields
@@ -24,10 +27,13 @@ title: Fields
 
 If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below:
 
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
 ```json
 {
   "triggers": {
-    "umbraco": ["frontPage"]
+    "cms": ["frontPage"]
   },
   "route": {
     "url": "{url}"
@@ -36,12 +42,38 @@ If you want your schema to be routable by an URL, you can specify the `url` as a
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["frontPage"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        url: sourceEntity.url
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    return {}
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 You are not limited to using the built-in `url` property, you can also use properties defined by your source entity:
+
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json
 {
   "triggers": {
-    "umbraco": ["frontPage"]
+    "cms": ["frontPage"]
   },
   "route": {
     "url": "{p.customFrontPageUrl}"
@@ -49,6 +81,29 @@ You are not limited to using the built-in `url` property, you can also use prope
   "properties": {}
 }
 ```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["frontPage"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        url: sourceEntity.properties.customFrontPageUrl
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    return {}
+  }
+}
+```
+
+</TabItem>
+</Tabs>
 
 The URL must be a valid URL: either relative `/about-us` or absolute `https://enterspeed.com/about-us`.
 
@@ -62,10 +117,13 @@ If you don't want your schema to be routable by an URL but rather something more
 
 The `handles` is an array, so you can specify multiple handles per schema.
 
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
 ```json
 {
   "triggers": {
-    "umbraco": ["frontPage"]
+    "cms": ["frontPage"]
   },
   "route": {
     "handles": ["front-page"]
@@ -74,12 +132,38 @@ The `handles` is an array, so you can specify multiple handles per schema.
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["frontPage"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        handles: ["front-page"]
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    return {}
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 The handle supports expressions as described for `url`:
+
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json
 {
   "triggers": {
-    "umbraco": ["frontPage"]
+    "cms": ["frontPage"]
   },
   "route": {
     "handles": ["front-page-{p.culture}"]
@@ -87,6 +171,29 @@ The handle supports expressions as described for `url`:
   "properties": {}
 }
 ```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  triggers: {
+    "cms": ["frontPage"]
+  },
+  route: async function(sourceEntity) {
+    return {
+        handles: [`front-page-${sourceEntity.properties.culture}`]
+    }
+  },
+  properties: async function (sourceEntity, context) {
+    return {}
+  }
+}
+```
+
+</TabItem>
+</Tabs>
 
 ##### Handle response
 
@@ -144,10 +251,10 @@ Actions without originId are only supported on tenants with source groups and bu
 {
   // This example will process a category schema where the category
   // id == category id of the data source. Schema is
-  // processed in the source group "umbraco".
+  // processed in the source group "cms".
 
   "triggers": {
-    "umbraco": ["product"]
+    "cms": ["product"]
   },
   "actions": [
     {
@@ -168,7 +275,7 @@ Actions without originId are only supported on tenants with source groups and bu
   // This is due to the source property.
 
   "triggers": {
-    "umbraco": ["product"]
+    "cms": ["product"]
   },
   "actions": [
     {
@@ -185,9 +292,9 @@ Actions without originId are only supported on tenants with source groups and bu
 
 ```json title="Schema without source and originId "
 {
-  // This example will process the category schema in the source group "umbraco".
+  // This example will process the category schema in the source group "cms".
   "triggers": {
-    "umbraco": ["product"]
+    "cms": ["product"]
   },
   "actions": [
     {
@@ -206,7 +313,7 @@ The schema that we are processing in the above examples.
 ```json title="Schema alias category - "
 {
   "triggers": {
-    "umbraco": ["category"]
+    "cms": ["category"]
   },
   "route": {
     "url": "/categories/{p.slug}"
@@ -246,7 +353,7 @@ To give an example, you can use `destinations` when you want to send views for e
   // This example will send all generated views by this schema to the webhook.
 
   "triggers": {
-    "umbraco": ["product"]
+    "cms": ["product"]
   },
   "destinations": [
     {
