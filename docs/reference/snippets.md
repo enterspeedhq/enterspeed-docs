@@ -110,7 +110,7 @@ module.exports = {
     }
   },
   properties: async function (sourceEntity, context) {
-    let p = sourceEntity.properties;
+    const p = sourceEntity.properties;
     return {
       siteName: p.siteName,
       logo: p.logo[0].url,
@@ -171,7 +171,7 @@ module.exports = {
     "cms": ["frontpage", "article", "articles"]
   },
   properties: async function (sourceEntity, context) {
-    let p = sourceEntity.properties;
+    const p = sourceEntity.properties;
     return {
       title: p.seoTitle,
       description: p.seoDescription,
@@ -401,7 +401,7 @@ module.exports = {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: await context.lookup(`type eq 'product' and properties.categoryId eq '${originId}'`).map(product => 
+      products: (await context.lookup(`type eq 'product' and properties.categoryId eq '${originId}'`)).map(product => 
       {
         headline: product.properties.name
       })
@@ -465,8 +465,8 @@ module.exports = {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: context.lookup("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')", 3, { direction: "desc", propertyName: "rating" }).map(review => 
-        context.referenceByOriginId("Review", review.originId)
+      products: (await context.lookup("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')", 3, { direction: "desc", propertyName: "rating" })).map(review => 
+        await context.referenceByOriginId("Review", review.originId)
       )
     }
   }

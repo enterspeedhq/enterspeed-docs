@@ -8,7 +8,7 @@ sidebar_position: 3
 JavaScript schemas are still in preview, contact us if would like to try it out.
 :::
 
-The `route` method is where you define how you fetch the generated view from the [delivery API](/api#tag/Delivery)
+The `route` method is where you define how you fetch the generated view from the [Delivery API](/api#tag/Delivery)
 
 If your view should be routeable you must implement the `route` method and return an object with one or two properties called `url` and `handles`
 
@@ -133,7 +133,7 @@ properties.color in ('blue', 'red', 'green')
 ```
 
 ```js title="Lambda operator"
-let category = await context.lookup(`type eq 'category' and originId eq '${originId}'`)[0]; 
+const category = await context.lookup(`type eq 'category' and originId eq '${originId}'`)[0]; 
 url: `${category.url}/${sourceEntity.properties.productSku}`
 ```
 

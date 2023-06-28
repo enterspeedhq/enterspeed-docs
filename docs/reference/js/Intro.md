@@ -23,7 +23,7 @@ module.exports = {
     }
   },
   properties: async function (sourceEntity, context) {
-    let p = sourceEntity.properties;
+    const p = sourceEntity.properties;
     return {
       title: p.title,
       blocks: await context.partial('blocks', {
@@ -39,18 +39,17 @@ The concepts in JavaScript schemas are simular to the concepts from JSON schema,
 
 ## Destructuring
 
-You can even destruct the parameters, so the `properties` methond in the above example can be simplified to:
+You can even destruct the parameters, so the above example can be simplified to:
 
 ```js title="JavaScript destruct schema example"
 module.exports = {
   triggers: {
       'cms': ['page']
   },
-  route: async function(sourceEntity) {
-    return {
-      url: sourceEntity.url
-    }
-  },
+  route: async ({url}) => ({
+	    url
+	  })
+	},
   properties: async function ({properties: p}, context) =>({
       title: p.title,
       blocks: await context.partial('blocks', {
@@ -60,3 +59,13 @@ module.exports = {
     })
 }
 ```
+
+## Limitations
+
+Now, we said that you have all the power of the JavaScript language available for you in your JavaScript schemas, but we have added some limitations because of security.
+
+This means that the following areas has been restricted.
+
+- No access to the filesystem
+- No network traffic
+- Maximum processing time of 60 sec pr schema

@@ -263,6 +263,11 @@ If you want to trigger actions across schemas, you must specify the source. The 
 Actions without originId are only supported on tenants with source groups and bulk deploy.
 :::
 
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
 ```json title="Schema with origin id"
 {
   // This example will process a category schema where the category
@@ -285,6 +290,24 @@ Actions without originId are only supported on tenants with source groups and bu
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Schema with origin id"
+// Documentation will come soon
+```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
+
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
 ```json title="Schema with source and without originId."
 {
   // This example will process the category schema in the "myCustomSourceGroup" source group.
@@ -306,6 +329,24 @@ Actions without originId are only supported on tenants with source groups and bu
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Schema with source and without originId."
+// Documentation will come soon
+```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
+
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
 ```json title="Schema without source and originId "
 {
   // This example will process the category schema in the source group "cms".
@@ -324,9 +365,27 @@ Actions without originId are only supported on tenants with source groups and bu
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Schema without source and originId "
+// Documentation will come soon
+```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
+
 The schema that we are processing in the above examples.
 
-```json title="Schema alias category - "
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
+```json title="Schema alias category"
 {
   "triggers": {
     "cms": ["category"]
@@ -356,6 +415,19 @@ The schema that we are processing in the above examples.
 }
 ```
 
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Schema alias category"
+// Documentation will come soon
+```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
+
 ### Destinations
 
 :::info
@@ -363,6 +435,11 @@ Destinations is still in preview, contact us if would like to test it out.
 :::
 
 To give an example, you can use `destinations` when you want to send views for e.g. all content pages or all products to a third-party system for searching.
+
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="json" label="JSON" default>
 
 ```json title="Schema with destinations"
 {
@@ -381,3 +458,16 @@ To give an example, you can use `destinations` when you want to send views for e
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Schema with destinations"
+// Documentation will come soon
+```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>

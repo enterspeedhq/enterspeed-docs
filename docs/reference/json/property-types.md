@@ -476,7 +476,7 @@ The `alias` can either be a static value, like "Seo" or it can be a dynamic valu
 
 ### Reference response
 
-The response of references differs in V1 and V2+ of the delivery API. V1 return the id, type and wraps the properties from the referenced view in a `view` property. The response of references in V2+ is much more clean and only return the actual properties from the referenced schema. If a reference is not found in V2+ the reference information are added in the `missingViewReference` property in the `meta` object for debug purpose.
+The response of references differs in V1 and V2+ of the Delivery API. V1 return the id, type and wraps the properties from the referenced view in a `view` property. The response of references in V2+ is much more clean and only return the actual properties from the referenced schema. If a reference is not found in V2+ the reference information are added in the `missingViewReference` property in the `meta` object for debug purpose.
 
 ```json title="Delivery API V1 uses a nested view property"
 {
