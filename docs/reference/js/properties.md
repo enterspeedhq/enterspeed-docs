@@ -60,11 +60,11 @@ Returns the immediate child source entities to the `originId` you provide.
 #### Examples
 
 ```js title="Method: getChildren"
-let latestNews = context.getChildren(sourceEntity.originId, "newsArticle", 3, {
+const latestNews = context.getChildren(sourceEntity.originId, "newsArticle", 3, {
   direction: "desc",
   propertyName: createdDate,
 });
-let latestNewsOriginIds = latestNews.map((x) => x.originId);
+const latestNewsOriginIds = latestNews.map((x) => x.originId);
 LatestNews: await context.referenceByOriginIds("newsTile", latestNewsOriginIds);
 ```
 
