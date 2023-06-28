@@ -195,6 +195,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
         prism: {
           theme: lightCodeTheme,
           darkTheme: darkCodeTheme,
+          additionalLanguages: ["csharp", "powershell"]
         },
         announcementBar: {
           id: "support_header",
@@ -203,10 +204,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           backgroundColor: "#ebf8ff",
           textColor: "#1a202c",
           isCloseable: true,
-        },
-        prism: {
-          additionalLanguages: ["csharp", "powershell"],
-        },
+        }
       }),
   }
 );
