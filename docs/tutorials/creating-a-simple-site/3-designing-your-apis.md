@@ -94,7 +94,7 @@ Since string is the most commonly used property type you can access it without w
 Example: `"title": "{p.headline}"`
 :::
 
-If we don't want to map all individual properties, we can also use [**dynamic mapping**](reference/json/property-types#dynamic), which automatically maps all available properties. This is exactly what we are going to do here since we are going to use all the available properties, and since they're already conveniently named.
+If we don't want to map all individual properties, we can also use [**dynamic mapping**](reference/json/property-types#dynamic), which automatically maps all available properties. This is exactly what we are going to do here since we are going to use all the available properties and since they're already conveniently named.
 
 Now all of our content will be available in the `content` object.
 

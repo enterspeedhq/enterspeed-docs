@@ -48,17 +48,17 @@ A schema which dynamically maps all properties from your source entities to the 
 ```js
 module.exports = {
   triggers: {
-    "cms": ["contentPage"]
+    cms: ["contentPage"],
   },
-  route: async function(sourceEntity) {
+  route: async function (sourceEntity) {
     return {
-        url: sourceEntity.url
-    }
+      url: sourceEntity.url,
+    };
   },
   properties: async function (sourceEntity, context) {
-    return sourceEntity.properties
-  }
-}
+    return sourceEntity.properties;
+  },
+};
 ```
 
 </TabItem>
@@ -102,22 +102,25 @@ A schema containing essential site settings, here Site name, Logo and Login page
 ```js title="Site settings"
 module.exports = {
   triggers: {
-    "cms": ["site"]
+    cms: ["site"],
   },
-  route: async function(sourceEntity) {
+  route: async function (sourceEntity) {
     return {
-        handles: ["settings"]
-    }
+      handles: ["settings"],
+    };
   },
   properties: async function (sourceEntity, context) {
     const p = sourceEntity.properties;
     return {
       siteName: p.siteName,
       logo: p.logo[0].url,
-      loginPage: await context.referenceByOriginId("LinkItem", p.loginPage[0].id)
-    }
-  }
-}
+      loginPage: await context.referenceByOriginId(
+        "LinkItem",
+        p.loginPage[0].id
+      ),
+    };
+  },
+};
 ```
 
 </TabItem>
@@ -168,7 +171,7 @@ This schema can be used in other schemas using the [reference type](../reference
 ```js title="SEO Composition"
 module.exports = {
   triggers: {
-    "cms": ["frontpage", "article", "articles"]
+    cms: ["frontpage", "article", "articles"],
   },
   properties: async function (sourceEntity, context) {
     const p = sourceEntity.properties;
@@ -177,11 +180,11 @@ module.exports = {
       description: p.seoDescription,
       robots: {
         follow: p.robotsFollow,
-        index: p.robotsIndex
-      }
-    }
-  }
-}
+        index: p.robotsIndex,
+      },
+    };
+  },
+};
 ```
 
 </TabItem>
@@ -219,14 +222,17 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 ```js title="SEO Composition used in another schema"
 module.exports = {
   triggers: {
-    "cms": ["article"]
+    cms: ["article"],
   },
   properties: async function (sourceEntity, context) {
     return {
-      seoComposition: await context.referenceById("seoComposition", sourceEntity.id),
-    }
-  }
-}
+      seoComposition: await context.referenceById(
+        "seoComposition",
+        sourceEntity.id
+      ),
+    };
+  },
+};
 ```
 
 </TabItem>
@@ -274,7 +280,7 @@ This schema can be used in other schemas using the [reference type](../reference
 ```js title="SEO Composition used in another schema"
 module.exports = {
   triggers: {
-    "cms": ["homePage", "contentPage"]
+    cms: ["homePage", "contentPage"],
   },
   properties: async function (sourceEntity, context) {
     return {
@@ -283,10 +289,10 @@ module.exports = {
         url: sourceEntity.url,
         originId: sourceEntity.originId,
       },
-      level: sourceEntity.properties.metaData.level
-    }
-  }
-}
+      level: sourceEntity.properties.metaData.level,
+    };
+  },
+};
 ```
 
 </TabItem>
@@ -294,7 +300,7 @@ module.exports = {
 }
 </BrowserOnly>
 
-How the _Breadcrumb item schema_ will be used in another schema afterward:
+How the _Breadcrumb item schema_ will be used in another schema afterwards:
 
 <BrowserOnly>
 {() =>
@@ -329,14 +335,17 @@ How the _Breadcrumb item schema_ will be used in another schema afterward:
 ```js title="SEO Composition used in another schema"
 module.exports = {
   triggers: {
-    "cms": ["contentPage"]
+    cms: ["contentPage"],
   },
   properties: async function (sourceEntity, context) {
     return {
-      breadcrumbs: await context.referenceByOriginIds("seoComposition", sourceEntity.properties.metaData.nodePath)
-    }
-  }
-}
+      breadcrumbs: await context.referenceByOriginIds(
+        "seoComposition",
+        sourceEntity.properties.metaData.nodePath
+      ),
+    };
+  },
+};
 ```
 
 </TabItem>
@@ -390,24 +399,25 @@ A schema for listing all the products related to a specific category.
 ```js
 module.exports = {
   triggers: {
-    "cms": ["category"]
+    cms: ["category"],
   },
-  route: async function(sourceEntity) {
+  route: async function (sourceEntity) {
     return {
-        url: "/categories/" + sourceEntity.properties.slug
-    }
+      url: "/categories/" + sourceEntity.properties.slug,
+    };
   },
   properties: async function (sourceEntity, context) {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: (await context.lookup(`type eq 'product' and properties.categoryId eq '${originId}'`)).map(product => 
-      {
-        headline: product.properties.name
-      })
-    }
-  }
-}
+      products: await context
+        .lookup(`type eq 'product' and properties.categoryId eq '${originId}'`)
+        .map((product) => {
+          headline: product.properties.name;
+        }),
+    };
+  },
+};
 ```
 
 </TabItem>
@@ -417,7 +427,7 @@ module.exports = {
 
 ## Top 3 product reviews
 
-A schema for listing the 3 highest rated product reviews.
+A schema for listing the 3 highest-rated product reviews.
 
 <BrowserOnly>
 {() =>
@@ -459,18 +469,24 @@ A schema for listing the 3 highest rated product reviews.
 ```js
 module.exports = {
   triggers: {
-    "cms": ["reviews"]
+    cms: ["reviews"],
   },
   properties: async function (sourceEntity, context) {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: (await context.lookup("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')", 3, { direction: "desc", propertyName: "rating" })).map(review => 
-        await context.referenceByOriginId("Review", review.originId)
-      )
-    }
-  }
-}
+      products: context
+        .lookup(
+          "type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')",
+          3,
+          { direction: "desc", propertyName: "rating" }
+        )
+        .map((review) =>
+          context.referenceByOriginId("Review", review.originId)
+        ),
+    };
+  },
+};
 ```
 
 </TabItem>
