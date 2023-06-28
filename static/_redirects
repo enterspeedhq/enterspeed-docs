@@ -2,3 +2,7 @@
 /integrations/umbraco/umbraco-v8/*  /integrations/umbraco/getting-started
 /integrations/umbraco/umbraco-v9/*  /integrations/umbraco/getting-started
 /integrations/umbraco/umbraco-v10/*  /integrations/umbraco/getting-started
+/integrations/umbraco/umbraco-v10/*  /integrations/umbraco/getting-started
+/reference/property-types           /reference/json/property-types                  302
+/reference/expression               /reference/json/expression                      302
+/reference/path-selector            /reference/json/path-selector                   302
