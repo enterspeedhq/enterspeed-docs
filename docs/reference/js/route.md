@@ -5,7 +5,7 @@ sidebar_position: 3
 # Route
 
 :::info
-JavaScript schemas are still in preview, contact us if would like to try it out.
+JavaScript schemas are still in preview. Contact us if you would like to try it out.
 :::
 
 The `route` method is where you define how you fetch the generated view from the [delivery API](/api#tag/Delivery)
@@ -24,36 +24,37 @@ route: async function(sourceEntity, context) {
 ```
 
 ## Url
+
 A string value that represents the url you want to fetch the view by.
 
 ## Handles
-A handle is a key from with you can fetch the view. A view can have multiple handles so it's an array of strings.
+
+A handle is a key from which you can fetch the view. A view can have multiple handles, so it's an array of strings.
 
 # RouteContext object
 
-The `RouteContext` object are passed in to the `route` method and gives you access to set of methods which is described on below.
+The `RouteContext` object is passed into the `route` method and gives you access to a set of methods which is described below.
 
 ## Methods
 
-| Method                            | Description                                                                                                                          |
-| ----------------------------------| -------------------------------------------------------------------------------------------------------------------------------------|
-| [lookup](#lookup)                 | Lookup allows you to search source entities based on a filter to map or reference data from other source entities in your schema.    |
+| Method            | Description                                                                                                                       |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [lookup](#lookup) | Lookup allows you to search source entities based on a filter to map or reference data from other source entities in your schema. |
 
 ### lookup
 
-Lookup allows you to define query-like and criteria match source entities lookup conditions.
+Lookup allows you to define query-like and criteria-match source entities lookup conditions.
 
 `lookup(filter, top?, orderBy?, sourceGroupAlias?): Promise<SourceEntityDto[]>`
 
 #### Parameters
 
-| Parameter           | Type      | Description                                                                                                        |
-| ------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| `filter`            | string    | Your filtering criteria                                                                                            |
-| `top`               | number    | `Optional`. Allows limiting the size of items collection. Default value is 10, maximum is 100                                  |
-| `orderBy`           | { direction: "asc" \| "desc", propertyName: string }        | `Optional`. Allows you to specify your desired sorting order.                |
-| `sourceGroupAlias`  | string    | `Optional`. Allows you to define a different source group. The `sourceGroupAlias` should be equal to the desired source group alias, where you want to look for source entities.<br/><br/> If not defined, it uses the current source group.                                                     |
-
+| Parameter          | Type                                                 | Description                                                                                                                                                                                                                                 |
+| ------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `filter`           | string                                               | Your filtering criteria                                                                                                                                                                                                                     |
+| `top`              | number                                               | `Optional`. Allows limiting the size of items collection. Default value is 10, maximum is 100                                                                                                                                               |
+| `orderBy`          | { direction: "asc" \| "desc", propertyName: string } | `Optional`. Allows you to specify your desired sorting order.                                                                                                                                                                               |
+| `sourceGroupAlias` | string                                               | `Optional`. Allows you to define a different source group. The `sourceGroupAlias` should be equal to the desired source group alias where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
 
 ##### `filter`
 
@@ -111,10 +112,10 @@ type eq 'article' or type eq 'contentPage'
 // Contains specific redirect with constant string value
 redirects/any(r: r eq '/old-page')
 
-// Contains specific tag with expression string value
+// Contains specific tags with expression string value
 properties.tags/any(t: t eq '{p.selectedTag}')
 
-// Contains an articles that featured, matching constant boolean value
+// Contains articles that feature, matching constant boolean value
 properties.articles/any(a: a.isFeatured eq true)
 ```
 
@@ -133,9 +134,10 @@ properties.color in ('blue', 'red', 'green')
 ```
 
 ```js title="Lambda operator"
-let category = await context.lookup(`type eq 'category' and originId eq '${originId}'`)[0]; 
-url: `${category.url}/${sourceEntity.properties.productSku}`
+let category = await context.lookup(
+  `type eq 'category' and originId eq '${originId}'`
+)[0];
+url: `${category.url}/${sourceEntity.properties.productSku}`;
 ```
 
 ---
-
