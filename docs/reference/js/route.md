@@ -5,7 +5,7 @@ sidebar_position: 3
 # Route
 
 :::info
-JavaScript schemas are still in preview. Contact us if you would like to try it out.
+JavaScript schemas are currently in preview. Contact us if you would like to try it out.
 :::
 
 The `route` method is where you define how you fetch the generated view from the [Delivery API](/api#tag/Delivery)

@@ -5,7 +5,7 @@ sidebar_position: 2
 # Properties
 
 :::info
-JavaScript schemas are still in preview. Contact us if you would like to try it out.
+JavaScript schemas are currently in preview. Contact us if you would like to try it out.
 :::
 
 The `properties` method is where you define the output that goes into the view you fetch from the [delivery API](/api#tag/Delivery)

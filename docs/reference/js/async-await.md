@@ -5,7 +5,7 @@ sidebar_position: 4
 # Async / Await
 
 :::info
-JavaScript schemas are still in preview. Contact us if you would like to try it out.
+JavaScript schemas are still currently preview. Contact us if you would like to try it out.
 :::
 
 When you create a new JavaScript schema, you may notice that some of the methods like [`properties`](/reference/js/properties) and `route` are marked as async.

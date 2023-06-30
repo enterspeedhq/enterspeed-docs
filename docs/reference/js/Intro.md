@@ -5,7 +5,7 @@ sidebar_position: 1
 # Intro
 
 :::info
-JavaScript schemas are still in preview. Contact us if you would like to try it out.
+JavaScript schemas are currently in preview. Contact us if you would like to try it out.
 :::
 
 With JavaScript schemas, you can do everything you can do with JSON schemas and more.
