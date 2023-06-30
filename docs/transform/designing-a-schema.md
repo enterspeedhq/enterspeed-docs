@@ -89,7 +89,7 @@ We can access this property by typing `p.` followed by the name of the property,
 ```
 
 :::info
-The default type of a property is a **string**. If you need another [property type](../reference/property-types), simply change your property to an object and use `type` and `value`, like this:
+The default type of a property is a **string**. If you need another [property type](../reference/json/property-types), simply change your property to an object and use `type` and `value`, like this:
 
 ```json title="Property type: number"
 "stock": {

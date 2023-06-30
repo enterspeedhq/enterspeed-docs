@@ -139,8 +139,8 @@ Read more about [Actions](/docs/reference/fields.md#actions)
 
 Referencing another schema.
 
-The [Reference](/reference/property-types#reference) property type is a bit different than the [Partial](/reference/property-types#partial) property type.
-The [Reference](/reference/property-types#reference) property allows referencing other views created from either this Source Entity or from another source entity and the Partial property can only use data from this Source Entity.
+The [Reference](/reference/json/property-types#reference) property type is a bit different than the [Partial](/reference/json/property-types#partial) property type.
+The [Reference](/reference/json/property-types#reference) property allows referencing other views created from either this Source Entity or from another source entity and the Partial property can only use data from this Source Entity.
 
 A benefit of a reference field is that the referenced view is resolved when requested by the Delivery API. There is no need the update the requested view if a referenced view has been updated.
 
