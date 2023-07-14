@@ -34,7 +34,7 @@ The `RoutesContext` object is passed into the `routes` method and gives you acce
 
 ### handle
 
-Handle allows you to specify a key from which you can fetch the view from the delivery.
+Handle allows you to specify a key from which you can fetch the view from the Delivery API.
 
 `handle(handle)`
 
@@ -42,7 +42,7 @@ Handle allows you to specify a key from which you can fetch the view from the de
 
 | Parameter    | Type    |  Description  |
 | ------------ | ------- | --------------------------------------------------------------------------- |
-| `handle`     | string  | The key you use to fetch the view from the delivery API                     |
+| `handle`     | string  | The key you use to fetch the view from the Delivery API                     |
 
 ### url
 
@@ -54,7 +54,7 @@ url allows you to specify a url from which you can fetch the view from the deliv
 
 | Parameter    | Type    |  Description  |
 | ------------ | ------- | --------------------------------------------------------------------------- |
-| `url`        | string  | The url you use to fetch the view from the delivery API                     |
+| `url`        | string  | The url you use to fetch the view from the Delivery API                     |
 
 
 ## Examples
@@ -77,4 +77,15 @@ routes: function(sourceEntity, context) {
 
 ```js title="routes can also be expressed as an arrow function expression to make it even more compact"
 routes: (sourceEntity, context) => context.url(sourceEntity.url)
+```
+
+You can then fetch the view using our [Delivery API](../../api#tag/Delivery/operation/getContent) using either the url or one of the handles.
+
+You can also fetch multiple views in one request, although in this case it doesn't make sense to fetch the same view three time, but just to demonstrate if you want to fetch multiple different views in one request.
+
+```
+https://delivery.enterspeed.com/v2
+                        ?url=/fairy-tales/the-emperors-new-clothes/
+                        &handle=origin-1234
+                        &handle=5678
 ```
