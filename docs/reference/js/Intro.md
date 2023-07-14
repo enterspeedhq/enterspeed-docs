@@ -31,11 +31,11 @@ module.exports = {
 }
 ```
 
-The concepts in JavaScript schemas are similar to the concepts from JSON schemas, with triggers, route, properties and so on, and since the source entity and a `context` object (used for making references, partials, lookups, etc.) are passed in as parameters you can even create unit tests of your schemas if you want to.
+The concepts in JavaScript schemas are similar to the concepts from JSON schemas, with triggers, route, properties and so on, and since the source entity and a `context` object (used for making references, partials, etc.) are passed in as parameters you can even create unit tests of your schemas if you want to.
 
 ## Destructuring
 
-You can destruct the parameters, so the `routes` and `properties` method in the above example can be simplified to:
+You can destruct parameters, so the `routes` and `properties` method in the above example can be simplified to:
 
 ```js title="JavaScript destruct schema example"
 module.exports = {
