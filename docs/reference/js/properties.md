@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Properties
@@ -11,7 +11,7 @@ JavaScript schemas are currently in preview. Contact us if you would like to try
 The `properties` method is where you define the output that goes into the view you fetch from the [delivery API](/api#tag/Delivery)
 
 ```js title="Properties example"
-properties: async function (sourceEntity, context) {
+properties: function (sourceEntity, context) {
   return {
     title: sourceEntity.properties.title,
     seo: {
@@ -31,130 +31,60 @@ The `PropertiesContext` object is passed into the `properties` method and gives 
 
 ## Methods
 
-| Method                             | Description                                                                                                                       |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [getChildren](#getChildren)        | Returns the child source entities based on the parameters you pass in.                                                            |
-| [getParent](#getParent)            | Returns the parent source entity based on the parameters you pass in.                                                             |
-| [lookup](#lookup)                  | Lookup allows you to search source entities based on a filter to map or reference data from other source entities in your schema. |
-| [partial](#partial)                | Referencing a partial schema to map the data into. Mapped data from a partial schema is embedded into the calling schema.         |
-| [referenceById](#reference)        | Referencing another schema by source entity id. References to other schemas are resolved on delivery request time.                |
-| [referenceByIds](#reference)       | Referencing a list of schemas by source entity id. References to other schemas are resolved on delivery request time.             |
-| [referenceByOriginId](#reference)  | Referencing another schema by source entity originId. References to other schemas are resolved on delivery request time.          |
-| [referenceByOriginIds](#reference) | Referencing a list of schemas by source entity originId. References to other schemas are resolved on delivery request time.       |
-
-### getChildren
-
-Returns the immediate child source entities to the `originId` you provide.
-
-`getChildren(originId?, type?, top?, orderBy?): Promise<SourceEntityDto[]>`
-
-#### Parameters
-
-| Parameter  | Type                                                 | Description                                                                                    |
-| ---------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `originId` | string                                               | The parent originId to the children you want.                                                  |
-| `type`     | string                                               | `Optional`. Specify the type if you only want specific types of children.                      |
-| `top`      | number                                               | `Optional`. Allows limiting the size of items collection. Default value is 10, maximum is 100. |
-| `orderBy`  | { direction: "asc" \| "desc", propertyName: string } | `Optional`. Allows you to specify your desired sorting order.                                  |
-
-#### Examples
-
-```js title="Method: getChildren"
-const latestNews = context.getChildren(sourceEntity.originId, "newsArticle", 3, {
-  direction: "desc",
-  propertyName: createdDate,
-});
-const latestNewsOriginIds = latestNews.map((x) => x.originId);
-LatestNews: await context.referenceByOriginIds("newsTile", latestNewsOriginIds);
-```
-
----
-
-### getParent
-
-Returns the parent source entities to the `originId` you provide.
-
-`getChildren(originId?, type?, top?, orderBy?): Promise<SourceEntityDto[]>`
-
-#### Parameters
-
-| Parameter  | Type   | Description                                   |
-| ---------- | ------ | --------------------------------------------- |
-| `originId` | string | The parent originId to the children you want. |
-
-#### Examples
-
-```js title="Method: getParent"
-let parentSourceEntity = context.getParent(sourceEntity.originId);
-parent: await context.referenceByOriginId(
-  "referenceSchema",
-  parentSourceEntity.originId
-);
-```
-
----
-
-### lookup
-
-Lookup allows you to define query-like and criteria-match source entities lookup conditions.
-
-`lookup(filter, top?, orderBy?, sourceGroupAlias?): Promise<SourceEntityDto[]>`
-
-#### Parameters
-
-| Parameter          | Type                                                 | Description                                                                                                                                                                                                                                 |
-| ------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `filter`           | string                                               | Your filtering criteria                                                                                                                                                                                                                     |
-| `top`              | number                                               | `Optional`. Allows limiting the size of items collection. Default value is 10, maximum is 100                                                                                                                                               |
-| `orderBy`          | { direction: "asc" \| "desc", propertyName: string } | `Optional`. Allows you to specify your desired sorting order.                                                                                                                                                                               |
-| `sourceGroupAlias` | string                                               | `Optional`. Allows you to define a different source group. The `sourceGroupAlias` should be equal to the desired source group alias where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
-
-**See list of filter examples [here](//docs/reference/filter-expressions.md)**
-
----
+| Method                             | Description                                                                                                                   |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| [partial](#partial)                | Referencing a partial schema. Mapped data from a partial schema is embedded into the calling schema.                          |
+| [reference](#reference)            | Referencing a full schema. References to other schemas are resolved on delivery request time.                                 |
 
 ### partial
 
-Referencing a partial schema to map the data into.
+Referencing a partial schema.
 
 The partial mapping property type allows for dynamically including partial schemas into the main schema. This is useful when you need to iterate an array of different objects that has an identifier, like an ID, alias or similar.
 
 :::tip
-Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. E.g. metadata (title, description, etc.) is the same across different entity types, but the data lives on the entity itself.
+Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. E.g. if metadata (title, description, etc.) is the same across different entity types, but the data lives on the entity itself.
 
 Read more about partial schemas [here](//docs/key-concepts/partial-schemas.md)
 :::
 
-`partial(alias, input): Promise<undefined | null | Record<string, unknown>>`
+`partial(schemaAlias, input)`
 
 #### Parameters
 
-| Parameter | Type   | Description                                                  |
-| --------- | ------ | ------------------------------------------------------------ |
-| `alias`   | string | The alias of a partial schema.                               |
-| `input`   | object | You can pass whatever data you need for your partial schema. |
+| Parameter       | Type   | Description                                                  |
+| --------------- | ------ | ------------------------------------------------------------ |
+| `schemaAlias`   | string | The alias of a partial schema.                               |
+| `input`         | object | You can pass whatever data you need for your partial schema. |
 
 #### Examples
 
-```js title="Method: partial"
-contentBlocks: await Promise.all(
-  sourceEntity.properties.contentBlocks.map((contentBlock) =>
+```js title="partial"
+contentBlocks: sourceEntity.properties.contentBlocks.map((contentBlock) =>
     context.partial(`block-${contentBlock.contentType}`, contentBlock)
-  )
-);
+  );
 ```
 
-The `input` defines what goes into the partial schema, and the `alias` is used to resolve what partial schema to use. So, in this case, we could have a partial schema with an alias: block-headline.
+```js title="passing extra properties to the partial schema"
+contentBlocks: sourceEntity.properties.contentBlocks.map((contentBlock) =>
+    context.partial(`block-${contentBlock.contentType}`, {
+        block: contentBlock,
+        pageOriginId: sourceEntity.originId
+      })
+  );
+```
+
+The `input` defines what goes into the partial schema and can be any custom object, and the `schemaAlias` is used to resolve what partial schema to use. So, in this case, we could have a partial schema with an alias: block-headline.
 
 ---
 
 ### reference
 
-The `referenceById` and `referenceByOriginId` are used to reference other views created from either this source Entity or another source entity.
+The `reference` are used to reference other views created from either this source Entity or another source entity.
 
 When referenced, Enterspeed will resolve the view when requested by the Delivery API so that the data will stay up-to-date if a reference view is updated.
 
-In order to reference desired source entity, you can use `alias` of the schema and `id` or `originId` of the source entity and, optionally, a different source than the current source entity.
+The `reference` function is the starting point where you can use our fluent API to configure the reference(s) you want (by filter, by originId, take only top 5, and so on).
 
 :::tip
 Reference schemas are typically used when you are mapping data from another entity. E.g. a page has a reference to another page entity or media entity.
@@ -162,67 +92,175 @@ Reference schemas are typically used when you are mapping data from another enti
 Read more about reference schemas [here](//docs/key-concepts/referencing-schemas.md)
 :::
 
-#### referenceById
-
-`referenceById(alias, id): Promise<undefined | null | ReferencePropertyDto>`
-
-##### Parameters
-
-| Parameter | Type   | Description                                        |
-| --------- | ------ | -------------------------------------------------- |
-| `alias`   | string | The alias of a schema.                             |
-| `id`      | string | The id of the source entity you want to reference. |
-
-#### referenceByIds
-
-`referenceByIds(alias, ids): Promise<undefined | null | ReferencePropertyDto>`
-
-##### Parameters
-
-| Parameter | Type     | Description                                                 |
-| --------- | -------- | ----------------------------------------------------------- |
-| `alias`   | string   | The alias of a schema.                                      |
-| `ids`     | string[] | A list of ids of the source entities you want to reference. |
-
-#### referenceByOriginId
-
-`referenceByOriginId(alias, originId, sourceGroupAlias?): Promise<undefined | null | ReferencePropertyDto>`
+`reference(schemaAlias)`
 
 #### Parameters
 
-| Parameter          | Type   | Description                                                                                                                                                                                                                                                                   |
-| ------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `alias`            | string | The alias of a schema.                                                                                                                                                                                                                                                        |
-| `originId`         | string | The originId of the source entity you want to reference.                                                                                                                                                                                                                      |
-| `sourceGroupAlias` | string | `Optional`. Allows you to define a different source group. The `sourceGroupAlias` should be equal to the desired source group alias, where the source entity you are referencing is located.<br/><br/> If not defined, it uses the source group of the current source entity. |
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `schemaAlias` | string | The alias of a schema.                             |
 
-#### referenceByOriginIds
+#### Required function calls
 
-`referenceByOriginIds(alias, originId, sourceGroupAlias?): Promise<undefined | null | ReferencePropertyDto>`
+After the `reference` function it's required to call one of the following functions to define what source entities you want references to.
+
+<details><summary>byOriginId</summary>
+
+Using the byOriginId function lets you create a reference to a source entity by it's oringinId.
 
 #### Parameters
 
-| Parameter          | Type     | Description                                                                                                                                                                                                                                                                     |
-| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `alias`            | string   | The alias of a schema.                                                                                                                                                                                                                                                          |
-| `originIds`        | string[] | A list of originIds of the source entities you want to reference.                                                                                                                                                                                                               |
-| `sourceGroupAlias` | string   | `Optional`. Allows you to define a different source group. The `sourceGroupAlias` should be equal to the desired source group alias, where your source entity you are referencing are located.<br/><br/> If not defined, it uses the source group of the current source entity. |
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `originId`    | string | The original id from the source system.                           |
+
+```js title="reference by byOriginId"
+contentTeaser: context
+                .reference("contentTeaser")
+                .byOriginId(sourceEntity.properties.link.id)
+```
+
+</details>
+
+<details><summary>byOriginIds</summary>
+
+Using the byOriginIds function lets you create a references to a list of source entity by their oringinId.
+
+#### Parameters
+
+| Parameter     | Type     | Description                                        |
+| ------------- | -------- | -------------------------------------------------- |
+| `originIds`   | string[] | A list of original ids from the source system.                           |
+
+```js title="reference by byOriginIds"
+contentTeaser: context
+                .reference("contentTeaser")
+                .byOriginIds(sourceEntity.properties.links.map(link => link.id))
+```
+
+</details>
+
+<details><summary>children</summary>
+
+The children function creates a reference to all the children of the current source entity. It's basicly a shortcut for `.filter("originParentId eq '{sourceEntity.properties.originId}'")`.
+
+```js title="reference by children"
+childPages: context.reference("page").children()
+```
+
+</details>
+
+<details><summary>filter</summary>
+
+Using the filter function lets you do a dynamic search for source entities you wnat to make references to.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `filter`      | string | Your filtering criteria.                           |
+
+See list of filter examples [here](//docs/reference/filter-expressions.md)
+
+```js title="reference by filter"
+newsTeasers: context
+              .reference("newsTeaser")
+              .filter("type eq 'newsArticle'")
+```
+
+</details>
+
+<details><summary>parent</summary>
+
+The parent function creates a reference to the parent of the current source entity. It's basicly a shortcut for `.filter("originId eq '{sourceEntity.properties.originParentId}'")`.
+
+```js title="reference by parent"
+parentPage: context
+              .reference("page")
+              .parent()
+```
+
+</details>
+
+#### Optional function calls
+
+To filter the source entities you are making references to even further you can call some of the following optional functions.
+
+<details><summary>limit</summary>
+
+The limit function limit the number of references.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `limit`       | number | The maximum number of references to return.        |
+
+```js title="reference by filter and limit"
+topFiveNewsTeasers: context
+                      .reference("newsTeaser")
+                      .filter("type eq 'newsArticle'")
+                      .limit(5);
+```
+
+</details>
+
+<details><summary>orderBy</summary>
+
+The limit function limit the number of references.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `orerBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+
+```js title="reference by filter and orderBy"
+newsArticles: context
+                .reference("newsArticle")
+                .filter("type eq 'newsArticle'")
+                .orerBy({ propertyName: "createDate", direction: "desc"})
+```
+
+</details>
+
+<details><summary>sourceGroup</summary>
+
+The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `sourceGroup` | string | Allows you to define a different source group. The sourceGroupAlias should be equal to the desired source group alias where you want to look for source entities.
+
+If not defined, it uses the current source group.        |
+
+```js title="reference by filter and sourceGroup"
+newsTeasers: context
+              .reference("newsTeaser")
+              .filter("type eq 'newsArticle'")
+              .sourceGroup("anotherSourceGroup")
+```
+
+</details>
 
 #### Examples
 
 ```js title="Property type: reference (static value) with originId"
-seoData: await context.referenceByOriginId(
-  "Seo",
-  sourceEntity.originId,
-  "anotherSourceGroupAlias"
-);
+seoData: context.reference("seo").byOriginId(sourceEntity.originId);
 ```
 
-```js title="Property type: reference (static value)"
-seoData: await context.referenceById("Seo", sourceEntity.id);
+```js title="reference by filter and sourceGroup"
+products: context
+            .reference("product")
+            .filter("type eq 'product'")
+            .orerBy({ propertyName: name, direction: "asc"})
+            .limit(10)
+            .sourceGroup("commerce")
 ```
 
-The `alias` can either be a static value, like "Seo", or it can be a dynamic value being resolved from the Source Entity that is being processed by Enterspeed. This allows for supporting almost any use case.
+The `schemaAlias` can either be a static value, like "seo", or it can be a dynamic value being resolved from the Source Entity that is being processed by Enterspeed. This allows for supporting almost any use case.
 
 #### Reference response
 

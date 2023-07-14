@@ -96,7 +96,7 @@ properties.color in ('blue', 'red', 'green')
 <TabItem value="json" label="JSON" default>
 
 ```json title="Lambda operator"
-"featuredSportArticles": {
+"sportArticles": {
     "type": "array",
     "input": {
         "$lookup": {
@@ -124,10 +124,11 @@ properties.color in ('blue', 'red', 'green')
 <TabItem value="js" label="JavaScript">
 
 ```js title="Lambda operator"
-const category = await context.lookup(
-  `type eq 'category' and originId eq '${originId}'`
-)[0];
-url: `${category.url}/${sourceEntity.properties.productSku}`;
+sportArticles: context
+                .reference("featuredSportArticle")
+                .filter("type eq 'article' and properties.tags/any(t: t eq 'sports')")
+                .orderBy({ propertyName: 'properties.metaData.sortOrder', direction: "asc"})
+                .limit(5);
 ```
 
 </TabItem>

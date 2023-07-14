@@ -51,15 +51,13 @@ If you want your schema to be routable by an URL, you can specify the `url` as a
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["frontPage"],
-  },
-  route: async function (sourceEntity) {
-    return {
-      url: sourceEntity.url,
-    };
-  },
-  properties: async function (sourceEntity, context) {
+  triggers: function(context) {
+    return context.triggers('cms', ['frontPage'])
+  }
+  routes: function(sourceEntity, context) {
+    return context.url(sourceEntity.url)
+  }
+  properties: function (sourceEntity, context) {
     return {};
   },
 };
@@ -94,15 +92,13 @@ You are not limited to using the built-in `url` property. You can also use prope
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["frontPage"],
-  },
-  route: async function (sourceEntity) {
-    return {
-      url: sourceEntity.properties.customFrontPageUrl,
-    };
-  },
-  properties: async function (sourceEntity, context) {
+  triggers: function(context) {
+    return context.triggers('cms', ['frontPage'])
+  }
+  routes: function(sourceEntity, context) {
+    return context.url(sourceEntity.properties.customFrontPageUrl)
+  }
+  properties: function (sourceEntity, context) {
     return {};
   },
 };
@@ -148,15 +144,13 @@ The `handles` is an array, so you can specify multiple handles per schema.
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["frontPage"],
-  },
-  route: async function (sourceEntity) {
-    return {
-      handles: ["front-page"],
-    };
-  },
-  properties: async function (sourceEntity, context) {
+  triggers: function(context) {
+    return context.triggers('cms', ['frontPage'])
+  }
+  routes: function(sourceEntity, context) {
+    return context.handle("front-page")
+  }
+  properties: function (sourceEntity, context) {
     return {};
   },
 };
@@ -192,15 +186,13 @@ The handle supports expressions as described for `url`:
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["frontPage"],
-  },
-  route: async function (sourceEntity) {
-    return {
-      handles: [`front-page-${sourceEntity.properties.culture}`],
-    };
-  },
-  properties: async function (sourceEntity, context) {
+  triggers: function(context) {
+    return context.triggers('cms', ['frontPage'])
+  }
+  routes: function(sourceEntity, context) {
+    return context.handle(`front-page-${sourceEntity.properties.culture}`)
+  }
+  properties: function (sourceEntity, context) {
     return {};
   },
 };
@@ -270,9 +262,8 @@ Actions without originId are only supported on tenants with source groups and bu
 
 ```json title="Schema with origin id"
 {
-  // This example will process a category schema where the category
-  // id == category id of the data source. Schema is
-  // processed in the source group "cms".
+  // This example will process a category schema where the
+  // id == categoryId. Schema is processed in the source group "cms".
 
   "triggers": {
     "cms": ["product"]
@@ -295,132 +286,23 @@ Actions without originId are only supported on tenants with source groups and bu
 <TabItem value="js" label="JavaScript">
 
 ```js title="Schema with origin id"
-// Documentation will come soon
-```
-
-</TabItem>
-</Tabs>
-}
-</BrowserOnly>
-
-<BrowserOnly>
-{() =>
-<Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json title="Schema with source and without originId."
-{
-  // This example will process the category schema in the "myCustomSourceGroup" source group.
-  // This is due to the source property.
-
-  "triggers": {
-    "cms": ["product"]
-  },
-  "actions": [
-    {
-      "type": "process",
-      "source": "myCustomSourceGroup",
-      "alias": "category"
-    }
-  ],
-  "properties": {
-    "name": "{p.name}"
+// This example will process a category schema where the
+// id == categoryId. Schema is processed in the source group "cms".
+module.exports = {
+  triggers: function(context) {
+    return context.triggers('cms', ['product'])
   }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="Schema with source and without originId."
-// Documentation will come soon
-```
-
-</TabItem>
-</Tabs>
-}
-</BrowserOnly>
-
-<BrowserOnly>
-{() =>
-<Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json title="Schema without source and originId "
-{
-  // This example will process the category schema in the source group "cms".
-  "triggers": {
-    "cms": ["product"]
-  },
-  "actions": [
-    {
-      "type": "process",
-      "alias": "category"
-    }
-  ],
-  "properties": {
-    "name": "{p.name}"
+  actions: function(sourceEntity, context) {
+    return context
+            .reprocessByOriginId(sourceEntity.properties.categoryId)
+            .schema('category')
   }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="Schema without source and originId "
-// Documentation will come soon
-```
-
-</TabItem>
-</Tabs>
-}
-</BrowserOnly>
-
-The schema that we are processing in the above examples.
-
-<BrowserOnly>
-{() =>
-<Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json title="Schema alias category"
-{
-  "triggers": {
-    "cms": ["category"]
+  properties: function (sourceEntity, context) {
+    return {
+      name: sourceEntity.properties.name
+    };
   },
-  "route": {
-    "url": "/categories/{p.slug}"
-  },
-  "properties": {
-    "title": "{p.name}",
-    "description": "{p.description}",
-    "products": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "filter": "type eq 'product' and properties.categoryId eq '{originId}'"
-        }
-      },
-      "var": "product",
-      "items": {
-        "type": "object",
-        "properties": {
-          "headline": "{product.p.name}"
-        }
-      }
-    }
-  }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="Schema alias category"
-// Documentation will come soon
+};
 ```
 
 </TabItem>
@@ -464,7 +346,20 @@ To give an example, you can use `destinations` when you want to send views for, 
 <TabItem value="js" label="JavaScript">
 
 ```js title="Schema with destinations"
-// Documentation will come soon
+// This example will send all generated views by this schema to the webhook.
+module.exports = {
+  triggers: function(context) {
+    return context.triggers('cms', ['product'])
+  }
+  destinations: function(context) {
+    return context.destination('webhook')
+  }
+  properties: function (sourceEntity, context) {
+    return {
+      name: sourceEntity.properties.name
+    };
+  },
+};
 ```
 
 </TabItem>
