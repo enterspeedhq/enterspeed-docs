@@ -105,7 +105,7 @@ Defines the source group of an source entity to process. If the source entity yo
 ```js title="actions example with multiple actions"
 actions: function(sourceEntity, context) {
     return [
-        context.reprocessByOriginId(sourceEntity.properties.productCategoryPage.id).schema('productCategory').sourcceGroup('commerce'),
+        context.reprocessByOriginId(sourceEntity.properties.productCategoryPage.id).schema('productCategory').sourceGroup('commerce'),
         context.reprocessParent().schema('productCategory')
     ]
 }
