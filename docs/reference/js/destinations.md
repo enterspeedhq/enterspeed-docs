@@ -13,7 +13,7 @@ The `destinations` method is used to push generated views for a schema to a webh
 You can add multiple destinations to a schema.
 
 ```js title="Destinations example"
-destinations: function(context) {
+destinations: function(sourceEntity, context) {
     return [
         context.destination('webhooks'),
         context.destination('algolia')
@@ -47,11 +47,11 @@ Specifies the destination where the generated view is pushed to.
 ## Examples
 
 ```js title="if you only have one destination you dont need to return it as an array"
-destinations: function(context) {
+destinations: function(sourceEntity, context) {
     return context.destination('webhook')
 }
 ```
 
 ```js title="destinations can also be expressed as an arrow function expression to make it even more compact"
-destinations: (context) => context.destination('webhook')
+destinations: (sourceEntity, context) => context.destination('webhook')
 ```
