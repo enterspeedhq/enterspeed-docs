@@ -351,7 +351,7 @@ module.exports = {
   triggers: function(context) {
     return context.triggers('cms', ['product'])
   }
-  destinations: function(context) {
+  destinations: function(sourceEntity, context) {
     return context.destination('webhook')
   }
   properties: function (sourceEntity, context) {
