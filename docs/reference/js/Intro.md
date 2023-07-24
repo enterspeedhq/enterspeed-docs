@@ -14,48 +14,59 @@ With JavaScript schemas, you can build your schemas in a standard language most 
 
 ```js title="JavaScript schema example"
 module.exports = {
-  triggers: {
-    cms: ["page"],
+  triggers: function(context) {
+    return context.triggers('cms', ['page'])
   },
-  route: async function (sourceEntity) {
-    return {
-      url: sourceEntity.url,
-    };
+  routes: function(sourceEntity, context) {
+    return context.url(sourceEntity.url)
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     const p = sourceEntity.properties;
     return {
       title: p.title,
-      blocks: await context.partial("blocks", {
-        blocks: p.blocks,
-      }),
-      aboutUsPage: await context.referenceByOriginId("page", p.aboutUsPage.id),
+      blocks: context.partial("blocks", p.blocks),
+      aboutUsPage: context.reference("page").byOriginId(p.aboutUsPage.id),
     };
   },
-};
+}
 ```
 
-The concepts in JavaScript schemas are similar to the concepts from JSON schemas, with triggers, route, properties and so on, and since the source entity and a `context` object (used for making references, partials, lookups, etc.) are passed in as parameters you can even create unit tests of your schemas if you want to.
+The concepts in JavaScript schemas are similar to the concepts from JSON schemas, with triggers, route, properties and so on, and since the source entity and a `context` object (used for making references, partials, etc.) are passed in as parameters you can even create unit tests of your schemas if you want to.
 
 ## Destructuring
 
-You can even destruct the parameters, so the `properties` method in the above example can be simplified to:
+You can destruct parameters, so the `routes` and `properties` method in the above example can be simplified to:
 
 ```js title="JavaScript destruct schema example"
 module.exports = {
-  triggers: {
-      'cms': ['page']
+  triggers: function(context) {
+    return context.triggers('cms', ['page'])
   },
-  route: async ({url}) => ({
-	    url
-	  })
-	},
-  properties: async function ({properties: p}, context) =>({
+  routes: function({url}, context) {
+    return context.url(url)
+  },
+  properties: function ({properties: p}, context) {
+    return {
       title: p.title,
-      blocks: await context.partial('blocks', {
-        blocks: p.blocks
-      }),
-      aboutUsPage: await context.referenceByOriginId('page', p.aboutUsPage.id)
+      blocks: context.partial('blocks', p.blocks),
+      aboutUsPage: context.reference('page').byOriginId(p.aboutUsPage.id)
+    }
+  }
+}
+```
+
+## Arrow function expression
+
+You can use arrow function expression to simplify or make your schema even more compact:
+
+```js title="JavaScript arrow function expression schema example"
+module.exports = {
+  triggers: (context) => context.triggers('cms', ['page']),
+  routes: ({url}, context) => context.url(url),
+  properties: ({properties: p}, context) =>({
+      title: p.title,
+      blocks: context.partial('blocks', p.blocks),
+      aboutUsPage: context.reference('page').byOriginId(p.aboutUsPage.id)
     })
 }
 ```

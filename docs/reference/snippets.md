@@ -11,14 +11,12 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 Below you'll find a collection of useful schema snippets. Use these as a starting point or inspiration when designing your next schema.
 
 :::info
-
 These snippets are meant as examples and are meant to be modified to fit your own data structure.
-
 :::
 
 ## Map all source entity properties
 
-A schema which dynamically maps all properties from your source entities to the `product`-object.
+A schema which dynamically maps all properties from your source entity to the view.
 
 <BrowserOnly>
 {() =>
@@ -47,15 +45,13 @@ A schema which dynamically maps all properties from your source entities to the 
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["contentPage"],
+  triggers: function(context) {
+    return context.triggers('cms', ['contentPage'])
   },
-  route: async function (sourceEntity) {
-    return {
-      url: sourceEntity.url,
-    };
+  routes: function(sourceEntity, context) {
+    return context.url(sourceEntity.url)
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     return sourceEntity.properties;
   },
 };
@@ -101,23 +97,20 @@ A schema containing essential site settings, here Site name, Logo and Login page
 
 ```js title="Site settings"
 module.exports = {
-  triggers: {
-    cms: ["site"],
+  triggers: function(context) {
+    return context.triggers('cms', ['site'])
   },
-  route: async function (sourceEntity) {
-    return {
-      handles: ["settings"],
-    };
+  routes: function(sourceEntity, context) {
+    return context.handle('settings')
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     const p = sourceEntity.properties;
     return {
       siteName: p.siteName,
       logo: p.logo[0].url,
-      loginPage: await context.referenceByOriginId(
-        "LinkItem",
-        p.loginPage[0].id
-      ),
+      loginPage: context
+                  .reference("linkItem")
+                  .byOriginId(p.loginPage[0].id),
     };
   },
 };
@@ -170,10 +163,10 @@ This schema can be used in other schemas using the [reference type](../reference
 
 ```js title="SEO Composition"
 module.exports = {
-  triggers: {
-    cms: ["frontpage", "article", "articles"],
+  triggers: function(context) {
+    return context.triggers("cms", ["frontpage", "article", "articles"])
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     const p = sourceEntity.properties;
     return {
       title: p.seoTitle,
@@ -221,15 +214,14 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 
 ```js title="SEO Composition used in another schema"
 module.exports = {
-  triggers: {
-    cms: ["article"],
+  triggers: function(context) {
+    return context.triggers("cms", ["article"])
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     return {
-      seoComposition: await context.referenceById(
-        "seoComposition",
-        sourceEntity.id
-      ),
+      seoComposition: context
+                        .reference("seoComposition")
+                        .byOriginId(sourceEntity.originId),
     };
   },
 };
@@ -279,10 +271,10 @@ This schema can be used in other schemas using the [reference type](../reference
 
 ```js title="SEO Composition used in another schema"
 module.exports = {
-  triggers: {
-    cms: ["homePage", "contentPage"],
+  triggers: function(context) {
+    return context.triggers("cms", ["homePage", "contentPage"])
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     return {
       link: {
         name: sourceEntity.properties.metaData.name,
@@ -334,15 +326,14 @@ How the _Breadcrumb item schema_ will be used in another schema afterwards:
 
 ```js title="SEO Composition used in another schema"
 module.exports = {
-  triggers: {
-    cms: ["contentPage"],
+  triggers: function(context) {
+    return context.triggers("cms", ["contentPage"])
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     return {
-      breadcrumbs: await context.referenceByOriginIds(
-        "seoComposition",
-        sourceEntity.properties.metaData.nodePath
-      ),
+      breadcrumbs: context
+                    .reference("seoComposition")
+                    .byOriginIds(sourceEntity.properties.metaData.nodePath),
     };
   },
 };
@@ -398,23 +389,19 @@ A schema for listing all the products related to a specific category.
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["category"],
+  triggers: function(context) {
+    return context.triggers("cms", ["category"])
   },
-  route: async function (sourceEntity) {
-    return {
-      url: "/categories/" + sourceEntity.properties.slug,
-    };
-  },
-  properties: async function (sourceEntity, context) {
+  routes: function(sourceEntity, context) {
+    return context.url("/categories/" + sourceEntity.properties.slug)
+  }
+  properties: function (sourceEntity, context) {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: await context
-        .lookup(`type eq 'product' and properties.categoryId eq '${originId}'`)
-        .map((product) => {
-          headline: product.properties.name;
-        }),
+      products: context
+                  .reference("product")
+                  .filter(`type eq 'product' and properties.categoryId eq '${sourceEntity.originId}'`)
     };
   },
 };
@@ -455,7 +442,7 @@ A schema for listing the 3 highest-rated product reviews.
       "items": {
         "type": "reference",
         "originId": "{item.originId}",
-        "view": "Review"
+        "view": "review"
       }
     }
   }
@@ -468,22 +455,18 @@ A schema for listing the 3 highest-rated product reviews.
 
 ```js
 module.exports = {
-  triggers: {
-    cms: ["reviews"],
+  triggers: function(context) {
+    return context.triggers("cms", ["reviews"])
   },
-  properties: async function (sourceEntity, context) {
+  properties: function (sourceEntity, context) {
     return {
       title: sourceEntity.properties.name,
       description: sourceEntity.properties.description,
-      products: context
-        .lookup(
-          "type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')",
-          3,
-          { direction: "desc", propertyName: "rating" }
-        )
-        .map((review) =>
-          context.referenceByOriginId("Review", review.originId)
-        ),
+      reviews: context
+                .reference("review")
+                .filter("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')")
+                .orderBy({propertyName: "properties.rating", direction: "asc"})
+                .limit(3)
     };
   },
 };
