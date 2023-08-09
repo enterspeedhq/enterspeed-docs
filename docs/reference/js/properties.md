@@ -62,7 +62,7 @@ Read more about partial schemas [here](//docs/key-concepts/partial-schemas.md)
 ```js title="partial"
 contentBlocks: sourceEntity.properties.contentBlocks.map((contentBlock) =>
     context.partial(`block-${contentBlock.contentType}`, contentBlock)
-  );
+  )
 ```
 
 ```js title="passing extra properties to the partial schema"
@@ -71,7 +71,7 @@ contentBlocks: sourceEntity.properties.contentBlocks.map((contentBlock) =>
         block: contentBlock,
         pageOriginId: sourceEntity.originId
       })
-  );
+  )
 ```
 
 The `input` defines what goes into the partial schema and can be any custom object, and the `schemaAlias` is used to resolve what partial schema to use. So, in this case, we could have a partial schema with an alias: block-headline.
@@ -200,7 +200,7 @@ The limit function limit the number of references.
 topFiveNewsTeasers: context
                       .reference("newsTeaser")
                       .filter("type eq 'newsArticle'")
-                      .limit(5);
+                      .limit(5)
 ```
 
 </details>
@@ -248,7 +248,7 @@ newsTeasers: context
 #### Examples
 
 ```js title="Property type: reference (static value) with originId"
-seoData: context.reference("seo").byOriginId(sourceEntity.originId);
+seoData: context.reference("seo").byOriginId(sourceEntity.originId)
 ```
 
 ```js title="reference by filter and sourceGroup"

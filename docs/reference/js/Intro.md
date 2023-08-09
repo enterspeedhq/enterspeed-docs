@@ -26,7 +26,7 @@ module.exports = {
       title: p.title,
       blocks: context.partial("blocks", p.blocks),
       aboutUsPage: context.reference("page").byOriginId(p.aboutUsPage.id),
-    };
+    }
   },
 }
 ```
