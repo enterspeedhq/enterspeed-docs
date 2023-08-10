@@ -122,8 +122,11 @@ context
 ```js title="actions example with multiple actions"
 actions: function(sourceEntity, context) {
     return [
-        context.reprocess('productCategory').byOriginId(sourceEntity.properties.productCategoryPage.id).sourceGroup('commerce'),
-        context.reprocess('productCategory').parent()
+        context.reprocess('productCategory')
+                .byOriginId(sourceEntity.properties.productCategoryPage.id)
+                .sourceGroup('commerce'),
+        context.reprocess('productCategory')
+                .parent()
     ]
 }
 ```
