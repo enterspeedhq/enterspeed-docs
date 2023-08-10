@@ -8,9 +8,9 @@ sidebar_position: 5
 JavaScript schemas are currently in preview. Contact us if you would like to try it out.
 :::
 
-The `actions` method is used if you need to trigger another schema from a schema. 
+The `actions` method is used if you need to trigger other schemas from a schema. 
 
-It could be that you have a list of references to news articles and whenever a news article is ingested you also want to update the list of news article in another schema.
+It could be that you have a list of references to news articles and whenever a news article is ingested or deleted you also want to update the list of news article in another schema.
 
 You can add multiple actions to a schema.
 
@@ -18,80 +18,89 @@ You can add multiple actions to a schema.
 actions: function(sourceEntity, context) {
     return [
         context
-            .reprocessByOriginId(sourceEntity.properties.newsArchivePage.id)
-            .schema('newsArchive')
+            .reprocess('newsArchive')
+            .byOriginId(sourceEntity.properties.newsArchivePage.id)
     ]
 }
 ```
 
 # ActionsContext object
 
-The `ActionsContext` object is passed into the `actions` method and gives you access to a set of methods which is described below.
+The `ActionsContext` object is passed into the `actions` method and gives you access to the `reprocess` function which is described below.
 
-## Required Methods
+## Methods
 
-| Method                                      | Description                                                 |
-| ------------------------------------------- | ------------------------------------------------------------|
-| [reprocessByOriginId](#reprocessByOriginId) | Reprocess a source entity based on its originId.            |
-| [reprocessParent](#reprocessParent)         | Reprocess the parent source entity.                         |
-| [reprocessSchema](#reprocessSchema)         | Reprocess all source entities for a given schema.           |
+| Method                        | Description                                                 |
+| ----------------------------- | ------------------------------------------------------------|
+| [reprocess](#reprocess)       | Reprocess a schema based on its alias.                      |
 
-### reprocessByOriginId
+### reprocess
 
-Reprocess a source entity based on its originId.
-
-`reprocessByOriginId(originId)`
+`reprocess(schemaAlias)`
 
 #### Parameters
 
-| Parameter    | Type    |  Description  |
-| ------------ | ------- | --------------------------------------------------------------------------- |
-| `originId`   | string  | The originId of the source entity to reprocess.                             |
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `schemaAlias` | string | The alias of a schema.                             |
 
-### reprocessParent
+#### Required function calls
 
-Reprocess the parent source entity.
+After the `reprocess` function it's required to call one of the following functions to define what source entities you want to reprocess.
 
-`reprocessParent()`
+<details><summary>byOriginId</summary>
 
-### reprocessSchema
-
-Reprocess all source entities that matches the schemas triggers.
-
-Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's nesecary to reprocess an entire schema.
-
-`reprocessSchema(schemaAlias)`
+Use the `byOriginId` function to reprocess a specific entity based on its originId.
 
 #### Parameters
 
-| Parameter      | Type    |  Description  |
-| -------------- | ------- | ----------------------------------------------------------|
-| `schemaAlias`  | string  | The alias of the schema to reprocess.                     |
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `originId`    | string | The original id from the source system.                           |
 
-## Optional Methods
+```js title="reprocess by byOriginId"
+context
+    .reprocess('mySchemaAlias')
+    .byOriginId(sourceEntity.properties.link.id)
+```
 
-| Method                        | Description                                                                                                               |
-| ------------------------------| --------------------------------------------------------------------------------------------------------------------------|
-| [schema](#schema)             | Defines the schema to process. Default is all schemas that matches a source entity                                        |
-| [sourceGroup](#sourceGroup)   | Defines the source group of an source entity to process. Default is the source group of the current source entity.        |
+</details>
 
-### schema
+<details><summary>bySchema</summary>
 
-Defines the schema to process. If no schema is defined, all schemas that matches a source entity is processed. Often it's better to be specific and define a specific schema and source entity, in order to avoid unnessacary processing.
+Use the `bySchema` function to reprocess all source entities a specific schema has a trigger on.
 
-`schema(schemaAlias)`
+Note: Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's nesecary to reprocess an entire schema.
 
-#### Parameters
+```js title="reprocess by bySchema"
+context
+    .reprocess('mySchemaAlias')
+    .bySchema()
+```
 
-| Parameter      | Type    |  Description  |
-| -------------- | ------- | ----------------------------------------------------------|
-| `schemaAlias`  | string  | The alias of the schema to reprocess.                     |
+</details>
 
-### sourceGroup
+<details><summary>parent</summary>
+
+Use the `parent` function to reprocess the parent entity based on its originParentId.
+
+```js title="reprocess by byOriginId"
+context
+    .reprocess('mySchemaAlias')
+    .parent()
+```
+
+</details>
+
+#### Optional function calls
+
+After one of the required function call above, there are extra functions you can call.
+
+<details><summary>sourceGroup</summary>
 
 Defines the source group of an source entity to process. If the source entity you want to reprocess is located in another source group than the current source entity, you must specific the source group.
 
-`sourceGroup(sourceGroupAlias)`
+Note: `sourceGroup` can't be used on `parent` as parent is implicit in the same source group as the child.
 
 #### Parameters
 
@@ -99,24 +108,32 @@ Defines the source group of an source entity to process. If the source entity yo
 | ------------------- | ------- | --------------------------------------------------------------------------- |
 | `sourceGroupAlias`  | string  | The alias of the source group for the source entity you want to reprocess.  |
 
+```js title="reprocess by origin id and source group"
+context
+    .reprocess("mySchemaAlias")
+    .byOriginId(sourceEntity.properties.link.id)
+    .sourceGroup('anotherSourceGroup')
+```
+
+</details>
 
 ## Examples
 
 ```js title="actions example with multiple actions"
 actions: function(sourceEntity, context) {
     return [
-        context.reprocessByOriginId(sourceEntity.properties.productCategoryPage.id).schema('productCategory').sourceGroup('commerce'),
-        context.reprocessParent().schema('productCategory')
+        context.reprocess('productCategory').byOriginId(sourceEntity.properties.productCategoryPage.id).sourceGroup('commerce'),
+        context.reprocess('productCategory').parent()
     ]
 }
 ```
 
 ```js title="if you only have one action you dont need to return it as an array"
 actions: function(sourceEntity, context) {
-    return context.reprocessParent().schema('productCategory')
+    return context.reprocess('productCategory').parent()
 }
 ```
 
 ```js title="actions can also be expressed as an arrow function expression to make it even more compact"
-actions: (sourceEntity, context) => context.reprocessParent().schema('productCategory')
+actions: (sourceEntity, context) => context.reprocess('productCategory').parent()
 ```
