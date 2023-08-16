@@ -44,7 +44,7 @@ A schema which dynamically maps all properties from your source entity to the vi
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['contentPage'])
   },
@@ -96,7 +96,7 @@ A schema containing essential site settings, here Site name, Logo and Login page
 <TabItem value="js" label="JavaScript">
 
 ```js title="Site settings"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['site'])
   },
@@ -162,7 +162,7 @@ This schema can be used in other schemas using the [reference type](../reference
 <TabItem value="js" label="JavaScript">
 
 ```js title="SEO Composition"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers("cms", ["frontpage", "article", "articles"])
   },
@@ -213,7 +213,7 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 <TabItem value="js" label="JavaScript">
 
 ```js title="SEO Composition used in another schema"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers("cms", ["article"])
   },
@@ -270,7 +270,7 @@ This schema can be used in other schemas using the [reference type](../reference
 <TabItem value="js" label="JavaScript">
 
 ```js title="SEO Composition used in another schema"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers("cms", ["homePage", "contentPage"])
   },
@@ -325,7 +325,7 @@ How the _Breadcrumb item schema_ will be used in another schema afterwards:
 <TabItem value="js" label="JavaScript">
 
 ```js title="SEO Composition used in another schema"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers("cms", ["contentPage"])
   },
@@ -388,7 +388,7 @@ A schema for listing all the products related to a specific category.
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers("cms", ["category"])
   },
@@ -454,7 +454,7 @@ A schema for listing the 3 highest-rated product reviews.
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers("cms", ["reviews"])
   },
