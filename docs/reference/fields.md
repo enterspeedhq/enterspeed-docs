@@ -50,7 +50,7 @@ If you want your schema to be routable by an URL, you can specify the `url` as a
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['frontPage'])
   }
@@ -91,7 +91,7 @@ You are not limited to using the built-in `url` property. You can also use prope
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['frontPage'])
   }
@@ -143,7 +143,7 @@ The `handles` is an array, so you can specify multiple handles per schema.
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['frontPage'])
   }
@@ -185,7 +185,7 @@ The handle supports expressions as described for `url`:
 <TabItem value="js" label="JavaScript">
 
 ```js
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['frontPage'])
   }
@@ -288,7 +288,7 @@ Actions without originId are only supported on tenants with source groups and bu
 ```js title="Schema with origin id"
 // This example will process a category schema where the
 // id == categoryId. Schema is processed in the source group "cms".
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['product'])
   }
@@ -347,7 +347,7 @@ To give an example, you can use `destinations` when you want to send views for, 
 
 ```js title="Schema with destinations"
 // This example will send all generated views by this schema to the webhook.
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['product'])
   }

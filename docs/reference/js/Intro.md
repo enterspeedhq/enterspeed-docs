@@ -13,7 +13,7 @@ With JavaScript schemas, you can do everything you can do with JSON schemas and 
 With JavaScript schemas, you can build your schemas in a standard language most developers are already familiar with. This means that you have all the power and flexibility from JavaScript available when you are creating your schemas.
 
 ```js title="JavaScript schema example"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['page'])
   },
@@ -38,7 +38,7 @@ The concepts in JavaScript schemas are similar to the concepts from JSON schemas
 You can destruct parameters, so the `routes` and `properties` method in the above example can be simplified to:
 
 ```js title="JavaScript destruct schema example"
-module.exports = {
+export default {
   triggers: function(context) {
     return context.triggers('cms', ['page'])
   },
@@ -60,7 +60,7 @@ module.exports = {
 You can use arrow function expression to simplify or make your schema even more compact:
 
 ```js title="JavaScript arrow function expression schema example"
-module.exports = {
+export default {
   triggers: (context) => context.triggers('cms', ['page']),
   routes: ({url}, context) => context.url(url),
   properties: ({properties: p}, context) =>({
