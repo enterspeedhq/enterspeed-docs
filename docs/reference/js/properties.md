@@ -106,7 +106,7 @@ After the `reference` function it's required to call one of the following functi
 
 <details><summary>byOriginId</summary>
 
-Using the byOriginId function lets you create a reference to a source entity by it's oringinId.
+Using the byOriginId function lets you create a reference to a source entity by its oringinId.
 
 #### Parameters
 
