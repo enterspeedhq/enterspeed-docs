@@ -366,7 +366,7 @@ paths:
                     redirect: null
                     updatedAt: "2023-01-18T10:03:17.8862119Z"
                   - url: /fairy-tales/the-leap-frog/
-                    redirect: null,
+                    redirect: null
                     updatedAt: "2023-07-03T13:23:41.0559142Z"
 
         "401":
