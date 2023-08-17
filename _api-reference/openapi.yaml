@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.3.0
+  version: 0.3.1
   title: API documentation
   description: The Enterspeed API are based on REST principles.
 
@@ -331,6 +331,46 @@ paths:
                     example: >-
                       first and last is not allowed at the same time (Parameter
                       'first', 'last')
+  /routes/v2:
+    get:
+      summary: Get Routes v2
+      description: |
+        Get all the routes for a specific environment with continuation token.
+      tags:
+        - Routes
+      operationId: getRoutesV2
+      parameters:
+        - name: X-Continuation-Token
+          in: header
+          description: Continuation token to get the next page.
+          schema:
+            type: string
+        - name: X-Api-Key
+          in: header
+          description: Api key to validate your environment.
+          required: true
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+      responses:
+        "200":
+          description: Valid request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoutesV2Response"
+              example:
+                continuationToken: ZjJlNmY5NWYtOWM3ZS00N2I5LWI0N2ItMGY4M2YxYjMzZjQ1
+                results:
+                  - url: /
+                    redirect: null
+                    updatedAt: "2023-01-18T10:03:17.8862119Z"
+                  - url: /fairy-tales/the-leap-frog/
+                    redirect: null
+                    updatedAt: "2023-07-03T13:23:41.0559142Z"
+
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
 components:
   schemas:
     ViewProperties:
@@ -520,5 +560,14 @@ components:
           $ref: "#/components/schemas/PageInfoResponse"
         results:
           type: array
+    PagedTokenResult:
+      type: object
+      properties:
+        continuationToken:
+          type: string
+        results:
+          type: array
     RoutesResponse:
       $ref: "#/components/schemas/PagedResult"
+    RoutesV2Response:
+      $ref: "#/components/schemas/PagedTokenResult"
