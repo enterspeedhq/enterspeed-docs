@@ -28,7 +28,7 @@ Once the data have been ingested into Enterspeed, we can start transforming it.
 
 We do this by using our Schema designer. Here you can combine data from multiple sources and select which data you want to be available to the front-end.
 
-Once the data is transformed it gets stored in a high-performance Redis database across multiple geographical regions.
+Once the data is transformed it gets stored in a high-performance Redis database that can be stored across multiple geographical regions.
 
 **_[Go to the Transforming data section.](../transform)_**
 
