@@ -50,17 +50,18 @@ If you want your schema to be routable by an URL, you can specify the `url` as a
 <TabItem value="js" label="JavaScript">
 
 ```js
+/** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    return context.triggers('cms', ['frontPage'])
-  }
+    context.triggers('cms', ['frontPage']);
+  },
   routes: function(sourceEntity, context) {
-    return context.url(sourceEntity.url)
-  }
+    context.url(sourceEntity.url);
+  },
   properties: function (sourceEntity, context) {
     return {};
-  },
-};
+  }
+}
 ```
 
 </TabItem>
@@ -91,17 +92,18 @@ You are not limited to using the built-in `url` property. You can also use prope
 <TabItem value="js" label="JavaScript">
 
 ```js
+/** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    return context.triggers('cms', ['frontPage'])
-  }
+    context.triggers('cms', ['frontPage']);
+  },
   routes: function(sourceEntity, context) {
-    return context.url(sourceEntity.properties.customFrontPageUrl)
-  }
+    context.url(sourceEntity.properties.customFrontPageUrl);
+  },
   properties: function (sourceEntity, context) {
     return {};
-  },
-};
+  }
+}
 ```
 
 </TabItem>
@@ -143,17 +145,18 @@ The `handles` is an array, so you can specify multiple handles per schema.
 <TabItem value="js" label="JavaScript">
 
 ```js
+/** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    return context.triggers('cms', ['frontPage'])
-  }
+    context.triggers('cms', ['frontPage']);
+  },
   routes: function(sourceEntity, context) {
-    return context.handle("front-page")
-  }
+    context.handle("front-page");
+  },
   properties: function (sourceEntity, context) {
     return {};
-  },
-};
+  }
+}
 ```
 
 </TabItem>
@@ -185,17 +188,18 @@ The handle supports expressions as described for `url`:
 <TabItem value="js" label="JavaScript">
 
 ```js
+/** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    return context.triggers('cms', ['frontPage'])
-  }
+    context.triggers('cms', ['frontPage']);
+  },
   routes: function(sourceEntity, context) {
-    return context.handle(`front-page-${sourceEntity.properties.culture}`)
-  }
+    context.handle(`front-page-${sourceEntity.properties.culture}`);
+  },
   properties: function (sourceEntity, context) {
     return {};
-  },
-};
+  }
+}
 ```
 
 </TabItem>
@@ -288,21 +292,20 @@ Actions without originId are only supported on tenants with source groups and bu
 ```js title="Schema with origin id"
 // This example will process a category schema where the
 // id == categoryId. Schema is processed in the source group "cms".
+/** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    return context.triggers('cms', ['product'])
-  }
+    context.triggers('cms', ['product']);
+  },
   actions: function(sourceEntity, context) {
-    return context
-            .reprocessByOriginId(sourceEntity.properties.categoryId)
-            .schema('category')
-  }
+    context.reprocess('category').byOriginId(sourceEntity.properties.categoryId);
+  },
   properties: function (sourceEntity, context) {
     return {
       name: sourceEntity.properties.name
     };
-  },
-};
+  }
+}
 ```
 
 </TabItem>
@@ -347,19 +350,20 @@ To give an example, you can use `destinations` when you want to send views for, 
 
 ```js title="Schema with destinations"
 // This example will send all generated views by this schema to the webhook.
+/** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    return context.triggers('cms', ['product'])
-  }
-  destinations: function(sourceEntity, context) {
-    return context.destination('webhook')
-  }
+    context.triggers('cms', ['product']);
+  },
+  actions: function(sourceEntity, context) {
+    context.destination('webhook');
+  },
   properties: function (sourceEntity, context) {
     return {
       name: sourceEntity.properties.name
     };
-  },
-};
+  }
+}
 ```
 
 </TabItem>

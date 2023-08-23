@@ -14,10 +14,8 @@ You can add multiple triggers to a schema.
 
 ```js title="Triggers example"
 triggers: function(context) {
-    return [
-        context.triggers('cms', ['contentPage', 'articlePage']),
-        context.triggers('pim', ['product'])
-    ]
+    context.triggers('cms', ['contentPage', 'articlePage']);
+    context.triggers('pim', ['product']);
 }
 ```
 
@@ -46,9 +44,9 @@ Defines the source group and the source entity types the schema should process.
 
 ## Examples
 
-```js title="if you only have one trigger you dont need to return it as an array"
+```js title="example of triggers usage"
 triggers: function(context) {
-    return context.triggers('cms', ['contentPage', 'articlePage'])
+    context.triggers('cms', ['contentPage', 'articlePage']);
 }
 ```
 

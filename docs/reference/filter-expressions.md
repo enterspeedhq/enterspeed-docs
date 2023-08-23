@@ -124,11 +124,19 @@ properties.color in ('blue', 'red', 'green')
 <TabItem value="js" label="JavaScript">
 
 ```js title="Lambda operator"
-sportArticles: context
+export default {
+  // ...
+  properties: function (sourceEntity, context) {
+    return {
+        // ...
+        sportArticles: context
                 .reference("featuredSportArticle")
                 .filter("type eq 'article' and properties.tags/any(t: t eq 'sports')")
                 .orderBy({ propertyName: 'properties.metaData.sortOrder', direction: "asc"})
-                .limit(5);
+                .limit(5)
+    }
+  },
+};
 ```
 
 </TabItem>

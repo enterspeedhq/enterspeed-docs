@@ -19,7 +19,7 @@ properties: function (sourceEntity, context) {
       description: sourceEntity.properties.seoDescription,
     }
     categoryIds: sourceEntity.properties.categoryIds.map(categoryId => parseInt(categoryId))
-  }
+  };
 }
 ```
 
@@ -80,7 +80,7 @@ The `input` defines what goes into the partial schema and can be any custom obje
 
 ### reference
 
-The `reference` are used to reference other views created from either this source Entity or another source entity.
+The `reference` are used to reference other views created from either this source entity or another source entity.
 
 When referenced, Enterspeed will resolve the view when requested by the Delivery API so that the data will stay up-to-date if a reference view is updated.
 
@@ -152,7 +152,7 @@ childPages: context.reference("page").children()
 
 <details><summary>filter</summary>
 
-Using the filter function lets you do a dynamic search for source entities you wnat to make references to.
+Using the filter function lets you do a dynamic search for source entities you want to make references to.
 
 #### Parameters
 
@@ -188,7 +188,7 @@ To filter the source entities you are making references to even further you can 
 
 <details><summary>limit</summary>
 
-The limit function limit the number of references.
+The `limit`` function limits the number of references.
 
 #### Parameters
 
@@ -207,13 +207,13 @@ topFiveNewsTeasers: context
 
 <details><summary>orderBy</summary>
 
-The limit function limit the number of references.
+The order sequence of references.
 
 #### Parameters
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `orerBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
 
 ```js title="reference by filter and orderBy"
 newsArticles: context
@@ -234,7 +234,7 @@ The sourceGroup function lets you specify the source group. By default the sourc
 | ------------- | ------ | -------------------------------------------------- |
 | `sourceGroup` | string | Allows you to define a different source group. The sourceGroupAlias should be equal to the desired source group alias where you want to look for source entities.
 
-If not defined, it uses the current source group.        |
+If not defined, it uses the current source group.
 
 ```js title="reference by filter and sourceGroup"
 newsTeasers: context
