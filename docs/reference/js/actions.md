@@ -56,7 +56,7 @@ context
 
 Use the `bySchema` function to reprocess all source entities a specific schema has a trigger on.
 
-Note: Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's necessary  to reprocess an entire schema.
+Caution: Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's necessary  to reprocess an entire schema.
 
 ```js title="reprocess by bySchema"
 context
