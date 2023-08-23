@@ -1,38 +1,24 @@
 ---
 sidebar_position: 5
 ---
-
 # Actions
 
 :::info
 JavaScript schemas are currently in preview. Contact us if you would like to try it out.
 :::
 
-The `actions` method is used if you need to trigger other schemas from a schema. 
+The `actions` method is used if you need to trigger new processing - which could be processing another schema or pushing generated views to third-party application. 
 
-It could be that you have a list of references to news articles and whenever a news article is ingested or deleted you also want to update the list of news article in another schema.
-
-You can add multiple actions to a schema.
-
-```js title="Actions example"
-actions: function(sourceEntity, context) {
-    return [
-        context
-            .reprocess('newsArchive')
-            .byOriginId(sourceEntity.properties.newsArchivePage.id)
-    ]
-}
-```
 
 # ActionsContext object
 
-The `ActionsContext` object is passed into the `actions` method and gives you access to the `reprocess` function which is described below.
+The `ActionsContext` object is passed into the actions method and gives you access to the `reprocess` and `destination` functions which are described below.
 
 ## Methods
-
 | Method                        | Description                                                 |
 | ----------------------------- | ------------------------------------------------------------|
 | [reprocess](#reprocess)       | Reprocess a schema based on its alias.                      |
+| [destination](#destination)   | Specifies the destination where the generated view is pushed to.              |
 
 ### reprocess
 
@@ -70,7 +56,7 @@ context
 
 Use the `bySchema` function to reprocess all source entities a specific schema has a trigger on.
 
-Note: Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's nesecary to reprocess an entire schema.
+Caution: Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's necessary  to reprocess an entire schema.
 
 ```js title="reprocess by bySchema"
 context
@@ -117,23 +103,29 @@ context
 
 </details>
 
+### destination
+`destination(destinationAlias)`
+
+The `destination` method is used to push generated views for a schema to a webhook, to Algolia or another third-party application.
+
+
+#### Parameters
+
+| Parameter      | Type    |  Description  |
+| -------------- | ------- | --------------------------------------------------------------------------- |
+| `destinationAlias`  | string  | The alias of the destination you want the generated view is pushed to.      |
+
+
 ## Examples
 
-```js title="actions example with multiple actions"
+```js title="actions example"
 actions: function(sourceEntity, context) {
-    return [
-        context.reprocess('productCategory')
-                .byOriginId(sourceEntity.properties.productCategoryPage.id)
-                .sourceGroup('commerce'),
-        context.reprocess('productCategory')
-                .parent()
-    ]
-}
-```
-
-```js title="if you only have one action you dont need to return it as an array"
-actions: function(sourceEntity, context) {
-    return context.reprocess('productCategory').parent()
+    context.reprocess('productCategory')
+            .byOriginId(sourceEntity.properties.productCategoryPage.id)
+            .sourceGroup('commerce');
+    context.reprocess('productCategory')
+            .parent();
+    context.destination('webhook');
 }
 ```
 

@@ -10,14 +10,12 @@ JavaScript schemas are currently in preview. Contact us if you would like to try
 
 The `routes` method is where you define how you fetch the generated view from the [Delivery API](/api#tag/Delivery)
 
-If your view should be routeable you must implement the `routes` method and return one or more routes.
+If your view should be routable you must implement the `routes` method and call context methods to build routes.
 
 ```js title="Routes example"
 routes: function(sourceEntity, context) {
-    return [
-        context.url(sourceEntity.url),
-        context.handle('origin-' + sourceEntity.originId)
-    ]
+    context.url(sourceEntity.url);
+    context.handle('origin-' + sourceEntity.originId);
 }
 ```
 
@@ -61,17 +59,15 @@ url allows you to specify a url from which you can fetch the view from the deliv
 
 ```js title="routes example with url and multiple handles"
 routes: function(sourceEntity, context) {
-    return [
-        context.url(sourceEntity.url),
-        context.handle('origin-' + sourceEntity.originId),
-        context.handle(sourceEntity.properties.entityKey)
-    ]
+    context.url(sourceEntity.url);
+    context.handle('origin-' + sourceEntity.originId);
+    context.handle(sourceEntity.properties.entityKey);
 }
 ```
 
-```js title="if you only have one route you dont need to return it as an array"
+```js title="routes example with single url"
 routes: function(sourceEntity, context) {
-    return context.url(sourceEntity.url)
+    context.url(sourceEntity.url);
 }
 ```
 
