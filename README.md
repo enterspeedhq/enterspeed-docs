@@ -20,4 +20,4 @@ In the root folder run:
 
 In the root folder run
 
-`npm run docusaurus start`
+`yarn run docusaurus start`
