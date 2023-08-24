@@ -182,6 +182,18 @@ parentPage: context
 
 </details>
 
+<details><summary>self</summary>
+
+The self function creates a reference to the current source entity. It's basicly a shortcut for `.byOriginId(sourceEntity.originId)`.
+
+```js title="reference by self"
+selfPage: context
+              .reference("page")
+              .self()
+```
+
+</details>
+
 #### Optional function calls
 
 To filter the source entities you are making references to even further you can call some of the following optional functions.
