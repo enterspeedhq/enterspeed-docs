@@ -182,6 +182,18 @@ parentPage: context
 
 </details>
 
+<details><summary>self</summary>
+
+The self method creates a reference to a view created by the specified schema on the current source entity. The helper method is equivalent to calling `.byOriginId(sourceEntity.originId)`.
+
+```js title="reference by self"
+selfPage: context
+              .reference("page")
+              .self()
+```
+
+</details>
+
 #### Optional function calls
 
 To filter the source entities you are making references to even further you can call some of the following optional functions.
