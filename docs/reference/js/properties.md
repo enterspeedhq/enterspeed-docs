@@ -184,7 +184,7 @@ parentPage: context
 
 <details><summary>self</summary>
 
-The self function creates a reference to the current source entity. It's basicly a shortcut for `.byOriginId(sourceEntity.originId)`.
+The self method creates a reference to a view created by the specified schema on the current source entity. The helper method is equivalent to calling `.byOriginId(sourceEntity.originId)`.
 
 ```js title="reference by self"
 selfPage: context
