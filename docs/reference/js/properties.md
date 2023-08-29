@@ -148,6 +148,10 @@ The children function creates a reference to all the children of the current sou
 childPages: context.reference("page").children()
 ```
 
+```js title="reference by children and type"
+childPages: context.reference("page").children("type eq 'subpage'")
+```
+
 </details>
 
 <details><summary>filter</summary>
@@ -231,7 +235,7 @@ The order sequence of references.
 newsArticles: context
                 .reference("newsArticle")
                 .filter("type eq 'newsArticle'")
-                .orerBy({ propertyName: "createDate", direction: "desc"})
+                .orderBy({ propertyName: "properties.createdDate", direction: "desc"})
 ```
 
 </details>
@@ -267,7 +271,7 @@ seoData: context.reference("seo").byOriginId(sourceEntity.originId)
 products: context
             .reference("product")
             .filter("type eq 'product'")
-            .orerBy({ propertyName: name, direction: "asc"})
+            .orderBy({ propertyName: name, direction: "asc"})
             .limit(10)
             .sourceGroup("commerce")
 ```
