@@ -21,8 +21,8 @@ In order to setup the Elastic App Search configuration you need the following:
 | Setting                               | Description                            |
 | ------------------------------------- | -------------------------------------- |
 | Engine API Endpoint                   | The endpoint of Elastic App Search engine you want to integrate to |
-| Private API Key                       | The API key needs `addObject` and `deleteObject` rights for the index you want to integrate to |
-| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Algolia |
+| Private API Key                       | The Private API key used for calling Engine API endpoint |
+| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Enterspeed Elastic App |
 
 ## Elastic App Search specific properties
 
