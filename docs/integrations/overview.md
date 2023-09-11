@@ -14,6 +14,7 @@ import ContentfulLogo from '../../static/img/docs/integrations/logos/contentful-
 import CommercetoolsLogo from '../../static/img/docs/integrations/logos/commercetools-logo.png';
 import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbraco-cloudinary.png';
 import AlgoliaLogo from '../../static/img/docs/integrations/logos/algolia-logo.png';
+import ElasticAppSearchLogo from '../../static/img/docs/integrations/logos/elastic-app-search-logo.png';
 
 <CardContainer>
     <Card title="Umbraco" link="integrations/umbraco/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" />
@@ -29,6 +30,7 @@ import AlgoliaLogo from '../../static/img/docs/integrations/logos/algolia-logo.p
 <CardContainer>
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" />
     <Card title="Algolia" link="integrations/algolia" image={AlgoliaLogo} imageBg="algolia-blue-bg" />
+    <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" />
     <div></div>
     <div></div>
 </CardContainer>
