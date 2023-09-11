@@ -3,6 +3,10 @@ sidebar_position: 4
 title: Elastic App Search
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
 # Elastic App Search
 
 :::info
@@ -33,9 +37,44 @@ Useful resources about document limitations and other requirements:
 ### id
 By default we use the Enterspeed view id as value for the `id`. 
 
-
 ## Example of usage
-```js
+
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="json" label="JSON" default>
+
+```json title="Schema with elastic app search destination"
+{
+	"triggers": {
+		"geodata": [
+			"city"
+		]
+	},
+	"destinations": [
+		{
+		"alias": "elastic-app-search"
+		}
+	],
+	"properties": {
+		"url": "{url}",
+		"name": "{p.city}",
+		"country": "{p.country}",
+		"photo": "{p.photo}",
+		"location": "{p.lat},{p.lng}",
+		"population": {
+		  "type": "number",
+		  "value": "{p.population}"
+		}
+	}
+}
+```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js title="Schema with elastic app search destination"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -56,3 +95,8 @@ export default {
   }
 }
 ```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
