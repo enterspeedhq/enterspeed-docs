@@ -28,7 +28,7 @@ In order to setup the Algolia configuration you need the following:
 
 ## Algolia specific properties
 
-### ojbectID
+### objectID
 
 The `objectID` property is the key for the entries in Algolia.
 

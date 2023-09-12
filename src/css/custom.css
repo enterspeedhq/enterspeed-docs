@@ -308,4 +308,7 @@ html[data-theme="dark"] .es-card__body {
 .algolia-blue-bg {
   background-color: #003eff;
 }
+.elastic-app-search-gray-bg {
+  background-color: #e5e5e5;
+}
 /* Enterspeed Cards --- END */
