@@ -50,6 +50,10 @@ If you want to use another value like e.g. the `originId` or any custom expressi
 }
 ```
 
+:::danger
+Be aware, if you are using a custom objectID and not the Enterspeed view id, Enterspeed will not be able to delete the entries in Algolia as the properties are deleted before the Algolia delete event is fired.
+:::
+
 ### _geoloc
 
 `_geoloc` is a special property in Algolia used for doing geo-searching. [See Algolia documentation](https://www.algolia.com/doc/guides/managing-results/refine-results/geolocation/)
