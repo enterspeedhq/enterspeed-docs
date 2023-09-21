@@ -35,7 +35,7 @@ Useful resources about document limitations and other requirements:
 - https://www.elastic.co/guide/en/app-search/current/documents.html#documents-create
 
 ### id
-By default we use the Enterspeed view id as value for the `id`. 
+By default we use the Enterspeed view id as value for the `id`, but you have an option to specify desired document id to use.
 
 ## Example of usage
 
@@ -53,7 +53,10 @@ By default we use the Enterspeed view id as value for the `id`.
 	},
 	"destinations": [
 		{
-		"alias": "elastic-app-search"
+			"alias": "elastic-app-search",
+			"options": {
+				"documentId": "city-{originId}"
+			}
 		}
 	],
 	"properties": {
@@ -81,7 +84,9 @@ export default {
     context.triggers('geodata', ['city']);
   },
   actions: function (sourceEntity, context) {
-    context.destination('elastic-app-search');
+    context.destination('elastic-app-search', {
+		documentId: `city-${sourceEntity.originId}`
+	});
   },
   properties: function ({url, properties: p}, context) {
     return {
