@@ -311,4 +311,7 @@ html[data-theme="dark"] .es-card__body {
 .elastic-app-search-gray-bg {
   background-color: #e5e5e5;
 }
+.elasticsearch-blue-bg {
+  background-color: #d8eaf3;
+}
 /* Enterspeed Cards --- END */
