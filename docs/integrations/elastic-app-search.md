@@ -84,7 +84,7 @@ export default {
     context.triggers('geodata', ['city']);
   },
   actions: function (sourceEntity, context) {
-    context.destination('elastic-app-search', {
+    context.destination('elastic-app-search').options({
 		documentId: `city-${sourceEntity.originId}`
 	});
   },
