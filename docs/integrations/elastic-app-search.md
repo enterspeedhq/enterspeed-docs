@@ -28,14 +28,14 @@ In order to setup the Elastic App Search configuration you need the following:
 | Private API Key                       | The Private API key used for calling Engine API endpoint |
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Enterspeed Elastic App |
 
-## Elastic App Search specific properties
+## Options
 
-Useful resources about document limitations and other requirements:
-- https://www.elastic.co/guide/en/app-search/current/api-reference.html
-- https://www.elastic.co/guide/en/app-search/current/documents.html#documents-create
+Table of available options, that you can optionally specify, if needed for your use case.
 
-### id
-By default we use the Enterspeed view id as value for the `id`, but you have an option to specify desired document id to use.
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| documentId                   | By default Enterspeed uses view id as the value for document id in elastic app search. You can override default document id by providing value for this option. |
+
 
 ## Example of usage
 
@@ -105,3 +105,9 @@ export default {
 </Tabs>
 }
 </BrowserOnly>
+
+## Elastic App Search specific properties
+
+Useful resources about document limitations and other requirements:
+- https://www.elastic.co/guide/en/app-search/current/api-reference.html
+- https://www.elastic.co/guide/en/app-search/current/documents.html#documents-create
