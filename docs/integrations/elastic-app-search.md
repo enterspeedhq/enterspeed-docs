@@ -42,7 +42,35 @@ Table of available options, that you can optionally specify, if needed for your 
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="Schema with elastic app search destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('elastic-app-search').options({
+		documentId: `city-${sourceEntity.originId}`
+	});
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.city,
+      country: p.country,
+      population: parseInt(p.population),
+      location: `${p.lat},${p.lng}`,
+      photo: p.photo,
+    }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json title="Schema with elastic app search destination"
 {
@@ -70,34 +98,6 @@ Table of available options, that you can optionally specify, if needed for your 
 		  "value": "{p.population}"
 		}
 	}
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="Schema with elastic app search destination"
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers('geodata', ['city']);
-  },
-  actions: function (sourceEntity, context) {
-    context.destination('elastic-app-search').options({
-		documentId: `city-${sourceEntity.originId}`
-	});
-  },
-  properties: function ({url, properties: p}, context) {
-    return {
-      url: url,
-      name: p.city,
-      country: p.country,
-      population: parseInt(p.population),
-      location: `${p.lat},${p.lng}`,
-      photo: p.photo,
-    }
-  }
 }
 ```
 
