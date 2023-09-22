@@ -43,7 +43,7 @@ Table of available options, that you can optionally specify, if needed for your 
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="json" label="JSON">
 
 ```json title="Schema with elasticsearch destination"
 {
@@ -77,7 +77,7 @@ Table of available options, that you can optionally specify, if needed for your 
 
 </TabItem>
 
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js title="Schema with elasticsearch destination"
 /** @type {Enterspeed.FullSchema} */
