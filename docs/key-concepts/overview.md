@@ -93,20 +93,20 @@ Data in Enterspeed is called Source Entities. Source Entities conform to a speci
 The data now exists as source entities in Enterspeed and can be formed and modeled easily with data mapping in Enterspeed schemas.
 Read more about [schemas](/docs/key-concepts/schemas.md).
 
-```json title="Schema"
-{
-  "triggers": {
-    "umbraco": ["product"]
+```js title="Schema"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['product'])
   },
-  "actions": [
-    {
-      "type": "process",
-      "alias": "category",
-      "originId": "{p.categoryId}"
+  actions: function (sourceEntity, context) {
+    context.reprocess('category')
+            .byOriginId(sourceEntity.properties.categoryId)
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      name: sourceEntity.properties.name
     }
-  ],
-  "properties": {
-    "name": "{p.name}"
   }
 }
 ```

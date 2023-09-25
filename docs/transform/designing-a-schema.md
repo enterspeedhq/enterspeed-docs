@@ -31,23 +31,22 @@ The Source entity types are fetched from your data source, e.g. your CMS.
 
 Let's have a look. Say we wish to use data from our Umbraco Cloud (_alias: **umbracoCloud**_) source group which have the **contentPage** type, we simply define it like this:
 
-```json
-{
-  "triggers": {
-    "umbracoCloud": ["contentPage"]
-  }
+```js
+triggers: function(context) {
+  context.triggers('umbracoCloud', ['contentPage'])
 }
 ```
 
-Next, we need to define how we can fetch the data. We do this under **route**. Fetching can be done by URL, Handle, and ID. In this example, we do it by URL.
+Next, we need to define how we can fetch the data. We do this under **routes**. Fetching can be done by URL, Handle, and ID. In this example, we do it by URL.
 
-```json
-{
-  "triggers": {
-    "umbracoCloud": ["contentPage"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbracoCloud', ['contentPage'])
   },
-  "route": {
-    "url": "{url}"
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url)
   }
 }
 ```
@@ -72,33 +71,22 @@ Click the **Source entities** button on the Schema page and click View next to t
 
 The title we wish to use is called **pageTitle** in the data source and is inside the **properties**-object.
 
-We can access this property by typing `p.` followed by the name of the property, here `p.pageTitle`
-
-```json
-{
-  "triggers": {
-    "umbracoCloud": ["contentPage"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbracoCloud', ['contentPage'])
   },
-  "route": {
-    "url": "{url}"
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url)
   },
-  "properties": {
-    "title": "{p.pageTitle}"
+  properties: function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.pageTitle
+    }
   }
 }
 ```
-
-:::info
-The default type of a property is a **string**. If you need another [property type](../reference/json/property-types), simply change your property to an object and use `type` and `value`, like this:
-
-```json title="Property type: number"
-"stock": {
-  "type": "number",
-  "value": "{p.inventoryQuantity}"
-}
-```
-
-:::
 
 ## Deploying and testing your schema
 

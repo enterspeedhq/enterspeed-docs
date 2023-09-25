@@ -32,14 +32,13 @@ In the below example, we are using a partial schema called `seo`, and passing it
 
 Example of a schema that is referencing a partial schema
 
-```json title='Schema'
-{
-  "properties": {
-    "headline": "{p.title}",
-    "seo": {
-      "type": "partial",
-      "input": "{p.seo}", // Seo property from below data source example.
-      "alias": "seo" // Alias of the partial schema that you are referencing
+```js title="Schema"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  properties: function (sourceEntity, context) {
+    return {
+      headline: sourceEntity.properties.title,
+      seo: context.partial('seo', sourceEntity.properties.seo)
     }
   }
 }
@@ -47,11 +46,14 @@ Example of a schema that is referencing a partial schema
 
 Example of the partial schema being used by the schema.
 
-```json title="Partial Schema with an alias called seo"
-{
-  "properties": {
-    "metaTitle": "{item.seoTitle}",
-    "metaDescription": "{item.seoDescription}"
+```js title="Schema"
+/** @type {Enterspeed.PartialSchema} */
+export default {
+  properties: function (input, context) {
+    return {
+      metaTitle: input.seoTitle,
+      metaDescription: input.seoDescription
+    }
   }
 }
 ```

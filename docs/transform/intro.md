@@ -58,20 +58,23 @@ Given the `frontPage` source entity have the following content.
 </TabItem>
 <TabItem value="transform" label="Schema design">
 
-When designing our we access the **title** property using `p.title`.
+When designing our we access the **title** property from the `sourceEntity`.
 
-We make the schema **routable** by using `route` and using the `url` from the source entity.
+We make the schema **routable** by using `routes` and using the `url` from the source entity.
 
-```json title="Schema example"
-{
-  "triggers": {
-    "umbraco": ["frontpage"]
+```js title="Schema example"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['frontpage'])
   },
-  "route": {
-    "url": "{url}"
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url)
   },
-  "properties": {
-    "headline": "{p.title}"
+  properties: function (sourceEntity, context) {
+    return {
+      headline: sourceEntity.properties.title
+    }
   }
 }
 ```
