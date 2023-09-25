@@ -13,7 +13,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 Elasticsearch is still in preview, contact us if would like to try it out.
 :::
 
-The Enterspeed Elasticsearch integration uses the [destinations field](../reference/fields.md) to send data from views directly to a configured Elasticsearch. This means that you can decide on the schema level which views you want to send to Elasticsearch cluster.
+The Enterspeed Elasticsearch integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Elasticsearch. This means that you can decide on the schema level which views you want to send to Elasticsearch cluster.
 
 You will only have to set the destination field on the entity schema you want to send to Elasticsearch.
 It's possible to configure multiple Elasticsearch destinations if you need to push different types of data to different Elasticsearch clusters or indexes.
