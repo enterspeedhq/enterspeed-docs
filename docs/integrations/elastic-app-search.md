@@ -13,7 +13,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 Elastic App Search is still in preview, contact us if would like to try it out.
 :::
 
-The Enterspeed Elastic App Search integration uses the [destinations field](../reference/fields.md) to send data from views directly to a configured Elastic App Search engine. This means that you can decide on the schema level which views you want to send to Elastic App Search.
+The Enterspeed Elastic App Search integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Elastic App Search engine. This means that you can decide on the schema level which views you want to send to Elastic App Search.
 
 You will only have to set the destination field on the entity schema you want to send to Elastic App Search.
 It's possible to configure multiple Elastic App Search destinations if you need to push different types of data to different Elastic App Search engines.

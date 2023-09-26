@@ -3,13 +3,17 @@ sidebar_position: 3
 title: Algolia
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
 # Algolia
 
 :::info
 Algolia is still in preview, contact us if would like to try it out.
 :::
 
-The Enterspeed Algolia integration uses the [destinations field](../reference/fields.md) to send data from views directly to a configured Algolia index. This means that you can decide on the schema level which views you want to send to Algolia.
+The Enterspeed Algolia integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Algolia index. This means that you can decide on the schema level which views you want to send to Algolia.
 
 You will only have to set the destination field on the entity schema you want to send to Algolia. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
 
@@ -26,33 +30,72 @@ In order to setup the Algolia configuration you need the following:
 | Algolia API Key                       | The API key needs `addObject` and `deleteObject` rights for the index you want to integrate to |
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Algolia |
 
-## Algolia specific properties
+## Options
 
-### objectID
+Table of available options, that you can optionally specify, if needed for your use case.
 
-The `objectID` property is the key for the entries in Algolia.
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| objectId                              | By default Enterspeed uses view id as the value for object id in Algolia. You can override default object id by providing value for this option. |
 
-By default we use the Enterspeed view id as value for the `objectID`. 
 
-If you want to use another value like e.g. the `originId` or any custom expression, you can just add a `objectID` property on root level in your Enterspeed schema, and we will use that value as `objectID` instead of the Enterspeed view id.
+## Example of usage
 
-```json
-{
-  "destinations": [
-    {
-      "alias": "algolia"
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="Schema with Algolia destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('algolia').options({
+		objectId: `city-${sourceEntity.originId}`
+	});
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.name
     }
-  ],
-  "properties": {
-    "objectID": "{originId}",
-    ...
   }
 }
 ```
 
-:::danger
-Be aware, if you are using a custom objectID and not the Enterspeed view id, Enterspeed will not be able to delete the entries in Algolia as the properties are deleted before the Algolia delete event is fired.
-:::
+</TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json title="Schema with Algolia destination"
+{
+  "triggers": {
+        "geodata": ["city"]
+    },
+  "destinations": [
+    {
+      "alias": "algolia",
+      "options": {
+          "objectId": "city-{originId}"
+      }
+    }
+  ],
+  "properties": {
+    "url": "{url}",
+    "name": "{p.name}"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
+
+## Algolia specific properties
 
 ### _geoloc
 
@@ -60,15 +103,55 @@ Be aware, if you are using a custom objectID and not the Enterspeed view id, Ent
 
 As stated in the Algolia documentation, the `lat` and `lng` properties must be numeric values. This means that you will need to make sure that your Enterspeed schema is mapping these properties as numeric values and not as strings.
 
+<BrowserOnly>
+{() =>
+<Tabs>
+<TabItem value="js" label="JavaScript" default>
 
-```json
+```js title="Schema with Algolia destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('algolia').options({
+		objectId: `city-${sourceEntity.originId}`
+	});
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.name,
+      _geoloc: {
+        lat: p.lat,
+        lng: p.lng,
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json title="Schema with Algolia destination"
 {
+  "triggers": {
+        "geodata": ["city"]
+    },
   "destinations": [
     {
-      "alias": "algolia"
+      "alias": "algolia",
+      "options": {
+          "objectId": "city-{originId}"
+      }
     }
   ],
   "properties": {
+    "url": "{url}",
+    "name": "{p.name}",
     "_geoloc": {
       "type": "object",
       "properties": {
@@ -87,3 +170,8 @@ As stated in the Algolia documentation, the `lat` and `lng` properties must be n
   }
 }
 ```
+
+</TabItem>
+</Tabs>
+}
+</BrowserOnly>
