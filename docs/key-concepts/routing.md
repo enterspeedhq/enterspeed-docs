@@ -59,12 +59,14 @@ export default {
     context.handle('mainNavigation')
   },
   properties: function (sourceEntity, context) {
-    return children: context.reference('navigationItem')
+    return {
+      children: context.reference('navigationItem')
                           .children()
                           .orderBy({ 
                             propertyName: 'properties.metaData.sortOrder', 
                             direction: 'desc' 
                           })
+    }
   }
 }
 ```
