@@ -9,38 +9,27 @@ Now to the fun part: creating schemas and transforming our data into something w
 
 ## Navigation Item schema
 
-Go to Schemas and hit the Create button, use “Get Navigation Item“ as name. Navigate to the schema and replace the content with this snippet:
+Go to Schemas and hit the Create button, use “Navigation Item“ as name. Navigate to the schema and replace the content with this snippet:
 
-```json
-{
-  "triggers": {
-    "umbraco": ["navigationItem"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['navigationItem'])
   },
-  "actions": [
-    {
-      "type": "process",
-      "alias": "getNavigationItem",
-      "originId": "{originParentId}"
-    }
-  ],
-  "properties": {
-    "title": "{p.title}",
-    "children": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "filter": "originParentId eq '{originId}'",
-          "orderBy": {
-            "property": "{item.metaData.sortOrder}",
-            "sort": "desc"
-          }
-        }
-      },
-      "items": {
-        "type": "reference",
-        "gid": "{item.id}",
-        "alias": "getNavigationItem"
-      }
+  actions: function (sourceEntity, context) {
+    context.reprocess('navigationItem').parent()
+    context.reprocess('mainNavigation').parent()
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.title,
+      children: context.reference('navigationItem')
+                          .children()
+                          .orderBy({ 
+                            propertyName: 'properties.metaData.sortOrder', 
+                            direction: 'desc' 
+                          })
     }
   }
 }
@@ -51,14 +40,11 @@ _Save_ the draft and _deploy_ your schema.
 **Actions**
 The key part of the schema is actions:
 
-```json
-  "actions": [
-    {
-      "type": "process",
-      "alias": "getNavigationItem",
-      "originId": "{originParentId}"
-    }
-  ],
+```js
+actions: function (sourceEntity, context) {
+  context.reprocess('navigationItem').parent()
+  context.reprocess('mainNavigation').parent()
+}
 ```
 
 In short this tells another schema to update if this one affected.
@@ -67,35 +53,27 @@ In short this tells another schema to update if this one affected.
 
 ## Navigation Group schema
 
-Next we want to create a schema called “Get Main Navigation”, so hit that create button again.
+Next we want to create a schema called “Main Navigation”, so hit that create button again.
 
 Replace the content with this snippet:
 
-```json
-{
-  "triggers": {
-    "umbraco": ["navigationGroup"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['mainNavigation'])
   },
-  "route": {
-    "handles": ["mainNavigation"]
+  routes: function(sourceEntity, context) {
+    context.handle('mainNavigation')
   },
-  "properties": {
-    "children": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "filter": "originParentId eq '{originId}'",
-          "orderBy": {
-            "property": "{item.metaData.sortOrder}",
-            "sort": "desc"
-          }
-        }
-      },
-      "items": {
-        "type": "reference",
-        "gid": "{item.id}",
-        "alias": "getNavigationItem"
-      }
+  properties: function (sourceEntity, context) {
+    return {
+      children: context.reference('navigationItem')
+                          .children()
+                          .orderBy({ 
+                            propertyName: 'properties.metaData.sortOrder', 
+                            direction: 'desc' 
+                          })
     }
   }
 }
@@ -112,7 +90,7 @@ To make sure we get the output we are looking for, generate a curl request by te
 (replace “[your_environment_key]” with your key)
 
 ```curl
-curl -L -X GET 'https://delivery.enterspeed.com/v1?handle=mainNavigation' -H 'X-Api-Key: [your_environment_key]'
+curl -L -X GET 'https://delivery.enterspeed.com/v2?handle=mainNavigation' -H 'X-Api-Key: [your_environment_key]'
 ```
 
 You should get a response that looks like this:
@@ -121,43 +99,28 @@ You should get a response that looks like this:
 {
   "meta": {
     "status": 200,
-    "redirect": null
+    "redirect": null,
+    "missingViewReferences": []
   },
   "views": {
-    "getMainNavigation": {
+    "mainNavigation": {
       "children": [
         {
-          "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1079-en-us/View/getNavigationItem",
-          "view": {
-            "title": "Home",
-            "children": []
-          },
-          "type": "ViewReference"
+          "title": "Home",
+          "children": []
         },
         {
-          "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1067-en-us/View/getNavigationItem",
-          "view": {
-            "title": "Books",
-            "children": [
-              {
-                "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1068-en-us/View/getNavigationItem",
-                "view": {
-                  "title": "Book 1",
-                  "children": []
-                },
-                "type": "ViewReference"
-              },
-              {
-                "id": "gid://Environment/8d69146b-dedb-4fe5-864d-d4704bb6a639/Source/affbfc34-5897-4437-a224-49720334e009/Entity/1069-en-us/View/getNavigationItem",
-                "view": {
-                  "title": "Book 2",
-                  "children": []
-                },
-                "type": "ViewReference"
-              }
-            ]
-          },
-          "type": "ViewReference"
+          "title": "Books",
+          "children": [
+            {
+              "title": "Book 1",
+              "children": []
+            },
+            {
+              "title": "Book 2",
+              "children": []
+            }
+          ]
         }
       ]
     }

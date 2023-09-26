@@ -11,24 +11,25 @@ Now let's transform that data and create the output we need for our frontend.
 
 First, create a schema named _Pim Category_:
 
-```json
-{
-  "triggers": {
-    "productListDemoPIM": ["PimCategory"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('productListDemoPIM', ['PimCategory'])
   },
-  "properties": {
-    "image": "{p.image}",
-    "title": "{p.title}",
-    "lead": "{p.lead}",
-    "button": "{p.button}"
+  actions: function (sourceEntity, context) {
+    context.reprocess('productCategories')
+              .bySchema()
+              .sourceGroup('productListDemoCMS')
   },
-  "action": [
-    {
-      "type": "process",
-      "alias": "productCategories",
-      "source": "productListDemoCMS"
+  properties: function ({properties: p}, context) {
+    return {
+      image: p.image,
+      title: p.title,
+      lead: p.lead,
+      button: p.button
     }
-  ]
+  }
 }
 ```
 
@@ -38,33 +39,23 @@ This will hold the data model for our category coming from the PIM, creating a v
 
 Finally, we need a _Product Categories_ schema.
 
-```json
-{
-  "triggers": {
-    "productListDemoCMS": ["ProductList"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('productListDemoCMS', ['ProductList'])
   },
-  "route": {
-    "url": "{url}"
+  routes: function (sourceEntity, context) {
+    context.url(sourceEntity.url)
   },
-  "properties": {
-    "headline": "{p.headline}",
-    "lead": "{p.lead}",
-    "categories": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "filter": "type eq 'PimCategory'",
-          "top": 4,
-          "source": "productListDemoPIM"
-        }
-      },
-      "items": {
-        "type": "reference",
-        "gid": {
-          "$exp": "{item.id}"
-        },
-        "alias": "pimCategory"
-      }
+  properties: function ({properties: p}, context) {
+    return {
+      headline: p.headline,
+      lead: p.lead,
+      categories: context.reference('pimCategory')
+                            .filter("type eq 'PimCategory'")
+                            .sourceGroup('productListDemoPIM')
+                            .limit(4)
     }
   }
 }

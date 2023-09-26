@@ -19,9 +19,9 @@ We are assuming you are familiar with Enterspeed and will focus on transforming 
 
 ## The data
 
-Our data is a common and straight forward example, that consists of two types: *navigationGroup* and *navigationItem*.
+Our data is a common and straight forward example, that consists of two types: *mainNavigation* and *navigationItem*.
 
-A *navigationGroup* is the parent and can have *navigationItems* as children. We have kept the properties to a minimum of having a title, this can of course be extended with URL and more.
+The *mainNavigation* is the parent and can have *navigationItems* as children. We have kept the properties to a minimum of having a title, this can of course be extended with URL and more.
 
 In this example we only have one level, but you could have as many you choose.
 
@@ -36,54 +36,34 @@ The output like this:
 And finally the (simplified) data we are working with:
 ```json
 {
-  "id": "1",
-  "type": "navigationGroup",
+  "originId": "1",
+  "type": "mainNavigation",
   "properties": {
-    "title": {
-      "type": "string",
-      "name": "title",
-      "value": "Main navigation"
-    }
+    "title": "Main navigation"
   },
-  "id": "2",
+  "originId": "2",
   "parentId": "1",
   "type": "navigationItem",
   "properties": {
-    "title": {
-      "type": "string",
-      "name": "title",
-      "value": "Home"
-    }
+    "title": "Home"
   },
-  "id": "3",
-  "parentId": "1",
+  "originId": "3",
+  "originParentId": "1",
   "type": "navigationItem",
   "properties": {
-    "title": {
-      "type": "string",
-      "name": "title",
-      "value": "Books"
-    }
+    "title": "Books"
   },
-  "id": "4",
-  "parentId": "3",
+  "originId": "4",
+  "originParentId": "3",
   "type": "navigationItem",
   "properties": {
-    "title": {
-      "type": "string",
-      "name": "title",
-      "value": "Book 1"
-    }
+    "title": "Book 1"
   },
-  "id": "5",
-  "parentId": "3",
+  "originId": "5",
+  "originParentId": "3",
   "type": "navigationItem",
   "properties": {
-    "title": {
-      "type": "string",
-      "name": "title",
-      "value": "Book 2"
-    }
+    "title": "Book 2"
   }
 }
 ```
@@ -94,7 +74,7 @@ This is what a single data entity will look like when ingested into Enterspeed:
 {
   "sourceId": "gid://Source/0edb780d-e053-46b1-bed9-d8fbb3417d37",
   "id": "gid://Source/0edb780d-e053-46b1-bed9-d8fbb3417d37/Entity/1",
-  "type": "navigationGroup",
+  "type": "mainNavigation",
   "originId": "1",
   "originParentId": null,
   "url": null,
