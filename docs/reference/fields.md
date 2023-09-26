@@ -31,23 +31,7 @@ If you want your schema to be routable by an URL, you can specify the `url` as a
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json
-{
-  "triggers": {
-    "cms": ["frontPage"]
-  },
-  "route": {
-    "url": "{url}"
-  },
-  "properties": {}
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js
 /** @type {Enterspeed.FullSchema} */
@@ -65,6 +49,22 @@ export default {
 ```
 
 </TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json
+{
+  "triggers": {
+    "cms": ["frontPage"]
+  },
+  "route": {
+    "url": "{url}"
+  },
+  "properties": {}
+}
+```
+
+</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -73,23 +73,7 @@ You are not limited to using the built-in `url` property. You can also use prope
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json
-{
-  "triggers": {
-    "cms": ["frontPage"]
-  },
-  "route": {
-    "url": "{p.customFrontPageUrl}"
-  },
-  "properties": {}
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js
 /** @type {Enterspeed.FullSchema} */
@@ -103,6 +87,22 @@ export default {
   properties: function (sourceEntity, context) {
     return {};
   }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json
+{
+  "triggers": {
+    "cms": ["frontPage"]
+  },
+  "route": {
+    "url": "{p.customFrontPageUrl}"
+  },
+  "properties": {}
 }
 ```
 
@@ -126,23 +126,7 @@ The `handles` is an array, so you can specify multiple handles per schema.
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json
-{
-  "triggers": {
-    "cms": ["frontPage"]
-  },
-  "route": {
-    "handles": ["front-page"]
-  },
-  "properties": {}
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js
 /** @type {Enterspeed.FullSchema} */
@@ -160,6 +144,22 @@ export default {
 ```
 
 </TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json
+{
+  "triggers": {
+    "cms": ["frontPage"]
+  },
+  "route": {
+    "handles": ["front-page"]
+  },
+  "properties": {}
+}
+```
+
+</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -169,23 +169,7 @@ The handle supports expressions as described for `url`:
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json
-{
-  "triggers": {
-    "cms": ["frontPage"]
-  },
-  "route": {
-    "handles": ["front-page-{p.culture}"]
-  },
-  "properties": {}
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js
 /** @type {Enterspeed.FullSchema} */
@@ -199,6 +183,22 @@ export default {
   properties: function (sourceEntity, context) {
     return {};
   }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json
+{
+  "triggers": {
+    "cms": ["frontPage"]
+  },
+  "route": {
+    "handles": ["front-page-{p.culture}"]
+  },
+  "properties": {}
 }
 ```
 
@@ -262,7 +262,30 @@ Actions without originId are only supported on tenants with source groups and bu
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="Schema with origin id"
+// This example will process a category schema where the
+// id == categoryId. Schema is processed in the source group "cms".
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['product']);
+  },
+  actions: function(sourceEntity, context) {
+    context.reprocess('category').byOriginId(sourceEntity.properties.categoryId);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      name: sourceEntity.properties.name
+    };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json title="Schema with origin id"
 {
@@ -286,29 +309,6 @@ Actions without originId are only supported on tenants with source groups and bu
 ```
 
 </TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="Schema with origin id"
-// This example will process a category schema where the
-// id == categoryId. Schema is processed in the source group "cms".
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers('cms', ['product']);
-  },
-  actions: function(sourceEntity, context) {
-    context.reprocess('category').byOriginId(sourceEntity.properties.categoryId);
-  },
-  properties: function (sourceEntity, context) {
-    return {
-      name: sourceEntity.properties.name
-    };
-  }
-}
-```
-
-</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -324,29 +324,7 @@ To give an example, you can use `destinations` when you want to send views for, 
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json title="Schema with destinations"
-{
-  // This example will send all generated views by this schema to the webhook.
-
-  "triggers": {
-    "cms": ["product"]
-  },
-  "destinations": [
-    {
-      "alias": "webhook"
-    }
-  ],
-  "properties": {
-    "name": "{p.name}"
-  }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js title="Schema with destinations"
 // This example will send all generated views by this schema to the webhook.
@@ -362,6 +340,28 @@ export default {
     return {
       name: sourceEntity.properties.name
     };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json title="Schema with destinations"
+{
+  // This example will send all generated views by this schema to the webhook.
+
+  "triggers": {
+    "cms": ["product"]
+  },
+  "destinations": [
+    {
+      "alias": "webhook"
+    }
+  ],
+  "properties": {
+    "name": "{p.name}"
   }
 }
 ```

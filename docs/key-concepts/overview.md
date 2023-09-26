@@ -35,7 +35,7 @@ Read more about data sources and how to manage them [here](/docs/getting-started
 ### Preparing your system
 
 You will need a way to ingest data into Enterspeed from your source system.
-We currently have multiple options to get started with pushing source entities to Enterspeed.
+We have multiple options to get started with pushing source entities to Enterspeed.
 
 1. Through our API. Find the [API documentation here](../api#tag/Ingest).
 2. Premade [connectors](https://docs.enterspeed.com/integrations) so you can get started immediately.
@@ -43,7 +43,7 @@ We currently have multiple options to get started with pushing source entities t
 
 ```json title="Example of data sent to the ingest API"
 {
-  "type": "string",
+  "type": "product",
   "url": "https://enterspeed.com/product-enterspeed-tshirt-old-xs/",
   "originParentId": "123",
   "redirects": ["https://enterspeed.com/product-enterspeed-tshirt-old/"],
@@ -93,20 +93,17 @@ Data in Enterspeed is called Source Entities. Source Entities conform to a speci
 The data now exists as source entities in Enterspeed and can be formed and modeled easily with data mapping in Enterspeed schemas.
 Read more about [schemas](/docs/key-concepts/schemas.md).
 
-```json title="Schema"
-{
-  "triggers": {
-    "umbraco": ["product"]
+```js title="Schema"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['frontPage'])
   },
-  "actions": [
-    {
-      "type": "process",
-      "alias": "category",
-      "originId": "{p.categoryId}"
+  properties: function (sourceEntity, context) {
+    return {
+      headline: sourceEntity.properties.title,
+      description: sourceEntity.properties.description,
     }
-  ],
-  "properties": {
-    "name": "{p.name}"
   }
 }
 ```

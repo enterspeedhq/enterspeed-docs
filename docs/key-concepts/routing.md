@@ -28,15 +28,18 @@ If we take a look at this example we can see that we have a Url property availab
 In the below example of the schema for this Data Source, we can see that the route is mapped to the url property on the Data Source. This means that you can get the data from this source
 by making a request to `https://delivery.enterspeed.com/v1?url=/frontpage`
 
-```json
-{
-  "triggers": {
-    "umbraco": ["frontPage"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['frontPage'])
   },
-  "route": {
-    "url": "{url}"
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url)
   },
-  "properties": {}
+  properties: function (sourceEntity, context) {
+    return sourceEntity.properties
+  }
 }
 ```
 
@@ -46,31 +49,23 @@ Handle differentiates a bit from URL routing. A handle can be whatever you would
 In this example, a navigation structure is returned. The schema returns an array of navigation items and utilizes the lookup and [reference](../key-concepts/referencing-schemas.md) fields.
 This handle would be called like this: `https://delivery.enterspeed.com/v1?handle=mainNavigation`
 
-```json
-{
-  "triggers": {
-    "umbraco": ["navigationGroup"]
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['navigationGroup'])
   },
-  "route": {
-    "handles": ["mainNavigation"]
+  routes: function(sourceEntity, context) {
+    context.handle('mainNavigation')
   },
-  "properties": {
-    "children": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "filter": "originParentId eq '{originId}'",
-          "orderBy": {
-            "property": "{item.metaData.sortOrder}",
-            "sort": "desc"
-          }
-        }
-      },
-      "items": {
-        "type": "reference",
-        "gid": "{item.id}",
-        "alias": "getNavigationItem"
-      }
+  properties: function (sourceEntity, context) {
+    return {
+      children: context.reference('navigationItem')
+                          .children()
+                          .orderBy({ 
+                            propertyName: 'properties.metaData.sortOrder', 
+                            direction: 'desc' 
+                          })
     }
   }
 }

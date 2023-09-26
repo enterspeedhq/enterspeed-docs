@@ -93,7 +93,27 @@ properties.color in ('blue', 'red', 'green')
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="Lambda operator"
+export default {
+  // ...
+  properties: function (sourceEntity, context) {
+    return {
+        // ...
+        sportArticles: context
+                .reference("featuredSportArticle")
+                .filter("type eq 'article' and properties.tags/any(t: t eq 'sports')")
+                .orderBy({ propertyName: 'properties.metaData.sortOrder', direction: "asc"})
+                .limit(5)
+    }
+  },
+};
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json title="Lambda operator"
 "sportArticles": {
@@ -117,26 +137,6 @@ properties.color in ('blue', 'red', 'green')
         }
     }
 }
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="Lambda operator"
-export default {
-  // ...
-  properties: function (sourceEntity, context) {
-    return {
-        // ...
-        sportArticles: context
-                .reference("featuredSportArticle")
-                .filter("type eq 'article' and properties.tags/any(t: t eq 'sports')")
-                .orderBy({ propertyName: 'properties.metaData.sortOrder', direction: "asc"})
-                .limit(5)
-    }
-  },
-};
 ```
 
 </TabItem>

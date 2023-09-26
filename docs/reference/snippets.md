@@ -21,7 +21,26 @@ A schema which dynamically maps all properties from your source entity to the vi
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['contentPage']);
+  },
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url);
+  },
+  properties: function (sourceEntity, context) {
+    return sourceEntity.properties;
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json
 {
@@ -40,25 +59,6 @@ A schema which dynamically maps all properties from your source entity to the vi
 ```
 
 </TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers('cms', ['contentPage']);
-  },
-  routes: function(sourceEntity, context) {
-    context.url(sourceEntity.url);
-  },
-  properties: function (sourceEntity, context) {
-    return sourceEntity.properties;
-  }
-}
-```
-
-</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -70,31 +70,7 @@ A schema containing essential site settings, here Site name, Logo and Login page
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
-
-```json title="Site settings"
-{
-  "triggers": {
-    "cms": ["site"]
-  },
-  "route": {
-    "handles": ["settings"]
-  },
-  "properties": {
-    "siteName": "{p.siteName}",
-    "logo": "{properties.logo[0].url}",
-    "loginPage": {
-      "type": "reference",
-      "originId": "{properties.loginPage[0].id}",
-      "view": "LinkItem"
-    }
-  }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js title="Site settings"
 /** @type {Enterspeed.FullSchema} */
@@ -119,6 +95,30 @@ export default {
 ```
 
 </TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json title="Site settings"
+{
+  "triggers": {
+    "cms": ["site"]
+  },
+  "route": {
+    "handles": ["settings"]
+  },
+  "properties": {
+    "siteName": "{p.siteName}",
+    "logo": "{properties.logo[0].url}",
+    "loginPage": {
+      "type": "reference",
+      "originId": "{properties.loginPage[0].id}",
+      "view": "LinkItem"
+    }
+  }
+}
+```
+
+</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -132,7 +132,31 @@ This schema can be used in other schemas using the [reference type](../reference
 <BrowserOnly>
 {() =>
 <Tabs groupId="seo-composition-example">
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="SEO Composition"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["frontpage", "article", "articles"]);
+  },
+  properties: function (sourceEntity, context) {
+    const p = sourceEntity.properties;
+    return {
+      title: p.seoTitle,
+      description: p.seoDescription,
+      robots: {
+        follow: p.robotsFollow,
+        index: p.robotsIndex,
+      },
+    };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json title="SEO Composition"
 {
@@ -160,30 +184,6 @@ This schema can be used in other schemas using the [reference type](../reference
 ```
 
 </TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="SEO Composition"
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers("cms", ["frontpage", "article", "articles"]);
-  },
-  properties: function (sourceEntity, context) {
-    const p = sourceEntity.properties;
-    return {
-      title: p.seoTitle,
-      description: p.seoDescription,
-      robots: {
-        follow: p.robotsFollow,
-        index: p.robotsIndex,
-      },
-    };
-  }
-}
-```
-
-</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -193,27 +193,7 @@ How the _SEO Composition schema_ will be used in another schema afterwards:
 <BrowserOnly>
 {() =>
 <Tabs groupId="seo-composition-example">
-<TabItem value="json" label="JSON" default>
-
-```json title="SEO Composition used in another schema"
-{
-  "triggers": {
-    "cms": ["article"]
-  },
-  "properties": {
-      "seoComposition": {
-          "type": "reference",
-          "gid": "{id}",
-          "view": "seoComposition"
-      },
-      ...
-  }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
+<TabItem value="js" label="JavaScript" default>
 
 ```js title="SEO Composition used in another schema"
 /** @type {Enterspeed.FullSchema} */
@@ -232,6 +212,26 @@ export default {
 ```
 
 </TabItem>
+
+<TabItem value="json" label="JSON">
+
+```json title="SEO Composition used in another schema"
+{
+  "triggers": {
+    "cms": ["article"]
+  },
+  "properties": {
+      "seoComposition": {
+          "type": "reference",
+          "gid": "{id}",
+          "view": "seoComposition"
+      },
+      ...
+  }
+}
+```
+
+</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -245,7 +245,30 @@ This schema can be used in other schemas using the [reference type](../reference
 <BrowserOnly>
 {() =>
 <Tabs groupId="breadcrumb-navigation-example">
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="SEO Composition used in another schema"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["homePage", "contentPage"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      link: {
+        name: sourceEntity.properties.metaData.name,
+        url: sourceEntity.url,
+        originId: sourceEntity.originId,
+      },
+      level: sourceEntity.properties.metaData.level,
+    };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json title="Breadcrumb item"
 {
@@ -270,29 +293,6 @@ This schema can be used in other schemas using the [reference type](../reference
 ```
 
 </TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="SEO Composition used in another schema"
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers("cms", ["homePage", "contentPage"]);
-  },
-  properties: function (sourceEntity, context) {
-    return {
-      link: {
-        name: sourceEntity.properties.metaData.name,
-        url: sourceEntity.url,
-        originId: sourceEntity.originId,
-      },
-      level: sourceEntity.properties.metaData.level,
-    };
-  }
-}
-```
-
-</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -302,7 +302,27 @@ How the _Breadcrumb item schema_ will be used in another schema afterwards:
 <BrowserOnly>
 {() =>
 <Tabs groupId="breadcrumb-navigation-example">
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="SEO Composition used in another schema"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["contentPage"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      breadcrumbs: context
+                    .reference("seoComposition")
+                    .byOriginIds(sourceEntity.properties.metaData.nodePath),
+    };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json title="Breadcrumb item used in another schema"
 {
@@ -326,26 +346,6 @@ How the _Breadcrumb item schema_ will be used in another schema afterwards:
 ```
 
 </TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js title="SEO Composition used in another schema"
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers("cms", ["contentPage"]);
-  },
-  properties: function (sourceEntity, context) {
-    return {
-      breadcrumbs: context
-                    .reference("seoComposition")
-                    .byOriginIds(sourceEntity.properties.metaData.nodePath),
-    };
-  }
-}
-```
-
-</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -357,7 +357,32 @@ A schema for listing all the products related to a specific category.
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["category"]);
+  },
+  routes: function(sourceEntity, context) {
+    context.url("/categories/" + sourceEntity.properties.slug);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.name,
+      description: sourceEntity.properties.description,
+      products: context
+                  .reference("product")
+                  .filter(`type eq 'product' and properties.categoryId eq '${sourceEntity.originId}'`)
+    };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json
 {
@@ -390,31 +415,6 @@ A schema for listing all the products related to a specific category.
 ```
 
 </TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers("cms", ["category"]);
-  },
-  routes: function(sourceEntity, context) {
-    context.url("/categories/" + sourceEntity.properties.slug);
-  },
-  properties: function (sourceEntity, context) {
-    return {
-      title: sourceEntity.properties.name,
-      description: sourceEntity.properties.description,
-      products: context
-                  .reference("product")
-                  .filter(`type eq 'product' and properties.categoryId eq '${sourceEntity.originId}'`)
-    };
-  }
-}
-```
-
-</TabItem>
 </Tabs>
 }
 </BrowserOnly>
@@ -426,7 +426,31 @@ A schema for listing the 3 highest-rated product reviews.
 <BrowserOnly>
 {() =>
 <Tabs>
-<TabItem value="json" label="JSON" default>
+<TabItem value="js" label="JavaScript" default>
+
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["reviews"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.name,
+      description: sourceEntity.properties.description,
+      reviews: context
+                .reference("review")
+                .filter("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')")
+                .orderBy({propertyName: "properties.rating", direction: "asc"})
+                .limit(3)
+    };
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="json" label="JSON">
 
 ```json
 {
@@ -452,30 +476,6 @@ A schema for listing the 3 highest-rated product reviews.
         "view": "review"
       }
     }
-  }
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript">
-
-```js
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers("cms", ["reviews"]);
-  },
-  properties: function (sourceEntity, context) {
-    return {
-      title: sourceEntity.properties.name,
-      description: sourceEntity.properties.description,
-      reviews: context
-                .reference("review")
-                .filter("type eq 'review' and properties.hashtags/any(t: t eq '#productreviews')")
-                .orderBy({propertyName: "properties.rating", direction: "asc"})
-                .limit(3)
-    };
   }
 }
 ```
