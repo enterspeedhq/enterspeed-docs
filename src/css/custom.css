@@ -263,6 +263,15 @@ html[data-theme="dark"] .api-content {
   padding-top: 16px;
 }
 
+.es-card__splash {
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  position: absolute;
+  padding: 4px;
+  font-size: 12px
+}
+
 html[data-theme="dark"] .es-card__title,
 html[data-theme="dark"] .es-card__body {
   color: #fff;
@@ -317,5 +326,8 @@ html[data-theme="dark"] .es-card__body {
 }
 .elasticsearch-blue-bg {
   background-color: #d8eaf3;
+}
+.clerk-grey-bg {
+  background-color: #f3f3f3;
 }
 /* Enterspeed Cards --- END */

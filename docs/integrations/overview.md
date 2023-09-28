@@ -4,7 +4,7 @@ slug: /integrations
 sidebar_label: Overview
 ---
 
-# Integrations
+# Enterspeed Integrations
 
 import {Card, CardContainer} from '../../src/components/card';
 import UmbracoLogoWhite from '../../static/img/docs/integrations/logos/umbraco-logo-white.png';
@@ -17,23 +17,45 @@ import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbr
 import AlgoliaLogo from '../../static/img/docs/integrations/logos/algolia-logo.png';
 import ElasticAppSearchLogo from '../../static/img/docs/integrations/logos/elastic-app-search-logo.png';
 import ElasticsearchLogo from '../../static/img/docs/integrations/logos/elasticsearch-logo.png';
+import ClerkLogo from '../../static/img/docs/integrations/logos/clerk-logo.png';
+
+
+Enterspeed has a growing list of integrations to various systems. The integrations comes in two categories.
+
+**Source** integrations are used to push data from a source system into Enterspeed. 
+**Destination** integrations are used to push processed data from Enterspeed to external systems.
+
+## Integrations
 
 <CardContainer>
-    <Card title="Umbraco" link="integrations/umbraco/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" />
-    <Card isExternal title="Umbraco & Cloudinary" link="https://github.com/enterspeedhq/enterspeed-source-umbraco-cms-cloudinary" image={UmbracoCloudinaryLogo} imageBg="umbraco-cloudinary-blue-bg" />
-    <Card title="Sitecore V9" link="integrations/sitecore/sitecore-9/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
-    <Card title="Sitecore V8" link="integrations/sitecore/sitecore-8/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" />
-    <Card title="Commercetools" link="https://github.com/enterspeedhq/enterspeed-source-commercetools" isExternal image={CommercetoolsLogo} imageBg="commercetools-grey-bg" />
-    <Card title="Webhooks" link="integrations/webhooks" image={WebhookLogoWhite} imageBg="webhooks-red-bg" />
+    <Card title="Umbraco" link="integrations/umbraco/getting-started" image={UmbracoLogoWhite} imageBg="umbraco-blue-bg" splash="Source" />
+    <Card isExternal title="Umbraco & Cloudinary" link="https://github.com/enterspeedhq/enterspeed-source-umbraco-cms-cloudinary" image={UmbracoCloudinaryLogo} imageBg="umbraco-cloudinary-blue-bg" splash="Source" />
+    <Card title="Sitecore" link="integrations/sitecore/getting-started" image={SiteCoreLogoWhite} imageBg="sitecore-red-bg" splash="Source" />
+    <Card isExternal title="Commercetools" link="https://github.com/enterspeedhq/enterspeed-source-commercetools" isExternal image={CommercetoolsLogo} imageBg="commercetools-grey-bg" splash="Source" />
+    <Card title="Webhooks" link="integrations/webhooks" image={WebhookLogoWhite} imageBg="webhooks-red-bg" splash="Destination" />
+    <Card title="Algolia" link="integrations/algolia" image={AlgoliaLogo} imageBg="algolia-blue-bg" splash="Destination" />
+    <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" splash="Destination" />
+    <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
 
+Integrations we currently have in beta. Please reach out to us if you would like to use any of these integrations in production.
+
 <CardContainer>
-    <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" />
-    <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" />
-    <Card title="Algolia" link="integrations/algolia" image={AlgoliaLogo} imageBg="algolia-blue-bg" />
-    <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" />
-    <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" />
+    <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
+    <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
+    <Card isExternal title="Clerk.io" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
+    <div></div>
+</CardContainer>
+
+## Integrations on the roadmap
+
+We are currently looking into the following integrations. If you are missing an integration to a specific system or is interested, please reach out to us as we would love to look into it.
+
+<CardContainer>
+    <Card title="Contentful" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
+    <Card title="Contentstack" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
+    <div></div>
     <div></div>
 </CardContainer>

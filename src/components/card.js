@@ -8,6 +8,7 @@ const Card = ({
   children,
   isExternal,
   imagePadding,
+  splash,
 }) => {
   return (
     <div
@@ -15,6 +16,9 @@ const Card = ({
         image ? "es-card--image-layout" : "es-card--simple-layout"
       }`}
     >
+      {splash &&
+        <div className="es-card__splash">{splash}</div>
+      }
       <a target={isExternal && "_blank"} href={link}>
         {image && (
           <div className={"es-card__image " + imageBg}>

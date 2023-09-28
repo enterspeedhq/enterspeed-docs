@@ -86,4 +86,7 @@ Here is an example of the default configurator being set up in a config file.
 ```
 
 ## Default converters
-Enterspeed ships with [default property value converters](https://github.com/enterspeedhq/enterspeed-source-sitecore-cms/tree/master/src/Enterspeed.Source.SitecoreCms.V8/Services/DataProperties/DefaultFieldConverters) for all the built-in fields that Sitecore ships with out of the box.
+Enterspeed ships with default property value converters for all the built-in fields that Sitecore ships with out of the box.
+
+[Sitecore 8 default property value converters](https://github.com/enterspeedhq/enterspeed-source-sitecore-cms/tree/master/src/Enterspeed.Source.SitecoreCms.V8/Services/DataProperties/DefaultFieldConverters)  
+[Sitecore 9 default property value converters](https://github.com/enterspeedhq/enterspeed-source-sitecore-cms/tree/master/src/Enterspeed.Source.SitecoreCms.V9/Services/DataProperties/DefaultFieldConverters)

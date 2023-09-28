@@ -3,7 +3,7 @@ sidebar_position: 1
 title: Getting started
 ---
 
-# Getting started Sitecore V9 & Enterspeed
+# Getting started Sitecore & Enterspeed
 
 The easiest way to get started with Sitecore and Enterspeed is using the pre-built Sitecore integration. 
 
@@ -12,22 +12,26 @@ The easiest way to get started with Sitecore and Enterspeed is using the pre-bui
 This integration takes care of calling the Enterspeed Ingest API when changes occur in Sitecore.
 
 ## Installation
-**Prerequisite:** Sitecore 9 or above.
+**Prerequisite:** Sitecore 8 or 9
+
+:::info
+If your want to use Sitecore 10 with Enterspeed please reach out to us as we would love to look into it.
+:::
 
 The fastest way to get up and running is to install the Enterspeed Sitecore integration with NuGet.
 
-**NuGet:** [Enterspeed.Source.SitecoreCms.V9](https://www.nuget.org/packages/Enterspeed.Source.SitecoreCms.V9/)
+**NuGet:**  
+[Enterspeed.Source.SitecoreCms.V8](https://www.nuget.org/packages/Enterspeed.Source.SitecoreCms.V8/)  
+[Enterspeed.Source.SitecoreCms.V9](https://www.nuget.org/packages/Enterspeed.Source.SitecoreCms.V9/)
 
-You can either install it manually from the NuGet manager in Visual Studio or execute the Install-Package command:
+You can either install it manually from the NuGet manager in Visual Studio or execute one of the Install-Package command:
+
+```bash
+Install-Package Enterspeed.Source.SitecoreCms.V8
+```
 
 ```bash
 Install-Package Enterspeed.Source.SitecoreCms.V9
-```
-
-**Install specific version**
-
-```bash3
-Install-Package Enterspeed.Source.SitecoreCms.V9 -Version <version>  
 ```
 
 The NuGet package installs config files into this directory; verify that this folder contains config files.
