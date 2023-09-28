@@ -305,6 +305,10 @@ html[data-theme="dark"] .es-card__body {
   background-color: #0033a3;
 }
 
+.contentstack-grey-bg {
+  background-color: #f0f3f7;
+}
+
 .algolia-blue-bg {
   background-color: #003eff;
 }

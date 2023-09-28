@@ -11,6 +11,7 @@ import UmbracoLogoWhite from '../../static/img/docs/integrations/logos/umbraco-l
 import SiteCoreLogoWhite from '../../static/img/docs/integrations/logos/sitecore-logo-white.png';
 import WebhookLogoWhite from '../../static/img/docs/integrations/logos/webhook-icon.png';
 import ContentfulLogo from '../../static/img/docs/integrations/logos/contentful-logo.png';
+import ContentstackLogo from '../../static/img/docs/integrations/logos/contentstack-logo.png';
 import CommercetoolsLogo from '../../static/img/docs/integrations/logos/commercetools-logo.png';
 import UmbracoCloudinaryLogo from '../../static/img/docs/integrations/logos/umbraco-cloudinary.png';
 import AlgoliaLogo from '../../static/img/docs/integrations/logos/algolia-logo.png';
@@ -30,9 +31,9 @@ import ElasticsearchLogo from '../../static/img/docs/integrations/logos/elastics
 
 <CardContainer>
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" />
+    <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" />
     <Card title="Algolia" link="integrations/algolia" image={AlgoliaLogo} imageBg="algolia-blue-bg" />
     <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" />
     <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" />
-    <div></div>
     <div></div>
 </CardContainer>
