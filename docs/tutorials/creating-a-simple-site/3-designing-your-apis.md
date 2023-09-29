@@ -7,11 +7,7 @@ title: 3. Designing your APIs
 
 Now for the fun part - designing the APIs we're going to use. This will be the glue that ties our Sources and Environments together. We do this by setting up schemas.
 
-You find the schema editor in Enterspeed under **Schemas** and **Partial schemas**.
-
-:::info
-Partial schemas will soon be moved into the list of full schemas, bringing all the benefits you know from full schemas like the testing before deployment, environment-specific deployments and versioning.
-:::
+You find the schema editor in Enterspeed under **Schemas**.
 
 ![Create new schema](/img/docs/examples/create-new-schema.png)
 
@@ -33,11 +29,37 @@ Each time data changes (source entities) in the sources you have defined, a new 
 
 Let's take a look at how a schema can be structured. We'll look at the **Blog Post**-schema, which will be responsible for showing the individual blog posts.
 
-Go to **Schemas** and create a new schema called _Blog Post_. Open the editor and follow the steps below.
+Go to **Schemas** and create a new schema called _Blog Post_. Open the editor and replace the content with the snippet below.
 
-:::info
-The schemas use the JSON syntax. Curly brackets `{}` delimit the beginning and end of a JSON object, therefore there should be one on the very first (`{`) and the last line (`}`) of the schema.
-:::
+```js title="Blog Post schema"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('postman', ['blogPost'])
+  },
+  routes: function (sourceEntity, context) {
+    context.url(sourceEntity.url)
+  },
+  actions: function (sourceEntity, context) {
+    context.reprocess('blogList').parent()
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      url: sourceEntity.url,
+      title: sourceEntity.properties.title,
+      thumbnail: sourceEntity.properties.featuredImage,
+      content: sourceEntity.properties.content,
+      excerpt: sourceEntity.properties.excerpt,
+      date: sourceEntity.properties.date,
+      author: {
+        name: sourceEntity.properties.author.name
+      }
+    }
+  }
+}
+```
+
+Let's break down the functions in the schema.
 
 ### Triggers
 
@@ -45,9 +67,9 @@ The first thing you need to define is your **triggers**. Triggers consist of one
 
 In our case, we have a source group called `postman` (note that we're using the **alias** of the source group and not the name).
 
-```json title="blogPost schema -- triggers"
-"triggers": {
-  "postman": ["blogPost"]
+```js title="blogPost schema -- triggers"
+triggers: function(context) {
+  context.triggers('postman', ['blogPost'])
 }
 ```
 
@@ -55,9 +77,9 @@ In our case, we have a source group called `postman` (note that we're using the 
 
 Next, we need to define the **route** (how we should be able to fetch the data). We can do this by URL, Handle, or ID. For our blog posts URL makes the most sense.
 
-```json title="blogPost schema -- route"
-"route": {
-  "url": "{url}"
+```js title="blogPost schema -- route"
+routes: function (sourceEntity, context) {
+  context.url(sourceEntity.url)
 }
 ```
 
@@ -71,37 +93,32 @@ For this list to update, it needs to know _when_ to update.
 
 When we ingested our blog posts we assigned each blog post an `originParentId`, which was our blog collection source.
 
-In the actions below, we define that we want the schema which has the `originId` that is equal to the `originParentId`, to reprocess (generate a new view) each time data is updated in this schema.
+In the actions below, we define that we want the parent source entity with the schema `blogList`, to reprocess (generate a new view) each time data is updated in this schema.
 
-```json title="blogPost schema -- actions"
-"actions": [
-  {
-    "type": "process",
-    "originId": "{originParentId}"
-  }
-]
+```js title="blogPost schema -- actions"
+actions: function (sourceEntity, context) {
+  context.reprocess('blogList').parent()
+}
 ```
 
 ### Properties
 
 Lastly, but certainly not least, we need to define which data we want in our schema. We do this under **properties**.
 
-For each object, we need to define both the type (string, array, etc.) and the value of it (what value in our source entity are we looking for).
+Here we are mapping the properties that we need in our frontend.
 
-:::tip
-Since string is the most commonly used property type you can access it without writing the type and value property. This is meant as syntactic sugar making it easier and quicker to work with.
-
-Example: `"title": "{p.headline}"`
-:::
-
-If we don't want to map all individual properties, we can also use [**dynamic mapping**](reference/json/property-types#dynamic), which automatically maps all available properties. This is exactly what we are going to do here since we are going to use all the available properties and since they're already conveniently named.
-
-Now all of our content will be available in the `content` object.
-
-```json title="blogPost schema -- properties"
-"properties": {
-  "content": {
-    "*": "p"
+```js title="blogPost schema -- properties"
+properties: function (sourceEntity, context) {
+  return {
+    url: sourceEntity.url,
+    title: sourceEntity.properties.title,
+    thumbnail: sourceEntity.properties.featuredImage,
+    content: sourceEntity.properties.content,
+    excerpt: sourceEntity.properties.excerpt,
+    date: sourceEntity.properties.date,
+    author: {
+      name: sourceEntity.properties.author.name
+    }
   }
 }
 ```
@@ -110,43 +127,35 @@ Now all of our content will be available in the `content` object.
 When designing your schema, use the **Source entities** button (found in the bottom right corner of the editor) to both test and view your Source entities.
 :::
 
-This is how the finished schema will look:
+## Designing the `Blog list` schema
 
-```json title="Blog Post schema -- finished result"
-{
-  "triggers": {
-    "postman": ["blogPost"]
+Now it's time to design the schema which contains a list of all our blog posts. Just like before, create a schema called __Blog list__, replace the content with the snippet below and lets break it down.
+
+
+```js title="blogList schema -- finished result"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('postman', ['blog'])
   },
-  "route": {
-    "url": "{url}"
+  routes: function (sourceEntity, context) {
+    context.handle('blogList')
   },
-  "actions": [
-    {
-      "type": "process",
-      "originId": "{originParentId}"
-    }
-  ],
-  "properties": {
-    "content": {
-      "*": "p"
+  properties: function (sourceEntity, context) {
+    return {
+      content: context.reference('blogPost').children()
     }
   }
 }
 ```
 
-## Designing the `Blog list` schema
-
-Now it's time to design the schema which contains a list of all our blog posts. Just like before, we start by defining the triggers.
-
 ### Triggers
 
 Unlike what you may think, we're not going to use the `blogPost` source entity type, as our trigger, but rather the `blog` source entity type. The `blog` source entity type works as a parent for all our blog posts.
 
-```json title="blogList schema -- triggers"
-"triggers": {
-  "postman": [
-    "blog"
-  ]
+```js title="blogList schema -- triggers"
+triggers: function(context) {
+  context.triggers('postman', ['blog'])
 }
 ```
 
@@ -154,11 +163,9 @@ Unlike what you may think, we're not going to use the `blogPost` source entity t
 
 Now it's time to define how we want to fetch it. Since our list of blog posts can be used on multiple pages (The blog page itself, the homepage, "Latest posts"-widgets", etc.) we are going to fetch via a handle, which we call `blogList`.
 
-```json title="blogList schema -- route"
-"route": {
-  "handles": [
-    "blogList"
-  ]
+```js title="blogList schema -- route"
+routes: function (sourceEntity, context) {
+  context.handle('blogList')
 }
 ```
 
@@ -166,60 +173,15 @@ This schema doesn't need any actions, so we will go straight to defining how the
 
 ### Properties
 
-There's a _bit_ more going on here than in the last schema, but don't be scared. It's really not that complicated once we look into it.
+For the properties, we are referencing the `blogPost` schema for all the children of the blog and returning an object with a `content` property.
 
-```json title="blogList schema -- properties"
-"properties": {
-  "content": {
-    "type": "array",
-    "input": {
-      "$lookup": {
-        "operator": "equals",
-        "sourceEntityProperty": "originParentId",
-        "matchValue": "{originId}"
-      }
-    },
-    "items": {
-      "type": "object",
-      "properties": {
-        "url": "{item.url}",
-        "title": "{item.properties.title}",
-        "thumbnail": "{item.properties.thumbnail}",
-        "excerpt": "{item.properties.excerpt}",
-        "date": "{item.properties.date}",
-        "author": {
-          "type": "object",
-          "properties": {
-            "name": "{item.properties.author.name}"
-          }
-        }
-      }
-    }
+```js title="blogList schema -- properties"
+properties: function (sourceEntity, context) {
+  return {
+    content: context.reference('blogPost').children()
   }
 }
 ```
-
-Since we want our blog lists to be available via an array, we create an object called `content` and set the `type` to [`array`](/reference/json/property-types#array).
-
-Next, we need to define where it should retrieve the items from. We do this in `input` using the [`$lookup`](/reference/json/property-types#lookup-input) input.
-
-```json title="blogList schema -- properties: input"
-"input": {
-  "$lookup": {
-    "operator": "equals",
-    "sourceEntityProperty": "originParentId",
-    "matchValue": "{originId}"
-  }
-}
-```
-
-The `$lookup` required three properties:
-
-- `operator`: supports `equals` and `contains`
-- `sourceEntityProperty`: The property to match the value on
-- `matchValue`: The value to match the sourceEntityProperty
-
-In our case, we want the `originParentId` (sourceEntityProperty) to be equal to `originId` (matchValue).
 
 :::info
 When we ingested the source entity used for this schema we gave it `originId` **`1`**:
@@ -234,7 +196,7 @@ curl --location --request POST 'https://api.enterspeed.com/ingest/v2/1' 👈👀
 }'
 ```
 
-Now we tell our schema to look through all of our source entities and find the property called `originParentId`, which then should be `equal` to our `originId`. We defined the `originParentId` in the Blog post source entities we ingested:
+Now we tell our schema to look through all child source entities of the blog source entity. This will return all source entities with a property called `originParentId`, which then should be `equal` to our `originId`. We defined the `originParentId` in the Blog post source entities we ingested:
 
 ```shell title="Blog post #1 (ingest)"
 curl --location --request POST 'https://api.enterspeed.com/ingest/v2/2' \
@@ -258,80 +220,6 @@ curl --location --request POST 'https://api.enterspeed.com/ingest/v2/2' \
 ```
 
 :::
-
-Now that we have told our array _where_ to find the data, it's time to structure it (map the results). We do this in the `items` field.
-
-```json title="blogList schema -- properties: items"
-"items": {
-  "type": "object",
-  "properties": {
-    "url": "{item.url}",
-    "title": "{item.properties.title}",
-    "thumbnail": "{item.properties.thumbnail}",
-    "excerpt": "{item.properties.excerpt}",
-    "date": "{item.properties.date}",
-    "author": {
-      "type": "object",
-      "properties": {
-        "name": "{item.properties.author.name}"
-      }
-    }
-  }
-}
-```
-
-Our data will be stored in an `object` which will consist of the following properties:
-
-- url _(string)_
-- title _(string)_
-- thumbnail _(string)_
-- excerpt _(string)_
-- date _(string)_
-- author _(object)_
-  - name _(string)_
-
-To access each of these values we use `item.` in front of each value.
-
-This is how the finished schema will look:
-
-```json title="blogList schema -- finished result"
-{
-  "triggers": {
-    "postman": ["blog"]
-  },
-  "route": {
-    "handles": ["blogList"]
-  },
-  "properties": {
-    "content": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "operator": "equals",
-          "sourceEntityProperty": "originParentId",
-          "matchValue": "{originId}"
-        }
-      },
-      "items": {
-        "type": "object",
-        "properties": {
-          "url": "{item.url}",
-          "title": "{item.properties.title}",
-          "thumbnail": "{item.properties.thumbnail}",
-          "excerpt": "{item.properties.excerpt}",
-          "date": "{item.properties.date}",
-          "author": {
-            "type": "object",
-            "properties": {
-              "name": "{item.properties.author.name}"
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
 
 ## Deploying the schemas
 

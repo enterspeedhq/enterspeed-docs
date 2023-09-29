@@ -11,11 +11,7 @@ If you get stuck on the way, don't hesitate to reach out to us. We're more than 
 
 Now for the fun part - designing the APIs we're going to use. This will be the glue that ties our Sources and Environments together. We do this by setting up schemas.
 
-You find the schema editor in Enterspeed under **Schemas** and **Partial schemas**.
-
-:::info
-Partial schemas will soon be moved into the list of full schemas, bringing all the benefits you know from full schemas like the testing before deployment, environment-specific deployments and versioning.
-:::
+You find the schema editor in Enterspeed under **Schemas**.
 
 ![Create new schema](/img/docs/examples/create-new-schema.png)
 
@@ -25,27 +21,21 @@ Let's take a look at how a schema can be structured. In _Example schemas & parti
 
 The first thing you need to define is your **triggers**. Triggers consist of one or more source groups, which contain one or more source entity types (the data your schema should use). You can find a list of all the Source Entity Types in the **Source entities** table in your Enterspeed-project under **Type**.
 
-```json
-{
-  "triggers": {
-    "umbracoCloud": ["contentPage"]
-  }
+```js
+triggers: function(context) {
+  context.triggers('umbracoCloud', ['contentPage'])
 }
 ```
 
-Next, we need to define the **route** - how should we be able to fetch the data? We can do this by URL, Handle, and ID. For our contentPages URL makes the most sense.
+Next, we need to define the **routes** - how should we be able to fetch the data? We can do this by URL, Handle, and ID. For our contentPages URL makes the most sense.
 
-```json
-{
-  "route": {
-    "url": "{url}"
-  }
+```js
+routes: function (sourceEntity, context) {
+  context.url(sourceEntity.url)
 }
 ```
 
 Lastly, but certainly not least, we need to define which data we want in our schema. We do this under **properties**.
-
-For each object, we need to define both the type (string, array, etc.) and the value of it (what value in our source entity are we looking for).
 
 The name of the object is the name we're going to use in our application. As you can see in the example, we have chosen to rename **pageTitle** to **headline** for our use case.
 
@@ -55,26 +45,14 @@ Notice how we refer to a alias called **umbraco-{item.contentType}**. This is ou
 If we don't create this partial schema, the ContentPage-schema won't work.
 :::
 
-```json
-{
-  "properties": {
-    "type": {
-      "type": "string",
-      "value": "{type}"
-    },
-    "headline": {
-      "type": "string",
-      "value": "{p.pageTitle}"
-    },
-    "blocks": {
-      "type": "array",
-      "input": "{p.contentBlocks}",
-      "items": {
-        "type": "partial",
-        "input": "{item}",
-        "alias": "umbraco-{item.contentType}"
-      }
-    }
+```js
+properties: function (sourceEntity, context) {
+  return {
+    type: sourceEntity.type,
+    headline: sourceEntity.properties.pageTitle,
+    blocks: sourceEntity.properties.contentBlocks.map((contentBlock) =>
+      context.partial(`umbraco-${contentBlock.contentType}`, contentBlock)
+    )
   }
 }
 ```
@@ -117,6 +95,27 @@ This will open the deploy pane. Choose the environment you wish to deploy to (e.
 }
 ```
 
+```js title="Example schema: ContentPage"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbracoCloud', ['contentPage'])
+  },
+  routes: function (sourceEntity, context) {
+    context.url(sourceEntity.url)
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      type: sourceEntity.type,
+      headline: sourceEntity.properties.pageTitle,
+      blocks: sourceEntity.properties.contentBlocks.map((contentBlock) =>
+        context.partial(`umbraco-${contentBlock.contentType}`, contentBlock)
+      )
+    }
+  }
+}
+```
+
 ### umbraco-blockText (Partial schema)
 
 :::caution
@@ -125,40 +124,32 @@ Notice how the alias is automatically generated as **umbracoBlockText**.
 Click the lock to the right in the **Create new partial schema** dialog and change the alias to **umbraco-blockText**, so that it matches the reference we created in the ContentPage-schema.
 :::
 
-```json title="Example partial schema: umbraco-blockText"
-{
-  "properties": {
-    "text": "{item.content.text}",
-    "alias": "{item.contentType}"
+```js title="Example partial schema: umbraco-blockText"
+/** @type {Enterspeed.PartialSchema} */
+export default {
+  properties: function (input, context) {
+    return {
+      text: input.content.text,
+      alias: input.contentType,
+    }
   }
 }
 ```
 
 ### Navigation
 
-```json title="Example schema: Navigation"
-{
-  "triggers": {
-    "umbracoCloud": ["home"]
+```js title="Example schema: Navigation"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbracoCloud', ['home'])
   },
-  "route": {
-    "handles": ["navigation"]
+  routes: function (sourceEntity, context) {
+    context.handle('navigation')
   },
-  "properties": {
-    "navigationItems": {
-      "type": "array",
-      "input": {
-        "$lookup": {
-          "operator": "equals",
-          "sourceEntityProperty": "originParentId",
-          "matchValue": "{originId}"
-        }
-      },
-      "items": {
-        "type": "reference",
-        "gid": "{item.id}",
-        "view": "navigationItem"
-      }
+  properties: function (sourceEntity, context) {
+    return {
+      navigationItems: context.reference('navigationItem').children()
     }
   }
 }
@@ -167,15 +158,15 @@ Click the lock to the right in the **Create new partial schema** dialog and chan
 :::info
 You can find all of the example schemas on [Github](https://github.com/enterspeedhq/enterspeed-demos/tree/master/umbraco-next/DEMO-DATA/enterspeed-schemas). The project consists of the following schemas and partial schemas:
 
-- [ContentPage](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-contentPage.json)
-- [Currency](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-curreny.json)
-- [Home](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-home.json)
-- [Link](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-link.json)
-- [Navigation](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-navigation.json)
-- [NavigationItem](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-navigationItem.json)
-- [Product](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-product.json)
-- [ProductListingView](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-ProductListingView.json)
-- [Products](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-products.json)
-- [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-partial-umbraco-blockText.json) **(Partial schema)**
+- [ContentPage](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-contentPage.js)
+- [Currency](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-curreny.js)
+- [Home](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-home.js)
+- [Link](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-link.js)
+- [Navigation](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-navigation.js)
+- [NavigationItem](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-navigationItem.js)
+- [Product](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-product.js)
+- [ProductListingView](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-ProductListingView.js)
+- [Products](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-products.js)
+- [umbraco-blockText](https://github.com/enterspeedhq/enterspeed-demos/blob/master/umbraco-next/DEMO-DATA/enterspeed-partial-umbraco-blockText.js) **(Partial schema)**
 
 :::
