@@ -18,6 +18,21 @@ import AlgoliaLogo from '../../static/img/docs/integrations/logos/algolia-logo.p
 import ElasticAppSearchLogo from '../../static/img/docs/integrations/logos/elastic-app-search-logo.png';
 import ElasticsearchLogo from '../../static/img/docs/integrations/logos/elasticsearch-logo.png';
 import ClerkLogo from '../../static/img/docs/integrations/logos/clerk-logo.png';
+import StructLogo from '../../static/img/docs/integrations/logos/struct-logo.png';
+import AkeneoLogo from '../../static/img/docs/integrations/logos/akeneo-logo.png';
+import BluestoneLogo from '../../static/img/docs/integrations/logos/bluestone-logo.png';
+import InriverLogo from '../../static/img/docs/integrations/logos/inriver-logo.png';
+import DrupalLogo from '../../static/img/docs/integrations/logos/drupal-logo.png';
+import WordpressLogo from '../../static/img/docs/integrations/logos/wordpress-logo.png';
+import StoryblocksLogo from '../../static/img/docs/integrations/logos/storyblocks-logo.png';
+import StrapiLogo from '../../static/img/docs/integrations/logos/strapi-logo.png';
+import BigcommerceLogo from '../../static/img/docs/integrations/logos/bigcommerce-logo.png';
+import ShopifyLogo from '../../static/img/docs/integrations/logos/shopify-logo.png';
+import SalesforceLogo from '../../static/img/docs/integrations/logos/salesforce-logo.png';
+import SapLogo from '../../static/img/docs/integrations/logos/sap-logo.png';
+import RelewiseLogo from '../../static/img/docs/integrations/logos/relewise-logo.png';
+import SanityLogo from '../../static/img/docs/integrations/logos/sanity-logo.png';
+import HygraphLogo from '../../static/img/docs/integrations/logos/hygraph-logo.png';
 
 
 Enterspeed has a growing list of integrations to various systems. The integrations comes in two categories.
@@ -45,7 +60,8 @@ Integrations we currently have in beta. Please reach out to us if you would like
 <CardContainer>
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
     <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
-    <Card isExternal title="Clerk.io" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
+    <Card isExternal title="Struct PIM" link="https://github.com/enterspeedhq/enterspeed-source-struct-pim" image={StructLogo} imageBg="struct-grey-bg" splash="Source" />
+    <Card title="Clerk.io" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
     <div></div>
 </CardContainer>
 
@@ -54,8 +70,18 @@ Integrations we currently have in beta. Please reach out to us if you would like
 We are currently looking into the following integrations. If you are missing an integration to a specific system or is interested, please reach out to us as we would love to look into it.
 
 <CardContainer>
-    <Card title="Contentful" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
-    <Card title="Contentstack" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
-    <div></div>
-    <div></div>
+    <Card title="Akeneo" image={AkeneoLogo} imageBg="akeneo-purple-bg" splash="Source" />
+    <Card title="Bluestone PIM" image={BluestoneLogo} imageBg="bluestone-blue-bg" splash="Source" />
+    <Card title="Inriver" image={InriverLogo} imageBg="inriver-black-bg" splash="Source" />
+    <Card title="Drupal" image={DrupalLogo} imageBg="drupal-blue-bg" splash="Source" />
+    <Card title="WordPress" image={WordpressLogo} imageBg="wordpress-black-bg" splash="Source" />
+    <Card title="Storyblocks" image={StoryblocksLogo} imageBg="storyblocks-yellow-bg" splash="Source" />
+    <Card title="Strapi" image={StrapiLogo} imageBg="strapi-blue-bg" splash="Source" />
+    <Card title="BigCommerce" image={BigcommerceLogo} imageBg="bigcommerce-white-bg" splash="Source" />
+    <Card title="Shopify Headless" image={ShopifyLogo} imageBg="shopify-grey-bg" splash="Source" />
+    <Card title="Salesforce Commerce Cloud" image={SalesforceLogo} imageBg="salesforce-grey-bg" splash="Source" />
+    <Card title="SAP Commerce Cloud" image={SapLogo} imageBg="sap-grey-bg" splash="Source" />
+    <Card title="Relewise" image={RelewiseLogo} imageBg="relewise-grey-bg" splash="Destination" />
+    <Card title="Sanity" image={SanityLogo} imageBg="sanity-red-bg" splash="Source" />
+    <Card title="Hygraph" image={HygraphLogo} imageBg="hygraph-logo-bg" splash="Source" />
 </CardContainer>
