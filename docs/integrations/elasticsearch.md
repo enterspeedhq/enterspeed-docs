@@ -10,7 +10,9 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 # Elasticsearch
 
 :::info
-Elasticsearch is still in preview, contact us if would like to try it out.
+We are currently working on a UI for Destinations. This means that soon you will be able to setup Elasticsearch directly from the Enterspeed APP. 
+
+For now, contact us if want to get started.
 :::
 
 The Enterspeed Elasticsearch integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Elasticsearch. This means that you can decide on the schema level which views you want to send to Elasticsearch cluster.
@@ -43,6 +45,35 @@ Table of available options, that you can optionally specify, if needed for your 
 <BrowserOnly>
 {() =>
 <Tabs>
+<TabItem value="js" label="JavaScript" default>
+
+```js title="Schema with elasticsearch destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+     context.destination('elasticsearch').options({
+		documentId: `city-${sourceEntity.originId}`,
+        indexName: 'cities'
+	});
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.city,
+      country: p.country,
+      population: parseInt(p.population),
+      location: `${p.lat},${p.lng}`,
+      photo: p.photo,
+    }
+  }
+}
+```
+
+</TabItem>
+
 <TabItem value="json" label="JSON">
 
 ```json title="Schema with elasticsearch destination"
@@ -72,35 +103,6 @@ Table of available options, that you can optionally specify, if needed for your 
 		  "value": "{p.population}"
 		}
 	}
-}
-```
-
-</TabItem>
-
-<TabItem value="js" label="JavaScript" default>
-
-```js title="Schema with elasticsearch destination"
-/** @type {Enterspeed.FullSchema} */
-export default {
-  triggers: function(context) {
-    context.triggers('geodata', ['city']);
-  },
-  actions: function (sourceEntity, context) {
-     context.destination('elasticsearch').options({
-		documentId: `city-${sourceEntity.originId}`,
-        indexName: 'cities'
-	});
-  },
-  properties: function ({url, properties: p}, context) {
-    return {
-      url: url,
-      name: p.city,
-      country: p.country,
-      population: parseInt(p.population),
-      location: `${p.lat},${p.lng}`,
-      photo: p.photo,
-    }
-  }
 }
 ```
 

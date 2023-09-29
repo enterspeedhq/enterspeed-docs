@@ -263,6 +263,15 @@ html[data-theme="dark"] .api-content {
   padding-top: 16px;
 }
 
+.es-card__splash {
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  position: absolute;
+  padding: 4px;
+  font-size: 12px
+}
+
 html[data-theme="dark"] .es-card__title,
 html[data-theme="dark"] .es-card__body {
   color: #fff;
@@ -309,6 +318,10 @@ html[data-theme="dark"] .es-card__body {
   background-color: #f0f3f7;
 }
 
+.struct-grey-bg {
+  background-color: #f0f3f7;
+}
+
 .algolia-blue-bg {
   background-color: #003eff;
 }
@@ -317,5 +330,50 @@ html[data-theme="dark"] .es-card__body {
 }
 .elasticsearch-blue-bg {
   background-color: #d8eaf3;
+}
+.clerk-grey-bg {
+  background-color: #f3f3f3;
+}
+.akeneo-purple-bg {
+  background-color: #390d5d;
+}
+.bluestone-blue-bg {
+  background-color: #f0f5fa;
+}
+.inriver-black-bg {
+  background-color: #000;
+}
+.drupal-blue-bg {
+  background-color: #2e98dc;
+}
+.wordpress-black-bg {
+  background-color: #000;
+}
+.storyblocks-yellow-bg {
+  background-color: #fae53c;
+}
+.strapi-blue-bg {
+  background-color: #4945ff;
+}
+.bigcommerce-white-bg {
+  background-color: #ffffff;
+}
+.shopify-grey-bg {
+  background-color: #f0f3f7;
+}
+.salesforce-grey-bg {
+  background-color: #f0f3f7;
+}
+.sap-grey-bg {
+  background-color: #f0f3f7;
+}
+.relewise-grey-bg {
+  background-color: #f0f3f7;
+}
+.sanity-red-bg {
+  background-color: #ed4a37;
+}
+.hygraph-black-bg {
+  background-color: #090e24;
 }
 /* Enterspeed Cards --- END */
