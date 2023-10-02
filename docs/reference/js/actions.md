@@ -3,10 +3,6 @@ sidebar_position: 5
 ---
 # Actions
 
-:::info
-JavaScript schemas are currently in preview. Contact us if you would like to try it out.
-:::
-
 The `actions` method is used if you need to trigger new processing - which could be processing another schema or pushing generated views to a third-party application - using web hooks or such as Algolia.
 
 

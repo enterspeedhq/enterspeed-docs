@@ -4,10 +4,6 @@ sidebar_position: 2
 
 # Triggers
 
-:::info
-JavaScript schemas are currently in preview. Contact us if you would like to try it out.
-:::
-
 The `triggers` method is where you define the source group and the types the schema should process.
 
 You can add multiple triggers to a schema.

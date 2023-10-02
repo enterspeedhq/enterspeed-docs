@@ -4,10 +4,6 @@ sidebar_position: 1
 
 # Intro
 
-:::info
-JavaScript schemas are currently in preview. Contact us if you would like to try it out.
-:::
-
 With JavaScript schemas, you can do everything you can do with JSON schemas and more.
 
 With JavaScript schemas, you can build your schemas in a standard language most developers are already familiar with. This means that you have all the power and flexibility from JavaScript available when you are creating your schemas.
