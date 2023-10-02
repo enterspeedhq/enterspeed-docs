@@ -4,10 +4,6 @@ sidebar_position: 4
 
 # Routes
 
-:::info
-JavaScript schemas are currently in preview. Contact us if you would like to try it out.
-:::
-
 The `routes` method is where you define how you fetch the generated view from the [Delivery API](/api#tag/Delivery)
 
 If your view should be routable you must implement the `routes` method and call context methods to build routes.
