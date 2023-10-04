@@ -39,7 +39,7 @@ Table of available options, that you can optionally specify, if needed for your 
 | Setting                               | Description                            |
 | ------------------------------------- | -------------------------------------- |
 | objectId                              | By default Enterspeed uses view id as the value for object id in Algolia. You can override default object id by providing value for this option. |
-
+| indexName                              | Option to override what index must be used for current view. By default `IndexName` of Algolia configuration is used. |
 
 ## Example of usage
 
