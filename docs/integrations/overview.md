@@ -51,6 +51,7 @@ Enterspeed has a growing list of integrations to various systems. The integratio
     <Card title="Algolia" link="integrations/algolia" image={AlgoliaLogo} imageBg="algolia-blue-bg" splash="Destination" />
     <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" splash="Destination" />
     <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" splash="Destination" />
+    <Card title="Clerk.io" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
@@ -61,7 +62,6 @@ Integrations we currently have in beta. Please reach out to us if you would like
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
     <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
     <Card isExternal title="Struct PIM" link="https://github.com/enterspeedhq/enterspeed-source-struct-pim" image={StructLogo} imageBg="struct-grey-bg" splash="Source" />
-    <Card title="Clerk.io" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
     <div></div>
 </CardContainer>
 
