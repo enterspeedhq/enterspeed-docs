@@ -18,7 +18,7 @@ If you are using JavaScript and your filter contains expressions, it's often eas
 
 ## Examples
 
-Examples of supported binary operators, expressions & lambda operators:
+Examples of supported binary operators & expressions:
 
 <BrowserOnly>
 {() =>
