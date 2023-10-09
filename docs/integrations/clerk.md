@@ -42,7 +42,7 @@ In order to setup the Clerk.io configuration you need the following:
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
-```js title="Schema with Algolia destination"
+```js title="Schema with Clerk destination"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -65,7 +65,7 @@ export default {
 
 <TabItem value="json" label="JSON">
 
-```json title="Schema with Algolia destination"
+```json title="Schema with Clerk destination"
 {
   "triggers": {
         "cms": ["page"]
