@@ -29,14 +29,14 @@ public class CustomPropertyService : EnterspeedPropertyService
     {
     }
 
-    protected override void MapAdditionalProperties(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
+    protected override void MapAdditionalProperties(Dictionary<string, IEnterspeedProperty> data, IPublishedContent content, string culture)
     {
-        metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
+        data.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
     }
 
-    protected override void MapAdditionalMediaProperties(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
+    protected override void MapAdditionalMediaProperties(Dictionary<string, IEnterspeedProperty> data, IPublishedContent content, string culture)
     {
-        metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
+        data.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
     }
 
     protected override void MapAdditionalMetaData(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
@@ -44,7 +44,6 @@ public class CustomPropertyService : EnterspeedPropertyService
         metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
     }
 
-	// You can also set additional properties for media sources.
 	protected override void MapAdditionalMediaMetaData(Dictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
     {
         metaData.Add("mySpecialKey", new StringEnterspeedProperty("my value fetched from my business logic"));
