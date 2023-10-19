@@ -35,7 +35,7 @@ import SanityLogo from '../../static/img/docs/integrations/logos/sanity-logo.png
 import HygraphLogo from '../../static/img/docs/integrations/logos/hygraph-logo.png';
 
 
-Enterspeed has a growing list of integrations to various systems. The integrations comes in two categories.
+Enterspeed has a growing list of integrations to various systems. The integrations come in two categories.
 
 **Source** integrations are used to push data from a source system into Enterspeed. 
 **Destination** integrations are used to push processed data from Enterspeed to external systems.

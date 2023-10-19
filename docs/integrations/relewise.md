@@ -10,6 +10,10 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 # Relewise
 
 :::info
+The beta version of the Relewise destination is now available for testing.
+:::
+
+:::info
 We are currently working on a UI for Destinations. This means that soon you will be able to setup Relewise directly from the Enterspeed APP. 
 
 For now, contact us if want to get started.
