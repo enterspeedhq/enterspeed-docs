@@ -143,7 +143,7 @@ as it provides IntelliSense to map the complex models.
 }
 </BrowserOnly>
 
-## Relewise support
+## What's supported
 
 The integration supports the following types: `product` (with variants), `productCategory`, `content`, `contentCategory` and `brand` and the type needs to be defined in the `relewiseEntityType` property and the destination options.
 
