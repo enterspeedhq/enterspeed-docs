@@ -62,7 +62,7 @@ Integrations we currently have in beta. Please reach out to us if you would like
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
     <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
     <Card isExternal title="Struct PIM" link="https://github.com/enterspeedhq/enterspeed-source-struct-pim" image={StructLogo} imageBg="struct-grey-bg" splash="Source" />
-    <div></div>
+    <Card title="Relewise" link="integrations/relewise" image={RelewiseLogo} imageBg="relewise-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations on the roadmap
@@ -81,7 +81,6 @@ We are currently looking into the following integrations. If you are missing an 
     <Card title="Shopify Headless" image={ShopifyLogo} imageBg="shopify-grey-bg" splash="Source" />
     <Card title="Salesforce Commerce Cloud" image={SalesforceLogo} imageBg="salesforce-grey-bg" splash="Source" />
     <Card title="SAP Commerce Cloud" image={SapLogo} imageBg="sap-grey-bg" splash="Source" />
-    <Card title="Relewise" image={RelewiseLogo} imageBg="relewise-grey-bg" splash="Destination" />
     <Card title="Sanity" image={SanityLogo} imageBg="sanity-red-bg" splash="Source" />
     <Card title="Hygraph" image={HygraphLogo} imageBg="hygraph-logo-bg" splash="Source" />
 </CardContainer>
