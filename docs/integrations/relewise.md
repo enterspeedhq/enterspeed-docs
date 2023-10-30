@@ -36,6 +36,21 @@ In order to setup the Relewise configuration you need the following:
 | Relewise API Key                      | A Relewise API key with update and administrative action permissions for the types you want to integrate (product, content, brand, ...) |
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Relewise |
 
+## IntelliSense
+
+In order to send data to Relewise (products, content, ...) the structure of the object you are mapping in the `properties` function must match with the corresponding Relewise model. See [Relewise API in Swagger](https://docs.relewise.com/swagger/index.html).
+
+To help you bulding the right model, Enterspeed can provide you with IntelliSense. Simply just change the type in the top of the schema from `/** @type {Enterspeed.FullSchema} */` to one of the following:
+
+- `/** @type {Enterspeed.Destinations.Relewise.Schemas.Product} */`
+- `/** @type {Enterspeed.Destinations.Relewise.Schemas.Content} */`
+- `/** @type {Enterspeed.Destinations.Relewise.Schemas.Brand} */`
+- `/** @type {Enterspeed.Destinations.Relewise.Schemas.ProductCategory} */`
+- `/** @type {Enterspeed.Destinations.Relewise.Schemas.ContentCategory} */`
+
+
+
+
 ## Example of usage
 
 <BrowserOnly>
@@ -44,7 +59,7 @@ In order to setup the Relewise configuration you need the following:
 <TabItem value="js" label="JavaScript" default>
 
 ```js title="Product schema with Relewise destination"
-/** @type {Enterspeed.FullSchema} */
+/** @type {Enterspeed.Destinations.Relewise.Schemas.Product} */
 export default {
   triggers: function(context) {
     context.triggers('pim', ['product']);
@@ -101,7 +116,7 @@ as it provides IntelliSense to map the complex models.
 <TabItem value="js" label="JavaScript" default>
 
 ```js title="Content schema with Relewise destination"
-/** @type {Enterspeed.FullSchema} */
+/** @type {Enterspeed.Destinations.Relewise.Schemas.Content} */
 export default {
   triggers: function(context) {
     context.triggers('cms', ['contentPage']);
@@ -149,7 +164,7 @@ as it provides IntelliSense to map the complex models.
 
 ## What's supported
 
-The integration supports the following types: `product` (with variants), `productCategory`, `content`, `contentCategory` and `brand` and the type needs to be defined in the `relewiseEntityType` property and the destination options.
+The integration supports the following types: `product` (with variants), `productCategory`, `content`, `contentCategory` and `brand` and the type needs to be defined in the `relewiseEntityType` property and the destination options together with a value for the id you want in Relewise.
 
 See more details on the Relewise documentation: https://docs.relewise.com/docs/developer/implementation-steps.html#_1-provide-entities
 
