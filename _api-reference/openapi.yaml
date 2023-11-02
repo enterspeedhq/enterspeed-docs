@@ -75,7 +75,9 @@ paths:
         - name: id
           in: query
           description: |
-            Specific guids to get data from.
+            Specific view ids to get data from.
+
+            *Note: The maximum url length is 4096 characters*
 
             **Maximum**: unlimited  
             **Required**: false
@@ -90,6 +92,9 @@ paths:
           description: >
             Specific handles to get data from. Handles will be returned in the
             __views__ object and must be unique.
+
+
+            *Note: The maximum url length is 4096 characters*
 
 
             **Maximum**: unlimited  
