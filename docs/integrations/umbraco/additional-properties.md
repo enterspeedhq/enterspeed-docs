@@ -1,0 +1,106 @@
+---
+sidebar_position: 12
+title: Additional properties
+---
+
+# Additional properties
+
+If you need to add additional properties to a content or media node before it's ingested into Enterspeed, you can use `EnterspeedPropertyDataMappers` or `EnterspeedPropertyMetaDataMappers`.
+
+:::info
+You can also create a [Custom Property Service](/docs/integrations/umbraco/enterspeed-propertys-service.md#custom-property-service) and override some of the `MapAdditionalProperties` methods, 
+however mappers are more flexible if you are doing conditional mapping, like only adding additional properties for specific content types.
+:::
+
+## Mappers
+
+With mappers you can create small effective classes to map additional properties for types that matches a filter, e.g. all nodes of a specific type.
+
+You can create mappers to add properties to the properties object or the meta-data object.
+
+Note that we in this example are using `StringEnterspeedProperty`. You can choose between multiple property types.
+(Array, boolean, number, object and so on.)
+
+### Example
+
+```csharp
+// Data mapper example
+public class SlugDataMapper : IEnterspeedPropertyDataMapper
+{
+    public bool IsMapper(IPublishedContent content)
+        => content.ContentType.Alias == "contentPage";
+
+    public void MapAdditionalData(IDictionary<string, IEnterspeedProperty> data, IPublishedContent content, string culture)
+    {
+        // some logic
+
+        data["slug"] = new StringEnterspeedProperty("slug", "mySlugValue");
+    }
+}
+```
+
+```csharp
+// Meta-data mapper example
+public class SlugMetaDataMapper : IEnterspeedPropertyMetaDataMapper
+{
+    public bool IsMapper(IPublishedContent content)
+        => content.ContentType.Alias == "contentPage";
+
+    public void MapAdditionalData(IDictionary<string, IEnterspeedProperty> metaData, IPublishedContent content, string culture)
+    {
+        // some logic
+
+        metaData["slug"] = new StringEnterspeedProperty("slug", "mySlugValue");
+    }
+}
+```
+
+### Registering your new property service
+
+The mappers are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
+
+**Umbraco 9+**
+
+```csharp
+public class MyCustomComposer : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+    {
+        builder.EnterspeedPropertyMetaDataMappers()
+                .Append<SlugMetaDataMapper>();
+    }
+}
+```
+
+**Umbraco 8**
+
+```csharp
+[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+public class MyCustomComposer : IUserComposer
+{
+    public void Compose(Composition composition)
+    {
+        composition.EnterspeedPropertyMetaDataMappers()
+                    .Append<SlugMetaDataMapper>();
+    }
+}
+```
+
+You should now be able to see the data you have mapped, in the data for your source entities in Enterspeed.
+
+```json
+"metaData": {
+	"name": "Tattoo",
+	"culture": "en-us",
+	"sortOrder": 0,
+	"level": 3,
+	"createDate": "2022-09-05T15.48.36",
+	"updateDate": "2022-09-05T15.48.37",
+	"nodePath": [
+		"1097-en-us",
+		"1098-en-us",
+		"1099-en-us"
+	],
+	"slug": "mySlugValue"  👈👈👈
+}
+```
