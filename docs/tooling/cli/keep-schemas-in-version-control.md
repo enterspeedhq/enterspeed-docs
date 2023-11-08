@@ -98,5 +98,5 @@ es-cli deployment deployment deploy -e [your environment name]
 ```
 
 :::tip
-The deployment plan can also be used to deploy the schemas in the correct version in a CD pipeline. [Use Enterspeed CLI in your release pipeline](https://www.youtube.com/watch?v=My_lXnAcbHg)
+The deployment plan can also be used to deploy the schemas in the correct version in a CD pipeline. [Use Enterspeed CLI in your release pipeline](./continuous-deployment.md)
 :::

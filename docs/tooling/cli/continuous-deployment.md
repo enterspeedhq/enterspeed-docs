@@ -1,0 +1,254 @@
+---
+sidebar_position: 4
+title: Continuous Deployment
+---
+
+import ReactPlayer from 'react-player/lazy'
+
+# Continuous Deployment
+
+<ReactPlayer controls="true" url='https://www.youtube.com/watch?v=My_lXnAcbHg' />
+
+Using Continuous Deployment you can have code changes pushes to your different environments all the way to production without any manually steps.
+
+When working with Enterspeed your schemas are often as much part of the codebase as the code it self and because of that, you would need to deploy the schemas together with the rest of the codebase. With the Enterspeed CLI, you can easily do that.
+
+## CLI commands
+
+Lets start by introducing the two Enterspeed CLI commands we will be using in this guide.
+
+#### Extract deployment plan
+
+```
+es-cli deployment extract -e [source environment name]
+```
+
+This will extract a deployment plan from your source environment. The deployment plan is a `json` file containing the schema alias and version number for all schemas deployed to the environment.
+
+```json title="Deployment plan example"
+{
+    "schemas": [
+        {
+            "schema": "category",
+            "version": 1
+        },
+        {
+            "schema": "contentPage",
+            "version": 1
+        },
+        {
+            "schema": "homePage",
+            "version": 1
+        },
+        {
+            "schema": "product",
+            "version": 2
+        }
+    ]
+}
+```
+
+#### Deploy deployment plan
+
+```
+es-cli deployment deploy -e [target environment name]
+```
+
+This will deploy the deployment plan to your target environment. For the deployment plan example above, the four schemas will be deployed to the target environment in the corresponding versions.
+
+## Setting up Continuous deployment
+
+For this example project we have a CMS and a frontend application in the same repo. How your project is structured is completely up to you.
+
+:::info
+This guide demostrates how you could setup your CD pipeline using Azure pipelines, but the same concepts applies if you use Github Action, Jenkins or any other CD tool.
+:::
+
+### 1. Add the Enterspeed CLI and a pipeline file to the repo
+The first step is to [download the Enterspeed CLI](https://github.com/enterspeedhq/enterspeed-cli/releases) and add the `es-cli.exe` file and as well as a `azure-pipeline.yml` file to the root of the repo.
+
+![Create source Enterspeed](../../../static/img/docs/tooling/cd-project-structure.png)
+
+### 2. Update pipeline file
+Next step is to update the Azure pipeline file to the functionality that we want in our CD pipeline.
+
+Below is an example of a pipeline file that automatically runs on every push to the `master` branch.
+
+The pipeline consists of three stages, `Build`, `ReleaseToStage` and `ReleaseToProduction`.
+
+#### `Build` stage
+
+The first stage, the `Build` stage, is were we build the frontend and the CMS application. 
+
+*Note: In this pipeline example the `Build` stage is just adding a dummy step that prints out a text as this is not the important part of this guide and because the `build` stage could vary a lot depending on the project you are building.*
+
+
+```yml title="Build stage"
+variables:
+- group: Enterspeed
+
+trigger:
+  branches:
+    include:
+      - master
+
+stages:    
+  - stage: Build
+    displayName: Build
+    jobs:
+      - job: BuildFrontend
+        displayName: Build frontend
+        steps:
+        - task: CmdLine@2
+          displayName: Simulate frontend build
+          inputs:
+            script: 'echo Build frontend'
+      - job: BuildCms
+        displayName: Build cms
+        steps:
+        - task: CmdLine@2
+          displayName: Simulate cms build
+          inputs:
+            script: 'echo Build cms'
+              
+  - stage: ReleaseToStage
+    ...
+
+  - stage: ReleaseToProduction
+    ...
+```
+
+#### `ReleaseToStage` stage
+
+The second stage, the `ReleaseToStage`, is way more interesting. Here we use the two Enterspeed CLI comamnds we showed in the beginning of this guide.
+
+With the first task we extract the deployment plan from the `Development` environment. 
+
+The `&& type deploymentplan.json` at the end of the command will print out the content of the deployment plan in the log. This way you can always go back to a given release and see excatly which schemas was deployed as part of that release. 
+
+```
+es-cli.exe deployment extract -e Development --apiKey $(apiKey) && type deploymentplan.json
+```
+
+In the second task we take the extracted deployment plan and deploy the schemas to the `Stage` environment.
+
+```
+es-cli.exe deployment deploy -e Stage --apiKey $(apiKey)
+```
+
+*Note: As part of this stage you will probably also deploy you code for the frontend and the CMS application.*
+
+```yml title="ReleaseToStage stage"
+variables:
+- group: Enterspeed
+
+trigger:
+  branches:
+    include:
+      - master
+
+stages:    
+  - stage: Build
+    ...
+              
+  - stage: ReleaseToStage
+    displayName: Release to stage
+    jobs:
+      - deployment: ReleaseToStage
+        displayName: Release to stage
+        environment: Stage
+        pool:
+          vmImage: windows-latest
+        strategy: 
+          runOnce:
+            deploy:
+              steps:
+              - checkout: self
+              - task: CmdLine@2
+                displayName: "Extract Enterspeed deployment plan from Development"
+                inputs:
+                  script: 'es-cli.exe deployment extract -e Development --apiKey $(apiKey) && type deploymentplan.json'
+              - task: CmdLine@2
+                displayName: "Deploys Enterspeed deployment plan to Stage"
+                inputs:
+                  script: 'es-cli.exe deployment deploy -e Stage --apiKey $(apiKey)'
+
+  - stage: ReleaseToProduction
+    ...
+```
+#### `ReleaseToProduction` stage
+The third stage, the `ReleaseToProduction`, is almost an exact copy of the second stage with the only difference that we are now extracting the deployment plan from the `Stage` environment and deploying it to the `Production` environment.
+
+```yml title="ReleaseToProduction stage"
+variables:
+- group: Enterspeed
+
+trigger:
+  branches:
+    include:
+      - master
+
+stages:    
+  - stage: Build
+    ...
+              
+  - stage: ReleaseToStage
+    ...
+
+  - stage: ReleaseToProduction
+    displayName: Release to production
+    jobs:
+      - deployment: ReleaseToProduction
+        displayName: Release to production
+        environment: Production
+        pool:
+          vmImage: windows-latest
+        strategy: 
+          runOnce:
+            deploy:
+              steps:
+              - checkout: self
+              - task: CmdLine@2
+                displayName: "Extract Enterspeed deployment plan from Stage"
+                inputs:
+                  script: 'es-cli.exe deployment extract -e Stage --apiKey $(apiKey) && type deploymentplan.json'
+              - task: CmdLine@2
+                displayName: "Deploys Enterspeed deployment plan to Production"
+                inputs:
+                  script: 'es-cli.exe deployment deploy -e Production --apiKey $(apiKey)'
+```
+
+### 3. Run the pipeline
+Now it's time to run the pipeline and see how the schemas are deployed to the different environments.
+
+#### Development
+
+But before we do the first run, lets go the the `Versions` page in Enterspeed and see the state of our environments.
+
+Here we can see that we have three schemas deployed in version 1 and one schemas deployed in version 2 on the `Development` environment. After deployment to the `Stage` environment we should get the same state as on the `Development` environment.
+
+![Create source Enterspeed](../../../static/img/docs/tooling/versions-development.png)
+
+#### Stage
+
+After pushing the changes to the `master` branch the pipeline starts to deploy the changes and the schemas to the `Stage` environment.
+
+![Create source Enterspeed](../../../static/img/docs/tooling/cd-release-stage.png)
+
+If we go back to the `Versions` page in Enterspeed, we can now see that the schemas from `Development` has automatically been deployed to `Stage`.
+
+![Create source Enterspeed](../../../static/img/docs/tooling/versions-stage.png)
+
+#### Production
+
+Lets continue the pipeline and take the release the last step out to `Production`.
+
+![Create source Enterspeed](../../../static/img/docs/tooling/cd-release-production.png)
+
+If we go back to the `Versions` page in Enterspeed, we can now see that the schemas from `Stage` has automatically been deployed to `Production`.
+
+![Create source Enterspeed](../../../static/img/docs/tooling/versions-production.png)
+
+### 4. Release completed
+
+The CD pipeline has now fully completed and all our schemas, and code, has now been released to production without any manully steps in the release flow 💪
