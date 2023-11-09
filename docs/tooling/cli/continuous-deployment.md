@@ -218,6 +218,14 @@ stages:
                   script: 'es-cli.exe deployment deploy -e Production --apiKey $(apiKey)'
 ```
 
+:::tip
+Instead of extracting the deployment plan directly from an environment you could also build the deployment plan locally and have it as part of the source code. 
+
+This way would only call the deploy command and the deploy command will deploy the deployment plan from your source code. 
+
+What the best option is depends on the project you are building and how you want your workflow to be.
+:::
+
 ### 3. Run the pipeline
 Now it's time to run the pipeline and see how the schemas are deployed to the different environments.
 
