@@ -219,9 +219,9 @@ stages:
 ```
 
 :::tip
-Instead of extracting the deployment plan directly from an environment you could also build the deployment plan locally and have it as part of the source code. 
+If you want to have more control and be 100% sure of which schemas and versions you are deploying, you could skip the `extract` command from the CD pipeline and instead have the deployment plan as part of your source code in version control. 
 
-This way would only call the deploy command and the deploy command will deploy the deployment plan from your source code. 
+This way the `deploy` command will deploy the deployment plan from your source code of the current branch you are deploying.
 
 What the best option is depends on the project you are building and how you want your workflow to be.
 :::
