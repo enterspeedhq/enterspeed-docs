@@ -33,6 +33,7 @@ import SapLogo from '../../static/img/docs/integrations/logos/sap-logo.png';
 import RelewiseLogo from '../../static/img/docs/integrations/logos/relewise-logo.png';
 import SanityLogo from '../../static/img/docs/integrations/logos/sanity-logo.png';
 import HygraphLogo from '../../static/img/docs/integrations/logos/hygraph-logo.png';
+import TypesenseLogo from '../../static/img/docs/integrations/logos/typesense-logo.png';
 
 
 Enterspeed has a growing list of integrations to various systems. The integrations come in two categories.
@@ -83,4 +84,5 @@ We are currently looking into the following integrations. If you are missing an 
     <Card title="SAP Commerce Cloud" image={SapLogo} imageBg="sap-grey-bg" splash="Source" />
     <Card title="Sanity" image={SanityLogo} imageBg="sanity-red-bg" splash="Source" />
     <Card title="Hygraph" image={HygraphLogo} imageBg="hygraph-logo-bg" splash="Source" />
+    <Card title="Typesense" image={TypesenseLogo} splash="Destination" />
 </CardContainer>
