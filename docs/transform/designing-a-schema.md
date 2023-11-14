@@ -96,8 +96,4 @@ Click on the _Deploy schemas_-button in the top right corner. This will open a p
 
 You can now test your schema via Postman, Insomnia, etc.
 
-<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=adkdGwVEjnI' />
-
-:::info
-There have been some updates to the UI and deployment flow since this video, but the testing functionality remains the same.
-:::
+<ReactPlayer controls="true" url='https://www.youtube-nocookie.com/watch?v=3VfROMliTzs' />
