@@ -13,6 +13,18 @@ Webhooks in Enterspeed are HTTP callbacks that will send all generated views by 
 
 You will only have to set the destination field on the entity schema you want to send to the webhook. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
 
+It's possible to configure multiple Webhook destinations if you need to push different types of data to different URL endpoints.
+
+## Configuration
+
+In order to setup the Webhook configuration you need the following:
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| Name                                  | A name to identify the webhook |
+| URL                                   | The url to call from the webhook |
+| Access Key                            | An API key the client can use to identify that the call is in fact coming from Enterspeed |
+
 ## Request
 
 The request to the client-configured URL will be made with the following configuration.
