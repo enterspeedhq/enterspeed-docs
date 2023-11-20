@@ -164,7 +164,7 @@ as it provides IntelliSense to map the complex models.
 
 ## What's supported
 
-The integration supports the following types: `product` (with variants), `productCategory`, `content`, `contentCategory` and `brand` and the type needs to be defined in the `relewiseEntityType` property and the destination options together with a value for the id you want in Relewise.
+The integration supports the following types: `product` (with variants), `productCategory`, `content`, `contentCategory` and `brand` and the type needs to be defined in the `relewiseEntityType` property in the destination options together with a value for the id you want in Relewise.
 
 See more details on the Relewise documentation: https://docs.relewise.com/docs/developer/implementation-steps.html#_1-provide-entities
 
