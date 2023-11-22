@@ -54,6 +54,10 @@ Since string is the most commonly used property type you can access it without w
 
 Basic number or integer mapping.
 
+:::info
+The size of the number is limited to the size of a [C# double](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types#characteristics-of-the-floating-point-types).
+:::
+
 ### Fields
 
 | Property    | Required? | Description                                                                                                                                  |
