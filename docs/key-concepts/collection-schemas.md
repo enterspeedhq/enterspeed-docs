@@ -36,7 +36,7 @@ export default {
 ```
 
 ## Example of usage in Delivery API
-Examples of retrieving slices of collection items in Delivery API.
+Examples of retrieving slices of collection items in [delivery API](/api#tag/Delivery)
 
 By requesting `?handle=recipes`, you will get default slice size (of 10) of the first items in the collection.
 
