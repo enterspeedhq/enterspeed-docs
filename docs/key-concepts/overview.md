@@ -121,6 +121,12 @@ Partial schemas are a bit different from the typical schema.
 A partial schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas.
 You can read more about partials [here](/docs/key-concepts/partial-schemas.md) and how it is used.
 
+### Collection Schemas
+
+A collection schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas.
+You can read more about partials [here](/docs/key-concepts/partial-schemas.md) and how it is used.
+
+
 ### Actions
 
 Actions are used when a new view has been generated from a schema. It defines which specific actions to take following the newly generated view.
