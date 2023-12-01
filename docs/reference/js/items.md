@@ -18,7 +18,6 @@ The items method must return reference builder.
 
 # CollectionItemsContext object
 
-
 The `CollectionItemsContext` object is passed into the `items` method and gives you access to a set of methods described below.
 
 ## Methods
@@ -170,3 +169,40 @@ context
 ```
 
 </details>
+
+# Slicing options in Delivery API
+Example collection: `[A B C D E F G H I J]`
+
+:::tip
+The start index is inclusive.
+:::
+
+1. **Default Request**  
+   - **Request:** `?handle=products`
+   - **Description:** Fetches the first X items in ascending order from the collection. By default, X is 5.
+   - **Result:** `[A, B, C, D, E]`
+
+2. **Specified Number of Items**  
+   - **Request:** `?handle=products(3)`
+   - **Description:** Retrieves the first 3 items in ascending order.
+   - **Result:** `[A, B, C]`
+
+3. **Custom Start and Range**  
+   - **Request:** `?handle=products(2,3)`
+   - **Description:** Starts from the 2nd item and fetches the next 2 items in ascending order.
+   - **Result:** `[B, C, D]`
+
+4. **Fetching from the End**  
+   - **Request:** `?handle=products(-3)`
+   - **Description:** Retrieves the last 3 items in descending order.
+   - **Result:** `[J, I, H]`
+
+5. **Custom Reverse Start and Range**  
+   - **Request:** `?handle=products(-2, 3)`
+   - **Description:** Starts 2 items from the end and fetches the 2 preceding items in descending order.
+   - **Result:** `[I, H, G]`
+
+# Defaults
+- By default, collection size is up to 100 items, can be increased per tenant basis. Please reach out to Enterspeed if needed.
+- Default slice size during delivery request is 10.
+- Maximum slice size during delivery request is 100.

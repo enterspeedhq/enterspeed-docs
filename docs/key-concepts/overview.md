@@ -123,8 +123,11 @@ You can read more about partials [here](/docs/key-concepts/partial-schemas.md) a
 
 ### Collection Schemas
 
-A collection schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas.
-You can read more about partials [here](/docs/key-concepts/partial-schemas.md) and how it is used.
+Collection schema is a schema that consists of items definition, that can be later retrieved in user defined slices in Delivery API.
+
+A typical use case is when you want to retrieve slice of larger collection, instead of retrieving entire collection.
+
+You can read more about collection schemas [here](/docs/key-concepts/collection-schemas.md) and how it is used.
 
 
 ### Actions
