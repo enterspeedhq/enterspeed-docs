@@ -139,7 +139,7 @@ paths:
         The Post version of the Delivery API is used to fetch many view by IDs or handles.
 
 
-        *Note: The maximum number of views in one request is limited to 1000*
+        *Note: The maximum handles and ids combined in one request is limited to 1000*
       tags:
         - Delivery
       operationId: getContentPost
