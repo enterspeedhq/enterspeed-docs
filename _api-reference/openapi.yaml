@@ -55,14 +55,18 @@ paths:
       - url: https://delivery.enterspeed.com
         description: Delivery API
     get:
-      summary: Get content by URL, IDs, or handle
+      summary: Get content by URL, IDs, or handles
+      description: | 
+        Used to fetch views by a single URL and/or multiple IDs or handles in a single request. 
+
+        *Note: The maximum url length is 4096 characters*
       tags:
         - Delivery
       operationId: getContent
       parameters:
         - name: url
           in: query
-          description: |
+          description: >
             The URL to get data from.
 
             **Maximum**: 1  
@@ -77,8 +81,6 @@ paths:
           description: |
             Specific view ids to get data from.
 
-            *Note: The maximum url length is 4096 characters*
-
             **Maximum**: unlimited  
             **Required**: false
           example: >-
@@ -92,9 +94,6 @@ paths:
           description: >
             Specific handles to get data from. Handles will be returned in the
             __views__ object and must be unique.
-
-
-            *Note: The maximum url length is 4096 characters*
 
 
             **Maximum**: unlimited  
@@ -133,6 +132,51 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/TooManyUrlsResponse"
                   - $ref: "#/components/schemas/NoParametersResponse"
+
+    post:
+      summary: Get content by IDs, or handles
+      description: > 
+        The Post version of the Delivery API is used to fetch many view by IDs or handles.
+
+
+        *Note: The maximum number of views in one request is limited to 1000*
+      tags:
+        - Delivery
+      operationId: getContentPost
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: Api key to validate your environment.
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+      requestBody:
+        description: The ids or handles of the views to load
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/GetByIdsOrHandles"
+      responses:
+        "200":
+          description: Valid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                oneOf:
+                  - $ref: "#/components/schemas/ViewResponse"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "422":
+          description: >-
+            Invalid request. Server responded but the request was in an invalid
+            format.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/NoIdsOrHandlesParametersResponse"
 
   /ingest/v2/{originId}:
     post:
@@ -383,6 +427,14 @@ components:
       example:
         title: Enterspeed
         logo: /media-path/enterspeed.svg
+    GetByIdsOrHandles:
+      type: object
+      description: 'Both `ids` and `handles` are optional, but the request must contain at least one id or one handle.'
+      example:
+        {
+          "ids": ["gid://Environment/290a1654-e380-487e-8ea0-8f9f2fff589c/Source/01gh7ed9-6912-485b-9595-cd1e0c4ce89c/Entity/1234/View/content"],
+          "handles": ["content-1234"],
+        }
     Raw:
       type: object
       description: Headers required
@@ -494,6 +546,40 @@ components:
               items:
                 - text: Contact us
                   link: /contact-us/
+    ViewResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: number
+              example: 200
+              description: Returns code 200
+        views:
+          type: object
+          example:
+            gid://Environment/290a1654-e380-487e-8ea0-8f9f2fff589c/Source/01gh7ed9-6912-485b-9595-cd1e0c4ce89c/Entity/1234/View/content:
+              title: How to increase performance
+              image: /media-path/performance.jpg
+              url: /blog/how-to-increase-performance/
+            content-1234:
+              title: How to increase performance
+              image: /media-path/performance.jpg
+              url: /blog/how-to-increase-performance/
+    NoIdsOrHandlesParametersResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: number
+              description: HttpStatus code 422
+              example: 422
+        message:
+          type: string
+          description: Missing id, handle or url query parameter
     NoParametersResponse:
       type: object
       properties:
