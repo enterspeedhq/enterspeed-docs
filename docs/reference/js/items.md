@@ -3,6 +3,10 @@ sidebar_position: 6
 ---
 # Items
 
+:::info
+Items is still in preview and is only supported in JavaScript schemas. Contact us if would like to try it out.
+:::
+
 The `items` method is available only in [collection schemas](/key-concepts/collection-schemas). Method is used to define collection items that goes into the collection view you can fetch in slices from [delivery API](/api#tag/Delivery).
 
 
@@ -173,14 +177,14 @@ context
 # Slicing options in Delivery API
 Example collection: `[A B C D E F G H I J]`
 
-:::tip
+:::info
 The start index is inclusive.
 :::
 
 1. **Default Request**  
    - **Request:** `?handle=products`
-   - **Description:** Fetches the first X items in ascending order from the collection. By default, X is 5.
-   - **Result:** `[A, B, C, D, E]`
+   - **Description:** Fetches the first X items in ascending order from the collection. By default, X is 10.
+   - **Result:** `[A B C D E F G H I J]`
 
 2. **Specified Number of Items**  
    - **Request:** `?handle=products(3)`

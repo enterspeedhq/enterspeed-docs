@@ -5,6 +5,10 @@ sidebar_label: Collection schemas
 
 # Collection schemas
 
+:::info
+Items is still in preview and is only supported in JavaScript schemas. Contact us if would like to try it out.
+:::
+
 Collection schema is a schema that consists of items definition, that can be later retrieved in user defined slices in Delivery API.
 
 A typical use case is when you want to retrieve slice of larger collection, instead of retrieving entire collection.
