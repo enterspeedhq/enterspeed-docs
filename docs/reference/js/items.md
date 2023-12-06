@@ -4,7 +4,9 @@ sidebar_position: 6
 # Items
 
 :::info
-Items is still in preview and is only supported in JavaScript schemas. Contact us if would like to try it out.
+Items and collection schemas are a preview feature while we gather feedback and improve the feature. Please note that the collection schemas currently is limited to JavaScript Schemas.
+
+Contact us if would like to try it out.
 :::
 
 The `items` method is available only in [collection schemas](/key-concepts/collection-schemas). Method is used to define collection items that goes into the collection view you can fetch in slices from [delivery API](/api#tag/Delivery).
