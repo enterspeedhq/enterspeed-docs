@@ -27,6 +27,8 @@ Schema is key in setting up and defining API's, property mapping, [routes](/docs
 
 [Partial schemas](/docs/key-concepts/partial-schemas.md)
 
+[Collection schemas](/docs/key-concepts/collection-schemas.md)
+
 ## Tutorials
 
 [Schema snippets](/docs/reference/snippets.md)
