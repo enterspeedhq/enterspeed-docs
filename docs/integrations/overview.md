@@ -53,7 +53,7 @@ Enterspeed has a growing list of integrations to various systems. The integratio
     <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" splash="Destination" />
     <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" splash="Destination" />
     <Card title="Clerk.io" link="integrations/clerk" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
-    <Card title="Typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
+    <Card title="Typesense" link="integrations/typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
