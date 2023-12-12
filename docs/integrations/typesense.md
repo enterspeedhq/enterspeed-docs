@@ -10,9 +10,9 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 # Typesense
 
 :::info
-We are currently working on a UI for Destinations. This means that soon you will be able to setup Typesense directly from the Enterspeed APP. 
+We are currently working on a UI for Destinations. This means that you'll soon be able to setup Typesense directly from the Enterspeed APP yourself. But note, the Algolia destination itself is fully ready for production.
 
-For now, contact us if want to get started.
+For now, contact us if you want to get started.
 :::
 
 The Enterspeed Typesense integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Typesense cluster. This means that you can decide on schema level which views you want to send to Typesense.
