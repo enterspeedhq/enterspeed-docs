@@ -150,6 +150,15 @@ paths:
           schema:
             type: string
             example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+        - name: Content-Length
+          required: true
+          in: header
+          description: |
+            The length of the message body, in bytes (this header is automatically added by most clients). 
+
+            Note: The endpoint does not support `Transfer-Encoding: chunked`. `JsonContent` and `PostAsJsonAsync` in .NET will by default set the `Transfer-Encoding: chunked` header. Use types like e.g. `StringContent` or `ByteArrayContent` instead.
+          schema:
+            type: number
       requestBody:
         description: The ids or handles of the views to load
         content:
@@ -242,6 +251,15 @@ paths:
           schema:
             type: string
             example: "/product-old,/product-very-old"
+        - name: Content-Length
+          required: true
+          in: header
+          description: |
+            The length of the message body, in bytes (this header is automatically added by most clients). 
+
+            Note: The endpoint does not support `Transfer-Encoding: chunked`. `JsonContent` and `PostAsJsonAsync` in .NET will by default set the `Transfer-Encoding: chunked` header. Use types like e.g. `StringContent` or `ByteArrayContent` instead.
+          schema:
+            type: number
       requestBody:
         description: The entity to process
         content:
