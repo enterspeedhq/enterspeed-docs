@@ -6,7 +6,9 @@ title: Webhooks
 # Webhooks
 
 :::info
-Webhooks is still in preview, contact us if would like to try it out.
+We are currently working on a UI for Destinations. This means that you'll soon be able to setup Webhooks directly from the Enterspeed APP yourself. But note, the Webhook destination itself is fully ready for production.
+
+For now, contact us if you want to get started.
 :::
 
 Webhooks in Enterspeed are HTTP callbacks that will send all generated views by schemas with the [destinations field](../reference/fields.md#destinations) to a URL configured in the Webhook. This means that you can decide on the schema level which views you want to send to the webhook.

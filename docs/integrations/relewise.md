@@ -14,9 +14,9 @@ The beta version of the Relewise destination is now available for testing.
 :::
 
 :::info
-We are currently working on a UI for Destinations. This means that soon you will be able to setup Relewise directly from the Enterspeed APP. 
+We are currently working on a UI for Destinations. This means that you'll soon be able to setup Relewise directly from the Enterspeed APP yourself.
 
-For now, contact us if want to get started.
+For now, contact us if you want to get started.
 :::
 
 The Enterspeed Relewise integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Relewise account. This means that you can decide on schema level which views you want to send to Relewise.

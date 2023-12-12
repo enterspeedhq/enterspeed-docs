@@ -10,9 +10,9 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 # Elastic App Search
 
 :::info
-We are currently working on a UI for Destinations. This means that soon you will be able to setup Elastic App Search directly from the Enterspeed APP. 
+We are currently working on a UI for Destinations. This means that you'll soon be able to setup Elastic App Search directly from the Enterspeed APP yourself. But note, the Elastic App Search destination itself is fully ready for production.
 
-For now, contact us if want to get started.
+For now, contact us if you want to get started.
 :::
 
 The Enterspeed Elastic App Search integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Elastic App Search engine. This means that you can decide on the schema level which views you want to send to Elastic App Search.
