@@ -38,8 +38,8 @@ On Enterspeed schema level you have the following options:
 | Option                                | Required    | Description                            |
 | ------------------------------------- | ----------- | -------------------------------------- |
 | collection                            | Required    | The Typesense collection the data should be send to |
-| id                                    | Optional    | The the value that should be used as id in for the Typesense document. If omitted, the Enterspeed view id will be used |
-| dirtyValues                           | Optional    | Defines what Typesense should do when the type of a particular field being indexed does not match the Typesense schema.<br /><br />Valid values are: `coerce_or_reject` (default), `coerce_or_drop`, `drop`, `reject`<br /><br />See more documentation on [Typesense](https://typesense.org/docs/0.25.1/api/documents.html#dealing-with-dirty-data) |
+| id                                    | Optional    | The value that should be used as id in for the Typesense document. If omitted, the Enterspeed view id will be used |
+| dirtyValues                           | Optional    | Defines what Typesense should do when the type of a particular field being indexed does not match the Typesense schema.<br /><br />Valid values are: `coerce_or_reject` (default), `coerce_or_drop`, `drop`, `reject`<br /><br />Refer to the [Typesense documentation](https://typesense.org/docs/latest/api/documents.html#dealing-with-dirty-data) for more information |
 
 ## Example of usage
 
