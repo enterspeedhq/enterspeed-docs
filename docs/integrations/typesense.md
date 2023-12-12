@@ -10,7 +10,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 # Typesense
 
 :::info
-We are currently working on a UI for Destinations. This means that you'll soon be able to setup Typesense directly from the Enterspeed APP yourself. But note, the Algolia destination itself is fully ready for production.
+We are currently working on a UI for Destinations. This means that you'll soon be able to setup Typesense directly from the Enterspeed APP yourself. But note, the Typesense destination itself is fully ready for production.
 
 For now, contact us if you want to get started.
 :::
