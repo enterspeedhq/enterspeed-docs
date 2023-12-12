@@ -53,6 +53,7 @@ Enterspeed has a growing list of integrations to various systems. The integratio
     <Card title="Elastic App Search" link="integrations/elastic-app-search" image={ElasticAppSearchLogo} imageBg="elastic-app-search-gray-bg" splash="Destination" />
     <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" splash="Destination" />
     <Card title="Clerk.io" link="integrations/clerk" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
+    <Card title="Typesense" link="integrations/typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
@@ -84,5 +85,4 @@ We are currently looking into the following integrations. If you are missing an 
     <Card title="SAP Commerce Cloud" image={SapLogo} imageBg="sap-grey-bg" splash="Source" />
     <Card title="Sanity" image={SanityLogo} imageBg="sanity-red-bg" splash="Source" />
     <Card title="Hygraph" image={HygraphLogo} imageBg="hygraph-logo-bg" splash="Source" />
-    <Card title="Typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
 </CardContainer>
