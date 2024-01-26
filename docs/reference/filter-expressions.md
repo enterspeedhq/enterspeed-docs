@@ -208,6 +208,11 @@ properties.articles/any(a: a.isFeatured eq true)
 }
 </BrowserOnly>
 
+:::info
+Please note that our filter expressions only support one use of `any` per expression.  
+E.g. `properties.tags/any(t: t eq 'tag1') or properties.tags/any(t: t eq 'tag2')` is not supported.
+:::
+
 <BrowserOnly>
 {() =>
 <Tabs>
