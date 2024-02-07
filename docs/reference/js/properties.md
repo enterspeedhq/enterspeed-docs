@@ -200,7 +200,7 @@ To filter the source entities you are making references to even further you can 
 
 <details><summary>limit</summary>
 
-The `limit`` function limits the number of references.
+The `limit` function limits the number of references.
 
 #### Parameters
 
