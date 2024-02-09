@@ -51,6 +51,32 @@ url allows you to specify a url from which you can fetch the view from the deliv
 | `url`        | string  | The url you use to fetch the view from the Delivery API                     |
 
 
+##### Optional function calls
+
+To the `url` function you can call some of the following optional functions.
+
+<details><summary>redirects</summary>
+
+The `redirects` function creates incomming redirects to a specific url.
+
+:::info
+Setting the redirects to an empty array clears any potential implicite redirects.
+:::
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `redirects`   | string[] | Adds a list of incomming redirects to the URL.   |
+
+```js title="routes with url and redirects"
+context
+    .url(sourceEntity.url)
+    .redirects(sourceEntity.redirects);
+```
+
+</details>
+
 ## Examples
 
 ```js title="routes example with url and multiple handles"
