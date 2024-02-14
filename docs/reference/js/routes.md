@@ -60,7 +60,7 @@ To the `url` function you can call some of the following optional functions.
 The `redirects` function creates incomming redirects to a specific url.
 
 :::info
-Setting the redirects to an empty array clears any potential implicite redirects.
+Setting the redirects to an empty array clears any potential implicit redirects.
 :::
 
 #### Parameters

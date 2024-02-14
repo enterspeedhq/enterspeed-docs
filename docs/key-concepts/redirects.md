@@ -24,17 +24,17 @@ Once ingested you can see the redirects on the source entity in the Enterspeed a
 }
 ```
 
-By default these redirects will automatically be applied to the view as implicite redirects.
+By default these redirects will automatically be applied to the view as implicit redirects.
 
-If you are using JavaScript schemas you also have the option clear the implicite redirects and create your own explicite redirects.
+If you are using JavaScript schemas you also have the option clear the implicit redirects and create your own explicit redirects.
 
 :::info
-Implicite redirects are cleared if you map more than one URL, as Enterspeed don't know which one of the URLs the implicite redirects should point to, or if you set explicite redirects in your schema.
+Implicit redirects are cleared if you map more than one URL, as Enterspeed don't know which one of the URLs the implicit redirects should point to, or if you set explicit redirects in your schema.
 :::
 
-Using explicite redirect gives you the option to dynamically build the redirects in your schema and especially if you have multiple URLs for a view you want to specify which of the URLs the different redirects should point to.
+Using explicit redirect gives you the option to dynamically build the redirects in your schema and especially if you have multiple URLs for a view you want to specify which of the URLs the different redirects should point to.
 
-```js title="Example of explicite redirects"
+```js title="Example of explicit redirects"
 routes: function(sourceEntity, context) {
   context
       .url('http://mydomain.com/new-url')
@@ -45,7 +45,7 @@ routes: function(sourceEntity, context) {
 ```
 [See redirect API documentation](/reference/js/routes#url)
 
-No matter if you use implicite or explicite redirects the delivery response will be the same if you request a view on a redirect URL. From the delivery response you will get a redirect response instead of a 404 error.
+No matter if you use implicit or explicit redirects the delivery response will be the same if you request a view on a redirect URL. From the delivery response you will get a redirect response instead of a 404 error.
 
 ```json title='A request to the old url returns a redirect response'
 {
