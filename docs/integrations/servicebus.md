@@ -15,11 +15,11 @@ We are currently working on a UI for Destinations. This means that you'll soon b
 For now, contact us if you want to get started.
 :::
 
-The Enterspeed Azure Service Bus integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Azure Service Bus queue. This means that you can decide on schema level which views you want to send to the service bus queue.
+The Enterspeed Azure Service Bus integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Azure Service Bus queue or topic. This means that you can decide on schema level which views you want to send to the service bus.
 
-You will only have to set the destination field on the entity schema you want to send to the Azure Service Bus queue. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
+You will only have to set the destination field on the entity schema you want to send to the Azure Service Bus. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
 
-It's possible to configure multiple Azure Service Bus destinations if you need to push different types of data to different service bus queues.
+It's possible to configure multiple Azure Service Bus destinations if you need to push different types of data to different service bus queues or topic.
 
 ## Configuration
 
