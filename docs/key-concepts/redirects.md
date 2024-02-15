@@ -5,7 +5,7 @@ sidebar_label: Redirects
 
 # Redirects
 
-When changing the url of a page in a CMS or moving a product to another category, you often want to have that old url redirected to the new url.
+When changing the URL of a page in a CMS or moving a product to another category, you often want to have that old URL redirected to the new URL.
 
 In Enterspeed you can ingest incoming redirects on your source entities. You do that by using the `X-Enterspeed-Redirects` header in your ingest request or as part of the object in the root property called `redirects` as described in the [API documentation](/api#tag/Ingest/operation/saveEntity).
 
@@ -47,7 +47,7 @@ routes: function(sourceEntity, context) {
 
 No matter if you use implicit or explicit redirects the delivery response will be the same if you request a view on a redirect URL. From the delivery response you will get a redirect response instead of a 404 error.
 
-```json title='A request to the old url returns a redirect response'
+```json title='A request to the old URL returns a redirect response'
 {
   "meta": {
     "status": 301,
