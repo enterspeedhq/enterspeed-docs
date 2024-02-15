@@ -24,7 +24,7 @@ Once ingested you can see the redirects on the source entity in the Enterspeed a
 }
 ```
 
-By default these redirects will automatically be applied to the view as implicit redirects.
+By default, if a schema has a single URL mapped as route, these redirects will automatically be applied to the view as implicit redirects.
 
 If you are using JavaScript schemas you also have the option clear the implicit redirects and create your own explicit redirects.
 
