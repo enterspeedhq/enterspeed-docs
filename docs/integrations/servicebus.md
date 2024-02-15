@@ -28,7 +28,7 @@ In order to setup the Azure Service Bus configuration you need the following:
 | Setting                               | Description                            |
 | ------------------------------------- | -------------------------------------- |
 | ConnectionString                      | The connection string to the Azure Service Bus         |
-| QueueName                             | The name of the queue in the Azure Service Bus       |
+| QueueOrTopicName                      | The name of the queue or topic in the Azure Service Bus       |
 
 ## Message
 
@@ -58,7 +58,7 @@ export default {
     context.triggers('cms', ['content']);
   },
   actions: function (sourceEntity, context) {
-    context.destination('serviceBus');
+    context.destination('service-bus');
   },
   properties: function ({properties: p, url}, context) {
     return {
@@ -82,7 +82,7 @@ export default {
     },
   "destinations": [
     {
-      "alias": "typesense"
+      "alias": "service-bus"
     }
   ],
   "properties": {
