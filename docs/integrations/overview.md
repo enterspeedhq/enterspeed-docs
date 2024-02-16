@@ -34,6 +34,7 @@ import RelewiseLogo from '../../static/img/docs/integrations/logos/relewise-logo
 import SanityLogo from '../../static/img/docs/integrations/logos/sanity-logo.png';
 import HygraphLogo from '../../static/img/docs/integrations/logos/hygraph-logo.png';
 import TypesenseLogo from '../../static/img/docs/integrations/logos/typesense-logo.png';
+import ServicebusLogo from '../../static/img/docs/integrations/logos/servicebus-logo.png';
 
 
 Enterspeed has a growing list of integrations to various systems. The integrations come in two categories.
@@ -54,6 +55,7 @@ Enterspeed has a growing list of integrations to various systems. The integratio
     <Card title="Elasticsearch" link="integrations/elasticsearch" image={ElasticsearchLogo} imageBg="elasticsearch-blue-bg" splash="Destination" />
     <Card title="Clerk.io" link="integrations/clerk" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
     <Card title="Typesense" link="integrations/typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
+    <Card title="Azure Service Bus" link="integrations/servicebus" image={ServicebusLogo} imageBg="servicebus-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
