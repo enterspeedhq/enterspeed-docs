@@ -71,7 +71,7 @@ Integrations we currently have in beta. Please reach out to us if you would like
 
 ## Integrations on the roadmap
 
-We are currently looking into the following integrations. If you are missing an integration to a specific system or is interested, please reach out to us as we would love to look into it.
+We are currently looking into the following integrations. If you are missing an integration to a specific system or is interested in one of the integrations on the roadmap, please reach out to us as we would love to look into it.
 
 <CardContainer>
     <Card title="Akeneo" image={AkeneoLogo} imageBg="akeneo-purple-bg" splash="Source" />
