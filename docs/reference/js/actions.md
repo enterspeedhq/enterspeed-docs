@@ -20,6 +20,10 @@ The `ActionsContext` object is passed into the actions method and gives you acce
 
 `reprocess(schemaAlias)`
 
+:::info
+Note that `reprocess` triggers whenever the source entity is changed. This means that a deploy of the schema will not trigger the reprocess.
+:::
+
 #### Parameters
 
 | Parameter     | Type   | Description                                        |
@@ -62,6 +66,26 @@ context
 
 </details>
 
+<details><summary>filter</summary>
+
+Using the `filter` function lets you do a dynamic search for source entities you want to reprocess.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `filter`      | string | Your filtering criteria.                           |
+
+See list of filter examples [here](//docs/reference/filter-expressions.md)
+
+```js title="reprocess by filter"
+ context
+    .reprocess('mySchemaAlias')
+    .filter("type eq 'account' and properties.internalId eq '1234'")
+```
+
+</details>
+
 <details><summary>parent</summary>
 
 Use the `parent` function to reprocess the parent entity based on its originParentId.
@@ -76,7 +100,45 @@ context
 
 #### Optional function calls
 
-After one of the required function call above, there are extra functions you can call.
+To filter the source entities you want to reprocess even further you can call some of the following optional functions.
+
+<details><summary>limit</summary>
+
+The `limit` function limits the number of source entities.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `limit`       | number | The maximum number of source entities.             |
+
+```js title="reprocess by filter and limit"
+ context
+    .reprocess('mySchemaAlias')
+    .filter("type eq 'account'")
+    .limit(5)
+```
+
+</details>
+
+<details><summary>orderBy</summary>
+
+The `orderBy` function sorts the source entities. This is typically used in combination with `limit`.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+
+```js title="reprocess by filter and orderBy"
+ context
+    .reprocess('mySchemaAlias')
+    .filter("type eq 'account'")
+    .orderBy({ propertyName: "properties.createdDate", direction: "desc"})
+```
+
+</details>
 
 <details><summary>sourceGroup</summary>
 
@@ -119,8 +181,8 @@ actions: function(sourceEntity, context) {
     context.reprocess('productCategory')
             .byOriginId(sourceEntity.properties.productCategoryPage.id)
             .sourceGroup('commerce');
-    context.reprocess('productCategory')
-            .parent();
+    context.reprocess('account')
+            .filter("type eq 'account' and properties.internalId eq '1234'");
     context.destination('webhook');
 }
 ```
