@@ -20,6 +20,10 @@ The `ActionsContext` object is passed into the actions method and gives you acce
 
 `reprocess(schemaAlias)`
 
+:::info
+Note that `reprocess` triggers whenever the source entity is changed. This means that a deploy of the schema will not trigger the reprocess.
+:::
+
 #### Parameters
 
 | Parameter     | Type   | Description                                        |
