@@ -23,8 +23,9 @@ The `RoutesContext` object is passed into the `routes` method and gives you acce
 
 | Method            | Description                                                                                                                       |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [handle](#handle) | A handle is a key from which you can fetch the view. A view can have multiple handles. |
-| [url](#url)       | A string value that represents the url you want to fetch the view by. A view can only have one url. |
+| [handle](#handle) | A handle is a key from which you can fetch the view. A view can have multiple handles.                                            |
+| [lookup](#lookup) | Lookup allows you to search source entities using a filter string and work with the source entities directly in the schema.       |
+| [url](#url)       | A string value that represents the url you want to fetch the view by. A view can only have one url.                               |
 
 ### handle
 
@@ -37,6 +38,125 @@ Handle allows you to specify a key from which you can fetch the view from the De
 | Parameter    | Type    |  Description  |
 | ------------ | ------- | --------------------------------------------------------------------------- |
 | `handle`     | string  | The key you use to fetch the view from the Delivery API                     |
+
+### lookup
+
+Lookup allows you to search source entities using a filter string and build dynamic handles or URLS based on data from other source entities.
+
+Note the `lookup` is an async function so you have to use [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) or [`then`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) when you are using the `lookup` function.
+
+`lookup(filter)`
+
+#### Parameters
+
+| Parameter       | Type   | Description                                                  |
+| --------------- | ------ | ------------------------------------------------------------ |
+| `filter`        | string | A filtering criteria.                              |
+
+See list of filter examples [here](//docs/reference/filter-expressions.md)
+
+#### Required function calls
+
+After the `lookup` function it's required to call `toPromise` to excecute the query and return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+<details><summary>toPromise</summary>
+
+Using the toPromise function excecutes the query and return a promise you must resolve.
+
+```js title="look toPromise"
+const category: await context
+                .lookup(`originId eq '${sourceEntity.properties.categoryId}'`)
+                .toPromise()
+```
+
+</details>
+
+#### Optional function calls
+
+To filter the source entities even further you can call some of the following optional functions.
+
+<details><summary>limit</summary>
+
+The `limit` function limits the number of source entities.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `limit`       | number | The maximum number of source entities to return.   |
+
+```js title="look and limit"
+const mainCategory: await context
+                .lookup(`type eq 'mainCategory'`)
+                .limit(1)
+                .toPromise()
+```
+
+</details>
+
+<details><summary>orderBy</summary>
+
+The order sequence of the source entities.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+
+```js title="lookup and orderBy"
+const categories: await context
+                .lookup(`type eq 'category'`)
+                .orderBy({ propertyName: "properties.createdDate", direction: "desc"})
+                .toPromise()
+```
+
+</details>
+
+<details><summary>sourceGroup</summary>
+
+The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `sourceGroup` | string | Allows you to define a different source group. The sourceGroupAlias should be equal to the desired source group alias where you want to look for source entities.
+
+If not defined, it uses the current source group.
+
+```js title="lookup and sourceGroup"
+const categories: await context
+                .lookup(`type eq 'category'`)
+                .sourceGroup("anotherSourceGroup")
+                .toPromise()
+```
+
+</details>
+
+#### Examples
+
+```js title="lookup using async/await"
+routes: async function(sourceEntity, context) {
+    const categories = await context.lookup(`originId in (${sourceEntity.properties.categoryIds.map(c => `'${c}'`)})`).toPromise();
+
+    categories.forEach((category) => {
+        context.url(`${category.url}/${sourceEntity.properties.slug}`)
+    })
+}
+```
+
+```js title="lookup using 'then'"
+routes: function(sourceEntity, context) {
+    context.lookup(`originId in (${sourceEntity.properties.categoryIds.map(c => `'${c}'`)})`)
+            .toPromise()
+            .then((categories) => {
+                categories.forEach((category) => {
+                    context.url(`${category.url}/${sourceEntity.properties.slug}`)
+                })
+            });
+}
+```
 
 ### url
 

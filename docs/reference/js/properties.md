@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Properties
 
-The `properties` method is where you define the output that goes into the view you fetch from the [delivery API](/api#tag/Delivery)
+The `properties` method is where you define the output that goes into the view you fetch from the [Delivery API](/api#tag/Delivery)
 
 ```js title="Properties example"
 properties: function (sourceEntity, context) {
@@ -14,7 +14,8 @@ properties: function (sourceEntity, context) {
       title: sourceEntity.properties.seoTitle,
       description: sourceEntity.properties.seoDescription,
     }
-    categoryIds: sourceEntity.properties.categoryIds.map(categoryId => parseInt(categoryId))
+    categoryIds: sourceEntity.properties.categoryIds
+                                .map(categoryId => parseInt(categoryId))
   };
 }
 ```
@@ -29,8 +30,131 @@ The `PropertiesContext` object is passed into the `properties` method and gives 
 
 | Method                             | Description                                                                                                                   |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| [lookup](#lookup)                  | Lookup allows you to search source entities using a filter string and work with the source entities directly in the schema.   |
 | [partial](#partial)                | Referencing a partial schema. Mapped data from a partial schema is embedded into the calling schema.                          |
 | [reference](#reference)            | Referencing a full schema. References to other schemas are resolved on delivery request time.                                 |
+
+### lookup
+
+Lookup source entities.
+
+Lookup allows you to search source entities using a filter string and work with the data from the source entities directly in the schema.
+
+Note the `lookup` is an async function so you have to use [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) when you are using the `lookup` function.
+
+`lookup(filter)`
+
+#### Parameters
+
+| Parameter       | Type   | Description                                                  |
+| --------------- | ------ | ------------------------------------------------------------ |
+| `filter`        | string | A filtering criteria.                              |
+
+See list of filter examples [here](//docs/reference/filter-expressions.md)
+
+#### Required function calls
+
+After the `lookup` function it's required to call `toPromise` to excecute the query and return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+<details><summary>toPromise</summary>
+
+Using the toPromise function excecutes the query and return a promise you must resolve.
+
+```js title="look toPromise"
+const newsArticles: await context
+                .lookup("type eq 'newsArticle'")
+                .toPromise()
+```
+
+</details>
+
+#### Optional function calls
+
+To filter the source entities even further you can call some of the following optional functions.
+
+<details><summary>limit</summary>
+
+The `limit` function limits the number of source entities.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `limit`       | number | The maximum number of source entities to return.   |
+
+```js title="look and limit"
+const newsArticles: await context
+                .lookup("type eq 'newsArticle'")
+                .limit(5)
+                .toPromise()
+```
+
+</details>
+
+<details><summary>orderBy</summary>
+
+The order sequence of the source entities.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+
+```js title="lookup and orderBy"
+const newsArticles: await context
+                .lookup("type eq 'newsArticle'")
+                .orderBy({ propertyName: "properties.createdDate", direction: "desc"})
+                .toPromise()
+```
+
+</details>
+
+<details><summary>sourceGroup</summary>
+
+The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
+
+#### Parameters
+
+| Parameter     | Type   | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| `sourceGroup` | string | Allows you to define a different source group. The sourceGroupAlias should be equal to the desired source group alias where you want to look for source entities.
+
+If not defined, it uses the current source group.
+
+```js title="lookup and sourceGroup"
+const newsArticles: await context
+                .lookup("type eq 'newsArticle'")
+                .sourceGroup("anotherSourceGroup")
+                .toPromise()
+```
+
+</details>
+
+#### Examples
+
+```js title="lookup with async/await"
+properties: async function (sourceEntity, context) {
+  const latestNews = await context
+                          .lookup("type eq 'newsArticle'")
+                          .orderBy({ propertyName: "properties.createdDate", direction: "desc"})
+                          .limit(3)
+                          .toPromise();
+
+  const mappedNews = latestNews
+                  .map((news) => ({
+                      url: news.url,
+                      title: news.properties.title,
+                      teaser: news.properties.teaser
+                  }));
+
+  return {
+    latestNews: mappedNews
+  }
+}
+```
+
+---
 
 ### partial
 
@@ -158,7 +282,7 @@ Using the filter function lets you do a dynamic search for source entities you w
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `filter`      | string | Your filtering criteria.                           |
+| `filter`      | string | A filtering criteria.                              |
 
 See list of filter examples [here](//docs/reference/filter-expressions.md)
 
