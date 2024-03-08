@@ -9,12 +9,6 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Typesense
 
-:::info
-We are currently working on a UI for Destinations. This means that you'll soon be able to setup Typesense directly from the Enterspeed APP yourself. But note, the Typesense destination itself is fully ready for production.
-
-For now, contact us if you want to get started.
-:::
-
 The Enterspeed Typesense integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Typesense cluster. This means that you can decide on schema level which views you want to send to Typesense.
 
 You will only have to set the destination field on the entity schema you want to send to Typesenses. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
