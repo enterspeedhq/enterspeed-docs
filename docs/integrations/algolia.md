@@ -9,12 +9,6 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Algolia
 
-:::info
-We are currently working on a UI for Destinations. This means that you'll soon be able to setup Algolia directly from the Enterspeed APP yourself. But note, the Algolia destination itself is fully ready for production.
-
-For now, contact us if you want to get started.
-:::
-
 The Enterspeed Algolia integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Algolia index. This means that you can decide on the schema level which views you want to send to Algolia.
 
 You will only have to set the destination field on the entity schema you want to send to Algolia. All schema references are automatically resolved so you don't have to set it on all referenced schemas.

@@ -17,7 +17,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 | `properties`        | Object | **Yes**   | The properties you want your schema to consist of. See [properties types](./json/property-types) for supported types.                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `route`             | Object | No        | Defines if you want this schema to be retrievable by a route. A route is not specifically an URL, but it can be. <br /><br /> The route property contains 2 different properties: `url` or `handles`.                                                                                                                                                                                                                                                                                                                                               |
 | `actions`           | Array  | No        | Actions are used when a new view has been generated from a schema. It defines which specific actions to take following the newly generated view. Currently, Enterspeed supports triggering the `process` of another schema.<br /> <br /> The Array takes an object with the properties: <br />`type` <small>(e.g. process)</small><br />`alias` <small>(Alias of the schema to process)</small><br />`originId` <small>(Optional. id of source to trigger)</small><br />`source` <small>(Optional. Alias of destination source group)</small><br /> |
-| `destinations`      | Array  | No        | Destinations is a preview feature.<br /> <br />Destinations is used to push the generated views for a schema to a webhook, to Algolia or another third-party application.<br /> <br /> The Array takes an object with the properties: <br />`alias` <small>(e.g. webhook or Algolia)</small><br />                                                                                                                                                                                                                                                  |
+| `destinations`      | Array  | No        | Destinations is used to push the generated views for a schema to a webhook, to Algolia or another third-party application.<br /> <br /> The Array takes an object with the properties: <br />`alias` <small>(e.g. webhook or Algolia)</small><br />                                                                                                                                                                                                                                                  |
 | `sourceEntityTypes` | Array  | -         | **DEPRECATED** <br /><br /> <strike>The types of source entities you want this schema to trigger on.</strike>                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ## Examples
@@ -314,10 +314,6 @@ export default {
 </BrowserOnly>
 
 ### Destinations
-
-:::info
-Destinations are still in preview. Contact us if you would like to test it out.
-:::
 
 To give an example, you can use `destinations` when you want to send views for, e.g. all content pages or all products to a third-party system for searching.
 
