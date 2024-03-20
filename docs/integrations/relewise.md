@@ -36,6 +36,15 @@ In order to setup the Relewise configuration you need the following:
 | Relewise API Key                      | A Relewise API key with update and administrative action permissions for the types you want to integrate (product, content, brand, ...) |
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Relewise |
 
+## Options
+
+Table of available options, that you can optionally specify, if needed for your use case.
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| id                                    | By default Enterspeed uses view id as the value for object id in Clerk. You can override default object id by providing value for this option. |
+| relewiseEntityType                    | The type of entity you want to send to Relewise. Supported values: `product`, `productCategory`, `content`, `contentCategory` and `brand`. |
+
 ## IntelliSense
 
 In order to send data to Relewise (products, content, ...) the structure of the object you are mapping in the `properties` function must match with the corresponding Relewise model. See [Relewise API in Swagger](https://docs.relewise.com/swagger/index.html).

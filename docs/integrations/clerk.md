@@ -35,6 +35,15 @@ In order to setup the Clerk.io configuration you need the following:
 | Clerk Private Key                     | A private key on the Clerk.io store you want to integrate to |
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Clerk.io |
 
+## Options
+
+Table of available options, that you can optionally specify, if needed for your use case.
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| id                                    | By default Enterspeed uses view id as the value for object id in Clerk. You can override default object id by providing value for this option. |
+| clerkEntityType                       | The type of entity you want to send to Clerk. Supported values: `page`. |
+
 ## Example of usage
 
 <BrowserOnly>
@@ -49,7 +58,10 @@ export default {
     context.triggers('cms', ['page']);
   },
   actions: function (sourceEntity, context) {
-    context.destination('clerk');
+    context.destination('clerk').options({
+      id: sourceEntity.originId,
+      relewiseEntityType: 'page'
+    });
   },
   properties: function ({url, properties: p}, context) {
     return {
@@ -72,7 +84,11 @@ export default {
     },
   "destinations": [
     {
-      "alias": "clerk"
+      "alias": "clerk",
+      "options": {
+          "id": "{originId}",
+          "relewiseEntityType": "page"
+      }
     }
   ],
   "properties": {
@@ -95,5 +111,5 @@ Each type in Clerk.io (page, product, category, ...) has a set of required field
 See required fields here: https://docs.clerk.io/reference/page-resource
 
 :::info
-Enterspeed will make sure to always set `id` and `type` so you don't need to map these properties.
+`id` is set automatically or by the options id if you use that, so you don't need to map this property.
 :::
