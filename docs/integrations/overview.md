@@ -56,6 +56,7 @@ Enterspeed has a growing list of integrations to various systems. The integratio
     <Card title="Clerk.io" link="integrations/clerk" image={ClerkLogo} imageBg="clerk-grey-bg" splash="Destination" />
     <Card title="Typesense" link="integrations/typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
     <Card title="Azure Service Bus" link="integrations/servicebus" image={ServicebusLogo} imageBg="servicebus-grey-bg" splash="Destination" />
+    <Card title="Relewise" link="integrations/relewise" image={RelewiseLogo} imageBg="relewise-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
@@ -66,7 +67,7 @@ Integrations we currently have in beta. Please reach out to us if you would like
     <Card isExternal title="Contentful" link="https://github.com/enterspeedhq/enterspeed-source-contentful-cp" image={ContentfulLogo} imageBg="contentful-blue-bg" splash="Source" />
     <Card isExternal title="Contentstack" link="https://github.com/enterspeedhq/enterspeed-source-contentstack-cms" image={ContentstackLogo} imageBg="contentstack-grey-bg" splash="Source" />
     <Card isExternal title="Struct PIM" link="https://github.com/enterspeedhq/enterspeed-source-struct-pim" image={StructLogo} imageBg="struct-grey-bg" splash="Source" />
-    <Card title="Relewise" link="integrations/relewise" image={RelewiseLogo} imageBg="relewise-grey-bg" splash="Destination" />
+    <div></div>
 </CardContainer>
 
 ## Integrations on the roadmap
