@@ -22,7 +22,7 @@ You will only have to set the destination field on the entity schema you want to
 It's possible to configure multiple Clerk.io destinations if you need to push different types of data to different Clerk.io stores.
 
 :::info
-As of now the Clerk.io integration only support pages. We are working on adding support for all type supported in Clerk.io.
+As of now the Clerk.io integration only support pages. Contact us if you want to work with other types in Clerk.io.
 :::
 
 ## Configuration
