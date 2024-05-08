@@ -9,12 +9,6 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Clerk.io
 
-:::info
-We are currently working on a UI for Destinations. This means that you'll soon be able to setup Clerk.io directly from the Enterspeed APP yourself. But note, the Clerk.io destination itself is fully ready for production.
-
-For now, contact us if you want to get started.
-:::
-
 The Enterspeed Clerk.io integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Clerk.io store. This means that you can decide on the schema level which views you want to send to Clerk.io.
 
 You will only have to set the destination field on the entity schema you want to send to Clerk.io. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
