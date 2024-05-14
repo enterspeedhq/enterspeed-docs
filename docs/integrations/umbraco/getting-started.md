@@ -36,7 +36,7 @@ When the installation above has been completed two new dashboards have been adde
 
 Before Umbraco starts sending data to Enterspeed you will need to add a little piece of configuration.
 
-Luckily this can easily be done within Umbraco itself or via [appsettings.json](#app-settings) (Umbraco 9 and up) or [Web.config](#webconfig). (Umbraco 7 and 8)
+Luckily this can easily be done within Umbraco itself or via [appsettings.json](#app-settings-umbraco-9) (Umbraco 9 and up) or [Web.config](#webconfig-umbraco-7-or-8). (Umbraco 7 and 8)
 
 ### Source API key and Ingest endpoint
 

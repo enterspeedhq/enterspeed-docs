@@ -209,6 +209,6 @@ The start index is inclusive.
    - **Result:** `[I, H, G]`
 
 # Defaults
-- By default, collection size is up to 100 items, can be increased per tenant basis. Please reach out to Enterspeed if needed.
+- By default, collection size is up to 15.000 items, can be increased per tenant basis. Please reach out to Enterspeed if needed.
 - Default slice size during delivery request is 10.
 - Maximum slice size during delivery request is 100.
