@@ -104,6 +104,16 @@ paths:
           schema:
             type: string
             default: ""
+        - name: includeDuplicateViews
+          in: query
+          description: |
+            By default, each view is returned only once. However, if you set includeDuplicateViews to true, the view will be returned for each matching requested handle
+          example: >-
+            true
+          schema:
+            type: boolean
+            default: false
+          required: false
         - name: X-Api-Key
           required: true
           in: header
@@ -145,6 +155,16 @@ paths:
         - Delivery
       operationId: getContentPost
       parameters:
+        - name: includeDuplicateViews
+          in: query
+          description: |
+            By default, each view is returned only once. However, if you set includeDuplicateViews to true, the view will be returned for each matching requested handle
+          example: >-
+            true
+          schema:
+            type: boolean
+            default: false
+          required: false
         - name: X-Api-Key
           required: true
           in: header
