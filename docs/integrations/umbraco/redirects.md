@@ -59,4 +59,4 @@ public class CustomUmbracoRedirectsService : UmbracoRedirectsService
 
 ### Registration
 
-See examples of how to register your custom implementations [here](//docs/integrations/umbraco/service-registration#custom-service-registrations).
+See examples of how to register your custom implementations [here](/integrations/umbraco/service-registration#custom-service-registrations).
