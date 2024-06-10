@@ -48,7 +48,7 @@ public IEnterspeedProperty Convert(IPublishedProperty property, string culture)
 
 ## Registering a converter
 
-Converters are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
+Converters are registered in Umbraco via an [IComposer](https://docs.umbraco.com/umbraco-cms/reference/using-ioc).
 
 **Umbraco 9+**
 

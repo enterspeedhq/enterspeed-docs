@@ -48,3 +48,18 @@ public class Startup
     ...
 }
 ```
+
+## Custom service registrations
+
+Sometimes you want to overwrite existing functionality with your own implementation. You can do that by implementing existing interfaces or overwrite existing classes and then register your new custom types. You do that by creating an Umbraco composer class - see example below. You can also read more about [dependency injection in the Umbraco documentation](https://docs.umbraco.com/umbraco-cms/reference/using-ioc)
+
+```csharp
+[ComposeAfter(typeof(EnterspeedComposer))]
+public class CustomComposer : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+    {
+        builder.Services.AddUnique<IUmbracoRedirectsService, CustomUmbracoRedirectsService>(ServiceLifetime.Transient);
+    }
+}
+```

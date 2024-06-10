@@ -59,4 +59,4 @@ public class CustomUmbracoRedirectsService : UmbracoRedirectsService
 
 ### Registration
 
-See examples of how to register your custom implementations [here](//docs/integrations/umbraco/enterspeed-value-converter.md#registering-a-converter).
+See examples of how to register your custom implementations [here](//docs/integrations/umbraco/service-registration#custom-service-registrations).

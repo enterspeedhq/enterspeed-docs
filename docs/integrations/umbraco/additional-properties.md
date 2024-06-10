@@ -57,7 +57,7 @@ public class SlugMetaDataMapper : IEnterspeedPropertyMetaDataMapper
 
 ### Registering your new property service
 
-The mappers are registered in Umbraco via an [IComposer](https://our.umbraco.com/documentation/implementation/composing/).
+The mappers are registered in Umbraco via an [IComposer](https://docs.umbraco.com/umbraco-cms/reference/using-ioc).
 
 **Umbraco 9+**
 
