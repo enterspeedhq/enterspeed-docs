@@ -61,7 +61,8 @@ Read more about reference schemas [here](//docs/key-concepts/referencing-schemas
 
 After the `reference` function it's required to call one of the following functions to define what source entities you want references to.
 
-<details><summary>byOriginIds</summary>
+<details>
+<summary>byOriginIds</summary>
 
 Using the byOriginIds function lets you create a references to a list of source entity by their oringinId.
 
@@ -79,7 +80,8 @@ context
 
 </details>
 
-<details><summary>children</summary>
+<details>
+<summary>children</summary>
 
 The children function creates a reference to all the children of the current source entity. It's basicly a shortcut for `.filter("originParentId eq '{sourceEntity.properties.originId}'")`.
 
@@ -93,7 +95,8 @@ context.reference("page").children("type eq 'subpage'")
 
 </details>
 
-<details><summary>filter</summary>
+<details>
+<summary>filter</summary>
 
 Using the filter function lets you do a dynamic search for source entities you want to make references to.
 
@@ -117,7 +120,8 @@ context
 
 To filter the source entities you are making references to even further you can call some of the following optional functions.
 
-<details><summary>limit</summary>
+<details>
+<summary>limit</summary>
 
 The `limit`` function limits the number of references.
 
@@ -136,7 +140,8 @@ context
 
 </details>
 
-<details><summary>orderBy</summary>
+<details>
+<summary>orderBy</summary>
 
 The order sequence of references.
 
@@ -144,7 +149,7 @@ The order sequence of references.
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+| `orderBy`      | \{ propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
 
 ```js title="reference by filter and orderBy"
 context
@@ -155,7 +160,8 @@ context
 
 </details>
 
-<details><summary>sourceGroup</summary>
+<details>
+<summary>sourceGroup</summary>
 
 The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
 

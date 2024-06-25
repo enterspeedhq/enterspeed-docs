@@ -4,7 +4,6 @@ sidebar_position: 3
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Filter Expressions
 
@@ -20,8 +19,6 @@ If you are using JavaScript and your filter contains expressions, it's often eas
 
 Examples of supported binary operators & expressions:
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -71,11 +68,7 @@ properties.isFeatured eq true
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -125,11 +118,7 @@ properties.isFeatured ne true
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -147,11 +136,7 @@ type eq 'article' and properties.isFeatured eq true
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -169,11 +154,7 @@ type eq 'article' or type eq 'contentPage'
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -205,16 +186,12 @@ properties.articles/any(a: a.isFeatured eq true)
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 :::info
 Please note that our filter expressions only support one use of `any` per expression.  
 E.g. `properties.tags/any(t: t eq 'tag1') or properties.tags/any(t: t eq 'tag2')` is not supported.
 :::
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -226,7 +203,7 @@ properties.favoriteId in (100, 200)
 properties.color in ('blue', 'red', 'green')
 
 // Finds matches in favorites selection (array of integers)
-properties.favoriteId in (${sourceEntity.properties.favoriteIds}})
+properties.favoriteId in (${sourceEntity.properties.favoriteIds})
 
 // Finds matches in colors selection (array of strings)
 properties.color in (${sourceEntity.properties.colors.map(c => `'${c}'`)})
@@ -252,11 +229,7 @@ properties.color in {properties.selectedColors}
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -306,5 +279,3 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>

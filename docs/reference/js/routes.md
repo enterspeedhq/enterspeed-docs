@@ -59,7 +59,8 @@ See list of filter examples [here](//docs/reference/filter-expressions.md)
 
 After the `lookup` function it's required to call `toPromise` to excecute the query and return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-<details><summary>toPromise</summary>
+<details>
+<summary>toPromise</summary>
 
 Using the toPromise function excecutes the query and return a promise you must resolve.
 
@@ -75,7 +76,8 @@ const category: await context
 
 To filter the source entities even further you can call some of the following optional functions.
 
-<details><summary>limit</summary>
+<details>
+<summary>limit</summary>
 
 The `limit` function limits the number of source entities.
 
@@ -94,7 +96,8 @@ const mainCategory: await context
 
 </details>
 
-<details><summary>orderBy</summary>
+<details>
+<summary>orderBy</summary>
 
 The order sequence of the source entities.
 
@@ -102,7 +105,7 @@ The order sequence of the source entities.
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+| `orderBy`      | \{ propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
 
 ```js title="lookup and orderBy"
 const categories: await context
@@ -113,7 +116,8 @@ const categories: await context
 
 </details>
 
-<details><summary>sourceGroup</summary>
+<details>
+<summary>sourceGroup</summary>
 
 The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
 
@@ -175,7 +179,8 @@ url allows you to specify a url from which you can fetch the view from the deliv
 
 To the `url` function you can call some of the following optional functions.
 
-<details><summary>redirects</summary>
+<details>
+<summary>redirects</summary>
 
 The `redirects` function creates incomming redirects to a specific url.
 

@@ -18,7 +18,7 @@ The UmbracoContentEntity is the concrete Umbraco specific implementation of the 
 | Url        | string                                                                                                                                                   | The current URL of the content, either relative or absolute                 |
 | Redirects  | string[]                                                                                                                                                 | Array of redirects for the node                                             |
 | ParentId   | string                                                                                                                                                   | Unique identifier of the parent ie. "1078-en-us"                            |
-| Properties | Dictionary<string, [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/blob/master/documentation/entities/properties/README.md)> | Dictionary of property alias and value is the converted Enterspeed property |
+| Properties | {'Dictionary<string, '}[IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/blob/master/documentation/entities/properties/README.md)> | Dictionary of property alias and value is the converted Enterspeed property |
 
 ### Example
 

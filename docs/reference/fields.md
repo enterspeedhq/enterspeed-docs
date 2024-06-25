@@ -5,7 +5,6 @@ title: Fields
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Fields
 
@@ -28,8 +27,6 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 If you want your schema to be routable by an URL, you can specify the `url` as an expression. Like the example below:
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -66,12 +63,8 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 You are not limited to using the built-in `url` property. You can also use properties defined by your source entity:
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -108,8 +101,6 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 The URL must be a valid URL: either relative `/about-us` or absolute `https://enterspeed.com/about-us`.
 
@@ -123,8 +114,6 @@ If you don't want your schema to be routable by an URL but rather something more
 
 The `handles` is an array, so you can specify multiple handles per schema.
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -161,13 +150,9 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 The handle supports expressions as described for `url`:
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -204,8 +189,6 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 ##### Handle response
 
@@ -259,8 +242,6 @@ If you want to trigger actions across schemas, you must specify the source. The 
 Actions without originId are only supported on tenants with source groups and bulk deploy.
 :::
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -310,15 +291,11 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 ### Destinations
 
 To give an example, you can use `destinations` when you want to send views for, e.g. all content pages or all products to a third-party system for searching.
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -364,5 +341,3 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>

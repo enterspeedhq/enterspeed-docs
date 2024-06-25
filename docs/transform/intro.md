@@ -6,7 +6,6 @@ slug: "/transform"
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # 2 - Transforming data
 
@@ -37,8 +36,6 @@ Views will be generated if you:
 ## Example
 
 Below is a simple example showing how a schema can look for transforming _source entities_ with the type of `frontPage`.
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="ingest" label="Source entity" default>
 
@@ -92,7 +89,5 @@ When querying the Delivery API with `url=/frontPage` the output will be:
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 **_Next, let's start learning how to design a schema. [Go to designing a schema](./transform/designing-a-schema)_**

@@ -5,7 +5,6 @@ title: Relewise
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Relewise
 
@@ -52,8 +51,6 @@ To help you bulding the right model, Enterspeed can provide you with IntelliSens
 
 ## Example of usage
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -106,11 +103,7 @@ as it provides IntelliSense to map the complex models.
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -158,8 +151,6 @@ as it provides IntelliSense to map the complex models.
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 ## What's supported
 

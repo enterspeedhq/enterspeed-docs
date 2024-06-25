@@ -5,7 +5,6 @@ title: Elasticsearch
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Elasticsearch
 
@@ -36,8 +35,6 @@ Table of available options, that you can optionally specify, if needed for your 
 
 ## Example of usage
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -102,5 +99,3 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
