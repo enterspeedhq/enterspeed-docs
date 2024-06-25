@@ -152,6 +152,5 @@ Once a user submits the form, the content is sent to an endpoint handling the fo
 If you have any questions, don't hesitate to contact us. You have several options, you can:
 
 - Send us an email: [support@enterspeed.com](mailto:support@enterspeed.com)
-- Submit a ticket: [Create a new ticket](https://support.enterspeed.com/support/tickets/new)
 - Use our contact form: [Go to Enterspeed.com](https://www.enterspeed.com/contact)
 - Chat with us: Click the icon in the bottom right corner.
