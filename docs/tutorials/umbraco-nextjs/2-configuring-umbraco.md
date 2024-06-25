@@ -20,7 +20,7 @@ Sign into your Umbraco instance and navigate to the backoffice.
 
 In order to send data to Enterspeed, we need to install the Enterspeed Umbraco package. Go to the **Packages** tab in the top menu and search for **“Enterspeed Umbraco source integration”**. Select the package and hit install.
 
-:::caution
+:::warning
 For production setups, we recommend installing the NuGet package instead. You can find it here: [Enterspeed.Source.UmbracoCms.V7](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V7/) or  [Enterspeed.Source.UmbracoCms.V8](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V8/)
 :::
 

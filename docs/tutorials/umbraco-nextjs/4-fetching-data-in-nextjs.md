@@ -30,7 +30,7 @@ ENTERSPEED_PREVIEW_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE]
 ENTERSPEED_PREVIEW_SECRET = [A_SECRET_TOKEN_OF_YOUR_CHOICE]
 ```
 
-:::warning
+:::danger
 For a production environment, your API key should be injected on build time.
 :::
 

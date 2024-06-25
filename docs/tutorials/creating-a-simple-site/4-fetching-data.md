@@ -9,7 +9,7 @@ Now it's time to get the data into the frontend. If you wish you can copy the de
 
 ## Setting up the demo project
 
-:::caution
+:::warning
 This project uses Netlify functions to securely fetch data from Enterspeed. If you don't wish to use Netlify functions simply move the `enterspeed.js` to another folder and remove the `netlify-cli` dependency.
 :::
 
@@ -28,7 +28,7 @@ Create a file called **.env.local** and insert your environment API key generate
 ENTERSPEED_PRODUCTION_ENVIRONMENT_API_KEY = [YOUR_ENTERSPEED_API_KEY_HERE];
 ```
 
-:::warning
+:::danger
 For a production environment, your API key should be injected on build time or via a serverless function.
 :::
 

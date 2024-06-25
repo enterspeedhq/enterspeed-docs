@@ -39,7 +39,7 @@ Lastly, but certainly not least, we need to define which data we want in our sch
 
 The name of the object is the name we're going to use in our application. As you can see in the example, we have chosen to rename **pageTitle** to **headline** for our use case.
 
-:::caution
+:::warning
 Notice how we refer to a alias called **umbraco-{item.contentType}**. This is our partial schema **umbraco-blockText** we are referencing.
 
 If we don't create this partial schema, the ContentPage-schema won't work.
@@ -118,7 +118,7 @@ export default {
 
 ### umbraco-blockText (Partial schema)
 
-:::caution
+:::warning
 Notice how the alias is automatically generated as **umbracoBlockText**.
 
 Click the lock to the right in the **Create new partial schema** dialog and change the alias to **umbraco-blockText**, so that it matches the reference we created in the ContentPage-schema.
