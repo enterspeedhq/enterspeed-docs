@@ -5,7 +5,6 @@ title: Typesense
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Typesense
 
@@ -37,8 +36,6 @@ On Enterspeed schema level you have the following options:
 
 ## Example of usage
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -95,5 +92,3 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>

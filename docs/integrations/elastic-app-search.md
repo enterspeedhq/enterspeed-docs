@@ -5,7 +5,6 @@ title: Elastic App Search
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Elastic App Search
 
@@ -35,8 +34,6 @@ Table of available options, that you can optionally specify, if needed for your 
 
 ## Example of usage
 
-<BrowserOnly>
-{() =>
 <Tabs>
 <TabItem value="js" label="JavaScript" default>
 
@@ -99,8 +96,6 @@ export default {
 
 </TabItem>
 </Tabs>
-}
-</BrowserOnly>
 
 ## Elastic App Search specific properties
 

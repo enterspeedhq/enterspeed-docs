@@ -56,7 +56,8 @@ See list of filter examples [here](//docs/reference/filter-expressions.md)
 
 After the `lookup` function it's required to call `toPromise` to excecute the query and return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-<details><summary>toPromise</summary>
+<details>
+<summary>toPromise</summary>
 
 Using the toPromise function excecutes the query and return a promise you must resolve.
 
@@ -72,7 +73,8 @@ const newsArticles: await context
 
 To filter the source entities even further you can call some of the following optional functions.
 
-<details><summary>limit</summary>
+<details>
+<summary>limit</summary>
 
 The `limit` function limits the number of source entities.
 
@@ -91,7 +93,8 @@ const newsArticles: await context
 
 </details>
 
-<details><summary>orderBy</summary>
+<details>
+<summary>orderBy</summary>
 
 The order sequence of the source entities.
 
@@ -99,7 +102,7 @@ The order sequence of the source entities.
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+| `orderBy`      | \{ propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
 
 ```js title="lookup and orderBy"
 const newsArticles: await context
@@ -110,7 +113,8 @@ const newsArticles: await context
 
 </details>
 
-<details><summary>sourceGroup</summary>
+<details>
+<summary>sourceGroup</summary>
 
 The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
 
@@ -224,7 +228,8 @@ Read more about reference schemas [here](//docs/key-concepts/referencing-schemas
 
 After the `reference` function it's required to call one of the following functions to define what source entities you want references to.
 
-<details><summary>byOriginId</summary>
+<details>
+<summary>byOriginId</summary>
 
 Using the byOriginId function lets you create a reference to a source entity by its oringinId.
 
@@ -242,7 +247,8 @@ contentTeaser: context
 
 </details>
 
-<details><summary>byOriginIds</summary>
+<details>
+<summary>byOriginIds</summary>
 
 Using the byOriginIds function lets you create a references to a list of source entity by their oringinId.
 
@@ -260,7 +266,8 @@ contentTeaser: context
 
 </details>
 
-<details><summary>children</summary>
+<details>
+<summary>children</summary>
 
 The children function creates a reference to all the children of the current source entity. It's basicly a shortcut for `.filter("originParentId eq '{sourceEntity.properties.originId}'")`.
 
@@ -274,7 +281,8 @@ childPages: context.reference("page").children("type eq 'subpage'")
 
 </details>
 
-<details><summary>filter</summary>
+<details>
+<summary>filter</summary>
 
 Using the filter function lets you do a dynamic search for source entities you want to make references to.
 
@@ -294,7 +302,8 @@ newsTeasers: context
 
 </details>
 
-<details><summary>parent</summary>
+<details>
+<summary>parent</summary>
 
 The parent function creates a reference to the parent of the current source entity. It's basicly a shortcut for `.filter("originId eq '{sourceEntity.properties.originParentId}'")`.
 
@@ -306,7 +315,8 @@ parentPage: context
 
 </details>
 
-<details><summary>self</summary>
+<details>
+<summary>self</summary>
 
 The self method creates a reference to a view created by the specified schema on the current source entity. The helper method is equivalent to calling `.byOriginId(sourceEntity.originId)`.
 
@@ -322,7 +332,8 @@ selfPage: context
 
 To filter the source entities you are making references to even further you can call some of the following optional functions.
 
-<details><summary>limit</summary>
+<details>
+<summary>limit</summary>
 
 The `limit` function limits the number of references.
 
@@ -341,7 +352,8 @@ topFiveNewsTeasers: context
 
 </details>
 
-<details><summary>orderBy</summary>
+<details>
+<summary>orderBy</summary>
 
 The order sequence of references.
 
@@ -349,7 +361,7 @@ The order sequence of references.
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+| `orderBy`      | \{ propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
 
 ```js title="reference by filter and orderBy"
 newsArticles: context
@@ -360,7 +372,8 @@ newsArticles: context
 
 </details>
 
-<details><summary>sourceGroup</summary>
+<details>
+<summary>sourceGroup</summary>
 
 The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
 

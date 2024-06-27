@@ -34,7 +34,8 @@ Note that `reprocess` triggers whenever the source entity is changed. This means
 
 After the `reprocess` function it's required to call one of the following functions to define what source entities you want to reprocess.
 
-<details><summary>byOriginId</summary>
+<details>
+<summary>byOriginId</summary>
 
 Use the `byOriginId` function to reprocess a specific entity based on its originId.
 
@@ -52,7 +53,8 @@ context
 
 </details>
 
-<details><summary>bySchema</summary>
+<details>
+<summary>bySchema</summary>
 
 Use the `bySchema` function to reprocess all source entities a specific schema has a trigger on.
 
@@ -66,7 +68,8 @@ context
 
 </details>
 
-<details><summary>filter</summary>
+<details>
+<summary>filter</summary>
 
 Using the `filter` function lets you do a dynamic search for source entities you want to reprocess.
 
@@ -86,7 +89,8 @@ See list of filter examples [here](//docs/reference/filter-expressions.md)
 
 </details>
 
-<details><summary>parent</summary>
+<details>
+<summary>parent</summary>
 
 Use the `parent` function to reprocess the parent entity based on its originParentId.
 
@@ -102,7 +106,8 @@ context
 
 To filter the source entities you want to reprocess even further you can call some of the following optional functions.
 
-<details><summary>limit</summary>
+<details>
+<summary>limit</summary>
 
 The `limit` function limits the number of source entities.
 
@@ -121,7 +126,8 @@ The `limit` function limits the number of source entities.
 
 </details>
 
-<details><summary>orderBy</summary>
+<details>
+<summary>orderBy</summary>
 
 The `orderBy` function sorts the source entities. This is typically used in combination with `limit`.
 
@@ -129,7 +135,7 @@ The `orderBy` function sorts the source entities. This is typically used in comb
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `orderBy`      | { propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
+| `orderBy`      | \{ propertyName: string, direction: "asc" \| "desc" } | Allows you to specify your desired sorting order.        |
 
 ```js title="reprocess by filter and orderBy"
  context
@@ -140,7 +146,8 @@ The `orderBy` function sorts the source entities. This is typically used in comb
 
 </details>
 
-<details><summary>sourceGroup</summary>
+<details>
+<summary>sourceGroup</summary>
 
 Defines the source group of an source entity to process. If the source entity you want to reprocess is located in another source group than the current source entity, you must specific the source group.
 

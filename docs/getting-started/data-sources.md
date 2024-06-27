@@ -22,7 +22,7 @@ On each data source, you can see how many source entities have been ingested. A 
 
 You can delete all these entities by clicking on the three dots next to the data source and clicking _Delete all entities_.
 
-:::warning
+:::danger
 Deleting entities, deleting a source group or deleting a data source will permanently delete the data and can't be undone.
 :::
 

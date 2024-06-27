@@ -7,7 +7,7 @@ title: Intro
 
 In this tutorial, we’re going to see how we can set up a simple site using Enterspeed and (vanilla) JavaScript. We've made a [demo website](https://enterspeed-vanilla-js.netlify.app/), which has a list of blog posts.
 
-:::caution
+:::warning
 The demo website is made as a simple SPA (Single Page Application) that renders everything client-side. Internal links only work by "clicking on them" and not by visiting the URL directly (this also includes refreshing and using the history back-button).
 
 The demo website is purely for illustration purposes. We recommend using a production-ready framework like Next.js for your actual project.

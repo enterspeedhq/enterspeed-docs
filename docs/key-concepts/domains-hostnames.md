@@ -27,7 +27,7 @@ A domain can have multiple hostnames if the same site is available on multiple h
 
 ![Multiple hostnames pr domain](/img/docs/key-concepts/hostnames.png)
 
-:::warning
+:::danger
 Don't use the same domain for hostnames associated with different sites, as domains are site specific.
 
 Using the same domain for hostnames associated with different sites can result in data from the wrong site being returned from the delivery API if two source entities have the same relative path.

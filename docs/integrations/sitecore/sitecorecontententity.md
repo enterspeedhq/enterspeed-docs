@@ -18,7 +18,7 @@ The SitecoreContentEntity is the concrete Sitecore-specific implementation of th
 | Url        | string                                                                                                                                                   | The current URL of the content, either relative or absolute                       |
 | Redirects  | string[]                                                                                                                                                 | Array of redirects for the item                                                   |
 | ParentId   | string                                                                                                                                                   | Unique identifier of the parent e.g. `e61ddc8e-90ad-4d31-bb00-024987a5f2d1-en-us` |
-| Properties | Dictionary<string, [IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/blob/master/documentation/entities/properties/README.md)> | Dictionary of property alias and value is the converted Enterspeed property       |
+| Properties | {'Dictionary<string, '}[IEnterspeedProperty](https://github.com/enterspeedhq/enterspeed-sdk-dotnet/blob/master/documentation/entities/properties/README.md)> | Dictionary of property alias and value is the converted Enterspeed property       |
 
 ### Example
 
@@ -63,7 +63,7 @@ To process Sitecore specific properties we have added a `metaData` object that c
 | fullPath           | string[]                 | Ancestors id's                                                           |
 | languages          | string[]                 | Langauge versions available                                              |
 | isAccessRestricted | boolean                  | Value determining if the item is restricted for anonymous users/visitors |
-| accessRestrictions | Dictionary<string, bool> | List of users and, and if they can read                                  |
+| accessRestrictions | {'Dictionary<string, bool>'} | List of users and, and if they can read                                  |
 
 ```json
 {

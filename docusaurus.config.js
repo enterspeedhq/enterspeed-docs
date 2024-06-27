@@ -1,5 +1,5 @@
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const lightCodeTheme = require('prism-react-renderer').themes.github;
+const darkCodeTheme = require('prism-react-renderer').themes.dracula;
 
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -15,6 +15,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     favicon: "img/favicon.svg",
     organizationName: "enterspeedhq",
     projectName: "enterspeed-docs",
+    markdown: {
+      mdx1Compat: {
+        comments: false,
+        admonitions: false,
+        headingIds: false,
+      },
+    },
     plugins: [
       require.resolve("docusaurus-plugin-image-zoom"),
       [
@@ -195,7 +202,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
         prism: {
           theme: lightCodeTheme,
           darkTheme: darkCodeTheme,
-          additionalLanguages: ["csharp", "powershell"]
+          additionalLanguages: ["csharp", "powershell", "json"]
         },
         announcementBar: {
           id: "support_header",
