@@ -6,7 +6,7 @@ sidebar_position: 2
 
 By default JavaScript schemas are created with a `@type` expression, describing the type of schema and providing IntelliSense in the editor using [JSDoc](https://jsdoc.app/).
 
-```js title="@type expression example"
+```js title="@type expression"
 /** @type {Enterspeed.FullSchema} */
 ```
 
@@ -26,7 +26,7 @@ All schema types also comes in a generic version where you can provide the type 
 
 First of you need to create [type definition](https://jsdoc.app/tags-typedef) describing your source entity.
 
-```js title="@type definition example"
+```js title="@type definition"
 /** @typedef {object} ContentPage
  * @property {string} title
  * @property {string} content
@@ -46,7 +46,7 @@ If you don't want to create your type definitions manually, there are many free 
 
 In order to use your custom type definition you simply use the generic version of schema type you are working with (FullSchema, PartialSchema, ...).
 
-```js title="Generic @type expression example"
+```js title="Generic @type expression"
 /** @type {Enterspeed.FullSchema<ContentPage>} */
 ```
 
