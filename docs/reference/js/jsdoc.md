@@ -17,7 +17,7 @@ With the `@type` expression you get IntelliSense on all the functions in your sc
 However, since Enterspeed is so flexible and you can ingest all types of data, Enterspeed doesn't know about the custom properties you have ingested in the source entities and therefore can't provide IntelliSense on these properties by default.
 
 :::tip
-The schema types are public available from our [@enterspeed/js-schema-types NPM package](https://www.npmjs.com/package/@enterspeed/js-schema-types).
+The schema types are public available from our NPM package: [@enterspeed/js-schema-types](https://www.npmjs.com/package/@enterspeed/js-schema-types).
 :::
 
 ## Creating your own type definitions
