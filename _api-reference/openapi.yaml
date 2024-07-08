@@ -39,7 +39,7 @@ tags:
       The Ingest API can also be used to `DELETE` already ingested data from Enterspeed.
   - name: Routes
     description:
-      The routes API is what you use to `GET` all available routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap.
+      The routes API is what you use to `GET` all available URL routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap.
 
 
       Before you can fetch your routes from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
@@ -457,7 +457,7 @@ paths:
                     redirect: null
                     updatedAt: "2023-01-18T10:03:17.8862119Z"
                   - url: /fairy-tales/the-leap-frog/
-                    redirect: null
+                    redirect: /old-url/the-leap-frog/
                     updatedAt: "2023-07-03T13:23:41.0559142Z"
 
         "401":
@@ -693,6 +693,8 @@ components:
           $ref: "#/components/schemas/PageInfoResponse"
         results:
           type: array
+          items:
+            $ref: "#/components/schemas/UrlRouteItem"
     PagedTokenResult:
       type: object
       properties:
@@ -700,6 +702,17 @@ components:
           type: string
         results:
           type: array
+          items:
+            $ref: "#/components/schemas/UrlRouteItem"
+    UrlRouteItem:
+      type: object
+      properties:
+        url:
+          type: string
+        redirect:
+          type: string
+        updatedAt:
+          type: string
     RoutesResponse:
       $ref: "#/components/schemas/PagedResult"
     RoutesV2Response:
