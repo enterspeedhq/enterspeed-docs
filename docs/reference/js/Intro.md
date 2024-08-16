@@ -76,7 +76,6 @@ When debugging JavaScript it's often useful to use the [console object](https://
 
 When using the Test schema feature in the Enterspeed Management App, the following methods are supported:
 
-- assert
 - debug
 - error
 - info
