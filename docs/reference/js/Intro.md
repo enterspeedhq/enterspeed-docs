@@ -70,6 +70,41 @@ export default {
 }
 ```
 
+## Console object
+
+When debugging JavaScript it's often useful to use the [console object](https://developer.mozilla.org/en-US/docs/Web/API/console) to print out values to the console. 
+
+When using the Test schema feature in the Enterspeed Management App, the following methods are supported:
+
+- debug
+- error
+- info
+- log
+- trace
+- warn
+
+```js title="JavaScript schema with conole usage"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['page']);
+  },
+  routes: function({url}, context) {
+    context.url(url);
+  },
+  properties: function ({properties: p}, context) {
+    console.log('block type', p.block.type)
+    return {
+      title: p.title,
+      block: context.partial(`block-${p.block.type}`, p.block),
+      aboutUsPage: context.reference('page').byOriginId(p.aboutUsPage.id)
+    };
+  }
+}
+```
+
+If you use any of the other native console methods, the schema is still working but the methods will just not output anything.
+
 ## Limitations
 
 Now, we said that you have all the power of the JavaScript language available for you in your JavaScript schemas, but we have added some limitations because of security.
