@@ -18,9 +18,15 @@ The fastest way to get up and running is to install the Enterspeed Umbraco integ
 **NuGet:**  
 [Umbraco 7](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v7/)  
 [Umbraco 8](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.v8/)  
-[Umbraco 9+](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms/)
+[Umbraco 9+](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms/) 
+
 
 :::info
+#### Umbraco 9+ Nuget package (Enterspeed.Source.UmbracoCms)
+**Version 5.x:** Use this if your Umbraco version is 14 or higher. <br/>
+**Version 4.x:** Use this if your Umbraco version is 13 or lower.
+
+#### Umbraco Cloud
 Using Umbraco Cloud? If you have used the Umbraco Cloud UaaS.cmd tool to set up your solution,
 you need to manually update the referenced dlls after installing the Enterspeed NuGet package. Specifically, Microsoft.Bcl.AsyncInterfaces.dll needs to be updated.
 
