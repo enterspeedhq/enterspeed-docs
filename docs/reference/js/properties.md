@@ -50,7 +50,7 @@ Note the `lookup` is an async function so you have to use [async/await](https://
 | --------------- | ------ | ------------------------------------------------------------ |
 | `filter`        | string | A filtering criteria.                              |
 
-See list of filter examples [here](//docs/reference/filter-expressions.md)
+See list of filter examples [here](/reference/filter-expressions.md)
 
 #### Required function calls
 
@@ -169,7 +169,7 @@ The partial mapping property type allows for dynamically including partial schem
 :::tip
 Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. E.g. if metadata (title, description, etc.) is the same across different entity types, but the data lives on the entity itself.
 
-Read more about partial schemas [here](//docs/key-concepts/partial-schemas.md)
+Read more about partial schemas [here](/key-concepts/partial-schemas.md)
 :::
 
 `partial(schemaAlias, input)`
@@ -213,7 +213,7 @@ The `reference` function is the starting point where you can use our fluent API 
 :::tip
 Reference schemas are typically used when you are mapping data from another entity. E.g. a page has a reference to another page entity or media entity.
 
-Read more about reference schemas [here](//docs/key-concepts/referencing-schemas.md)
+Read more about reference schemas [here](/key-concepts/referencing-schemas.md)
 :::
 
 `reference(schemaAlias)`
@@ -292,7 +292,7 @@ Using the filter function lets you do a dynamic search for source entities you w
 | ------------- | ------ | -------------------------------------------------- |
 | `filter`      | string | A filtering criteria.                              |
 
-See list of filter examples [here](//docs/reference/filter-expressions.md)
+See list of filter examples [here](/reference/filter-expressions.md)
 
 ```js title="reference by filter"
 newsTeasers: context

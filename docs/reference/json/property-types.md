@@ -243,7 +243,7 @@ Particular lookup filter type allows you to be more flexible with your matching 
 | source   | No        | Allows you to define a different source as the property. The `source` should be equal to the desired source group alias, where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
 
 
-**See list of filter examples [here](//docs/reference/filter-expressions.md)**
+**See list of filter examples [here](/reference/filter-expressions.md)**
 
 ### Additional
 
@@ -340,7 +340,7 @@ In order to reference desired source entity, you can use `alias` of the schema a
 :::tip
 Reference schemas are typically used when you are mapping data from another entity. Eg. a page has a reference another page entity or media entity. 
 
-Read more about reference schemas [here](//docs/key-concepts/referencing-schemas.md)
+Read more about reference schemas [here](/key-concepts/referencing-schemas.md)
 :::
 
 ### Fields
@@ -448,7 +448,7 @@ The partial mapping property type allows for dynamically including partial schem
 :::tip
 Partial schemas are typically used when you want a reusable schema for mapping data that is part of the same entity. Eg. meta data (title, description, ...) is the same across different entity types but the data lives on the entity it self.
 
-Read more about partial schemas [here](//docs/key-concepts/partial-schemas.md)
+Read more about partial schemas [here](/key-concepts/partial-schemas.md)
 :::
 
 ### Fields
