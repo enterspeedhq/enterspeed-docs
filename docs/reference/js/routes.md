@@ -53,7 +53,7 @@ Note the `lookup` is an async function so you have to use [async/await](https://
 | --------------- | ------ | ------------------------------------------------------------ |
 | `filter`        | string | A filtering criteria.                              |
 
-See list of filter examples [here](//docs/reference/filter-expressions.md)
+See list of filter examples [here](/reference/filter-expressions.md)
 
 #### Required function calls
 

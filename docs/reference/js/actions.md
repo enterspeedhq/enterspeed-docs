@@ -79,7 +79,7 @@ Using the `filter` function lets you do a dynamic search for source entities you
 | ------------- | ------ | -------------------------------------------------- |
 | `filter`      | string | Your filtering criteria.                           |
 
-See list of filter examples [here](//docs/reference/filter-expressions.md)
+See list of filter examples [here](/reference/filter-expressions.md)
 
 ```js title="reprocess by filter"
  context
