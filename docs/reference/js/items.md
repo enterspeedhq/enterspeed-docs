@@ -93,6 +93,15 @@ context.reference("page").children()
 context.reference("page").children("type eq 'subpage'")
 ```
 
+:::note
+The `children` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
+
+The default limits are:
+
+- Free & Premium plans: 100 items  
+- Enterprise plan: 500 items
+:::
+
 </details>
 
 <details>
@@ -113,6 +122,15 @@ context
     .reference("newsTeaser")
     .filter("type eq 'newsArticle'")
 ```
+
+:::note
+The `filter` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
+
+The default limits are:
+
+- Free & Premium plans: 100 items  
+- Enterprise plan: 500 items
+:::
 
 </details>
 
@@ -215,6 +233,6 @@ The start index is inclusive.
    - **Result:** `[I, H, G]`
 
 # Defaults
-- By default, collection size is up to 15.000 items, can be increased per tenant basis. Please reach out to Enterspeed if needed.
+- Maximum collection size is 10.000 items, but it can be increased per tenant basis. Please reach out to Enterspeed if needed.
 - Default slice size during delivery request is 10.
 - Maximum slice size during delivery request is 100.

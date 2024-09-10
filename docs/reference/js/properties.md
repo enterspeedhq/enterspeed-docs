@@ -44,6 +44,15 @@ Note the `lookup` is an async function so you have to use [async/await](https://
 
 `lookup(filter)`
 
+:::note
+The `filter` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
+
+The default limits are:
+
+- Free & Premium plans: 100 items  
+- Enterprise plan: 500 items
+:::
+
 #### Parameters
 
 | Parameter       | Type   | Description                                                  |
@@ -279,6 +288,15 @@ childPages: context.reference("page").children()
 childPages: context.reference("page").children("type eq 'subpage'")
 ```
 
+:::note
+The `children` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
+
+The default limits are:
+
+- Free & Premium plans: 100 items  
+- Enterprise plan: 500 items
+:::
+
 </details>
 
 <details>
@@ -299,6 +317,15 @@ newsTeasers: context
               .reference("newsTeaser")
               .filter("type eq 'newsArticle'")
 ```
+
+:::note
+The `filter` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
+
+The default limits are:
+
+- Free & Premium plans: 100 items  
+- Enterprise plan: 500 items
+:::
 
 </details>
 
