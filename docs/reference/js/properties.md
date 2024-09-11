@@ -45,7 +45,7 @@ Note the `lookup` is an async function so you have to use [async/await](https://
 `lookup(filter)`
 
 :::note
-The `filter` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
+The `lookup` function is limited to a maximum number of items to return, based on the tenant plan. It can however be increased per tenant basis. Please reach out to Enterspeed if needed.
 
 The default limits are:
 
