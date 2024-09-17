@@ -402,7 +402,7 @@ newsArticles: context
 <details>
 <summary>sourceGroup</summary>
 
-The sourceGroup function lets you specify the source group. By default the source group of the current source entity is used.
+The `sourceGroup` function lets you specify the source group. By default the source group of the current source entity is used.
 
 #### Parameters
 
@@ -417,6 +417,23 @@ newsTeasers: context
               .reference("newsTeaser")
               .filter("type eq 'newsArticle'")
               .sourceGroup("anotherSourceGroup")
+```
+
+</details>
+
+<details>
+<summary>first</summary>
+
+The `first` function return the first item in the result set. The item i returned as an object instead of an array with one item.
+
+The function must always be called as the last call in the chain.
+
+```js title="reference to the first news teaser"
+newsTeaser: context
+              .reference("newsTeaser")
+              .filter("type eq 'newsArticle'")
+              .orderBy({ propertyName: "properties.createdDate", direction: "desc"})
+              .first()
 ```
 
 </details>
