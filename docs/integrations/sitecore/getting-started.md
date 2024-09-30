@@ -14,7 +14,7 @@ This integration takes care of calling the Enterspeed Ingest API when changes oc
 ## Installation
 **Prerequisite:** Sitecore 8 or 9
 
-:::info
+:::info<>
 If your want to use Sitecore 10 with Enterspeed please reach out to us as we would love to look into it.
 :::
 
@@ -46,23 +46,23 @@ Once installed, your Sitecore instance will be loaded with a new item in ```/Sit
 You will have to create a Site configuration, for each Enterspeed configuration you would like to create. 
 
 In the Site configuration file, we have 7 fields
-* API Base Url
+* API Base Url (required)
 
     > This is the api url for Enterspeed. Unless you have gotten a specific Enterspeed endpoint to call, please use: https://api.enterspeed.com
 
-* API Key
+* API Key (required)
    
     > This is the Source API key. This API key can be found in the settings section of your tenant in https://app.enterspeed.com/ (Settings/Data sources)
 
 * Enabled Sites
 
-    > With this field you are defining what area of the content is covered by the Site configuration. All items within this area, are pushed to the source defined in this configuration.
+    > In this field, you define the area of content covered by the site configuration. All items within this area are pushed to the source specified in this configuration. Selected items must share the same fullPath as the rootPath(s) configured in your site configuration within the Sitecore config files.
 
 * Media Base Url
     
     > Base url for media being pushed to Enterspeed. This would be typically be a url provided by your CDN for media and file hosting
 
-* Site Base Url
+* Site Base Url (required)
 
     > Base Url for your site.
 
@@ -73,3 +73,9 @@ In the Site configuration file, we have 7 fields
 * Enable Preview
    
     > With this checkbox you are defining where this configuration is for a preview site.
+
+
+## First load after installing the Sitecore connector. 
+A table called EnterspeedJobs must be created so that jobs can be processed asynchronously. This table is created in the master database, meaning the SQL user specified in the connection string must have the necessary permissions to create tables (e.g., db owner).
+
+Ensure that the master database user has temporary rights to create tables in your master database.
