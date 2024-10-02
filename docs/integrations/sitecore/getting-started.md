@@ -45,8 +45,6 @@ The NuGet package installs config files into this directory; verify that this fo
 Once installed, please navigate to ```/sitecore/templates/System/Enterspeed``` in the Master database, and publish the item, including all descendants.
 These templates must exist in the Web database as a prerequisite for Enterspeed configuration items.
 
-
-
 You will see that your Sitecore instance is loaded with a new item in ```/Sitecore/system``` called "Enterspeed Configuration".
 
 You will have to create a Site configuration, for each Enterspeed configuration you would like to create. 
