@@ -14,7 +14,7 @@ This integration takes care of calling the Enterspeed Ingest API when changes oc
 ## Installation
 **Prerequisite:** Sitecore 8 or 9
 
-:::info<>
+:::info
 If your want to use Sitecore 10 with Enterspeed please reach out to us as we would love to look into it.
 :::
 
