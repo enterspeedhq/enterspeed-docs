@@ -49,8 +49,9 @@ export default {
   },
   actions: function (sourceEntity, context) {
     context.destination('algolia').options({
-		objectId: `city-${sourceEntity.originId}`
-	});
+        objectId: `city-${sourceEntity.originId}`
+        partialUpdate: false
+    });
   },
   properties: function ({url, properties: p}, context) {
     return {
@@ -107,8 +108,8 @@ export default {
   },
   actions: function (sourceEntity, context) {
     context.destination('algolia').options({
-		objectId: `city-${sourceEntity.originId}`
-	});
+      objectId: `city-${sourceEntity.originId}`
+    });
   },
   properties: function ({url, properties: p}, context) {
     return {
