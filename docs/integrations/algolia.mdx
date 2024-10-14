@@ -33,6 +33,8 @@ Table of available options, that you can optionally specify, if needed for your 
 | ------------------------------------- | -------------------------------------- |
 | objectId                              | By default Enterspeed uses view id as the value for object id in Algolia. You can override default object id by providing value for this option. |
 | indexName                             | Option to override what index must be used for current view. By default `IndexName` of Algolia configuration is used. |
+| partialUpdate                         | A boolean indicating if the update of the Algolia record should be a partial update. [See Algolia documentation](https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/). |
+| createIfNotExists                     | A boolean indicating if the partial update should create a record in Algolia if it does not already exists. Only used if `partialUpdate` is set to `true`|
 
 ## Example of usage
 
@@ -47,8 +49,9 @@ export default {
   },
   actions: function (sourceEntity, context) {
     context.destination('algolia').options({
-		objectId: `city-${sourceEntity.originId}`
-	});
+        objectId: `city-${sourceEntity.originId}`
+        partialUpdate: false
+    });
   },
   properties: function ({url, properties: p}, context) {
     return {
@@ -105,8 +108,8 @@ export default {
   },
   actions: function (sourceEntity, context) {
     context.destination('algolia').options({
-		objectId: `city-${sourceEntity.originId}`
-	});
+      objectId: `city-${sourceEntity.originId}`
+    });
   },
   properties: function ({url, properties: p}, context) {
     return {
