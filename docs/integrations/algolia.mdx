@@ -36,6 +36,13 @@ Table of available options, that you can optionally specify, if needed for your 
 | partialUpdate                         | A boolean indicating if the update of the Algolia record should be a partial update. [See Algolia documentation](https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/). |
 | createIfNotExists                     | A boolean indicating if the partial update should create a record in Algolia if it does not already exists. Only used if `partialUpdate` is set to `true`|
 
+:::info
+Algolia does not support partial deletes. This means that if you are using partial updates and you want to clear the attributes from the partial update, 
+you should not delete the source entity that triggers the partial update in Enterspeed. 
+
+Instead you should update the source entity and set the properties to default values, like null, an empty string, an empty array and so on.
+:::
+
 ## Example of usage
 
 <Tabs>
