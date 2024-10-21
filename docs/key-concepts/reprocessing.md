@@ -7,9 +7,9 @@ sidebar_label: Reprocessing
 
 As Enterspeed preprocesses views when source entities are ingested into Enterspeed or when a schema is deployed, we need to reprocess views when dependencies are updated or deleted.
 
-Let's say you have a `product` source entity ingested from a PIM symstem and you want to create a schema to map the product and to enrich the product with some related `contentBlock`s from a CMS system. 
+Let's say you have a `product` source entity ingested from a PIM system and you want to create a schema to map the product and to enrich the product with some related `contentBlock`s from a CMS system. 
 
-The schema could look somewhat like below.
+The schema could look somewhat like this.
 
 ```js title="Schema with dependencies"
 /** @type {Enterspeed.FullSchema} */
@@ -125,7 +125,7 @@ properties: function (sourceEntity, context) {
 }
 ```
 
-So whenever you create references based on the `filter` function, you still need to reprocess the referencing view if you want the list of references to be updated the dependencies are ingested or deleted, just like with the `lookup` function.
+So whenever you create references based on the `filter` function, you still need to reprocess the referencing view if you want the list of references to be updated when new dependencies are ingested or existing once are deleted, just like with the `lookup` function.
 
 In other words, when the referenced source entities holds to reference key, in this case the `contentBlock`s has the reference to the product via the `sku` property, then you need to search using the `filter` function and you need to reprocess the referencing view.
 
@@ -156,9 +156,9 @@ When working with referenced dependencies from a `byOriginId` or `byOriginIds` c
 :::
 
 ## Reprocess actions
-We have now talked about dependencies, the differnt types of dependencies and when you need to reprocess and when you don't need to reprocess. So we just need the last part - How do we reprocess other schemas when a dependecy changes?
+We have now talked about dependencies, the different types of dependencies and when you need to reprocess and when you don't need to reprocess. So we just need the last part - How do we reprocess other schemas when a dependecy changes?
 
-To do that we use the [reprocess action](/reference/js/actions) and the [reprocess action](/reference/js/actions#reprocess) functions.
+To do that we use the [action](/reference/js/actions) and the [reprocess](/reference/js/actions#reprocess) functions.
 
 Here's an example of a `contentBlock` schema that will reprocess the `product` schema for the specific `sku` value whenever the `contentBlock` is updated.
 
