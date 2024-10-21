@@ -5,7 +5,7 @@ sidebar_label: Reprocessing
 
 # Reprocessing
 
-As Enterspeed preprocesses views when source entities are ingested into Enterspeed or when a schema is deployed, we need to reprocess views when dependencies are updated or deleted.
+When Enterspeed preprocesses views - which happens either when source entities are ingested or when a schema is deployed -, we also need to reprocess views whenever dependencies are updated or deleted.
 
 Let's say you have a `product` source entity ingested from a PIM system and you want to create a schema to map the product and to enrich the product with some related `contentBlock`s from a CMS system. 
 
@@ -38,21 +38,21 @@ export default {
 }
 ```
 
-For this schema we have the `product` as trigger and the `contentBlock`s we get from the `lookup`, are dependencies. 
+For this schema, the `product` is the trigger and the `contentBlock`s, which we get from the `lookup`, are the dependencies. 
 
-The trigger on the `product` source entity makes sure that the schema is triggered everytime the `product` is updated and our view will then be updated. But what if the related `contentBlock`s are updated or related `contentBlocks`s are added or removed? Well, schemas does not automatically trigger when dependencies changes, so in this case the `product` schema will not be triggered and our view will not be updated. We need to handle that in the schemas ourself.
+The trigger on the `product` source entity makes sure that the schema is triggered every time the `product` is updated, and our view will then be updated too. But what if the related `contentBlock`s are updated, added, or removed? Well, schemas don't automatically trigger when dependencies change, so in this case the `product` schema will not be triggered, and our view will not be updated. We need to handle that in the schemas ourselves.
 
-Before we look into have how we can update views when dependencies are changed, let's first take a deeper look at the dependencies and the different types of dependencies we have in Enterspeed.
+Before looking into how we can update views when dependencies are changed, let's first take a deeper look at the dependencies and the different types of dependencies we have in Enterspeed.
 
 ## Dependencies
-In Enterspeed we have two types a data available in a schema. 
+In Enterspeed we have two types of data available in a schema. 
 
-The first one is source entity that triggered the schema and this one is passed as a parameter to the different functions in the schema like the [routes function](/reference/js/routes), the [properties function](/reference/js/properties). 
+The first one is source entity that triggers the schema - and this one is passed as a parameter to the different functions in the schema like the [routes function](/reference/js/routes), and the [properties function](/reference/js/properties). 
 
-The second one is dependencies and dependecies can then further be broken down in two types, [lookups](/reference/js/properties#lookup) and [references](/reference/js/properties#reference).
+The second one is dependencies, and dependencies can then be broken further down in two types, [lookups](/reference/js/properties#lookup) and [references](/reference/js/properties#reference).
 
 ### Lookups
-When you do a lookup in a schema, the result of the lookup is a list of source entities. As you get the raw source entities with all they data right in the schema, it gives you full flexibility of have you want to map out your data, but that flexibility also comes with a downside. Since you get the raw source entities right in your schema, it means that the data you map out is embedded directly into the view you create and because of that we always need to reprocess the view if one of the dependencies (one of the source entities from the lookup) are updated.
+When you do a lookup in a schema, the result of the lookup is a list of source entities. As you get the raw source entities with all the data right in the schema, it gives you full flexibility of how you want to map out your data, but that flexibility also comes with a downside. Since you get the raw source entities right in your schema, it means that the data you map out is embedded directly into the view you create and because of that we always need to reprocess the view if one of the dependencies (one of the source entities from the lookup) is updated.
 
 ```js title="lookups return a list of source entities"
 properties: async function (sourceEntity, context) {
@@ -80,11 +80,11 @@ When working with dependencies from a `lookup` call, you always need to reproces
 :::
 
 ### References
-As implied, references doesn't bring the dependent data directly into the schema, but just a reference to views. With references you can create reusable schemas and reference the views created by that schemas across multiple other schemas.
+As implied, references don't bring the dependent data directly into the schema, but just a reference to views. With references you can create reusable schemas and reference the views created by that schema across multiple other schemas.
 
-As the referenced views are not directly embedded into the referencing view it also means that it's not always neccesary to reprocess the referencing view.
+As the referenced views are not directly embedded into the referencing view it also means that it's not always neccessary to reprocess the referencing view.
 
-To understand exactly how references works let's take a look at a view containing references.
+To understand exactly how references works, let's take a look at a view containing references.
 
 ```json title="View with two references"
 {
@@ -105,10 +105,10 @@ To understand exactly how references works let's take a look at a view containin
 }
 ```
 
-Looking at the view we can see that references are not resolved yet, it's still just references to specific view ids. First when you request the view from the Delivery API, the Delivery API will make sure to resolve the references and return the content of the referenced views instead the internal references with the view ids as you see above.
+Looking at the view we can see that references are not resolved yet; it's still just references to specific view ids. First when you request the view from the Delivery API, the Delivery API will make sure to resolve the references and return the content of the referenced views instead of the internal references with the view ids as you see above.
 
 #### References by filter needs reprocess
-Now this is all good, it means that if you update one of the referenced views you don't need to reprocess the referencing view. But what happens if you ingest a new `contentBlock` source entity or deletes a source entity that matches the `sku` value from the `product`? Then the list of reference is not updated, because even though the data of the references are not stored in the view, the result of which views to reference from the `filter` function is stored in the view.
+Now this is all good. It means that if you update one of the referenced views, you don't need to reprocess the referencing view. But what happens if you ingest a new `contentBlock` source entity or deletes a source entity that matches the `sku` value from the `product`? Then the list of references is not updated, because even though the data of the references isn't stored in the view, it *does* store the result of which views to reference from the `filter` function.
 
 Here's an example of the same schema as above, but with references instead of lookup.
 
@@ -125,9 +125,9 @@ properties: function (sourceEntity, context) {
 }
 ```
 
-So whenever you create references based on the `filter` function, you still need to reprocess the referencing view if you want the list of references to be updated when new dependencies are ingested or existing once are deleted, just like with the `lookup` function.
+Whenever you create references based on the `filter` function, you still need to reprocess the referencing view if you want the list of references to be updated when new dependencies are ingested or existing once are deleted, just like with the `lookup` function.
 
-In other words, when the referenced source entities holds to reference key, in this case the `contentBlock`s has the reference to the product via the `sku` property, then you need to search using the `filter` function and you need to reprocess the referencing view.
+In other words, when the referenced source entities holds to reference key, in this case the `contentBlock`s has the reference to the product via the `sku` property, you need to search using the `filter` function and you need to reprocess the referencing view.
 
 :::tip
 When working with referenced dependencies from a `filter` call, you always need to reprocess the referencing schema when the dependencies are updated.
@@ -149,14 +149,14 @@ properties: function (sourceEntity, context) {
 }
 ```
 
-In this case the triggering source entity (the `product`) now has the knowledge about the relationship and knows the ids of the `contentBlocks`. This means that we can create the references with using the `byOriginIds` function and it means that whenever the `product` is updated with new relationships it will simply trigger the referencing schema and we don't need any reprocessing.
+In this case the triggering source entity (the `product`) now has the knowledge about the relationship and knows the ids of the `contentBlocks`. This means that we can create the references by using the `byOriginIds` function and that whenever the `product` is updated with new relationships it will simply trigger the referencing schema so we don't need any reprocessing.
 
 :::tip
 When working with referenced dependencies from a `byOriginId` or `byOriginIds` call, you never need to reprocess the referencing schema when the dependencies are updated.
 :::
 
 ## Reprocess actions
-We have now talked about dependencies, the different types of dependencies and when you need to reprocess and when you don't need to reprocess. So we just need the last part - How do we reprocess other schemas when a dependecy changes?
+We've talked about dependencies, the different types of dependencies, when you need to reprocess, and when you *don't* need to reprocess. So, we just need the last part - How do we reprocess other schemas when a dependency changes?
 
 To do that we use the [action](/reference/js/actions) and the [reprocess](/reference/js/actions#reprocess) functions.
 
@@ -183,6 +183,6 @@ export default {
 ```
 
 :::warning
-Reprocess actions can be expensive and can easily start processing a lot a schemas when a single source entity is updated. This could result in a larger queue of jobs and it will take longer for all your views to up processed.  
-Because of that, it's important you make your reprocess actions as precise as possible, by using `originId` or a precise `filter` to only target the schemas and source entities you actually need to reprocess.
+Reprocess actions can be expensive and can easily start processing a lot of schemas when a single source entity is updated. This could result in a larger queue of jobs, and it will take longer for all your views to be processed.  
+Because of that, it's important to make your reprocess actions as precise as possible, by using `originId` or a precise `filter` so you only target the schemas and source entities you actually need to reprocess.
 :::
