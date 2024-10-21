@@ -80,7 +80,7 @@ When working with dependencies from a `lookup` call, you always need to reproces
 :::
 
 ### References
-As implied, references don't bring the dependent data directly into the schema, but just a reference to views. With references you can create reusable schemas and reference the views created by that schema across multiple other schemas.
+As the name implies, references don't bring the dependent data directly into the schema, but just a reference to views. With references you can create reusable schemas and reference the views created by that schema across multiple other schemas.
 
 As the referenced views are not directly embedded into the referencing view it also means that it's not always neccessary to reprocess the referencing view.
 
@@ -183,6 +183,6 @@ export default {
 ```
 
 :::warning
-Reprocess actions can be expensive and can easily start processing a lot of schemas when a single source entity is updated. This could result in a larger queue of jobs, and it will take longer for all your views to be processed.  
+Reprocess actions can cause execessive processing, especially if you reprocess more than needed. This could result in a larger queue of jobs, and it will take longer for all your views to be updated.  
 Because of that, it's important to make your reprocess actions as precise as possible, by using `originId` or a precise `filter` so you only target the schemas and source entities you actually need to reprocess.
 :::
