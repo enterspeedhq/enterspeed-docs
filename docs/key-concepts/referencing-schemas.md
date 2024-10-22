@@ -5,7 +5,7 @@ sidebar_label: Referencing schemas
 
 # Referencing schemas
 
-The reference property allows referencing other views created from either its Source Entity or from another Source Entity
+The reference property allows referencing other views created from either its Source Entity or from another Source Entity.
 Read more about reference property for JSON schemas [here](/reference/json/property-types.md#reference) or for JS schemas [here](/reference/js/properties.md#reference).
 
 :::tip
@@ -20,11 +20,11 @@ Inside the schema, you are mapping the url and name of an image entity that the 
 
 Now, what happens if the image entity is ingested again with a new url or name? Nothing, because our page schema only triggers when a page is ingested.
 
-This means that your page view with the image data is outdated, which is not good.
-
-That's why you use reference schemas when mapping data from other entities.
+This means that your page view with the image data is outdated, which is not good. That's why you use reference schemas when mapping data from other entities.
 
 References are resolved on delivery request time. This means that if you have a page schema being processed every time a page is ingested with a schema reference to the image and an image schema being processed every time an image is ingested, then when you make a delivery request to the page, the views are merged together and you view data is always up to date.
+
+Keep in mind, that you can only avoid reprocessing the referencing schema (the page schema) if you build the reference using `byOriginId` or `byOriginIds`. If you build the refernce using the `filter` function, you will still need to reprocess the referencing schema. You can read more about why that is and the reprocessing in general [here](/key-concepts/reprocessing.md)
 
 ## Use cases
 

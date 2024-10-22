@@ -3,7 +3,7 @@ sidebar_position: 1
 title: Getting started
 ---
 
-# Getting started Sitecore & Enterspeed
+# Getting started with Sitecore & Enterspeed
 
 The easiest way to get started with Sitecore and Enterspeed is using the pre-built Sitecore integration. 
 

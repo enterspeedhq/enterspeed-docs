@@ -21,7 +21,11 @@ The `ActionsContext` object is passed into the actions method and gives you acce
 `reprocess(schemaAlias)`
 
 :::info
-Note that `reprocess` triggers whenever the source entity is changed. This means that a deploy of the schema will not trigger the reprocess.
+Note that `reprocess` only triggers whenever the source entity is changed. This means that a deploy of the schema will not trigger the reprocess.
+:::
+
+:::tip
+Read more about how reprocessing is working, when to use it and when not to use it in the [key concepts](/key-concepts/reprocessing.md).
 :::
 
 #### Parameters
