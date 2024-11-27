@@ -259,6 +259,16 @@ html[data-theme="dark"] .api-content {
   font-size: 15px;
 }
 
+.es-card__title__icon {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.es-card__title__icon img, .es-card__title__icon svg {
+  height: 17px;
+}
+
 .es-card__body {
   padding-top: 16px;
 }

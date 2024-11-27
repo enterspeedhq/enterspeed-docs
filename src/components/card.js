@@ -1,6 +1,7 @@
 import React from "react";
 
 const Card = ({
+  icon,
   title,
   link,
   image,
@@ -31,7 +32,14 @@ const Card = ({
           </div>
         )}
         <div className="es-card__content">
-          <div className="es-card__title">{title}</div>
+          <div className="es-card__title">
+            {icon && 
+              <div className="es-card__title__icon">
+                {icon}
+              </div>
+            }
+            {title}
+          </div>
           {children && <div className="es-card__body">{children}</div>}
         </div>
       </a>

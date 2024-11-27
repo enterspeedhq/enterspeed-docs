@@ -180,7 +180,12 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
               label: "Tutorials",
               position: "left",
             },
-
+            {
+              to: "/best-practices",
+              label: "Best practices",
+              position: "left",
+              activeBasePath: "best-practices",
+            },
             {
               href: "https://github.com/enterspeedhq",
               position: "right",
