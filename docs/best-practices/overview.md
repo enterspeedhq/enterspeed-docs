@@ -17,7 +17,7 @@ Please read the pages as most of the points are applicable for every Enterspeed 
 
 <CardContainer size="large">
     <Card icon={<FaDatabase />} title="Ingest integrations" link="best-practices/ingest-integrations">
-        Ingesting data from your own data source, like CMS, PIM, ERP and so on into Enterspeed
+        Ingesting data from your own sources, like CMS, PIM, ERP and so on, into Enterspeed
     </Card>
     <div></div>
 </CardContainer>
