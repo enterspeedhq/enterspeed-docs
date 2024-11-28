@@ -16,6 +16,7 @@ import ApiIcon from '../static/img/icons/code-regular.png';
 import CliIcon from '../static/img/icons/terminal-regular.png';
 import IntegrationsIcon from '../static/img/icons/plug-regular.png';
 import TutorialsIcon from '../static/img/icons/chalkboard-user-regular.png';
+import BestPreacticesIcon from '../static/img/icons/compass-regular.png';
 
 # Documentation
 
@@ -42,6 +43,7 @@ _Not familiar with Entespeed yet? Check out [Enterspeed.com](https://www.entersp
     <Card title="CLI" link="/tooling/cli/overview" image={CliIcon} imageBg="gray-bg" imagePadding="32px"/>
     <Card title="Integrations" link="/integrations" image={IntegrationsIcon} imageBg="gray-bg" imagePadding="32px"/>
     <Card title="Tutorials" link="/tutorials" image={TutorialsIcon} imageBg="gray-bg" imagePadding="32px"/>
+    <Card title="Best practices" link="/best-practices" image={BestPreacticesIcon} imageBg="gray-bg" imagePadding="32px"/>
 </CardContainer>
 
 ## FAQ
