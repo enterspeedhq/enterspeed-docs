@@ -10,17 +10,17 @@ Before you can ingest data (source entities) into Enterspeed, you need to create
 
 Within each source group you can then have multiple sources, typically one per environment, or two per environment if you have both published and preview data which is often used in CMS's.
 
-Name could be something like:
+Names for source groups and sources could be something like:
 
-    -Souce group: CMS
-        Source: [PROD] Preview
-        Source: [PROD] Published
-        Source: [DEV] Preview
-        Source: [DEV] Published
+- CMS
+    - [PROD] Preview
+    - [PROD] Published
+    - [DEV] Preview
+    - [DEV] Published
 
-    Souce group: PIM
-        Source: [PROD] Data
-        Source: [DEV] Data
+- PIM
+    - [PROD] Data
+    - [DEV] Data
 
 ### Only ingest your source entities when fully updated
 When you ingest source entities, it's important not to do multiple "partial" ingests, such as ingesting a single source entity every time a single field is updated in the source system.  
