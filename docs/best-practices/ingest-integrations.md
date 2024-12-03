@@ -23,7 +23,7 @@ Names for source groups and sources could be something like:
     - [DEV] Data
 
 ### Only ingest your source entities when fully updated
-When you ingest source entities, it's important not to do multiple "partial" ingests, such as ingesting a single source entity every time a single field is updated in the source system.  
+When you ingest source entities, it's important that you don't do multiple "partial" ingests, such as ingesting a single source entity every time a single field is updated in the source system.  
 This could be if your source system auto saves and sends a save event everytime an editor changes a single field, instead of when the editor is done updating all necessary fields and clicks save. 
 
 Doing multiple ingests for a single source entity, one for every single property change, will create multiple unnecessary view generations. And that can result in larger job queues and delay the final view generation. 
