@@ -8,8 +8,22 @@ title: Ingest integrations
 #### One source group per system
 Before you can ingest data (source entities) into Enterspeed, you need to create a source group to store the data. In general, you want to create a source group for every source system that you're ingesting data from. So basically, that's one source group for your CMS data, one source group for you PIM data, one source group for you ERP data, and so on. 
 
+Within each source group you can then have multiple sources, typically one per environment, or two per environment if you have both published and preview data which is often used in CMS's.
+
+Names for source groups and sources could be something like:
+
+- CMS
+    - [PROD] Preview
+    - [PROD] Published
+    - [DEV] Preview
+    - [DEV] Published
+
+- PIM
+    - [PROD] Data
+    - [DEV] Data
+
 #### Only ingest your source entities when fully updated
-When you ingest source entities, it's important not to do multiple "partial" ingests, such as ingesting a single source entity every time a single field is updated in the source system.  
+When you ingest source entities, it's important that you don't do multiple "partial" ingests, such as ingesting a single source entity every time a single field is updated in the source system.  
 This could be if your source system auto saves and sends a save event everytime an editor changes a single field, instead of when the editor is done updating all necessary fields and clicks save. 
 
 Doing multiple ingests for a single source entity, one for every single property change, will create multiple unnecessary view generations. And that can result in larger job queues and delay the final view generation. 
@@ -31,7 +45,7 @@ You can use the Management App's log function and filter by Ingest API to see ex
 #### Don't delete all source entities on every import run
 When running import jobs, you should not start by deleting all source entities and then reingesting them again. 
 
-First off, it means that you'll delete all your views and they'll stay missing until all source entities has been reingest and all views has been processed again.
+First off, it means that you'll delete all your views and they'll stay missing until all source entities has been reingested and all views has been processed again.
 
 Secondly, Enterspeed has a feature to only reprocess views if the source entities have changed. So by deleting all source entities and reingesting them, this feature of course doesn't work - and that can cause an extensive amount of extra jobs and view generations.
 
