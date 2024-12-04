@@ -56,5 +56,5 @@ When you ingest data to Enterspeed, you should avoid ducplicated information acr
 
 If you have duplicated data, you need to ingest both source entities every time the sales price changes and then Enterspeed needs to process extra views. 
 
-Enterspeed has features like [references](https://docs.enterspeed.com/reference/js/properties#reference) and [lookup](https://docs.enterspeed.com/reference/js/properties#lookup) that lets you use data from other source entities in the schemas, so use those features instead.
+Enterspeed has features like [references](/reference/js/properties#reference) and [lookup](/reference/js/properties#lookup) that lets you use data from other source entities in the schemas, so use those features instead.
 
