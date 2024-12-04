@@ -60,7 +60,8 @@ The default limits are:
 
 | Parameter       | Type   | Description                                                  |
 | --------------- | ------ | ------------------------------------------------------------ |
-| `filter`        | string | A filtering criteria.                              |
+| `filter`        | string | A filtering criteria.                                        |
+| `lookupOptions` | object | An optional object with the following structure: <br />`{ excludeProperties?: boolean; }`<br /><br />If `excludeProperties` is set to `true` the `lookup` will only return the base fields of the source entities and not all custom properties. This will help improve performance if you don't need the custom properties, but only some of the base fields like `originId`, `originParentId`, `url`                         |
 
 See list of filter examples [here](/reference/filter-expressions.md)
 
