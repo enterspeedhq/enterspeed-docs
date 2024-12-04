@@ -237,13 +237,10 @@ Particular lookup filter type allows you to be more flexible with your matching 
 
 | Property | Required? | Description                                                                                                                                                                                                                      |
 | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| filter   | **Yes**   | Your filtering criteria                                                                                                                                                                                                          |
+| filter   | **Yes**   | Your filtering criteria. [See list of filter examples](/reference/filter-expressions.md)                                                                                                                                         |
 | orderBy  | No        | Allows you to specify your desired sorting order                                                                                                                                                                                 |
 | top      | No        | Allows limiting the size of items collection. Can be a number, a number as a text, or an expression.                                                                                                                             |
 | source   | No        | Allows you to define a different source as the property. The `source` should be equal to the desired source group alias, where you want to look for source entities.<br/><br/> If not defined, it uses the current source group. |
-
-
-**See list of filter examples [here](/reference/filter-expressions.md)**
 
 ### Additional
 

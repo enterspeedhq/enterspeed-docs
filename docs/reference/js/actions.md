@@ -81,9 +81,7 @@ Using the `filter` function lets you do a dynamic search for source entities you
 
 | Parameter     | Type   | Description                                        |
 | ------------- | ------ | -------------------------------------------------- |
-| `filter`      | string | Your filtering criteria.                           |
-
-See list of filter examples [here](/reference/filter-expressions.md)
+| `filter`      | string | Your filtering criteria. [See list of filter examples](/reference/filter-expressions.md)                           |
 
 ```js title="reprocess by filter"
  context
