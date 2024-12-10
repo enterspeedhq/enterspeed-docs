@@ -12,7 +12,7 @@ import FaGears from '/img/icons/gears-solid.svg';
 
 On these pages we have collected some best practices to help you get the best result and performance out of Enterspeed.
 
-Please read the pages as most of the points are applicable to every Enterspeed project.
+Please read the pages as most of the points are applicable to every Enterspeed project \- and as always, you are more than welcome to reach out if you have any questions.
 
 <CardContainer size="large">
     <Card icon={<FaDatabase />} title="Ingest integrations" link="best-practices/ingest-integrations">
