@@ -33,8 +33,9 @@ Table of available options, that you can optionally specify, if needed for your 
 | ------------------------------------- | -------------------------------------- |
 | objectId                              | By default Enterspeed uses view id as the value for object id in Algolia. You can override default object id by providing value for this option. |
 | indexName                             | Option to override what index must be used for current view. By default `IndexName` of Algolia configuration is used. |
-| partialUpdate                         | A boolean indicating if the update of the Algolia record should be a partial update. [See Algolia documentation](https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/). |
-| createIfNotExists                     | A boolean indicating if the partial update should create a record in Algolia if it does not already exists. Only used if `partialUpdate` is set to `true`|
+| partialUpdate                         | A boolean indicating if the update of the Algolia record should be a partial update. [See Algolia documentation](https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/).<br /><br />Default value: `false` |
+| createIfNotExists                     | A boolean indicating if the partial update should create a record in Algolia if it does not already exists. Only used if `partialUpdate` is set to `true`.<br /><br />Default value: `false`|
+| skipDelete                            | A boolean indicating if a deleted view should delete the record in Algolia. Typically set to `false` for `partialUpdate` if the schema is not working on the "master" object.<br /><br />Default value: `false` |
 
 :::info
 Algolia does not support partial deletes. This means that if you are using partial updates and you want to clear the attributes from the partial update, 
