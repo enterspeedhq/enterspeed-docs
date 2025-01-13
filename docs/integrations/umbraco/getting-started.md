@@ -93,11 +93,36 @@ For appsettings.json or environment-specific settings file, please use the follo
         "Endpoint": "https://api.enterspeed.com", // required
         "Apikey": "", // required
         "MediaDomain": "", // optional
-        "PreviewApikey": "" // optional
+        "PreviewApikey": "", // optional
+        "EnabledFailedJobsProcessing" : boolean, // optional (default false)
+        "EnableMasterContent": boolean, // optional (default false)
+        "RemoveTrailingSlash": boolean, // optional (default false)
+        "RootDictionariesDisabled": "", // optional (default false)
+        "RunJobsOnAllServerRoles": "", // optional (default false)
     }
     ...
 }
 ```
+
+There are additional settings that can only be configured in the app settings file. These settings are applicable only for Umbraco 9 and later versions.
+
+### Enable Failed Jobs Processing
+This feature automatically reprocesses recent failed jobs. It will retry up to five times.
+
+### Master Content
+Allows ingestion of a master variant whenever a language variant is updated. Similarly, the master variant will be deleted when the last language variant is removed.
+Master variants have the type of the node with the postfix -master, enabling schemas to be created specifically for the master variants.
+
+### Remove Trailing Slash
+Removes trailing slashes from all URLs.
+
+### Root Dictionaries Disabled
+Root dictionaries are enabled by default. This functionality ensures that a root source entity is created for the dictionaries in Enterspeed,
+allowing the use of handles in Enterspeed.
+
+## Run Jobs in All Server Roles
+Enables job processing for all Umbraco server roles. In most cases, this is not recommended, as multiple servers can pick up the same jobs from the shared database, resulting in multiple ingests of the same jobs.
+
 
 ## Web.config (Umbraco 7 or 8)
 
