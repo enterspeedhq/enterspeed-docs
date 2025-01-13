@@ -121,7 +121,7 @@ Root dictionaries are enabled by default. This functionality ensures that a root
 allowing the use of handles in Enterspeed.
 
 ## Run Jobs in All Server Roles
-Enables job processing for all Umbraco server roles.
+Enables job processing for all Umbraco server roles. In most cases, this is not recommended, as multiple servers can pick up the same jobs from the shared database, resulting in multiple ingests of the same jobs.
 
 
 ## Web.config (Umbraco 7 or 8)
