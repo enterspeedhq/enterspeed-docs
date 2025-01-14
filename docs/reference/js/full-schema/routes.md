@@ -230,7 +230,7 @@ routes: function(sourceEntity, context) {
 routes: (sourceEntity, context) => context.url(sourceEntity.url)
 ```
 
-You can then fetch the view using our [Delivery API](../../api#tag/Delivery/operation/getContent) using either the url or one of the handles.
+You can then fetch the view using our [Delivery API](/api#tag/Delivery/operation/getContent) using either the url or one of the handles.
 
 You can also fetch multiple views in one request, although in this case it doesn't make sense to fetch the same view three time, but just to demonstrate if you want to fetch multiple different views in one request.
 
