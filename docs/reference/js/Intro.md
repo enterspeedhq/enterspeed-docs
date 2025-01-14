@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Intro
 
-With JavaScript schemas, you can do everything you can do with JSON schemas and more.
+JavaScript is the default and prefered schema format in Enterspeed.
 
 With JavaScript schemas, you can build your schemas in a standard language most developers are already familiar with. This means that you have all the power and flexibility from JavaScript available when you are creating your schemas.
 

@@ -6,7 +6,7 @@ sidebar_label: Referencing schemas
 # Referencing schemas
 
 The reference property allows referencing other views created from either its Source Entity or from another Source Entity.
-Read more about reference property for JSON schemas [here](/reference/json/property-types.md#reference) or for JS schemas [here](/reference/js/properties.md#reference).
+Read more about reference property for JSON schemas [here](/reference/json/property-types.md#reference) or for JS schemas [here](/reference/js/full-schema/properties.md#reference).
 
 :::tip
 Reference schemas are typically used when you are mapping data from another entity. E.g. a page has a reference to another page entity or media entity.

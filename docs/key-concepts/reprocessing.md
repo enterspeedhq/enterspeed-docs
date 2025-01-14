@@ -47,9 +47,9 @@ Before looking into how we can update views when dependencies are changed, let's
 ## Dependencies
 In Enterspeed we have two types of data available in a schema. 
 
-The first one is source entity that triggers the schema - and this one is passed as a parameter to the different functions in the schema like the [routes function](/reference/js/routes), and the [properties function](/reference/js/properties). 
+The first one is source entity that triggers the schema - and this one is passed as a parameter to the different functions in the schema like the [routes function](/reference/js/full-schema/routes), and the [properties function](/reference/js/full-schema/properties). 
 
-The second one is dependencies, and dependencies can then be broken further down in two types, [lookups](/reference/js/properties#lookup) and [references](/reference/js/properties#reference).
+The second one is dependencies, and dependencies can then be broken further down in two types, [lookups](/reference/js/full-schema/properties#lookup) and [references](/reference/js/full-schema/properties#reference).
 
 ### Lookups
 When you do a lookup in a schema, the result of the lookup is a list of source entities. As you get the raw source entities with all the data right in the schema, it gives you full flexibility of how you want to map out your data, but that flexibility also comes with a downside. Since you get the raw source entities right in your schema, it means that the data you map out is embedded directly into the view you create and because of that we always need to reprocess the view if one of the dependencies (one of the source entities from the lookup) is updated.
@@ -158,7 +158,7 @@ When working with referenced dependencies from a `byOriginId` or `byOriginIds` c
 ## Reprocess actions
 We've talked about dependencies, the different types of dependencies, when you need to reprocess, and when you *don't* need to reprocess. So, we just need the last part - How do we reprocess other schemas when a dependency changes?
 
-To do that we use the [action](/reference/js/actions) and the [reprocess](/reference/js/actions#reprocess) functions.
+To do that we use the [action](/reference/js/full-schema/actions) and the [reprocess](/reference/js/full-schema/actions#reprocess) functions.
 
 Here's an example of a `contentBlock` schema that will reprocess the `product` schema for the specific `sku` value whenever the `contentBlock` is updated.
 

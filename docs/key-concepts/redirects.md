@@ -43,7 +43,7 @@ routes: function(sourceEntity, context) {
       .url('http://mydomain.com/another-url');
 }
 ```
-[See redirect API documentation](/reference/js/routes#url)
+[See redirect API documentation](/reference/js/full-schema/routes#url)
 
 No matter if you use implicit or explicit redirects the delivery response will be the same if you request a view on a redirect URL. From the delivery response you will get a redirect response instead of a 404 error.
 
