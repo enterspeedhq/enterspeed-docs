@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  version: 0.3.1
+  version: 0.4.0
   title: API documentation
   description: The Enterspeed API are based on REST principles.
 
 
-    Before you start you will need to [create an Enterspeed-account](https://app.enterspeed.com/signup) and set up a tenant (a property for your website). Here you can create
+    Before you start you will need to [create an Enterspeed-account](https://app.enterspeed.com) and set up a tenant (a property for your website). Here you can create
 
-    - A data source (provides you with an API key for the **Ingest API**).
+    - A data source (provides you with an API key for the **Ingest API** and **Query API**).
 
     - An environment client (provides you with an API key for the **Delivery API**).
 
@@ -39,13 +39,19 @@ tags:
       The Ingest API can also be used to `DELETE` already ingested data from Enterspeed.
   - name: Routes
     description:
-      The routes API is what you use to `GET` all available URL routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap.
+      The Routes API is what you use to `GET` all available URL routes for a specific environment, which can be helpful for SSG (Static Site Generation) or creating a sitemap.
 
 
       Before you can fetch your routes from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
 
 
       **ℹ NOTE:** The `first` or `last` parameter is required and must be set between 100 - 500 (e.g. `first=250`). Both are not allowed at the same time.
+  - name: Query
+    description:
+      The Query API is what you use to query items from your indexes. 
+      
+      
+      Before you can query your indexes from Enterspeed, you first need to create an **Environment client** which generates an API key. This is done under *Settings --> Environment settings*.
 servers:
   - url: https://api.enterspeed.com
     description: General API
@@ -462,6 +468,65 @@ paths:
 
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+
+  /v1/{indexAlias}:
+    servers:
+      - url: https://query.enterspeed.com
+        description: Query API
+    post:
+      summary: Query items
+      description: > 
+        The Query API is used to query items in an index.
+      tags:
+        - Query
+      operationId: queryContentPost
+      parameters:
+        - name: indexAlias
+          in: path
+          required: true
+          description: |
+            The alias of the index to be queried.
+          schema:
+            type: string
+            example: "productIndex"
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your environment.
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+        - name: Content-Length
+          required: true
+          in: header
+          description: |
+            The length of the message body, in bytes (this header is automatically added by most clients).
+          schema:
+            type: number
+      requestBody:
+        description: The query object including things like filters, sorting and pagination.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequestBody"
+      responses:
+        "200":
+          description: Valid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/QueryResponse"
+        "400":
+          description: >-
+            Invalid request. Server responded but the request was in an invalid
+            format.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoIdsOrHandlesParametersResponse"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
 components:
   schemas:
     ViewProperties:
@@ -477,6 +542,188 @@ components:
           "ids": ["gid://Environment/290a1654-e380-487e-8ea0-8f9f2fff589c/Source/01gh7ed9-6912-485b-9595-cd1e0c4ce89c/Entity/1234/View/content"],
           "handles": ["content-1234"],
         }
+    QueryRequestBody:
+      type: object
+      description: |
+            All root properties like, `filters`, `sort` and `pagination` are optional.
+
+            ### Filters
+            `filters` are nested in one or two levels grouped in `and` or `or`.
+
+            ```json
+            "filters": {
+              "and":  [
+                {
+                  "field": "title",
+                  "operator": "equals",
+                  "value": "Enterspeed Hoodie"
+                }
+              ]
+            }
+            ```
+
+            ```json
+            "filters": {
+              "or":  [
+                {
+                  "field": "isInStock",
+                  "operator": "equals",
+                  "value": true
+                },
+                {
+                  "field": "allowPreorder",
+                  "operator": "equals",
+                  "value": true
+                }
+              ]
+            }
+            ```
+            
+            ```json
+            "filters": {
+              "and":  [
+                {
+                  "field": "title",
+                  "operator": "equals",
+                  "value": "Enterspeed Hoodie"
+                },
+                {
+                  "or": [
+                    {
+                      "field": "isInStock",
+                      "operator": "equals",
+                      "value": true
+                    },
+                    {
+                      "field": "allowPreorder",
+                      "operator": "equals",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            }
+            ```
+
+            #### Operators
+
+            **equals**
+            ```json 
+            {
+              "field": "title",
+              "operator": "equals",
+              "value": "Enterspeed Hoodie"
+            }
+            ```
+
+            **notEquals**
+            ```json 
+            {
+              "field": "title",
+              "operator": "notEquals",
+              "value": "Enterspeed Hoodie"
+            }
+            ```
+            
+            **contains**
+            ```json 
+            {
+              "field": "title",
+              "operator": "contains",
+              "value": "*hoodie*",
+              "caseInsensitive": true
+            }
+            ```
+            
+            **greaterThan**
+            ```json 
+            {
+              "field": "price",
+              "operator": "greaterThan",
+              "value": 100
+            }
+            ```
+            **lessThan**
+            ```json
+            {
+              "field": "price",
+              "operator": "lessThan",
+              "value": 100
+            }
+            ```
+            **in**
+            ```json
+            {
+              "field": "tag",
+              "operator": "in",
+              "value": ["shoes", "caps", "pants"],
+            }
+            ```
+
+            ### Sorting
+            `sort` is an array of objects defining the sort order. Each object defines the property to sort on and the direction. 
+
+            If you have multiple sorting object the sorting will be in the order of the object. In the example below it would mean: first sort by `isInStock` in descending order and then by `title` in ascending order.
+
+            ```json
+            "sort": [
+              {
+                "field": "isInStock",
+                "order": "desc"
+              },
+              {
+                "field": "title",
+                "order": "asc"
+              }
+            ]
+            ```
+
+            ### Pagination
+            `pagination` supports up to 10.000 items in total and a single page size of a maximum of 1.000.
+
+            ```json
+            "pagination": {
+              "page": 0,
+              "pageSize": 20
+            }
+            ```
+      example:
+          {
+            "filters": {
+              "and":  [
+                {
+                  "field": "title",
+                  "operator": "contains",
+                  "value": "*hoodie*",
+                  "caseInsensitive": true
+                },
+                {
+                  "or": [ 
+                    {
+                      "field": "isInStock",
+                      "operator": "equals",
+                      "value": true
+                    },
+                    {
+                      "field": "allowPreorder",
+                      "operator": "equals",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            },
+            "sort": [
+              {
+                "field": "price",
+                "order": "asc"
+              }
+            ],
+            "pagination": {
+              "page": 0,
+              "pageSize": 20
+            }
+          }
     Raw:
       type: object
       description: Headers required
@@ -609,6 +856,30 @@ components:
               title: How to increase performance
               image: /media-path/performance.jpg
               url: /blog/how-to-increase-performance/
+    QueryResponse:
+      type: object
+      properties:
+        totalResults:
+          type: number
+          example: 200
+          description: The total number of results matched by query.
+        results:
+          type: array
+          description: |
+            List of items from the index matched by the query provided.
+
+            Built in fields are prefixed with underscore (`_`).
+          items:
+            type: object
+            example:
+                {
+                  "sku": "p-5427",
+                  "name": "Running shoe",
+                  "url": "/products/running-shoe/",
+                  "_originId": "p-5427",
+                  "_sourceGuid": "9f741916-19e3-4791-9ebd-701634ba9b75",
+                  "_updatedAt": "2025-01-07T08:43:15.7351089Z"
+                }
     NoIdsOrHandlesParametersResponse:
       type: object
       properties:
