@@ -12,8 +12,6 @@ An index schemas has two responsibilities:
 1. Defining the index, including the name and the fields for the index
 2. Mapping source entities that goes into the index as items
 
-Tak a look at the [Index schema reference](../reference/js/index-schema/intro) to learn more about the Index schema.
-
 ## Use cases
 
 An Enterspeed search index has multiple obvious use cases.
