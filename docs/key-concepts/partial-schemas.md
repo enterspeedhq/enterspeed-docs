@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 sidebar_label: Partial schemas
 ---
 
@@ -24,7 +24,7 @@ Don't use partial schemas for mapping data from another entity that's being refe
 
 ## Configure a partial schema
 
-When using a partial schema, you are giving it a data object. This data object is typically the value of a specific part of the data source you are working on. It is also possible to use `root`, which allows the whole data source to be used in the partial schema.
+When using a partial schema, you are giving it a data object. This data object is typically the value of a specific part of the data source you are working on.
 
 In the below example, we are using a partial schema called `seo`, and passing it the value of `p.seo` (a complex JSON object with SEO properties and data)
 

@@ -7,6 +7,7 @@ title: Overview
 import {Card, CardContainer} from '../../src/components/card';
 import FaDatabase from '/img/icons/database-solid.svg';
 import FaGears from '/img/icons/gears-solid.svg';
+import FaSearchengin from '/img/icons/searchengin-brands-solid.svg';
 
 # Best Practices
 
@@ -20,5 +21,8 @@ Please read the pages as most of the points are applicable to every Enterspeed p
     </Card>
     <Card icon={<FaGears />} title="Schemas" link="best-practices/schemas">
         Creating and updating views and routes for your frontend application
+    </Card>
+    <Card icon={<FaSearchengin />} title="Indexes" link="best-practices/indexes">
+        Optimizing indexes used by the Query API
     </Card>
 </CardContainer>
