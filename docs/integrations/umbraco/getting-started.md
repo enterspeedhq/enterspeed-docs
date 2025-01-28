@@ -90,7 +90,8 @@ For appsettings.json or environment-specific settings file, please use the follo
 {
     ...
     "Enterspeed": {
-        "Endpoint": "https://api.enterspeed.com", // required
+        "Endpoint": "https://api.enterspeed.com", // required (deprecated - replaced by `BaseUrl` in 4.4.0 and 5.3.0 but still works as fallback)
+        "BaseUrl": "", // optional (default https://api.enterspeed.com)
         "Apikey": "", // required
         "MediaDomain": "", // optional
         "PreviewApikey": "", // optional
