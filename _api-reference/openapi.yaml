@@ -524,7 +524,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/NoIdsOrHandlesParametersResponse"
+                $ref: "#/components/schemas/Query400Response"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
 components:
@@ -880,6 +880,22 @@ components:
                   "_sourceGuid": "9f741916-19e3-4791-9ebd-701634ba9b75",
                   "_updatedAt": "2025-01-07T08:43:15.7351089Z"
                 }
+    Query400Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Erros message
+          example: "Query is not valid"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Operator not implemented: equal"
+        status:
+          type: string
+          example: "error"
     NoIdsOrHandlesParametersResponse:
       type: object
       properties:
