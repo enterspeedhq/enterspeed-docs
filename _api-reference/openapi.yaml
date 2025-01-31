@@ -643,6 +643,16 @@ components:
               "value": 100
             }
             ```
+            
+            **greaterThanOrEquals**
+            ```json 
+            {
+              "field": "price",
+              "operator": "greaterThanOrEquals",
+              "value": 100
+            }
+            ```
+
             **lessThan**
             ```json
             {
@@ -651,6 +661,16 @@ components:
               "value": 100
             }
             ```
+
+            **lessThanOrEquals**
+            ```json
+            {
+              "field": "price",
+              "operator": "lessThanOrEquals",
+              "value": 100
+            }
+            ```
+
             **in**
             ```json
             {
