@@ -689,6 +689,9 @@ components:
             `field`: _score \
             `order`: desc
 
+            `field`: _updatedAt \
+            `order`: desc
+
             For custom sorting, default `order` is `asc`.
 
             ```json
