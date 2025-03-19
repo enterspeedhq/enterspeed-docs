@@ -12,12 +12,20 @@ export default {
   triggers: function(context) {
     context.triggers('pim', ['product'])
   },
-  index: function (sourceEntity) {
+  index: {
+    fields {
+        sku: { type: "keyword" }, 
+        title: { type: "text" }, 
+        description: { type: "text" },
+        isActive: { type: "boolean" }
+      }
+  },
+  properties: function (sourceEntity) {
     return {
-        sku: { type: "keyword", value: sourceEntity.properties.sku }, 
-        title: { type: "text", value: sourceEntity.properties.title}, 
-        description: { type: "text", value: sourceEntity.properties.description},
-        isActive: { type: "boolean", value: sourceEntity.properties.isActive}
+        sku: sourceEntity.properties.sku, 
+        title: sourceEntity.properties.title, 
+        description: sourceEntity.properties.description,
+        isActive: sourceEntity.properties.isActive
       }
   }
 }
