@@ -4,6 +4,10 @@ sidebar_position: 3
 
 # Index
 
+:::info
+ Index schemas are currently in preview. Contact us if you would like to try it out.
+ :::
+ 
 The `index` object is where you define the structure of the index. The index defines what kind of data you can add to the index in the [properties](/reference/js/index-schema/properties) method.
 
 ```js title="Index example"
