@@ -30,7 +30,7 @@ Setting the right types for the properties in your index is important. The types
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | keyword             | The `Keyword` type is for string values used in filtering and sorting                                       |
-| text                | The `text` type will analyze string values, improving results whn querying using full text search           |
+| text                | The `text` type will analyze string values, improving results when querying using full text search           |
 
 ### Numeric
 
@@ -53,13 +53,26 @@ Setting the right types for the properties in your index is important. The types
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | date                | Support values like a Javascript Date object, a string like `2024-11-21T23:00:00Z` or number of milliseconds since eclipse |
 
+### List
+
+| Type                |  Description                                                                                                |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| keyword[]           | List of the `Keyword` type for string values used in filtering and sorting                                  |
+| text[]              | List of the `text` type for analyzing string values, improving results when querying using full text search |
+| integer[]           | List of 32 bit signed integers                                                                              |
+| long[]              | List of 64 bit signed integers                                                                              |
+| float[]             | List of 32 bit signed floating numbers                                                                      |
+| double[]            | List of 64 bit signed floating numbers                                                                      |
+| boolean[]           | List of `true` / `false` values                                                                             |
+| date[]              | List of dates with supported values like a Javascript Date object, strings like `2024-11-21T23:00:00Z` or numbers of milliseconds since eclipse |
+
 ### Range
 
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| integerRange        | Must be an object like<br /> `{"gt": 10, "lt": 20}` or<br /> `{"gte": 10, "lte": 20}`                           |
-| longRange           | Must be an object like<br /> `{"gt": 10, "lt": 20 }` or<br /> `{"gte": 10, "lte": 20}`                           |
-| floatRange          | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`                   |
-| doubleRange         | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`                   |
+| integerRange        | Must be an object like<br /> `{"gt": 10, "lt": 20}` or<br /> `{"gte": 10, "lte": 20}`                       |
+| longRange           | Must be an object like<br /> `{"gt": 10, "lt": 20 }` or<br /> `{"gte": 10, "lte": 20}`                      |
+| floatRange          | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`               |
+| doubleRange         | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`               |
 | dateRange           | Must be an object like<br /> `{"gt": "2025-01-01", "lt": "2025-02-01"}` or<br /> `{"gte": "2025-01-01", "lte": "2025-02-01"}` |
 
