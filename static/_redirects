@@ -5,6 +5,10 @@
 /integrations/umbraco/umbraco-v10/*     /integrations/umbraco/getting-started
 /integrations/sitecore/sitecore-8/*     /integrations/sitecore/getting-started
 /integrations/sitecore/sitecore-9/*     /integrations/sitecore/getting-started
-/reference/property-types               /reference/json/property-types                  302
-/reference/expression                   /reference/json/expression                      302
-/reference/path-selector                /reference/json/path-selector                   302
+/reference/property-types               /reference/json/property-types
+/reference/expression                   /reference/json/expression
+/reference/path-selector                /reference/json/path-selector
+/reference/js/triggers                  /reference/js/full-schema/triggers              302
+/reference/js/properties                /reference/js/full-schema/properties            302
+/reference/js/routes                    /reference/js/full-schema/routes                302
+/reference/js/actions                   /reference/js/full-schema/actions               302

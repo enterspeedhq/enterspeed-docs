@@ -24,7 +24,7 @@ The schema types are publicly available from our NPM package: [@enterspeed/js-sc
 
 All schema types also come in a generic version where you can provide the type of your source entity described in JSDoc. Hereby enabling IntelliSense for all your custom properties of a source entity.
 
-First, you need to create [type definition](https://jsdoc.app/tags-typedef) describing your source entity.
+First, you need to create a [type definition](https://jsdoc.app/tags-typedef) describing your source entity.
 
 ```js title="@type definition"
 /** @typedef {object} ContentPage

@@ -1,8 +1,12 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # Triggers
+
+:::info
+ Index schemas are currently in preview. Contact us if you would like to try it out.
+ :::
 
 The `triggers` method is where you define the source group and the types the schema should process.
 

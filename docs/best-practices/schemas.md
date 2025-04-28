@@ -13,7 +13,7 @@ Because of that, it's important to make your reprocess actions as precise as pos
 Read more about [reprocessing](/key-concepts/reprocessing.md).
 
 ### Exclude properties from lookup if you don't need them
-By default when you do a [lookup](/reference/js/properties#lookup) in a schema, the entire source entities are loaded from storage, including the `properties` object. 
+By default when you do a [lookup](/reference/js/full-schema/properties#lookup) in a schema, the entire source entities are loaded from storage, including the `properties` object. 
 
 ```json title="Full source entity including all custom properties"
 {
