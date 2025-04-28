@@ -5,6 +5,10 @@ title: Indexes
 
 # Indexes
 
+:::info
+ Index schemas are currently in preview. Contact us if you would like to try it out.
+ :::
+
 ### Only index the fields you need
 Basicly, the more fields you index, the more space the index will take and the longer it takes to index all the items. It also impacts the performance when you query an index with a lot of fields.
 

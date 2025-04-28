@@ -5,6 +5,10 @@ sidebar_label: Index schemas
 
 # Index schemas
 
+:::info
+ Index schemas are currently in preview. Contact us if you would like to try it out.
+ :::
+
 An index schema, as the name implies, creates an index, and more precise a search index, for you to query using the [Query API](../api#tag/Query).
 
 An index schemas has two responsibilities:
