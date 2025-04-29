@@ -8,7 +8,7 @@ sidebar_position: 1
 
 ## The ITD-process
 
-To get started using Enterspeed, we need to go through a three-step process - the ITD-process:
+To get started using Enterspeed, you need to go through a three-step process - the ITD-process:
 
 1. **I**ngest data
 2. **T**ransform data
@@ -24,9 +24,9 @@ In this step, we ingest the data from your current data source(s) into Enterspee
 
 ### Transforming data
 
-Once the data have been ingested into Enterspeed, we can start transforming it.
+Once the data have been ingested into Enterspeed, you can start transforming it.
 
-We do this by using our Schema designer. Here you can combine data from multiple sources and select which data you want to be available to the front-end.
+You do this by using our Schema designer. Here you can combine data from multiple sources and select which data you want to be available to the front-end.
 
 Once the data is transformed it gets stored in a high-performance Redis database that can be stored across multiple geographical regions.
 
@@ -42,7 +42,7 @@ Like working with any other APIs, it's extremely easy to integrate into your fro
 
 ## Configuring Enterspeed
 
-However, before we can start the ITD-process, we need to do some configuration first.
+However, before you can start the ITD-process, you need to do some configuration first.
 
 We need to set up:
 
