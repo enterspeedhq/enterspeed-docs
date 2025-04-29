@@ -16,7 +16,7 @@ Once a user is created and signed in, you can start creating your first tenant o
 
 ## Microsoft Entra ID work or school account
 
-If you preferre to work with Microsoft Entra ID user, you must first have a [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/microsoft-entra) user (former know as Azure Active Directory).
+If you prefer to work with Microsoft Entra ID user, you must first have a [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/microsoft-entra) user (former know as Azure Active Directory).
 
 Once you have that in place you can simply click the Sign-in with work account button, no configuration needed in Enterspeed. 
 
