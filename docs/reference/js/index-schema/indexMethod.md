@@ -80,3 +80,8 @@ Setting the right types for the properties in your index is important. The types
 | doubleRange         | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`               |
 | dateRange           | Must be an object like<br /> `{"gt": "2025-01-01", "lt": "2025-02-01"}` or<br /> `{"gte": "2025-01-01", "lte": "2025-02-01"}` |
 
+### Object
+
+| Type                | Description                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| object              | Supports any value of an object type, this object is not indexed and therefore not searchable, it can be used to associate a complex data type to an index item. |
