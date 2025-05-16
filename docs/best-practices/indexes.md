@@ -17,7 +17,7 @@ In general, this means that you should index as few fields as possible.
 As a rule of thumb you should not index more than 50 fields.
 
 :::tip
-You should only index the fields you either need to query on or needs to display in the frontend.
+You can use the schema [`alias` query feature](/api#tag/Query/operation/queryContentPost) to return views for presentation data as part of your query result so you only index the fields you need for filtering and sorting.
 :::
 
 ### Prefer `keyword` over `text` (unless you need the power of the `text` type)
