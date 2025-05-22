@@ -55,9 +55,9 @@ Given the `frontPage` source entity have the following content.
 </TabItem>
 <TabItem value="transform" label="Schema design">
 
-When designing our we access the **title** property from the `sourceEntity`.
+When designing your schema, you access the **title** property from the `sourceEntity`.
 
-We make the schema **routable** by using `routes` and using the `url` from the source entity.
+You make the schema **routable** by using `routes` and using the `url` from the source entity.
 
 ```js title="Schema example"
 /** @type {Enterspeed.FullSchema} */
@@ -90,4 +90,4 @@ When querying the Delivery API with `url=/frontPage` the output will be:
 </TabItem>
 </Tabs>
 
-**_Next, let's start learning how to design a schema. [Go to designing a schema](./transform/designing-a-schema)_**
+**_Next, let's learning how to design a schema. [Go to designing a schema](./transform/designing-a-schema)_**
