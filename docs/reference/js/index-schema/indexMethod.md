@@ -55,7 +55,7 @@ Setting the right types for the properties in your index is important. The types
 
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| date                | Support values like a Javascript Date object, a string like `2024-11-21T23:00:00Z` or number of milliseconds since eclipse |
+| date                | Support values like a Javascript Date object, a string like `2024-11-21` or `2024-11-21T23:00:00Z` or number of milliseconds since eclipse |
 
 ### List
 
