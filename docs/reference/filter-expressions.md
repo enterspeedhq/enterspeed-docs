@@ -15,6 +15,14 @@ Below is a list of examples of what you can do with the filter.
 If you are using JavaScript and your filter contains expressions, it's often easier to use string interpolation instead of string concatination. See [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation) .
 :::
 
+:::info
+If you are comparing values containing URI special characters, you should URI encode the value in your filter expression. See [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent).
+
+```javascript
+filter(`originParentId eq '${encodeURIComponent(sourceEntity.originId)}'`)
+```
+:::
+
 ## Examples
 
 Examples of supported binary operators & expressions:
