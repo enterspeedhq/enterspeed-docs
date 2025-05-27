@@ -723,6 +723,15 @@ components:
               "pageSize": 20
             }
             ```
+
+            ### Aliases
+            Using `aliases` in the query will return views for the provided schema aliases for each item in the result. The specific views returned for each item is the view created by the same source entity as the item.
+
+            This allows you to return different views for the same index. E.g. a productTile view or a productDetails view for a product index, whitout having to add all presentation data for both views to the index. You only need the data to filter and sort on.
+
+            ```json
+            "aliases": ["productTile"]
+            ```
       example:
           {
             "filters": {
@@ -749,6 +758,7 @@ components:
                 }
               ]
             },
+            "aliases": ["productTile"],
             "sort": [
               {
                 "field": "price",
@@ -914,7 +924,17 @@ components:
                   "url": "/products/running-shoe/",
                   "_originId": "p-5427",
                   "_sourceGuid": "9f741916-19e3-4791-9ebd-701634ba9b75",
-                  "_updatedAt": "2025-01-07T08:43:15.7351089Z"
+                  "_updatedAt": "2025-01-07T08:43:15.7351089Z",
+                  "_views": {
+                      "productTile": {
+                          "sku": "p-5427",
+                          "name": "Running shoe",
+                          "url": "/products/running-shoe/",
+                          "image": "/media/running-shoe.webp",
+                          "shortDescription": "My short description of the product",
+                          "price": 199.99,
+                      }
+                  }
                 }
     Query400Response:
       type: object
