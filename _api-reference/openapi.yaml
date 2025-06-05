@@ -741,6 +741,7 @@ components:
             The index schema types that are supported for facets aggregation are: `keyword`, `text`, `integer`, `long`, `float`, `double`, `boolean` and `date`.
             
             #### Default values
+            `name`: The value of `field` \
             `size`: 10 
 
             ```json
