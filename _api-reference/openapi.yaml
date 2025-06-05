@@ -732,6 +732,29 @@ components:
             ```json
             "aliases": ["productTile"]
             ```
+            
+            ### Facets
+            Using `facets` in the query allows for aggregated groupings of fields values used for facets. 
+            
+            A facet is requested by a required `field` name to do the aggregation on. There are options to add an optional `name` for the facet, and an optional `size` field to adjust the number of aggregated values returned - the size defaults to 10 and has a maximum of 100. 
+
+            The index schema types that are supported for facets aggregation are: `keyword`, `text`, `integer`, `long`, `float`, `double`, `boolean` and `date`.
+            
+            #### Default values
+            `size`: 10 
+
+            ```json
+            "facets": [
+              {
+                "name": "Categories",
+                "field": "category",
+                "size": 20
+              },
+              {
+                "field": "isInStock"
+              }
+            ]
+            ```
       example:
           {
             "filters": {
@@ -759,6 +782,17 @@ components:
               ]
             },
             "aliases": ["productTile"],
+            "facets": [
+              {
+                "name": "Categories",
+                "field": "category",
+                "size": 20
+              },
+              {
+                "name": "In Stock",
+                "field": "isInStock"
+              }
+            ],
             "sort": [
               {
                 "field": "price",
@@ -935,6 +969,24 @@ components:
                           "price": 199.99,
                       }
                   }
+                }
+        facets:
+          type: array
+          description: List of aggregated field values based on the requested facet fields.
+          items:
+            type: object
+            example:
+                {
+                  "name": "Categories",
+                  "field": "category",
+                  "groups": [{
+                      "value": "Caps",
+                      "count": 8
+                  }, {
+                      "value": "Hoodies",
+                      "count": 2
+                  }],
+                  "isValid": true
                 }
     Query400Response:
       type: object
