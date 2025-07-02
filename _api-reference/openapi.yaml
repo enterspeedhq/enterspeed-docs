@@ -548,7 +548,7 @@ components:
     QueryRequestBody:
       type: object
       description: |
-            All root properties like, `filters`, `sort` and `pagination` are optional.
+            All root properties like, `filters`, `sort`, `pagination` and `facets` are optional.
 
             ### Filters
             `filters` are nested in one or two levels grouped in `and` or `or`.
@@ -689,9 +689,6 @@ components:
             If you have multiple sorting object the sorting will be in the order of the object. In the example below it would mean: first sort by `isInStock` in descending order and then by `title` in ascending order.
 
             #### Default values
-            `field`: _score \
-            `order`: desc
-
             `field`: _updatedAt \
             `order`: desc
 
