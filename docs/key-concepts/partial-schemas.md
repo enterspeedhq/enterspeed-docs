@@ -7,6 +7,10 @@ sidebar_label: Partial schemas
 
 import ReactPlayer from 'react-player/lazy'
 
+:::tip
+This page gives you an introduction to the concept of partial schemas. Go to [schema references](/reference/js/partial-schema/intro) to find the API documentation for partial schemas.
+:::
+
 Partial schemas are a bit different from the typical schema.
 A partial schema is a reusable schema that is used across multiple schemas. A typical use case is when you want a specific data structure and type of data across many schemas.
 
