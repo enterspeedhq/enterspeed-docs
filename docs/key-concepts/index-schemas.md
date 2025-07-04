@@ -9,6 +9,10 @@ sidebar_label: Index schemas
  Index schemas are currently in preview. Contact us if you would like to try it out.
  :::
 
+:::tip
+This page gives you an introduction to the concept of indexes. Go to [schema references](/reference/js/index-schema/intro) to find the API documentation for index schemas.
+:::
+
 An index schema, as the name implies, creates an index, and more precise a search index, for you to query using the [Query API](../api#tag/Query).
 
 An index schemas has two responsibilities:

@@ -5,6 +5,10 @@ sidebar_label: Reprocessing
 
 # Reprocessing
 
+:::tip
+This page gives you an introduction to the concept of reprocessing. Go to [schema references](/reference/js/full-schema/actions#reprocess) to find the API documentation for reprocessing.
+:::
+
 When Enterspeed preprocesses views - which happens either when source entities are ingested or when a schema is deployed -, we also need to reprocess views whenever dependencies are updated or deleted.
 
 Let's say you have a `product` source entity ingested from a PIM system and you want to create a schema to map the product and to enrich the product with some related `contentBlock`s from a CMS system. 

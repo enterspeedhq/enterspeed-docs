@@ -64,6 +64,8 @@ Use the `bySchema` function to reprocess all source entities a specific schema h
 
 Caution: Often it's better to reprocess a specific source entity instead a schema and all of its matching source entities, but sometimes it's necessary  to reprocess an entire schema.
 
+Note: Even though you are reprocessing an entire schema, you still need to specific the source group (see optional function call) if it's different from the source group of the source entity triggering the reprocess.
+
 ```js title="reprocess by bySchema"
 context
     .reprocess('mySchemaAlias')

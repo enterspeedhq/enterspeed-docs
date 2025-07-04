@@ -5,7 +5,11 @@ sidebar_label: Routing
 
 # Routing
 
-You can do routing by either Url or Handle
+:::tip
+This page gives you an introduction to the concept of routing. Go to [schema references](/reference/js/full-schema/routes) to find the API documentation for routing.
+:::
+
+You can do routing by either Url or Handle.
 
 ## URL
 
