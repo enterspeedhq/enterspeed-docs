@@ -24,7 +24,7 @@ import BestPreacticesIcon from '../static/img/icons/compass-regular.png';
 
 At Enterspeed, we’re all about delivering high performance at scale with intelligent caching.
 
-Enterspeed lets you sync all of your content from your CMS (_e.g. Umbraco Cloud_), PIM, etc. to Enterspeed. This enables you to design a whole new front-end application, while still using data from your existing content system.
+Enterspeed lets you sync all of your content from your CMS, PIM, etc. to Enterspeed. This enables you to design a whole new front-end application, while still using data from your existing content system.
 
 _Not familiar with Enterspeed yet? Check out [Enterspeed.com](https://www.enterspeed.com/) for use cases and more._
 
