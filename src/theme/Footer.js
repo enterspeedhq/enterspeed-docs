@@ -12,6 +12,7 @@ export default function Footer(props) {
           return (
             <AnnounceKit
               widget="https://announcekit.app/widgets/v2/3uXAs"
+              boosters={false}
               {...props}
             />
           );
