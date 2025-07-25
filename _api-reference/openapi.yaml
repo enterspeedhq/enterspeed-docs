@@ -722,7 +722,7 @@ components:
             ```
 
             ### Aliases
-            Using `aliases` in the query will return views for the provided schema aliases for each item in the result. The specific views returned for each item is the view created by the same source entity as the item.
+            Using `aliases` in the query will return views for the provided schema aliases for each item in the result. The specific views returned for each item is the view created by the same source entity as the item. As views are returned, only schema aliases of full schemas are supported, as it's the only schema type that's creating views.
 
             This allows you to return different views for the same index. E.g. a productTile view or a productDetails view for a product index, whitout having to add all presentation data for both views to the index. You only need the data to filter and sort on.
 
