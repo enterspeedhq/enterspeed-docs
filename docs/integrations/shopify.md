@@ -14,7 +14,7 @@ You will only have to set the destination field on the entity schema you want to
 
 It's possible to configure multiple Shopify destinations if you need to push data to different Shopify shop.
 
-The jobs are executed in bulk requests to avoid hitting API rate limits in Shopify. This means a new bulk job of up to 1.000 jobs is started every minute unless another bulk job on the same shop connection is still active. If another bulk job is active for the integration will wait another minute and try again.
+The jobs are executed in bulk requests to avoid hitting API rate limits in Shopify. This means a new bulk job of up to 1.000 jobs is started every minute unless another bulk job on the same shop connection is still active. If another bulk job is active, the integration will wait another minute and try again.
 
 ## Requirements
 
