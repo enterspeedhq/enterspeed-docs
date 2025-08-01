@@ -57,6 +57,7 @@ Enterspeed has a growing list of integrations to various systems. The integratio
     <Card title="Typesense" link="integrations/typesense" image={TypesenseLogo} imageBg="typesense-grey-bg" splash="Destination" />
     <Card title="Azure Service Bus" link="integrations/servicebus" image={ServicebusLogo} imageBg="servicebus-grey-bg" splash="Destination" />
     <Card title="Relewise" link="integrations/relewise" image={RelewiseLogo} imageBg="relewise-grey-bg" splash="Destination" />
+    <Card title="Shopify" link="integrations/shopify" image={ShopifyLogo} imageBg="shopify-grey-bg" splash="Destination" />
 </CardContainer>
 
 ## Integrations currently in beta
