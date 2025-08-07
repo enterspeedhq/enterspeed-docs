@@ -629,11 +629,23 @@ components:
             ```
             
             **contains**
+            
+            Working on text fields, it's possible to use wildcard annotations `*` if you want to query text fields only for specific words or sentences, no matter what comes before and after the phrase you search for. It's also possible to set if the search should be case insentitive by setting `caseInsensitive` to `true`.
             ```json 
             {
               "field": "title",
               "operator": "contains",
               "value": "*hoodie*",
+              "caseInsensitive": true
+            }
+            ```
+            
+            Working on list fields on the other hand, the `contains` operator performs an equals on the list items, which will look for an exact match within the list. If working on text lists, it's also possible here to set if the search should be case insentitive by setting `caseInsensitive` to `true` as above.
+            ```json 
+            {
+              "field": "categories",
+              "operator": "contains",
+              "value": "Hoodies",
               "caseInsensitive": true
             }
             ```
