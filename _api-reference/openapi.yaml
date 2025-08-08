@@ -615,7 +615,8 @@ components:
             {
               "field": "title",
               "operator": "equals",
-              "value": "Enterspeed Hoodie"
+              "value": "Enterspeed Hoodie",
+              "caseInsensitive": true
             }
             ```
 
@@ -624,7 +625,8 @@ components:
             {
               "field": "title",
               "operator": "notEquals",
-              "value": "Enterspeed Hoodie"
+              "value": "Enterspeed Hoodie",
+              "caseInsensitive": true
             }
             ```
             
