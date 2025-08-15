@@ -632,7 +632,7 @@ components:
             
             **contains**
             
-            Working on text fields, it's possible to use wildcard annotations `*` if you want to query text fields only for specific words or sentences, no matter what comes before and after the phrase you search for. It's also possible to set if the search should be case insentitive by setting `caseInsensitive` to `true`.
+            Working on text or text list fields, it's possible to use wildcard annotations `*` if you want to query the fields only for specific words or sentences, no matter what comes before and after the phrase you search for. It's also possible to set if the search should be case insentitive by setting `caseInsensitive` to `true`.
             ```json 
             {
               "field": "title",
