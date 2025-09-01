@@ -22,7 +22,7 @@ Please read the pages as most of the points are applicable to every Enterspeed p
     <Card icon={<FaGears />} title="Schemas" link="best-practices/schemas">
         Creating and updating views and routes for your frontend application
     </Card>
-    <Card icon={<FaSearchengin />} title="Indexes (Preview feature)" link="best-practices/indexes">
+    <Card icon={<FaSearchengin />} title="Indexes" link="best-practices/indexes">
         Optimizing indexes used by the Query API
     </Card>
 </CardContainer>
