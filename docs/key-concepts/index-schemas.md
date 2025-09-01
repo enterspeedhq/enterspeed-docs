@@ -5,10 +5,6 @@ sidebar_label: Index schemas
 
 # Index schemas
 
-:::info
- Index schemas are currently in preview. Contact us if you would like to try it out.
- :::
-
 :::tip
 This page gives you an introduction to the concept of indexes. Go to [schema references](/reference/js/index-schema/intro) to find the API documentation for index schemas.
 :::

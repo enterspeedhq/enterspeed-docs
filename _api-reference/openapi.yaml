@@ -48,9 +48,6 @@ tags:
       **ℹ NOTE:** The `first` or `last` parameter is required and must be set between 100 - 500 (e.g. `first=250`). Both are not allowed at the same time.
   - name: Query
     description:
-      _The Query API is currently in preview. Contact us if you would like to try it out._
-
-
       The Query API is what you use to query items from your indexes. 
 
             
