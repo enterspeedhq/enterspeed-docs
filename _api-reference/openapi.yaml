@@ -573,7 +573,7 @@ paths:
           description: >
             When one or more queries results in a valid response a 200 response is returned.
             
-            If any of the other requested queries fails, either due to validation errors or other issues, this will be returned in the same response as well. 
+            If any of the other requested queries fails, either due to validation errors or other issues, the error message will be returned as part of the response.
           content:
             application/json:
               schema:
