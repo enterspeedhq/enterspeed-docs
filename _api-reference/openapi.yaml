@@ -557,7 +557,13 @@ paths:
           schema:
             type: number
       requestBody:
-        description: The query object including things like filters, sorting and pagination.
+        description: |
+            The query consists of a list of query objects, on the format just like when quering items in a single index, so refer to this section when looking into `filters`, `sorting`, `pagination` etc.
+            
+            The only thing that differs with these query objects, is an addition of an `index` and a `name` field, so you per query can define which index you want to perform the query against and also name the individual query. This means that this service can perform multiple queries on the same index, or perform queries on multiple indicies in one request, and also give you the ability to name queries for easier identification of the resulting result sets.
+            
+            ### Note
+            The request payload can at most take 5 queries in one request. 
         content:
           application/json:
             schema:
@@ -870,12 +876,7 @@ components:
         }
     QueryRequestList:
       type: array
-      description: |
-        The query consists of a list of query objects, on the format just like "#/components/schemas/QueryRequestBody", so refer to this section when looking into `filters`, ´sorting´, `pagination` etc.
-        
-        The only thing that differs this query object, is with an addition of an `index` field, so you per query can define which index you want to perform the query against, this means that this service can perform multiple queries on the same index, or perform queries on multiple indicies in one request.
-        
-        Note: The request payload can at most take 5 queries in one request. 
+      description: List consisting of multiple queries using the extended query object format.  
       items:
         type: object
         $ref: "#/components/schemas/QueryRequestExtendedBody"
@@ -884,6 +885,7 @@ components:
       example:
         {
             "index": "products",
+            "name": "productData",
             "filters": {
               "and":  [
                 {
@@ -1122,6 +1124,10 @@ components:
           type: string
           example: products
           description: The index name which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
         totalResults:
           type: number
           example: 200
@@ -1201,6 +1207,10 @@ components:
           type: string
           example: products
           description: The index name which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
         message:
           type: string
           description: Erros message
