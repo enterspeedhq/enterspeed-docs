@@ -878,8 +878,78 @@ components:
       type: array
       description: List consisting of multiple queries using the extended query object format.  
       items:
-        type: object
         $ref: "#/components/schemas/QueryRequestExtendedBody"
+      example:
+        [
+            {
+                "index": "products",
+                "name": "productData",
+                "filters": {
+                  "and":  [
+                    {
+                      "field": "title",
+                      "operator": "contains",
+                      "value": "*hoodie*",
+                      "caseInsensitive": true
+                    },
+                    {
+                      "or": [ 
+                        {
+                          "field": "isInStock",
+                          "operator": "equals",
+                          "value": true
+                        },
+                        {
+                          "field": "allowPreorder",
+                          "operator": "equals",
+                          "value": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "aliases": ["productTile"],
+                "facets": [
+                  {
+                    "name": "Categories",
+                    "field": "category",
+                    "size": 20
+                  },
+                  {
+                    "name": "In Stock",
+                    "field": "isInStock"
+                  }
+                ],
+                "sort": [
+                  {
+                    "field": "price",
+                    "order": "asc"
+                  }
+                ],
+                "pagination": {
+                  "page": 0,
+                  "pageSize": 20
+                }
+            },
+            {
+                "index": "products",
+                "name": "facets",
+                "facets": [
+                  {
+                    "name": "Categories",
+                    "field": "category",
+                    "size": 20
+                  },
+                  {
+                    "name": "In Stock",
+                    "field": "isInStock"
+                  }
+                ],
+                "pagination": {
+                  "pageSize": 0
+                }
+            }
+        ]
     QueryRequestExtendedBody:
       type: object
       example:
