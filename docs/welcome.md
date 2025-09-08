@@ -122,6 +122,24 @@ Enterspeed sets some upper limits to its services to ensure stability and perfor
 </details>
 
 <details>
+<summary>What are the service limits of the Query API?</summary>
+
+Enterspeed sets upper limits for its Query API to maintain stability and performance across all tenants. These limits are part of a shared quota with the Delivery API, and may be capped earlier depending on your plan. Limits marked with an asterisk (\*) may be extended.
+
+- Maximum monthly Delivery API and Query API requests\*: 5,000,000 per tenant  
+- Maximum monthly changed Ingest Requests\*: 500,000 per tenant  
+- Maximum number of source entities\*: 200,000 per tenant  
+- Maximum number of index items\*: 200,000 per tenant  
+- Maximum index item size: 1 MB  
+- Maximum storage\*: 2 GB per tenant  
+- Ingest API rate limit\*: 25 requests/sec per tenant  
+- Ingest API request size limit: 1 MB per request  
+- Source entity property count limit: 5,000 per source entity  
+
+</details>
+
+
+<details>
 <summary>How to handle forms when using Enterspeed?</summary>
 
 Forms come in many shapes and sizes depending on the form builder you are using and how you want to render your forms.
