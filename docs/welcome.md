@@ -107,15 +107,18 @@ After updating the domain, click the node you changed the domain on and select "
 </details>
 
 <details>
-<summary>What are the service limits of Enterspeed?</summary>
+<summary>What are the service limits of the Enterspeed Platform?</summary>
 
 Enterspeed sets some upper limits to its services to ensure stability and performance for all customers, please note that these limits may be capped before reaching the maximum by your plan. Limits that are marked with \* may be extended.
 
-- Maximum monthly Delivery API requests\*: 5,000,000
-- Maximum monthly changed Ingest Requests\*: 500,000
-- Maximum number of source entities\*: 200,000
+**Service limits:**
+- Maximum monthly Delivery API and Query API requests (counted together in a single pooled quota)\*: 5,000,000 per tenant
+- Maximum monthly changed Ingest Requests\*: 500,000 per tenant
+- Maximum number of source entities\*: 200,000 per tenant
+- Maximum number of index items\*: 200,000 per tenant
+- Maximum index item size: 1 MB
 - Maximum storage\*: 2 GB per tenant
-- Ingest API rate limit\*: 25 requests per sec
+- Ingest API rate limit\*: 25 requests/sec per tenant
 - Ingest API request size limit: 1 MB per request
 - Source entity property count limit: 5,000 per source entity
 
