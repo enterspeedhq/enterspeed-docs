@@ -527,6 +527,64 @@ paths:
                 $ref: "#/components/schemas/Query400Response"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+  /v1:
+    servers:
+      - url: https://query.enterspeed.com
+        description: Query API
+    post:
+      summary: Query items with multiple queries
+      description: > 
+        The Query API is used to query items in an index, with this endpoint up to 5 queries can be requested in a single payload, each query defining the index to perform the lookup in. 
+      tags:
+        - Query
+      operationId: queryMultiContentPost
+      parameters:
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your environment.
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+        - name: Content-Length
+          required: true
+          in: header
+          description: |
+            The length of the message body, in bytes (this header is automatically added by most clients).
+          schema:
+            type: number
+      requestBody:
+        description: |
+            The query consists of a list of query objects, on the format just like when quering items in a single index, so refer to this section when looking into `filters`, `sorting`, `pagination` etc.
+            
+            The only thing that differs with these query objects, is an addition of an `index` and a `name` field, so you per query can define which index you want to perform the query against and also name the individual query. This means that this service can perform multiple queries on the same index, or perform queries on multiple indicies in one request, and also give you the ability to name queries for easier identification of the resulting result sets.
+            
+            ### Note
+            The request payload can at most take 5 queries in one request. 
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequestList"
+      responses:
+        "200":
+          description: >
+            When one or more queries results in a valid response a 200 response is returned.
+            
+            If any of the other requested queries fails, either due to validation errors or other issues, the error message will be returned as part of the response.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/QueryResponseExtendedList"
+        "400":
+          description: >-
+            Invalid request. Server responded but the request was in an invalid format.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query400ExtendedResponseList"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
 components:
   schemas:
     ViewProperties:
@@ -765,7 +823,136 @@ components:
             ]
             ```
       example:
-          {
+        {
+          "filters": {
+            "and":  [
+              {
+                "field": "title",
+                "operator": "contains",
+                "value": "*hoodie*",
+                "caseInsensitive": true
+              },
+              {
+                "or": [ 
+                  {
+                    "field": "isInStock",
+                    "operator": "equals",
+                    "value": true
+                  },
+                  {
+                    "field": "allowPreorder",
+                    "operator": "equals",
+                    "value": true
+                  }
+                ]
+              }
+            ]
+          },
+          "aliases": ["productTile"],
+          "facets": [
+            {
+              "name": "Categories",
+              "field": "category",
+              "size": 20
+            },
+            {
+              "name": "In Stock",
+              "field": "isInStock"
+            }
+          ],
+          "sort": [
+            {
+              "field": "price",
+              "order": "asc"
+            }
+          ],
+          "pagination": {
+            "page": 0,
+            "pageSize": 20
+          }
+        }
+    QueryRequestList:
+      type: array
+      description: List consisting of multiple queries using the extended query object format.  
+      items:
+        $ref: "#/components/schemas/QueryRequestExtendedBody"
+      example:
+        [
+            {
+                "index": "products",
+                "name": "productData",
+                "filters": {
+                  "and":  [
+                    {
+                      "field": "title",
+                      "operator": "contains",
+                      "value": "*hoodie*",
+                      "caseInsensitive": true
+                    },
+                    {
+                      "or": [ 
+                        {
+                          "field": "isInStock",
+                          "operator": "equals",
+                          "value": true
+                        },
+                        {
+                          "field": "allowPreorder",
+                          "operator": "equals",
+                          "value": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "aliases": ["productTile"],
+                "facets": [
+                  {
+                    "name": "Categories",
+                    "field": "category",
+                    "size": 20
+                  },
+                  {
+                    "name": "In Stock",
+                    "field": "isInStock"
+                  }
+                ],
+                "sort": [
+                  {
+                    "field": "price",
+                    "order": "asc"
+                  }
+                ],
+                "pagination": {
+                  "page": 0,
+                  "pageSize": 20
+                }
+            },
+            {
+                "index": "products",
+                "name": "facets",
+                "facets": [
+                  {
+                    "name": "Categories",
+                    "field": "category",
+                    "size": 20
+                  },
+                  {
+                    "name": "In Stock",
+                    "field": "isInStock"
+                  }
+                ],
+                "pagination": {
+                  "pageSize": 0
+                }
+            }
+        ]
+    QueryRequestExtendedBody:
+      type: object
+      example:
+        {
+            "index": "products",
+            "name": "productData",
             "filters": {
               "and":  [
                 {
@@ -812,7 +999,7 @@ components:
               "page": 0,
               "pageSize": 20
             }
-          }
+        }
     Raw:
       type: object
       description: Headers required
@@ -997,6 +1184,73 @@ components:
                   }],
                   "isValid": true
                 }
+    QueryResponseExtended:
+      type: object
+      properties:
+        index:
+          type: string
+          example: products
+          description: The index name which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        totalResults:
+          type: number
+          example: 200
+          description: The total number of results matched by query.
+        results:
+          type: array
+          description: |
+            List of items from the index matched by the query provided.
+
+            Built in fields are prefixed with underscore (`_`).
+          items:
+            type: object
+            example:
+                {
+                  "sku": "p-5427",
+                  "name": "Running shoe",
+                  "url": "/products/running-shoe/",
+                  "_originId": "p-5427",
+                  "_sourceGuid": "9f741916-19e3-4791-9ebd-701634ba9b75",
+                  "_updatedAt": "2025-01-07T08:43:15.7351089Z",
+                  "_views": {
+                      "productTile": {
+                          "sku": "p-5427",
+                          "name": "Running shoe",
+                          "url": "/products/running-shoe/",
+                          "image": "/media/running-shoe.webp",
+                          "shortDescription": "My short description of the product",
+                          "price": 199.99,
+                      }
+                  }
+                }
+        facets:
+          type: array
+          description: List of aggregated field values based on the requested facet fields.
+          items:
+            type: object
+            example:
+                {
+                  "name": "Categories",
+                  "field": "category",
+                  "groups": [{
+                      "value": "Caps",
+                      "count": 8
+                  }, {
+                      "value": "Hoodies",
+                      "count": 2
+                  }],
+                  "isValid": true
+                }
+    QueryResponseExtendedList:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/QueryResponseExtended"
+          - $ref: "#/components/schemas/Query400Response"
+          - $ref: "#/components/schemas/Query400ResponseExtended"
     Query400Response:
       type: object
       properties:
@@ -1013,6 +1267,36 @@ components:
         status:
           type: string
           example: "error"
+    Query400ResponseExtended:
+      type: object
+      properties:
+        index:
+          type: string
+          example: products
+          description: The index name which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        message:
+          type: string
+          description: Erros message
+          example: "Query is not valid"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Operator not implemented: equal"
+        status:
+          type: string
+          example: "error"
+    Query400ExtendedResponseList:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/Query400Response"
+          - $ref: "#/components/schemas/Query400ResponseExtended"
     NoIdsOrHandlesParametersResponse:
       type: object
       properties:
