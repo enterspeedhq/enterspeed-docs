@@ -18,7 +18,7 @@ The jobs are executed in bulk requests to avoid hitting API rate limits in Shopi
 
 ## Requirements
 
-It's required to have a meta field called `custom.customId` of type `ID` on the object types the destination is used for. This field is used as an identifier when updating or deleting objects in Shopify through the destination.
+It's required to have a meta field called `enterspeed.customId` of type `ID` on the object types the destination is used for. This field is used as an identifier when updating or deleting objects in Shopify through the destination.
 
 ![Umbraco Content Structure](/img/docs/integrations/shopify/meta-field-custom-id.png)
 
@@ -29,7 +29,8 @@ In order to setup the Shopify configuration you need the following:
 | Setting                               | Description                            |
 | ------------------------------------- | -------------------------------------- |
 | Shopify store name                    | The unique store name in front of .myshopify.com. E.g. [my store name].myshopify.com |
-| Shopify access token                  | An admin API access token with the following permissions: `write_product_listings`, `read_product_listings`, `write_products`, `read_products` |
+| Shopify access token                  | A Developer app API access token with the following permissions: `write_product_listings`, `read_product_listings`, `write_products`, `read_products` |
+| Shopify API secret key                | A Developer app API secret key
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Shopify |
 
 ## Options
