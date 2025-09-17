@@ -18,7 +18,7 @@ The jobs are executed in bulk requests to avoid hitting API rate limits in Shopi
 
 ## Requirements
 
-It's required to have a meta field called `enterspeed.customId` of type `ID` on the object types the destination is used for. This field is used as an identifier when updating or deleting objects in Shopify through the destination.
+It's required to have a meta field called `enterspeed.customId` of type `ID` on the object types the destination is used for. This field must have the `Filter on the product list and in the Admin API` enabled and is used as an identifier when updating or deleting objects in Shopify through the destination.
 
 ![Umbraco Content Structure](/img/docs/integrations/shopify/meta-field-custom-id.png)
 
