@@ -41,7 +41,7 @@ Table of available options, that you can optionally specify, if needed for your 
 | ------------------------------------- | -------------------------------------- |
 | customId                              | By default Enterspeed uses view id as the value for customId in Shopify. You can override default id by providing value for this option, e.g. to use a SKU number. |
 | shopifyEntityType                     | The type of entity you want to send to Shopify. Supported values: `product`. |
-| statusForNewProducts                  | The default status for newly created products. Supported values: `Active`, `Draft`. |
+| statusForNewProducts                  | The default status for newly created products. Supported values: `Active`, `Draft`. If the `status` property is set map directly on the product, this value takes priority over this setting. |
 | statusForDeletedProducts              | When products are deleted in Enterspeed when should then happen with the product in Shopify. Supported values: `Delete`, `Archived`, `Draft`. |
 | setOnlyHandleForNewProducts           | If the value is `true` the handle value will not be updated when the product is updated, it will on ly be set when the product is created the first time. Default value is `false`. Supported values: `true`, `false`. |
 
