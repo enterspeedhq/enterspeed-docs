@@ -45,6 +45,11 @@ Table of available options, that you can optionally specify, if needed for your 
 | statusForDeletedProducts              | When products are deleted in Enterspeed when should then happen with the product in Shopify. Supported values: `Delete`, `Archived`, `Draft`. |
 | setOnlyHandleForNewProducts           | If the value is `true` the handle value will not be updated when the product is updated, it will on ly be set when the product is created the first time. Default value is `false`. Supported values: `true`, `false`. |
 
+:::info
+When products are deleted in Enterspeed the Shopify Destination will archive the products i Shopify and not delete them. 
+:::
+
+
 ## IntelliSense
 
 In order to send data to Shopify the structure of the object you are mapping in the `properties` function must match with the corresponding Shopify model.
