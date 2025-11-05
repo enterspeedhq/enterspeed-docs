@@ -8,13 +8,19 @@ import TabItem from '@theme/TabItem';
 
 # Shopify
 
+:::info
+The Shopify Destination is currently in preview.
+:::
+
 The Enterspeed Shopify integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Shopify shop. This means that you can decide on schema level which views you want to send to Shopify.
 
 You will only have to set the destination field on the entity schema you want to send to Shopify. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
 
-It's possible to configure multiple Shopify destinations if you need to push data to different Shopify shop.
+It's possible to configure multiple Shopify destinations if you need to push data to different Shopify shops.
 
 The jobs are executed in bulk requests to avoid hitting API rate limits in Shopify. This means a new bulk job of up to 1.000 jobs is started every minute unless another bulk job on the same shop connection is still active. If another bulk job is active, the integration will wait another minute and try again.
+
+The model you map in the Enterspeed schema looks to some degree like Shopifys product model, however what you map is a unified model containing both product, variant and translation data for a product making it easy to map out the full product in one go.
 
 ## Requirements
 
