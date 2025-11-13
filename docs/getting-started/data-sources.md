@@ -31,7 +31,6 @@ Deleting entities, deleting a source group or deleting a data source will perman
 Click the _Settings_-tab and then click the _Data sources_-tab in the sidemenu. Next, click the _Create group_-button in the right corner.
 
 Give your source group a name and select a type (_the type is only used to better help you differentiate your source groups_). 
-<!-- You also need to select a mode for the source group (Schema Transformation or Auto Indexing). Modes define how you can work with the data you ingest into the sources in the source group. Read more about [source group mode](../key-concepts/source-groups#modes). -->
 
 Next, give your data source a name, select one or more environments and then click the _Add_-button. Once you have added your data sources, click the _Create_-button.
 
