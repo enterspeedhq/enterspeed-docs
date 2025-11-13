@@ -30,7 +30,7 @@ Deleting entities, deleting a source group or deleting a data source will perman
 
 Click the _Settings_-tab and then click the _Data sources_-tab in the sidemenu. Next, click the _Create group_-button in the right corner.
 
-Give your source group a name and select a type (_the type is only used to better help you differentiate your source groups_).
+Give your source group a name and select a type (_the type is only used to better help you differentiate your source groups_). 
 
 Next, give your data source a name, select one or more environments and then click the _Add_-button. Once you have added your data sources, click the _Create_-button.
 

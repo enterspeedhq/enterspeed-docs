@@ -16,9 +16,7 @@ There are three ways of doing this:
 
 ### Ingesting data via an integration
 
-Using one of our [integrations](./integrations/overview.md) is the easiest way to get data ingested. This integration takes care of calling the Enterspeed Ingest API when changes occur in your CMS.
-
-We currently have integrations for Umbraco V7, Umbraco V8, Umbraco V9, Sitecore V8 and Sitecore V9.
+Using one of our [integrations](./integrations/overview.md) is the easiest way to get data ingested. This integration takes care of calling the Enterspeed Ingest API when changes occur in your backend system.
 
 ### Ingesting data via our .NET SDK
 
