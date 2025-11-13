@@ -26,6 +26,6 @@ The schema transformation is a powerfull feature, allowing you to tailor and str
 
 ### Auto Indexing
 
-On Auto indexing mode there is not transformation process. Instead, ingested source entities goes directly into an index, which can be queried using the [Query API](/api#tag/Query/operation/queryAutoIndengPost). 
+On Auto indexing mode there is no transformation process. Instead, ingested source entities goes directly into an index, which can be queried using the [Query API](/api#tag/Query/operation/queryAutoIndengPost). 
 
 Since no transformation is involved, the Auto Indexing mode is suited for scenarios such as handling large volumes of small, custom price objects that don’t require transformation, or frequently changing data like stock numbers.
