@@ -31,7 +31,7 @@ Table of available options, that you can optionally specify, if needed for your 
 
 | Setting                               | Description                            |
 | ------------------------------------- | -------------------------------------- |
-| id                                    | By default Enterspeed uses view id as the value for object id in Clerk. You can override default object id by providing value for this option. |
+| id                                    | By default Enterspeed uses view id as the value for object id in Relewise. You can override default object id by providing value for this option. |
 | relewiseEntityType                    | The type of entity you want to send to Relewise. Supported values: `product`, `productCategory`, `content`, `contentCategory` and `brand`. |
 
 ## IntelliSense
