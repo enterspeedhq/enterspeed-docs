@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 # Shopify
 
 :::info
-The Shopify Destination is currently in preview.
+The Shopify Destination is currently in preview, reach out if you want to get started.
 :::
 
 The Enterspeed Shopify integration uses the [destinations field](../reference/fields.md#destinations) to send data from views directly to a configured Shopify shop. This means that you can decide on schema level which views you want to send to Shopify.
@@ -49,7 +49,6 @@ Table of available options, that you can optionally specify, if needed for your 
 | shopifyEntityType                     | The type of entity you want to send to Shopify. Supported values: `product`. |
 | statusForNewProducts                  | The default status for newly created products. Supported values: `Active`, `Draft`, `Archived`, `Unlisted`. If the `status` property is set map directly on the product, this value takes priority over this setting. |
 | setOnlyHandleForNewProducts           | If the value is `true` the handle value will not be updated when the product is updated, it will on ly be set when the product is created the first time. Default value is `false`. Supported values: `true`, `false`. |
-<!-- | statusForDeletedProducts              | When products are deleted in Enterspeed when should then happen with the product in Shopify. Supported values: `Delete`, `Archived`, `Draft`, `Unlisted`. | -->
 
 :::info
 When products are deleted in Enterspeed the Shopify Destination will archive the products i Shopify and not delete them. 
