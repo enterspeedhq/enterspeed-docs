@@ -35,7 +35,7 @@ In order to setup the Shopify configuration you need the following:
 | Setting                               | Description                            |
 | ------------------------------------- | -------------------------------------- |
 | Shopify store name                    | The unique store name in front of .myshopify.com. E.g. [my store name].myshopify.com |
-| Shopify access token                  | A Developer app API access token with the following permissions: `write_products`, `read_products`, `write_publications`, `read_publications`, `write_locales`, `read_locales` |
+| Shopify access token                  | A Developer app API access token with the following permissions: `write_products`, `read_products`, `write_publications`, `read_publications`, `write_locales`, `read_locales`, `write_translations`, `read_translations` |
 | Shopify API secret key                | A Developer app API secret key
 | Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Shopify |
 
