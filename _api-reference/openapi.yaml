@@ -350,6 +350,8 @@ paths:
     post:
       summary: Save entities
       description: |
+        Note: This endpoint is currently in preview
+
         Starting the process for saving entities.
 
         The bulk endpoint can take up to 50 entities in a single request.
@@ -415,6 +417,8 @@ paths:
     delete:
       summary: Delete entities
       description: |
+        Note: This endpoint is currently in preview
+        
         Starting the process for deleting entities.
 
         The bulk endpoint can take up to 50 entities in a single request.
