@@ -327,7 +327,7 @@ paths:
         - name: originId
           in: path
           required: true
-          description: The entity id to delete
+          description: The originId to delete
           schema:
             type: string
             example: "1234"
@@ -341,6 +341,127 @@ paths:
       responses:
         "200":
           description: Valid request. Processing of deleting the entity has begun.
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "404":
+          description: No entity found with that id.
+ 
+  /ingest/v2:
+    post:
+      summary: Save entities
+      description: |
+        Starting the process for saving entities.
+
+        The bulk endpoint can take up to 50 entities in a single request.
+      tags:
+        - Ingest
+      operationId: saveEntityBulk
+      parameters:
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your source.
+          schema:
+            type: string
+            example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+        - name: Content-Length
+          required: true
+          in: header
+          description: |
+            The length of the message body, in bytes (this header is automatically added by most clients). 
+
+            Note: The endpoint does not support `Transfer-Encoding: chunked`. `JsonContent` and `PostAsJsonAsync` in .NET will by default set the `Transfer-Encoding: chunked` header. Use types like e.g. `StringContent` or `ByteArrayContent` instead.
+          schema:
+            type: number
+      requestBody:
+        description: Array of entities to process
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkSimplified"
+
+      responses:
+        "200":
+          description: |
+            Valid request. Processing of posted entities has begun. 
+            
+            A successful response is returned if one or more entities were valid. Only if all entities are invalid a 422 response is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  changedSourceEntities:
+                    type: array
+                    example: ["p-5427"]
+                  unchangedSourceEntities:
+                    type: array
+                    example: ["p-6724"]
+                  errors:
+                    type: object
+                    example:  {
+                      "1234": [
+                        "OriginId must be a string, not a number at position 3"
+                      ]
+                    }
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "422":
+          description: Unprocessable request. The request was well-formed but was unable to be followed due to semantic errors.
+
+    delete:
+      summary: Delete entities
+      description: |
+        Starting the process for deleting entities.
+
+        The bulk endpoint can take up to 50 entities in a single request.
+      tags:
+        - Ingest
+      operationId: deleteEntityBulk
+      parameters:
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your source.
+          schema:
+            type: string
+            example: source-90880177-e9a1-47b3-9a40-7b728a6bafd8
+      requestBody:
+        description: Array of originIds to delete
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkDelete"
+      responses:
+        "200":
+          description: |
+            Valid request. Processing of deleting the entities has begun.
+            
+            A successful response is returned if one or more entities were valid. Only if all entities are invalid a 422 response is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  deletedSourceEntities:
+                    type: array
+                    example: ["p-5427"]
+                  notFoundSourceEntities:
+                    type: array
+                    example: ["p-6724"]
+                  errors:
+                    type: object
+                    example:  {
+                      "1234": [
+                        "OriginId must be a string, not a number at position 3"
+                      ]
+                    }
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
         "404":
@@ -1172,6 +1293,93 @@ components:
               - type: boolean
               - type: array
               - type: object
+    BulkSimplified:
+      type: object
+      required:
+        - originId
+        - type
+      properties:
+        originId:
+          type: string
+          description: >
+            Id of the entity. Must be same format for all entities within the same source. Eg. integers, guids, etc.
+        type:
+          type: string
+          description: >
+            The type or alias of the type of entity being send to process.
+            Eg. blogList, blogPage, frontPage, etc.
+            Only used for raw body
+        url:
+          type: string
+          description: |
+            If the entity is routable send the URL. Otherwise leave as
+            null.  
+
+            Allowed as null if entity is not routable.
+
+            Note: The URL needs to begin with a leading slash.
+        originParentId:
+          type: string
+          example: "123"
+          description: Allowed as null if no hierarchy exists.
+        redirects:
+          type: array
+          description: >
+            URLs that redirects to the current page. Eg.
+            https://enterspeed.com/product-enterspeed-tshirt-old/ redirecting to
+            https://enterspeed.com/product-enterspeed-tshirt/.
+          items:
+            type: string
+            example: https://enterspeed.com/product-enterspeed-tshirt-old/
+        properties:
+          description: |
+            Property names:
+              - cannot start with a digit
+              - cannot consist only of underscores
+              - can contain A-Z, a-z letters, digits and underscores
+      example:
+        [
+          {
+            "type": "product",
+            "originId": "p-5427",
+            "properties": {
+              "name": "Official Enterspeed T-shirt",
+              "price": 199.99,
+              "inStock": true,
+              "features":
+                [
+                  { "name": "color", "value": "blue" },
+                  { "name": "size", "value": "M" },
+                ],
+              "information":
+                { "short": "Nice t-shirt", "long": "Nice t-shirt in cotton" }
+            }
+          },
+          {
+            "type": "product",
+            "originId": "p-6724",
+            "properties": {
+              "name": "Official Enterspeed Hoddie",
+              "price": 249.95,
+              "inStock": true,
+              "features":
+                [
+                  { "name": "color", "value": "blue" },
+                  { "name": "size", "value": "M" },
+                ],
+              "information":
+                { "short": "Nice hoddie", "long": "Nice hoddie in cotton" }
+            }
+          }
+        ]
+    BulkDelete:
+      type: array
+      description: Array of strings with originIds to delete
+      example:
+        [
+          "p-5427",
+          "p-6724"
+        ]
     RouteResponse:
       type: object
       properties:
