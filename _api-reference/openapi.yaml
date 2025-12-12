@@ -354,7 +354,9 @@ paths:
 
         Starting the process for saving entities.
 
-        The bulk endpoint can take up to 50 entities in a single request.
+        *Note: The bulk endpoint can take up to 50 entities in a single request.*
+
+        *Note: The total size of the request body must not exceed 200 MB.*
       tags:
         - Ingest
       operationId: saveEntityBulk
@@ -421,7 +423,7 @@ paths:
         
         Starting the process for deleting entities.
 
-        The bulk endpoint can take up to 50 entities in a single request.
+        *Note: The bulk endpoint can take up to 50 entities in a single request.*
       tags:
         - Ingest
       operationId: deleteEntityBulk
@@ -1298,49 +1300,51 @@ components:
               - type: array
               - type: object
     BulkSimplified:
-      type: object
-      required:
-        - originId
-        - type
-      properties:
-        originId:
-          type: string
-          description: >
-            Id of the entity. Must be same format for all entities within the same source. Eg. integers, guids, etc.
-        type:
-          type: string
-          description: >
-            The type or alias of the type of entity being send to process.
-            Eg. blogList, blogPage, frontPage, etc.
-            Only used for raw body
-        url:
-          type: string
-          description: |
-            If the entity is routable send the URL. Otherwise leave as
-            null.  
-
-            Allowed as null if entity is not routable.
-
-            Note: The URL needs to begin with a leading slash.
-        originParentId:
-          type: string
-          example: "123"
-          description: Allowed as null if no hierarchy exists.
-        redirects:
-          type: array
-          description: >
-            URLs that redirects to the current page. Eg.
-            https://enterspeed.com/product-enterspeed-tshirt-old/ redirecting to
-            https://enterspeed.com/product-enterspeed-tshirt/.
-          items:
-            type: string
-            example: https://enterspeed.com/product-enterspeed-tshirt-old/
+      type: array
+      items:
+        type: object
+        required:
+          - originId
+          - type
         properties:
-          description: |
-            Property names:
-              - cannot start with a digit
-              - cannot consist only of underscores
-              - can contain A-Z, a-z letters, digits and underscores
+          originId:
+            type: string
+            description: >
+              Id of the entity. Must be same format for all entities within the same source. Eg. integers, guids, etc.
+          type:
+            type: string
+            description: >
+              The type or alias of the type of entity being send to process.
+              Eg. blogList, blogPage, frontPage, etc.
+              Only used for raw body
+          url:
+            type: string
+            description: |
+              If the entity is routable send the URL. Otherwise leave as
+              null.  
+
+              Allowed as null if entity is not routable.
+
+              Note: The URL needs to begin with a leading slash.
+          originParentId:
+            type: string
+            example: "123"
+            description: Allowed as null if no hierarchy exists.
+          redirects:
+            type: array
+            description: >
+              URLs that redirects to the current page. Eg.
+              https://enterspeed.com/product-enterspeed-tshirt-old/ redirecting to
+              https://enterspeed.com/product-enterspeed-tshirt/.
+            items:
+              type: string
+              example: https://enterspeed.com/product-enterspeed-tshirt-old/
+          properties:
+            description: |
+              Property names:
+                - cannot start with a digit
+                - cannot consist only of underscores
+                - can contain A-Z, a-z letters, digits and underscores
       example:
         [
           {
@@ -1377,13 +1381,14 @@ components:
           }
         ]
     BulkDelete:
-      type: array
-      description: Array of strings with originIds to delete
-      example:
-        [
+      type: object
+      description: object with an array of strings with originIds to delete
+      example: {
+        "originIds": [
           "p-5427",
           "p-6724"
         ]
+      }
     RouteResponse:
       type: object
       properties:
