@@ -1059,7 +1059,7 @@ components:
             "and":  [
               {
                 "field": "locationId",
-                "operator": "equels",
+                "operator": "equals",
                 "value": "warehouse-01",
                 "caseInsensitive": true
               }
