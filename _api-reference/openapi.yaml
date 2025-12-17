@@ -7,9 +7,9 @@ info:
 
     Before you start you will need to [create an Enterspeed-account](https://app.enterspeed.com) and set up a tenant (a property for your website). Here you can create
 
-    - A data source (provides you with an API key for the **Ingest API** and **Query API**).
+    - A data source (provides you with an API key for the **Ingest API**).
 
-    - An environment client (provides you with an API key for the **Delivery API**).
+    - An environment client (provides you with an API key for the **Delivery API** and **Query API**).
 
     - A domain (ensure the correct data gets fetched).
 
