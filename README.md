@@ -21,3 +21,7 @@ In the root folder run:
 In the root folder run
 
 `yarn run docusaurus start`
+
+
+## How to deploy
+You need to be connected to Netlify to deploy it. We usually only have one access. So ask in the engineering channel.
