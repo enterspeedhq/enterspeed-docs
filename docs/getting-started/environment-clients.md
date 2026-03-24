@@ -88,7 +88,7 @@ When your environment client has Query API access, you can optionally restrict i
 
 - AI agent for blog content: Restrict to `blogpost` and `blogpage` indices only
 - Product recommendation system: Restrict to `product` and `category` indices only
-- Content migration tool: Use `cms:*` pattern for all CMS-related schemas
+- Content migration tool: Use `cms*` pattern for all CMS-related schemas
 
 ### Source API Index Scopes
 
@@ -114,7 +114,7 @@ Index scopes are **optional** and only apply when the corresponding component sc
 - Query index scopes only work if **Query API** component scope is enabled
 - Source index scopes only work if **Source API** component scope is enabled
 - If no index scopes are configured, the client has access to **all** data within its allowed component scopes
-  :::
+:::
 
 This two-layer approach provides maximum flexibility:
 
