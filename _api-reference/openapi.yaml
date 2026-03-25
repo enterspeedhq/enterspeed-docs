@@ -252,9 +252,19 @@ paths:
             The type or alias of the type of entity being send to process.
             Eg. blogList, blogPage, frontPage, etc.
             Only used for raw body
+
+            The type is immutable after initial ingest. If an entity with the same originId already exists and the type differs, the ingest will be rejected with a type change error in the response. Type comparison is case-sensitive. To change the entity type, delete the entity and re-ingest with the new type, or use X-Enterspeed-Force-Type to override.
           schema:
             type: string
             example: "product"
+        - name: X-Enterspeed-Force-Type
+          required: false
+          in: header
+          description: |
+            Optional header to override type immutability validation. Include this header to bypass the type immutability check and allow re-ingesting an entity with a different type. This is a destructive operation that rebuilds affected views. Use only when intentional type changes are required.
+          schema:
+            type: string
+            example: ""
         - name: X-Enterspeed-Url
           in: header
           description: |
