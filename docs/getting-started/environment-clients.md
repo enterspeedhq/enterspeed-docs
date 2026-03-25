@@ -65,9 +65,58 @@ For convenience, the Management App provides several preset configurations:
 - **Standard** - Delivery + Routes + Query (default for regular applications)
 - **AI Assistant (Transformed Data)** - Query + MCP Server (for AI agents using schema-based data)
 - **AI Assistant (Source Data)** - Source + MCP Server (for AI agents using raw source data)
-- **AI Assistant (Full Access)** - Query + Source + MCP Server (for AI agents requiring complete data access)
+- **AI Assistant (Transformed + Source)** - Query + Source + MCP Server (for AI agents requiring complete data access)
 - **Custom** - Manually select specific scopes
 
 ### Managing Scopes
 
 You can configure scopes when creating or updating an environment client through the Management App. Existing environment clients without explicit scopes will continue to work with the default scope configuration, ensuring backward compatibility.
+
+## Index-Level Scopes (Advanced)
+
+Beyond controlling which APIs your environment client can access, you can also configure **index-level scopes** to restrict access to specific data within those APIs. This provides fine-grained control over exactly what content an AI agent or integration can access.
+
+### Query API Index Scopes
+
+When your environment client has Query API access, you can optionally restrict it to specific index schemas:
+
+- **All indices (default)** - Access to all deployed index schemas
+- **Specific indices** - Access only to selected schemas (e.g., `blogpost`, `product`)
+- **Wildcard patterns** - Access to schemas matching patterns (e.g., `blog*` matches `blogpost`, `blogpage`, etc.)
+
+**Example use cases:**
+
+- AI agent for blog content: Restrict to `blogpost` and `blogpage` indices only
+- Product recommendation system: Restrict to `product` and `category` indices only
+- Content migration tool: Use `cms*` pattern for all CMS-related schemas
+
+### Source API Index Scopes
+
+When your environment client has Source API access, you can optionally restrict it to specific source group and entity type combinations:
+
+- **All sources (default)** - Access to all source entities
+- **Specific combinations** - Access only to selected source group + entity type pairs (e.g., `cms:page`, `shop:product`)
+- **Wildcard patterns** - Access to all entity types within a source group (e.g., `cms:*`)
+
+**Format:** Index scopes use the pattern `sourceGroup:entityType`
+
+**Example configurations:**
+
+- CMS content only: `cms:page`, `cms:article`, `cms:blogpost`
+- E-commerce data: `shop:product`, `shop:category`, `shop:inventory`
+- All CMS content: `cms:*`
+
+### Index Scope Behavior
+
+:::info
+Index scopes are **optional** and only apply when the corresponding component scope is enabled:
+
+- Query index scopes only work if **Query API** component scope is enabled
+- Source index scopes only work if **Source API** component scope is enabled
+- If no index scopes are configured, the client has access to **all** data within its allowed component scopes
+:::
+
+This two-layer approach provides maximum flexibility:
+
+1. **Component scopes** control which APIs can be accessed
+2. **Index scopes** control which specific data within those APIs can be accessed
