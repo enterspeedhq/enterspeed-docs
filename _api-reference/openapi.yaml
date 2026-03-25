@@ -300,21 +300,46 @@ paths:
       responses:
         "200":
           description: Valid request. Processing of posted entity has begun.
+          content:   
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 200
+                      message:
+                        type: string
+                        example: Processing entity has begun
+                  - $ref: "#/components/schemas/SuccessIngestResult"
+                  - $ref: "#/components/schemas/NoChangesIngestResult"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: number
-                    example: 200
-                  message:
-                    type: string
-                    example: Processing entity has begun
-        "401":
-          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+                $ref: "#/components/schemas/UnauthorizedIngestResult"
+        "413":
+          description: Payload Too Large. The entity is too large to process.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayloadTooLargeIngestResult"
         "422":
           description: Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/TypeChangeRefusedIngestResult"
+                  - $ref: "#/components/schemas/InvalidIngestResult"
+        "500":
+          description: Internal Server Error. Something went wrong on our end while processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedIngestResult"
 
     delete:
       summary: Delete entity
@@ -388,32 +413,19 @@ paths:
             Valid request. Processing of posted entities has begun. 
             
             A successful response is returned if one or more entities were valid. Only if all entities are invalid a 422 response is returned.
+
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: number
-                    example: 200
-                  changedSourceEntities:
-                    type: array
-                    example: ["p-5427"]
-                  unchangedSourceEntities:
-                    type: array
-                    example: ["p-6724"]
-                  errors:
-                    type: object
-                    example:  {
-                      "1234": [
-                        "OriginId must be a string, not a number at position 3"
-                      ]
-                    }
+                $ref: "#/components/schemas/BulkIngestResult"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
         "422":
           description: Unprocessable request. The request was well-formed but was unable to be followed due to semantic errors.
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkIngestResult"        
     delete:
       summary: Delete entities
       description: |
@@ -1745,3 +1757,246 @@ components:
       $ref: "#/components/schemas/PagedResult"
     RoutesV2Response:
       $ref: "#/components/schemas/PagedTokenResult"
+    IngestMetadata:
+      type: object
+      description: Metadata about the ingest operation
+      properties: 
+        ingestVersion:
+          type: string
+          description: The version of the ingest process
+          example: "1.0"
+        ingestFormat:
+          type: string
+          description: The format of the ingested data (Raw or Simplified)
+          example: "Raw"
+        systemInfo:
+          type: string
+          nullable: true
+          description: Additional system information about the ingest operation
+          example: null
+        forceTypeOverwrite:
+          type: boolean
+          description: Indicates whether the X-Enterspeed-Force-Type header was present to bypass type immutability checks
+          example: false
+    TypeChangeRefusedIngestResult:
+      type: object
+      description: Error response when attempting to change an entity's type after initial ingest.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation failed
+          example: false
+        message:
+          type: string
+          description: Error message indicating type change was refused
+          example: "Type change refused for entity: attempted to change from 'product' to 'productVariant'. Use the X-Enterspeed-Force-Type header to override."
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-a93257b807b7"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+        existingType:
+          type: string
+          description: The original type of the entity
+          example: "product"
+        newType:
+          type: string
+          description: The new type that was attempted
+          example: "productVariant"
+    FailedIngestResult:
+      type: object
+      description: Generic error response for failed ingest operations.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation failed
+          example: false
+        message:
+          type: string
+          description: Error message indicating the reason for ingest failure
+          example: "unknown error"
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-a93257b807b7"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+    SuccessIngestResult:
+      type: object
+      description: Success response for ingest operations.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation succeeded
+          example: true
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-a93257b807b7"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+    NoChangesIngestResult:
+      type: object
+      description: Response indicating that the ingest operation did not result in any changes to the entity.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation succeeded but no changes were made
+          example: true
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-a93257b807b7"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+    PayloadTooLargeIngestResult:
+      type: object
+      description: Error response indicating that the ingest operation failed due to payload size exceeding limits.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation failed
+          example: false
+        message:
+          type: string
+          description: Error message indicating the reason for ingest failure
+          example: "Payload too large"
+        size: 
+          type: number
+          description: The size of the payload that was attempted to be ingested
+          example: 10485760
+        Limit:
+          type: number
+          description: The maximum allowed payload size
+          example: 5242880
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-a93257b807b7"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+    InvalidIngestResult: 
+      type: object
+      description: Error response indicating that the ingest operation failed due to invalid data.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation failed
+          example: false
+        validationResults: 
+          type: array
+          description: List of validation errors that caused the ingest to fail
+          items:
+            type: object
+            description: Validation result 
+            properties:
+              errorMessage:
+                type: string
+                description: The validation error message
+                example: "Field 'price' must be a positive number."
+              memberNames:
+                type: array
+                items:
+                  type: string
+                description: The names of the properties that failed validation
+                example: ["price"] 
+        message:
+          type: string
+          description: Error message indicating the reason for ingest failure
+          example: "Invalid"
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-a93257b807b7"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+    BulkIngestResult:
+      type: object
+      description: Response for bulk ingest operations, containing lists of changed, unchanged, and errored entities.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates if the bulk ingest operation was successful (at least one entity processed)
+          example: true
+        changedSourceEntities:
+          type: array
+          items:
+            type: string
+          description: List of originIds for entities that were changed
+          example: ["p-5427"]
+        unchangedSourceEntities:
+          type: array
+          items:
+            type: string
+          description: List of originIds for entities that were unchanged
+          example: ["p-6724"]
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Dictionary of originId to list of error messages
+          example: { "1234": ["Validation failed"] }
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-313127601e97"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+    UnauthorizedIngestResult:
+      type: object
+      description: Error response indicating that the ingest operation failed due to unauthorized access.
+      properties:
+        isSuccess:
+          type: boolean
+          description: Indicates the ingest operation failed
+          example: false
+        message:
+          type: string
+          description: Error message indicating the reason for ingest failure
+          example: "Unauthorized"
+        sourceId:
+          type: string
+          description: The unique identifier of the data source
+          example: "32ebdcab-ae19-4a71-a09e-313127601e97"
+        sourceEntityId:
+          type: object
+          description: The source entity identifier (contains originId and other metadata)
+          example:
+            originId: "94573"
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+
+
