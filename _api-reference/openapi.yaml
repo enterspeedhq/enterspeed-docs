@@ -1969,10 +1969,6 @@ components:
               type: string
           description: Dictionary of originId to list of error messages
           example: { "1234": ["Validation failed"] }
-        sourceId:
-          type: string
-          description: The unique identifier of the data source
-          example: "32ebdcab-ae19-4a71-a09e-313127601e97"
         ingestMetadata:
           $ref: "#/components/schemas/IngestMetadata"
     UnauthorizedIngestResult:
