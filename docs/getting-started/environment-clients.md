@@ -72,6 +72,10 @@ For convenience, the Management App provides several preset configurations:
 
 You can configure scopes when creating or updating an environment client through the Management App. Existing environment clients without explicit scopes will continue to work with the default scope configuration, ensuring backward compatibility.
 
+:::tip Using the Query MCP Server
+If you are setting up an AI agent, pick one of the **AI Assistant** presets above and see the [Query MCP Server documentation](../tooling/mcp-server/overview.md) for hostnames, authentication, and step-by-step client setup.
+:::
+
 ## Index-Level Scopes (Advanced)
 
 Beyond controlling which APIs your environment client can access, you can also configure **index-level scopes** to restrict access to specific data within those APIs. This provides fine-grained control over exactly what content an AI agent or integration can access.
