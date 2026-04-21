@@ -73,9 +73,13 @@ If Claude Desktop shows *"no tools discovered"*, the key is almost certainly mis
 :::
 
 </TabItem>
-<TabItem value="anthropic-sdk" label="Anthropic SDK (C#)">
+<TabItem value="anthropic-sdk" label="Anthropic Messages API (C#)">
 
-This is the production path: a C# service that calls the Anthropic Messages API and declares the MCP server as an `mcp_servers` entry on each request. Anthropic opens the MCP connection on your behalf and forwards the per-request header you supply.
+This is the production path: a C# service opens an MCP session to the Enterspeed server, discovers the available tools, and runs a tool-use loop with Claude. The `x-api-key` header is set once on the MCP transport.
+
+:::info Why not the inline `mcp_servers` feature?
+Anthropic's inline remote-MCP connector forwards an `Authorization: Bearer <token>` header to the upstream MCP server and does not let you override the header name. The Enterspeed MCP server reads `x-api-key`. Driving the tool-use loop yourself (as below) works today and gives you full control over retries, logging, and cost.
+:::
 
 ### Project setup
 
@@ -83,6 +87,7 @@ This is the production path: a C# service that calls the Anthropic Messages API 
 dotnet new console -n EnterspeedClaudeClient
 cd EnterspeedClaudeClient
 dotnet add package Anthropic.SDK
+dotnet add package ModelContextProtocol
 dotnet user-secrets init
 dotnet user-secrets set "ANTHROPIC_API_KEY"   "sk-ant-..."
 dotnet user-secrets set "ENTERSPEED_MCP_KEY"  "environment-xxxxxxxx-..."
@@ -94,6 +99,9 @@ dotnet user-secrets set "ENTERSPEED_MCP_KEY"  "environment-xxxxxxxx-..."
 using Anthropic.SDK;
 using Anthropic.SDK.Messaging;
 using Microsoft.Extensions.Configuration;
+using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol.Transport;
+using System.Text.Json;
 
 var config = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
@@ -103,40 +111,81 @@ var config = new ConfigurationBuilder()
 var anthropicKey  = config["ANTHROPIC_API_KEY"]!;
 var enterspeedKey = config["ENTERSPEED_MCP_KEY"]!;
 
-var client = new AnthropicClient(new APIAuthentication(anthropicKey));
-
-var request = new MessageParameters
+// 1. Open an MCP session against the Enterspeed server
+var transport = new SseClientTransport(new SseClientTransportOptions
 {
-    Model     = AnthropicModels.Claude4Sonnet,
-    MaxTokens = 4096,
-    System    = "You are an assistant that answers questions using data from " +
-                "Enterspeed. Prefer per-index tools (query_<indexName>) when " +
-                "a single index is enough, and fall back to enterspeed_query " +
-                "when you need to span indices.",
-    Messages = new List<Message>
+    Endpoint = new Uri("https://mcp.query.enterspeed.com/"),
+    AdditionalHeaders = new Dictionary<string, string>
     {
-        new(RoleType.User,
-            "Find the three most recent published blog posts and summarise " +
-            "them in one sentence each.")
-    },
-    McpServers =
-    [
-        new McpServer
-        {
-            Type               = "url",
-            Url                = "https://mcp.query.enterspeed.com/",
-            Name               = "enterspeed",
-            // Maps to the `x-api-key` header on every MCP request Anthropic
-            // makes on your behalf. The scoped key flows to the MCP server,
-            // which forwards it as-is to the Query API.
-            AuthorizationToken = enterspeedKey,
-            TokenHeader        = "x-api-key"
-        }
-    ]
+        ["x-api-key"] = enterspeedKey
+    }
+});
+
+await using var mcp = await McpClientFactory.CreateAsync(transport);
+
+// 2. Discover the tools this key is allowed to use
+var mcpTools = await mcp.ListToolsAsync();
+
+// 3. Hand the tool schemas to Claude as Messages API tools
+var claude = new AnthropicClient(new APIAuthentication(anthropicKey));
+
+var tools = mcpTools
+    .Select(t => new Tool
+    {
+        Name        = t.Name,
+        Description = t.Description ?? string.Empty,
+        InputSchema = t.InputSchema
+    })
+    .ToList();
+
+var messages = new List<Message>
+{
+    new(RoleType.User,
+        "Find the three most recent published blog posts and summarise " +
+        "them in one sentence each.")
 };
 
-var response = await client.Messages.GetClaudeMessageAsync(request);
-Console.WriteLine(response.Message);
+// 4. Tool-use loop — repeat until Claude produces a final answer
+while (true)
+{
+    var response = await claude.Messages.GetClaudeMessageAsync(new MessageParameters
+    {
+        Model     = AnthropicModels.Claude4Sonnet,
+        MaxTokens = 4096,
+        Messages  = messages,
+        Tools     = tools
+    });
+
+    // Record Claude's turn
+    messages.Add(new Message(response));
+
+    if (response.StopReason != "tool_use")
+    {
+        Console.WriteLine(response.Message);
+        break;
+    }
+
+    // Execute every tool_use block via the MCP client and feed results back
+    foreach (var block in response.Content.OfType<ToolUseContent>())
+    {
+        var args = block.Input.Deserialize<Dictionary<string, object?>>()
+                   ?? new();
+        var mcpResult = await mcp.CallToolAsync(block.Name, args);
+
+        messages.Add(new Message
+        {
+            Role    = RoleType.User,
+            Content = new List<ContentBase>
+            {
+                new ToolResultContent
+                {
+                    ToolUseId = block.Id,
+                    Content   = mcpResult.Content.FirstOrDefault()?.Text ?? string.Empty
+                }
+            }
+        });
+    }
+}
 ```
 
 Run it:
@@ -145,31 +194,17 @@ Run it:
 dotnet run
 ```
 
-Expected output includes a short summary of three blog posts, and the underlying tool traces show Claude invoking `query_blog` (or the equivalent per-index tool for whatever index the key is scoped to).
+Expected output includes a short summary of three blog posts, and the loop's intermediate turns show Claude calling `query_blog` (or the equivalent per-index tool for whatever index the key is scoped to).
 
-### Streaming variant
-
-Swap `GetClaudeMessageAsync` for `StreamClaudeMessageAsync` to receive the response as an `IAsyncEnumerable<MessageResponse>`. The MCP tool calls happen server-side at Anthropic and are visible as `content_block_start` / `content_block_stop` events of type `tool_use` interleaved with regular text deltas.
+:::info SDK property names
+The exact property names on `ToolUseContent`, `ToolResultContent`, and the `Message` / `Tool` shapes evolve with the Anthropic.SDK package. If a symbol above does not resolve, check the current release notes for the corresponding type name — the orchestration pattern (list tools once, loop until `StopReason != "tool_use"`) stays the same.
+:::
 
 ### Keeping costs under control
 
-Two things to watch when sending MCP servers to the Messages API:
-
-1. **Every request pays for the tool list.** Enable [prompt caching](https://docs.anthropic.com/claude/docs/prompt-caching) on the `mcp_servers` block so the tool list is reused across calls within a 5-minute window:
-
-   ```csharp
-   new McpServer
-   {
-       Type               = "url",
-       Url                = "https://mcp.query.enterspeed.com/",
-       Name               = "enterspeed",
-       AuthorizationToken = enterspeedKey,
-       TokenHeader        = "x-api-key",
-       CacheControl       = new CacheControl { Type = "ephemeral" }
-   }
-   ```
-
-2. **Tool-list size grows with the number of indices.** If you only need one or two indices, set an **Index Scope** on the environment client so the MCP server only surfaces those `query_*` tools. Fewer tools mean fewer input tokens.
+- **Cache the tool list.** Call `ListToolsAsync()` once per session, not per request. The MCP server also caches per API key for 5 minutes, so repeat calls are cheap even if you do list more often.
+- **Narrow the tool set with an Index Scope.** Fewer indices means fewer `query_*` tools surfaced to Claude, which means fewer input tokens.
+- **Use prompt caching on the tool list.** When you pass `tools` to the Messages API, mark the list with `cache_control: { type: "ephemeral" }` via `CacheControl`-style helpers in Anthropic.SDK — see the package README for the current property name.
 
 </TabItem>
 </Tabs>

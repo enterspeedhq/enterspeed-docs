@@ -57,7 +57,7 @@ The platform supports component-scoped environment keys. For MCP use, your key *
 
 | Scope | Why | Grants |
 | --- | --- | --- |
-| `MCP Server` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
+| `MCP Server (AI Agent Access)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
 | `Query API` | Needed to query transformed Enterspeed views. | Access to `/v1/query` endpoints (used by the `query_*` tools). |
 | `Source API` | Needed to query raw source data instead of transformed views. | Access to `/v1/source*` endpoints (used by the source tools). |
 
@@ -146,13 +146,13 @@ Expected behaviour: the agent calls the unified `enterspeed_query` tool with a `
 
 > Show me five raw source entities of type `article` from the `cms` source group. Which fields are set on the first one?
 
-Expected behaviour: the agent discovers types via the source-index listing tool, then pulls five entities with the source query tool.
+Expected behaviour: the agent discovers types via `get_indices_raw_source_entities_by_source_group_alias`, then pulls five entities via `get_source_items`.
 
 ### Authorization check
 
 > Which operators can I use to filter queries in Enterspeed?
 
-Expected behaviour: the agent lists `contains`, `equals`, `notEquals`, `in`, `lessThan`, `lessThanOrEquals`, `greaterThan`, `greaterThanOrEquals`.
+Expected behaviour: the agent calls the `get_operators` tool. The list typically includes `contains`, `equals`, `notEquals`, `in`, `lessThan`, `lessThanOrEquals`, `greaterThan`, and `greaterThanOrEquals` — the concrete set is data-driven, so trust the tool response over this page.
 
 ### Tool-listing sanity check
 

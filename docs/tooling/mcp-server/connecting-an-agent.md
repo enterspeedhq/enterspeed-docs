@@ -3,9 +3,6 @@ sidebar_position: 2
 title: Connecting an agent
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # Connecting an agent
 
 This guide covers two common agent setups:
@@ -20,111 +17,89 @@ Before you start, you need:
 
 ---
 
-## Part 1 — C# agent (Anthropic SDK)
+## Part 1 — C# agent (MCP client SDK)
 
-The simplest custom agent uses the official Anthropic SDK and declares the Enterspeed MCP server as an `mcp_servers` entry on each request. Anthropic opens the MCP connection on your behalf, so you don't need to host an MCP session yourself — you just ship the URL and the scoped key.
+Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official `ModelContextProtocol` NuGet package — it opens an SSE connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
 
 ### Prerequisites
 
 ```bash
 dotnet new console -n EnterspeedMcpAgent
 cd EnterspeedMcpAgent
-dotnet add package Anthropic.SDK
+dotnet add package ModelContextProtocol
 ```
 
 Store secrets with `dotnet user-secrets` (never commit them):
 
 ```bash
 dotnet user-secrets init
-dotnet user-secrets set "ANTHROPIC_API_KEY"   "sk-ant-..."
 dotnet user-secrets set "ENTERSPEED_MCP_KEY"  "environment-xxxxxxxx-..."
 ```
 
 ### Program.cs
 
 ```csharp
-using Anthropic.SDK;
-using Anthropic.SDK.Messaging;
-using Microsoft.Extensions.Configuration;
-
-var config = new ConfigurationBuilder()
-    .AddUserSecrets<Program>()
-    .AddEnvironmentVariables()
-    .Build();
-
-var anthropicKey  = config["ANTHROPIC_API_KEY"]
-    ?? throw new InvalidOperationException("ANTHROPIC_API_KEY not set");
-var enterspeedKey = config["ENTERSPEED_MCP_KEY"]
-    ?? throw new InvalidOperationException("ENTERSPEED_MCP_KEY not set");
-
-var client = new AnthropicClient(new APIAuthentication(anthropicKey));
-
-var request = new MessageParameters
-{
-    Model     = AnthropicModels.Claude4Sonnet,
-    MaxTokens = 4096,
-    Messages  = new List<Message>
-    {
-        new(RoleType.User,
-            "List the Enterspeed indices you have access to, then pick one " +
-            "and describe its fields grouped by type.")
-    },
-    McpServers =
-    [
-        new McpServer
-        {
-            Type               = "url",
-            Url                = "https://mcp.query.enterspeed.com/",
-            Name               = "enterspeed",
-            // Anthropic forwards this header value to the MCP server on every
-            // request. We target the `x-api-key` header, which the MCP server
-            // reads and forwards to the Query API for scope validation.
-            AuthorizationToken = enterspeedKey,
-            TokenHeader        = "x-api-key"
-        }
-    ]
-};
-
-var response = await client.Messages.GetClaudeMessageAsync(request);
-Console.WriteLine(response.Message);
-```
-
-:::info
-If you are on an older Anthropic SDK that does not expose `TokenHeader`, stash the key behind a proxy that rewrites the header name, or use the raw MCP client pattern below.
-:::
-
-### Alternative — raw MCP client
-
-If you want to open the MCP session yourself (for example, to stream tool lists into a custom UI or to integrate with Semantic Kernel), use the `ModelContextProtocol` client package directly:
-
-```bash
-dotnet add package ModelContextProtocol
-```
-
-```csharp
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol.Transport;
+
+var enterspeedKey = Environment.GetEnvironmentVariable("ENTERSPEED_MCP_KEY")
+    ?? throw new InvalidOperationException("ENTERSPEED_MCP_KEY not set");
 
 var transport = new SseClientTransport(new SseClientTransportOptions
 {
     Endpoint = new Uri("https://mcp.query.enterspeed.com/"),
+    // The MCP server reads `x-api-key` on every request and forwards it to
+    // the Enterspeed Query API, which validates scope and index restrictions.
     AdditionalHeaders = new Dictionary<string, string>
     {
-        ["x-api-key"] = Environment.GetEnvironmentVariable("ENTERSPEED_MCP_KEY")!
+        ["x-api-key"] = enterspeedKey
     }
 });
 
 await using var mcpClient = await McpClientFactory.CreateAsync(transport);
 
+// Discover what this key can do
 var tools = await mcpClient.ListToolsAsync();
 foreach (var tool in tools)
 {
     Console.WriteLine($"- {tool.Name}: {tool.Description}");
 }
 
-var result = await mcpClient.CallToolAsync("get_indices", new Dictionary<string, object?>());
-Console.WriteLine(result);
+// Call a tool — here the static get_indices tool
+var result = await mcpClient.CallToolAsync(
+    "get_indices",
+    new Dictionary<string, object?>());
+
+Console.WriteLine(result.Content[0]);
 ```
+
+Run it:
+
+```bash
+dotnet run
+```
+
+The output starts with the tools available to your key (static tools, the dynamic `enterspeed_query` tool, and one `query_<indexName>` tool per index you have access to) and then prints the result of the first tool call.
+
+### Driving it from an LLM (tool-use loop)
+
+To turn this into an LLM-driven agent, hand the `tools` list to the model of your choice. The pattern is identical for every major LLM provider:
+
+1. Call `ListToolsAsync()` once per session and cache the result.
+2. Send the tool schemas to the LLM alongside the user prompt.
+3. When the LLM emits a tool call, invoke `mcpClient.CallToolAsync(name, args)` and feed the response back in the next turn.
+4. Repeat until the LLM produces a final answer.
+
+For Claude specifically, see [Connecting Claude](./connecting-claude.md) for a complete Messages-API example that wires this loop.
+
+### Alternative — the Anthropic Remote MCP connector
+
+If you prefer to let Claude open the MCP connection itself via the inline `mcp_servers` feature of the Messages API, you can — but note that Anthropic's spec currently only supports an `Authorization: Bearer <token>` header on the upstream MCP server; it does not let you set a custom header name. The Enterspeed MCP server reads `x-api-key`, so the inline connector does not work with a raw scoped key today.
+
+Workarounds:
+
+- Pass the key as an `?apiKey=` query-string parameter on the MCP URL (supported by the server, but the key ends up in request logs — acceptable for prototyping only).
+- Use the explicit `ModelContextProtocol` client above and drive the tool-use loop yourself.
 
 ### Alternative — Semantic Kernel plugin
 
@@ -133,24 +108,31 @@ If you use Microsoft.SemanticKernel, turn every MCP tool into a `KernelFunction`
 ```csharp
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol.Transport;
 
 var transport = new SseClientTransport(new SseClientTransportOptions
 {
     Endpoint = new Uri("https://mcp.query.enterspeed.com/"),
-    AdditionalHeaders = { ["x-api-key"] = enterspeedKey }
+    AdditionalHeaders = new Dictionary<string, string>
+    {
+        ["x-api-key"] = enterspeedKey
+    }
 });
 
 await using var mcp = await McpClientFactory.CreateAsync(transport);
+
 var kernel = Kernel.CreateBuilder()
     .AddOpenAIChatCompletion("gpt-4o", azureOpenAiKey)
     .Build();
 
-var functions = await mcp.MapToKernelFunctionsAsync();
-kernel.Plugins.AddFromFunctions("enterspeed", functions);
+var tools = await mcp.ListToolsAsync();
+kernel.Plugins.AddFromFunctions(
+    "enterspeed",
+    tools.Select(t => t.AsKernelFunction()));
 
 var answer = await kernel.InvokePromptAsync(
     "List the Enterspeed indices. Then describe the first one.");
-Console.WriteLine(answer);
+Console.WriteLine(answer.GetValue<string>());
 ```
 
 ---
