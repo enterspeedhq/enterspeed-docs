@@ -9,8 +9,6 @@ The Enterspeed Query MCP Server turns the Enterspeed Query API into a set of [Mo
 
 This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. For step-by-step wiring guides, see [Connecting an agent](./connecting-an-agent.md) and [Connecting Claude](./connecting-claude.md).
 
----
-
 ## Hostname
 
 | Environment | URL | Transport |
@@ -25,11 +23,9 @@ curl -i https://mcp.query.enterspeed.com/health
 # ok
 ```
 
----
+## How authentication works
 
-## How Authentication Works
-
-The MCP server is a thin proxy. All authorization decisions happen in the Enterspeed Query API. Your MCP client sends a scoped environment client key on every request; the MCP server forwards it as-is; the Query API validates the scope and any index restrictions before returning data.
+The MCP server is a thin proxy. All authorisation decisions happen in the Enterspeed Query API. Your MCP client sends a scoped environment client key on every request; the MCP server forwards it as-is; the Query API validates the scope and any index restrictions before returning data.
 
 ```
 AI client ──x-api-key──► mcp.query.enterspeed.com ──x-api-key──► query.enterspeed.com
@@ -49,9 +45,7 @@ The key is a **scoped environment client key** issued from the Enterspeed Manage
 The server also accepts an `?apiKey=` query-string fallback for tools that cannot set headers. Prefer the header whenever possible.
 :::
 
----
-
-## Required Scopes
+## Required scopes
 
 The platform supports component-scoped environment keys. For MCP use, your key **must** include:
 
@@ -63,7 +57,7 @@ The platform supports component-scoped environment keys. For MCP use, your key *
 
 `MCP Server` alone is not useful — it must be combined with `Query API`, `Source API`, or both.
 
-### Scope Presets
+### Scope presets
 
 When creating an environment client, the Management App exposes these presets so you do not have to toggle scopes manually:
 
@@ -78,9 +72,7 @@ For most MCP integrations, **"AI Assistant (Transformed Data)"** is the right de
 
 See [Using environment clients](../../getting-started/environment-clients.md#scope-presets) for the full table and how to manage scopes in the Management App.
 
----
-
-## Index Scopes
+## Index scopes
 
 On top of component scopes, each environment client can carry an optional **Index Scope** that restricts *which indices* the key can see. Patterns are matched against the fully-qualified index name.
 
@@ -93,9 +85,7 @@ On top of component scopes, each environment client can carry an optional **Inde
 
 Filtering is enforced by the Query API, so AI clients get a pre-trimmed tool list. This is ideal when you want to give a public-facing AI assistant access to, say, only a marketing-blog index, without exposing the rest of the environment.
 
----
-
-## Creating a Scoped Key
+## Creating a scoped key
 
 1. Sign in to the **Enterspeed Management App**.
 2. Select the tenant and environment you want the AI client to query.
@@ -110,9 +100,7 @@ The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
 
 See [Using environment clients](../../getting-started/environment-clients.md) for the full environment-client flow, including regenerating a key.
 
----
-
-## Sample Prompts
+## Sample prompts
 
 Use these when demoing or smoke-testing a fresh MCP connection.
 
@@ -148,7 +136,7 @@ Expected behaviour: the agent calls the unified `enterspeed_query` tool with a `
 
 Expected behaviour: the agent discovers types via `get_indices_raw_source_entities_by_source_group_alias`, then pulls five entities via `get_source_items`.
 
-### Authorization check
+### Authorisation check
 
 > Which operators can I use to filter queries in Enterspeed?
 
@@ -160,8 +148,6 @@ Expected behaviour: the agent calls the `get_operators` tool. The list typically
 
 Expected behaviour: the agent enumerates the full tool set. If the dynamic and per-index groups are empty, the key is most likely missing the `MCP Server` scope — that is the fastest way to spot a misconfigured key.
 
----
-
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
@@ -172,9 +158,7 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` / `Source API` | Add the missing data scope. |
 | `401` on every request | Wrong key type — Management API token instead of environment-client key | Create an **environment client** key, not a Management API token. |
 
----
-
-## Next Steps
+## Next steps
 
 - [Connecting an agent](./connecting-an-agent.md) — wire a custom C# agent or Azure AI Foundry to the MCP server.
 - [Connecting Claude](./connecting-claude.md) — use Claude Code, Claude Desktop, or the Anthropic Messages API in C#.

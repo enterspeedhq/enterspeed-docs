@@ -15,8 +15,6 @@ Before you start, you need:
 - A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](./overview.md#creating-a-scoped-key).
 - The production endpoint `https://mcp.query.enterspeed.com`.
 
----
-
 ## Part 1 — C# agent (MCP client SDK)
 
 Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official `ModelContextProtocol` NuGet package — it opens an SSE connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
@@ -135,13 +133,11 @@ var answer = await kernel.InvokePromptAsync(
 Console.WriteLine(answer.GetValue<string>());
 ```
 
----
-
 ## Part 2 — Azure AI Foundry (step-by-step)
 
 Azure AI Foundry's Responses API and Agent service can attach an MCP server as a tool provider. The flow is: **your code → Foundry (with `mcp_servers` in the request) → MCP server → Query API**.
 
-:::caution Entra ID required for MCP on Foundry
+:::warning Entra ID required for MCP on Foundry
 Foundry's MCP tool support routes through the Agent service orchestration layer, which requires **Microsoft Entra ID** authentication (service principal or user identity). A plain Foundry API key is not accepted for MCP-enabled requests. If you need a "simple API key" façade for end users, place a thin wrapper in front that holds the service principal.
 :::
 
@@ -245,8 +241,6 @@ If the model returns "I don't have access to that tool" after step 1 succeeded, 
 
 Foundry also has a persistent **Agent service**. The MCP wiring is identical (an `mcp` tool with `server_url` and `headers`) but the agent persists across calls. Use it when you want a long-running conversation with the same tool set attached. The same Entra ID requirement applies.
 
----
-
 ## Custom domain / enterprise note
 
 If you are proxying the MCP server behind your own domain:
@@ -254,8 +248,6 @@ If you are proxying the MCP server behind your own domain:
 - The Query API still validates the scoped key — the proxy must forward `x-api-key` verbatim.
 - The proxy must support HTTP streaming (chunked / SSE). Several AWS ALB and classic CDN configurations do not by default.
 - The MCP transport is Streamable HTTP over HTTP/1.1. Check your hop-by-hop limits before forcing HTTP/2.
-
----
 
 ## Troubleshooting
 
@@ -266,9 +258,7 @@ If you are proxying the MCP server behind your own domain:
 | Tool list arrives but every call returns empty | `x-api-key` lost along the proxy chain | Trace the header end-to-end; the MCP server requires it on every request, not just at session start. |
 | Agent times out on a long query | Default HTTP client timeout of 2 minutes exceeded | Paginate the prompt, or raise the timeout on your side. |
 
----
-
-## Next Steps
+## Next steps
 
 - [Connecting Claude](./connecting-claude.md) — Claude Code, Claude Desktop, and the Anthropic Messages API in C#.
 - [Overview](./overview.md) — sample prompts and the full scope table.

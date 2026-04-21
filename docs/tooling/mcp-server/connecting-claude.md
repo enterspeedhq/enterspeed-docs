@@ -19,11 +19,9 @@ Prerequisites are the same in every case:
 - A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](./overview.md#creating-a-scoped-key).
 - The production endpoint `https://mcp.query.enterspeed.com`.
 
----
-
 ## Pick your client
 
-<Tabs groupId="claude-client">
+<Tabs>
 <TabItem value="claude-code" label="Claude Code CLI" default>
 
 ```bash
@@ -209,8 +207,6 @@ The exact property names on `ToolUseContent`, `ToolResultContent`, and the `Mess
 </TabItem>
 </Tabs>
 
----
-
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
@@ -221,9 +217,7 @@ The exact property names on `ToolUseContent`, `ToolResultContent`, and the `Mess
 | Tools list is empty in Claude Desktop but works in the CLI | Claude Desktop caches tool lists per session | Fully quit and relaunch. On macOS: Cmd-Q, not just close the window. |
 | `401` on every request | Wrong key type — Management API token instead of environment-client key | Create an **environment client** key, not a Management API token. |
 
----
-
-## Next Steps
+## Next steps
 
 - [Overview](./overview.md) — sample prompts and scope reference.
 - [Connecting an agent](./connecting-an-agent.md) — Azure AI Foundry and custom-agent wiring.
