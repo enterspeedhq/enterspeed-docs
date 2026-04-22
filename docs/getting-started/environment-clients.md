@@ -69,8 +69,8 @@ For convenience, the Management App provides several preset configurations:
 
 You can configure scopes when creating or updating an environment client through the Management App. Existing environment clients without explicit scopes will continue to work with the default scope configuration, ensuring backward compatibility.
 
-:::tip Using the Query MCP Server
-If you are setting up an AI agent, pick the **AI Assistant** preset above and see the [Query MCP Server documentation](../mcp-server/overview.md) for hostnames, authentication, and step-by-step client setup.
+:::tip
+**Using the Query MCP Server.** If you are setting up an AI agent, pick the **AI Assistant** preset above and see the [Query MCP Server documentation](../mcp-server/overview.md) for hostnames, authentication, and step-by-step client setup.
 :::
 
 ## Index-Level Scopes (Advanced)

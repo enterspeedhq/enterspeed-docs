@@ -17,7 +17,7 @@ Before you start, you need:
 
 ## Part 1 — C# agent (MCP client SDK)
 
-Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official `ModelContextProtocol` NuGet package — it opens an SSE connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
+Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens an SSE connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
 
 ### Prerequisites
 
@@ -97,7 +97,7 @@ If you prefer to let Claude open the MCP connection itself via the inline `mcp_s
 Workarounds:
 
 - Pass the key as an `?apiKey=` query-string parameter on the MCP URL (supported by the server, but the key ends up in request logs — acceptable for prototyping only).
-- Use the explicit `ModelContextProtocol` client above and drive the tool-use loop yourself.
+- Use the explicit [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) client above and drive the tool-use loop yourself.
 
 ### Alternative — Semantic Kernel plugin
 
@@ -137,8 +137,8 @@ Console.WriteLine(answer.GetValue<string>());
 
 Azure AI Foundry's Responses API and Agent service can attach an MCP server as a tool provider. The flow is: **your code → Foundry (with `mcp_servers` in the request) → MCP server → Query API**.
 
-:::warning Entra ID required for MCP on Foundry
-Foundry's MCP tool support routes through the Agent service orchestration layer, which requires **Microsoft Entra ID** authentication (service principal or user identity). A plain Foundry API key is not accepted for MCP-enabled requests. If you need a "simple API key" façade for end users, place a thin wrapper in front that holds the service principal.
+:::warning
+**Entra ID required for MCP on Foundry.** Foundry's MCP tool support routes through the Agent service orchestration layer, which requires **Microsoft Entra ID** authentication (service principal or user identity). A plain Foundry API key is not accepted for MCP-enabled requests. If you need a "simple API key" façade for end users, place a thin wrapper in front that holds the service principal.
 :::
 
 ### Step 1 — Create an AI Foundry project

@@ -96,11 +96,13 @@ If Claude Desktop shows *"no tools discovered"*, the key is almost certainly mis
 
 This is the production path: a C# service opens an MCP session to the Enterspeed server, discovers the available tools, and runs a tool-use loop with Claude. The `x-api-key` header is set once on the MCP transport.
 
-:::info Why not the inline `mcp_servers` feature?
-Anthropic's inline remote-MCP connector forwards an `Authorization: Bearer <token>` header to the upstream MCP server and does not let you override the header name. The Enterspeed MCP server reads `x-api-key`. Driving the tool-use loop yourself (as below) works today and gives you full control over retries, logging, and cost.
+:::info
+**Why not the inline `mcp_servers` feature?** Anthropic's inline remote-MCP connector forwards an `Authorization: Bearer <token>` header to the upstream MCP server and does not let you override the header name. The Enterspeed MCP server reads `x-api-key`. Driving the tool-use loop yourself (as below) works today and gives you full control over retries, logging, and cost.
 :::
 
 ### Project setup
+
+The loop uses two NuGet packages: [`Anthropic.SDK`](https://www.nuget.org/packages/Anthropic.SDK) for the Messages API and [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) for the MCP session.
 
 ```bash
 dotnet new console -n EnterspeedClaudeClient
@@ -215,8 +217,8 @@ dotnet run
 
 Expected output includes a short summary of three blog posts, and the loop's intermediate turns show Claude calling `query_blog` (or the equivalent per-index tool for whatever index the key is scoped to).
 
-:::info SDK property names
-The exact property names on `ToolUseContent`, `ToolResultContent`, and the `Message` / `Tool` shapes evolve with the Anthropic.SDK package. If a symbol above does not resolve, check the current release notes for the corresponding type name — the orchestration pattern (list tools once, loop until `StopReason != "tool_use"`) stays the same.
+:::info
+**SDK property names.** The exact property names on `ToolUseContent`, `ToolResultContent`, and the `Message` / `Tool` shapes evolve with the Anthropic.SDK package. If a symbol above does not resolve, check the current release notes for the corresponding type name — the orchestration pattern (list tools once, loop until `StopReason != "tool_use"`) stays the same.
 :::
 
 ### Keeping costs under control
