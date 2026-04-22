@@ -164,6 +164,12 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
             },
             {
               type: "doc",
+              docId: "mcp-server/overview",
+              label: "MCP",
+              position: "left",
+            },
+            {
+              type: "doc",
               docId: "tooling/cli/overview",
               label: "CLI",
               position: "left",

@@ -70,7 +70,7 @@ When creating an environment client, the Management App exposes these presets so
 
 For most MCP integrations, **"AI Assistant (Transformed Data)"** is the right default.
 
-See [Using environment clients](../../getting-started/environment-clients.md#scope-presets) for the full table and how to manage scopes in the Management App.
+See [Using environment clients](../getting-started/environment-clients.md#scope-presets) for the full table and how to manage scopes in the Management App.
 
 ## Index scopes
 
@@ -98,7 +98,7 @@ Filtering is enforced by the Query API, so AI clients get a pre-trimmed tool lis
 
 The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
 
-See [Using environment clients](../../getting-started/environment-clients.md) for the full environment-client flow, including regenerating a key.
+See [Using environment clients](../getting-started/environment-clients.md) for the full environment-client flow, including regenerating a key.
 
 ## Sample prompts
 
