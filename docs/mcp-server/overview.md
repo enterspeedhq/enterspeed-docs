@@ -52,10 +52,9 @@ The platform supports component-scoped environment keys. For MCP use, your key *
 | Scope | Why | Grants |
 | --- | --- | --- |
 | `MCP Server (AI Agent Access)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
-| `Query API` | Needed to query transformed Enterspeed views. | Access to `/v1/query` endpoints (used by the `query_*` tools). |
-| `Source API` | Needed to query raw source data instead of transformed views. | Access to `/v1/source*` endpoints (used by the source tools). |
+| `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
 
-`MCP Server` alone is not useful — it must be combined with `Query API`, `Source API`, or both.
+`MCP Server` alone is not useful — it must be combined with `Query API`.
 
 ### Scope presets
 
@@ -64,11 +63,9 @@ When creating an environment client, the Management App exposes these presets so
 | Preset | Scopes bundled | Typical use case |
 | --- | --- | --- |
 | **Standard** | Delivery + Query + Routes | Traditional delivery clients, no AI. |
-| **AI Assistant (Transformed Data)** | Query + MCP Server | You want an AI client to query Enterspeed **views** only. |
-| **AI Assistant (Source Data)** | Source + MCP Server | You want an AI client to query **raw source entities** (bypassing views). |
-| **AI Assistant (Transformed + Source)** | Query + Source + MCP Server | You want an AI client to access both views and sources. |
+| **AI Assistant** | Query + MCP Server | Full data access for AI agents — both schema-transformed data and auto-indexed data. |
 
-For most MCP integrations, **"AI Assistant (Transformed Data)"** is the right default.
+The **AI Assistant** preset is the right default for MCP integrations.
 
 See [Using environment clients](../getting-started/environment-clients.md#scope-presets) for the full table and how to manage scopes in the Management App.
 
@@ -91,7 +88,7 @@ Filtering is enforced by the Query API, so AI clients get a pre-trimmed tool lis
 2. Select the tenant and environment you want the AI client to query.
 3. Go to **Environment → API Keys**.
 4. Click **Create API key**.
-5. Pick a preset — e.g. **AI Assistant (Transformed Data)**.
+5. Pick the **AI Assistant** preset.
 6. *(Optional)* Set an **Index Scope** pattern like `blog*` to restrict access.
 7. Give the key a descriptive name, e.g. `claude-prod-blog-assistant`.
 8. Click **Create** — the key is shown **once**. Store it in your secret manager immediately.
@@ -128,13 +125,11 @@ Expected behaviour: the agent calls `query_blog` with a filter on `author = alic
 
 Expected behaviour: the agent calls the unified `enterspeed_query` tool with a `queries` array that targets both indices in a single round-trip.
 
-### Source-data exploration
-
-*(Requires `Source API` + `MCP Server` scopes.)*
+### Auto-indexed data exploration
 
 > Show me five raw source entities of type `article` from the `cms` source group. Which fields are set on the first one?
 
-Expected behaviour: the agent discovers types via `get_indices_raw_source_entities_by_source_group_alias`, then pulls five entities via `get_source_items`.
+Expected behaviour: the agent discovers types via `get_indices_raw_source_entities_by_source_group_alias`, then pulls five entities via `get_source_items`. Access to auto-indexed data comes with the `Query API` scope — no extra scope is needed beyond the standard `Query API` + `MCP Server` combination.
 
 ### Authorisation check
 
@@ -155,7 +150,7 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | `401 Unauthorized` from the MCP server | `x-api-key` missing or malformed | Confirm the header is present on every MCP request. |
 | Agent lists only a small static set of tools | Key is missing the `MCP Server` scope | Recreate the key with the *AI Assistant* preset. |
 | Agent sees fewer indices than expected | `IndexScope` pattern is too narrow | Widen the Index Scope on the environment client, or remove it for all-index access. |
-| Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` / `Source API` | Add the missing data scope. |
+| Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` | Add the `Query API` scope. |
 | `401` on every request | Wrong key type — Management API token instead of environment-client key | Create an **environment client** key, not a Management API token. |
 
 ## Next steps

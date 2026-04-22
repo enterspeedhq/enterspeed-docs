@@ -46,16 +46,15 @@ When creating a new environment client, it automatically receives these default 
 
 ### Available Scopes
 
-| Scope                            | Description                              | Requirements                         |
-| -------------------------------- | ---------------------------------------- | ------------------------------------ |
-| **Delivery API**                 | Content delivery endpoints               | None                                 |
-| **Query API**                    | Access transformed data (schema-based)   | None                                 |
-| **Routes API**                   | Routes API access                        | None                                 |
-| **Source API**                   | Access raw source data (auto-indexed)    | None                                 |
-| **MCP Server (AI Agent Access)** | Enables MCP tool endpoints for AI agents | Requires Query API and/or Source API |
+| Scope                            | Description                                                  | Requirements       |
+| -------------------------------- | ------------------------------------------------------------ | ------------------ |
+| **Delivery API**                 | Content delivery endpoints                                   | None               |
+| **Query API**                    | Access both schema-transformed data and auto-indexed data    | None               |
+| **Routes API**                   | Routes API access                                            | None               |
+| **MCP Server (AI Agent Access)** | Enables MCP tool endpoints for AI agents                     | Requires Query API |
 
 :::info
-The MCP Server scope is designed for AI agents and does not provide data access by itself. It must be combined with Query API and/or Source API scopes to function properly.
+The MCP Server scope is designed for AI agents and does not provide data access by itself. It must be combined with the Query API scope to function properly.
 :::
 
 ### Scope Presets
@@ -63,9 +62,7 @@ The MCP Server scope is designed for AI agents and does not provide data access 
 For convenience, the Management App provides several preset configurations:
 
 - **Standard** - Delivery + Routes + Query (default for regular applications)
-- **AI Assistant (Transformed Data)** - Query + MCP Server (for AI agents using schema-based data)
-- **AI Assistant (Source Data)** - Source + MCP Server (for AI agents using raw source data)
-- **AI Assistant (Transformed + Source)** - Query + Source + MCP Server (for AI agents requiring complete data access)
+- **AI Assistant** - Query + MCP Server (full data access for AI agents — both schema-transformed data and auto-indexed data)
 - **Custom** - Manually select specific scopes
 
 ### Managing Scopes
@@ -73,7 +70,7 @@ For convenience, the Management App provides several preset configurations:
 You can configure scopes when creating or updating an environment client through the Management App. Existing environment clients without explicit scopes will continue to work with the default scope configuration, ensuring backward compatibility.
 
 :::tip Using the Query MCP Server
-If you are setting up an AI agent, pick one of the **AI Assistant** presets above and see the [Query MCP Server documentation](../mcp-server/overview.md) for hostnames, authentication, and step-by-step client setup.
+If you are setting up an AI agent, pick the **AI Assistant** preset above and see the [Query MCP Server documentation](../mcp-server/overview.md) for hostnames, authentication, and step-by-step client setup.
 :::
 
 ## Index-Level Scopes (Advanced)

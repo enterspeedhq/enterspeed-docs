@@ -88,7 +88,7 @@ Add the `mcpServers` entry:
 Fully quit and relaunch Claude Desktop. The Enterspeed tools now appear in the tool picker.
 
 :::tip
-If Claude Desktop shows *"no tools discovered"*, the key is almost certainly missing the `MCP Server` scope. Create a new key using the **AI Assistant (Transformed Data)** preset.
+If Claude Desktop shows *"no tools discovered"*, the key is almost certainly missing the `MCP Server` scope. Create a new key using the **AI Assistant** preset.
 :::
 
 </TabItem>
@@ -244,7 +244,7 @@ If your client does not support custom headers, pass the key as an `?apiKey=` qu
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
 | Client responds *"I don't have any tools"* | MCP server entry missing, or the URL is wrong | Confirm the config was reloaded by the client; hit `/health` on the MCP endpoint. |
-| Every tool call returns *"forbidden"* | `x-api-key` forwarded correctly but scope missing | Add `Query API` and/or `Source API` to the environment client. |
+| Every tool call returns *"forbidden"* | `x-api-key` forwarded correctly but scope missing | Add `Query API` to the environment client. |
 | `mcp add` / config reload fails with *"failed to establish connection"* | Local proxy, VPN, or corporate firewall stripping SSE headers | Bypass the proxy (`NO_PROXY=mcp.query.enterspeed.com`) or try a different network. |
 | Tools list is empty after reload | Client caches tool lists per session | Fully quit and relaunch the client (on macOS, Cmd-Q in Claude Desktop; **Developer: Reload Window** in VS Code). |
 | `401` on every request | Wrong key type — Management API token instead of environment-client key | Create an **environment client** key, not a Management API token. |
