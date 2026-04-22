@@ -7,7 +7,7 @@ title: Overview
 
 The Enterspeed Query MCP Server turns the Enterspeed Query API into a set of [Model Context Protocol](https://modelcontextprotocol.io/) tools that AI clients (Claude, Cursor, custom agents, Azure AI Foundry, etc.) can discover and call. You do not need to host anything yourself — Enterspeed runs the server for you.
 
-This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. For step-by-step wiring guides, see [Connecting an agent](./connecting-an-agent.md) and [Connecting Claude](./connecting-claude.md).
+This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. For step-by-step wiring guides, see [Connecting an agent](./connecting-an-agent.md) and [Connecting a client](./connecting-a-client.md).
 
 ## Hostname
 
@@ -161,4 +161,4 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 ## Next steps
 
 - [Connecting an agent](./connecting-an-agent.md) — wire a custom C# agent or Azure AI Foundry to the MCP server.
-- [Connecting Claude](./connecting-claude.md) — use Claude Code, Claude Desktop, or the Anthropic Messages API in C#.
+- [Connecting a client](./connecting-a-client.md) — VS Code, Claude Code, Claude Desktop, or the Anthropic Messages API in C#.

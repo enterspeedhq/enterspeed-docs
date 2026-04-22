@@ -1,18 +1,14 @@
 ---
 sidebar_position: 3
-title: Connecting Claude
+title: Connecting a client
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Connecting Claude
+# Connecting a client
 
-This guide covers three ways to point Claude at the Enterspeed Query MCP Server:
-
-1. **Claude Code CLI** — one command, developer workstation.
-2. **Claude Desktop** — point-and-click, good for demos.
-3. **Anthropic Messages API (C#)** — for production applications.
+The Enterspeed Query MCP Server speaks plain MCP Streamable HTTP, so any MCP-capable client can use it. This page covers the four most common integrations; the pattern (MCP URL + `x-api-key` header) is identical for every other MCP client — see [Other MCP clients](#other-mcp-clients) at the bottom.
 
 Prerequisites are the same in every case:
 
@@ -22,7 +18,32 @@ Prerequisites are the same in every case:
 ## Pick your client
 
 <Tabs>
-<TabItem value="claude-code" label="Claude Code CLI" default>
+<TabItem value="vscode" label="VS Code (GitHub Copilot)" default>
+
+VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single workspace, put the config at `.vscode/mcp.json`; for every workspace, use the **MCP: Open User Configuration** command from the command palette.
+
+```json
+{
+  "servers": {
+    "enterspeed": {
+      "type": "sse",
+      "url": "https://mcp.query.enterspeed.com/",
+      "headers": {
+        "x-api-key": "environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      }
+    }
+  }
+}
+```
+
+Reload the window (**Developer: Reload Window** from the command palette) and open the Copilot chat pane. The Enterspeed tools appear in the tool picker once Copilot connects.
+
+:::tip
+Never commit `.vscode/mcp.json` with a real key. Use `${input:enterspeed-key}` with a matching [`inputs` entry](https://code.visualstudio.com/docs/copilot/reference/mcp-configuration) so VS Code prompts for the key on first use, or put the config in your user profile instead of the workspace.
+:::
+
+</TabItem>
+<TabItem value="claude-code" label="Claude Code CLI">
 
 ```bash
 claude mcp add enterspeed \
@@ -207,14 +228,25 @@ The exact property names on `ToolUseContent`, `ToolResultContent`, and the `Mess
 </TabItem>
 </Tabs>
 
+## Other MCP clients
+
+The four clients above are the ones we test against regularly, but the MCP server is client-agnostic. Any MCP-capable client follows the same pattern — point it at `https://mcp.query.enterspeed.com/` with SSE transport and set an `x-api-key` header. Some known-good examples:
+
+- **Cursor** — `.cursor/mcp.json` with the same `servers` schema as VS Code.
+- **Windsurf** — settings → Cascade → MCP Servers, using the SSE + header form.
+- **Continue** — `~/.continue/config.json` under `experimental.modelContextProtocolServers`.
+- **Zed** — settings under `"context_servers"` with `type: "sse"`.
+
+If your client does not support custom headers, pass the key as an `?apiKey=` query-string parameter on the MCP URL instead. Avoid that in production — the key ends up in request logs.
+
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| Claude responds *"I don't have any tools"* | `mcp_servers` block missing, or the MCP URL is wrong | Confirm the block made it to the request payload; hit `/health` on the MCP endpoint. |
+| Client responds *"I don't have any tools"* | MCP server entry missing, or the URL is wrong | Confirm the config was reloaded by the client; hit `/health` on the MCP endpoint. |
 | Every tool call returns *"forbidden"* | `x-api-key` forwarded correctly but scope missing | Add `Query API` and/or `Source API` to the environment client. |
-| Claude Code `mcp add` fails with *"failed to establish connection"* | Local proxy, VPN, or corporate firewall stripping SSE headers | Bypass the proxy (`NO_PROXY=mcp.query.enterspeed.com`) or try a different network. |
-| Tools list is empty in Claude Desktop but works in the CLI | Claude Desktop caches tool lists per session | Fully quit and relaunch. On macOS: Cmd-Q, not just close the window. |
+| `mcp add` / config reload fails with *"failed to establish connection"* | Local proxy, VPN, or corporate firewall stripping SSE headers | Bypass the proxy (`NO_PROXY=mcp.query.enterspeed.com`) or try a different network. |
+| Tools list is empty after reload | Client caches tool lists per session | Fully quit and relaunch the client (on macOS, Cmd-Q in Claude Desktop; **Developer: Reload Window** in VS Code). |
 | `401` on every request | Wrong key type — Management API token instead of environment-client key | Create an **environment client** key, not a Management API token. |
 
 ## Next steps

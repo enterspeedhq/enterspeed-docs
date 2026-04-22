@@ -88,7 +88,7 @@ To turn this into an LLM-driven agent, hand the `tools` list to the model of you
 3. When the LLM emits a tool call, invoke `mcpClient.CallToolAsync(name, args)` and feed the response back in the next turn.
 4. Repeat until the LLM produces a final answer.
 
-For Claude specifically, see [Connecting Claude](./connecting-claude.md) for a complete Messages-API example that wires this loop.
+For Claude specifically, see [Connecting a client](./connecting-a-client.md) for a complete Messages-API example that wires this loop.
 
 ### Alternative — the Anthropic Remote MCP connector
 
@@ -260,5 +260,5 @@ If you are proxying the MCP server behind your own domain:
 
 ## Next steps
 
-- [Connecting Claude](./connecting-claude.md) — Claude Code, Claude Desktop, and the Anthropic Messages API in C#.
+- [Connecting a client](./connecting-a-client.md) — VS Code, Claude Code, Claude Desktop, and the Anthropic Messages API in C#.
 - [Overview](./overview.md) — sample prompts and the full scope table.
