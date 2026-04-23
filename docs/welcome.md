@@ -13,7 +13,6 @@ import DeliveringDataIcon from '../static/img/icons/cloud-arrow-down-regular.png
 import KeyConceptsIcon from '../static/img/icons/lightbulb-on-regular.png';
 import SchemaReferenceIcon from '../static/img/icons/book-open-cover-regular.png';
 import ApiIcon from '../static/img/icons/code-regular.png';
-import McpIcon from '../static/img/icons/mcp-logo.svg';
 import CliIcon from '../static/img/icons/terminal-regular.png';
 import IntegrationsIcon from '../static/img/icons/plug-regular.png';
 import TutorialsIcon from '../static/img/icons/chalkboard-user-regular.png';
@@ -41,7 +40,7 @@ _Not familiar with Enterspeed yet? Check out [Enterspeed.com](https://www.enters
     <Card title="Key concepts" link="/key-concepts/overview" image={KeyConceptsIcon} imageBg="gray-bg" imagePadding="32px"/>
     <Card title="Schema reference" link="/reference/fields" image={SchemaReferenceIcon} imageBg="gray-bg"imagePadding="32px" />
     <Card title="API" link="/api" image={ApiIcon} imageBg="gray-bg" imagePadding="32px"/>
-    <Card title="MCP" link="/mcp-server/overview" image={McpIcon} imageBg="gray-bg" imagePadding="32px"/>
+    <Card title="MCP" link="/mcp-server/overview" image="/img/icons/mcp-logo.svg" imageBg="gray-bg" imagePadding="32px"/>
     <Card title="CLI" link="/tooling/cli/overview" image={CliIcon} imageBg="gray-bg" imagePadding="32px"/>
     <Card title="Integrations" link="/integrations" image={IntegrationsIcon} imageBg="gray-bg" imagePadding="32px"/>
     <Card title="Tutorials" link="/tutorials" image={TutorialsIcon} imageBg="gray-bg" imagePadding="32px"/>
