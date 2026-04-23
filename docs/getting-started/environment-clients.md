@@ -62,12 +62,16 @@ The MCP Server scope is designed for AI agents and does not provide data access 
 For convenience, the Management App provides several preset configurations:
 
 - **Standard** - Delivery + Routes + Query (default for regular applications)
-- **AI Assistant (Query + MCP Server)** - Query + MCP Server — Full data access for AI agents
+- **AI Assistant** - Query + MCP Server — Full data access for AI agents
 - **Custom** - Manually select specific scopes
 
 ### Managing Scopes
 
 You can configure scopes when creating or updating an environment client through the Management App. Existing environment clients without explicit scopes will continue to work with the default scope configuration, ensuring backward compatibility.
+
+:::tip
+**Using the Query MCP Server.** If you are setting up an AI agent, pick the **AI Assistant** preset above and see the [Query MCP Server documentation](../mcp-server/overview.md) for hostnames, authentication, and step-by-step client setup.
+:::
 
 ## Index-Level Scopes (Advanced)
 
