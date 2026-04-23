@@ -43,10 +43,16 @@ When setting up an Auto Indexing Source Group you will need to define the fields
           "description": "The sales price of the product"
         }
       },
-      "validPeriod": {
-        "type": "dateRange",
+      "validFrom": {
+        "type": "date",
         "metadata": {
-          "description": "A from and to date where the price is active"
+          "description": "A from date where the price is active"
+        }
+      },
+      "validTo": {
+        "type": "date",
+        "metadata": {
+          "description": "A to date where the price is active"
         }
       }
     },
@@ -109,19 +115,3 @@ Setting the right types for the properties in your index is important. The types
 | double[]            | List of 64 bit signed floating numbers                                                                      |
 | boolean[]           | List of `true` / `false` values                                                                             |
 | date[]              | List of dates with supported values like a Javascript Date object, strings like `2024-11-21T23:00:00Z` or numbers of milliseconds since eclipse |
-
-### Range
-
-| Type                | Description                                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| integerRange        | Must be an object like<br /> `{"gt": 10, "lt": 20}` or<br /> `{"gte": 10, "lte": 20}`                       |
-| longRange           | Must be an object like<br /> `{"gt": 10, "lt": 20 }` or<br /> `{"gte": 10, "lte": 20}`                      |
-| floatRange          | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`               |
-| doubleRange         | Must be an object like<br /> `{"gt": 10.0, "lt": 20.0}` or<br /> `{"gte": 10.0, "lte": 20.0}`               |
-| dateRange           | Must be an object like<br /> `{"gt": "2025-01-01", "lt": "2025-02-01"}` or<br /> `{"gte": "2025-01-01", "lte": "2025-02-01"}` |
-
-### Object
-
-| Type                | Description                                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| object              | Supports any value of an object type, this object is not indexed and therefore not searchable, it can be used to associate a complex data type to an index item. |
