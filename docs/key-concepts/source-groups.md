@@ -9,6 +9,10 @@ Source groups contains the sources you ingest your source entities into. Typical
 
 ## Modes
 
+:::info
+Modes are currently in preview.
+:::
+
 Source groups works in two different modes. Modes are selected on source group creation and can't be changed afterwards.
 
 ### Schema Transformation (default)
