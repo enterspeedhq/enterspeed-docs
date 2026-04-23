@@ -41,17 +41,17 @@ API scopes allow you to control which Enterspeed APIs your environment client ca
 When creating a new environment client, it automatically receives these default scopes:
 
 - **Delivery API** - Access to content delivery endpoints
-- **Query API** - Access to transformed data (schema-based queries)
+- **Query API** - Access schema-transformed and auto indexed data
 - **Routes API** - Access to route management and execution
 
 ### Available Scopes
 
-| Scope                            | Description                                                  | Requirements       |
-| -------------------------------- | ------------------------------------------------------------ | ------------------ |
-| **Delivery API**                 | Content delivery endpoints                                   | None               |
-| **Query API**                    | Access both schema-transformed data and auto-indexed data    | None               |
-| **Routes API**                   | Routes API access                                            | None               |
-| **MCP Server (AI Agent Access)** | Enables MCP tool endpoints for AI agents                     | Requires Query API |
+| Scope                            | Description                                          | Requirements              |
+| -------------------------------- | ---------------------------------------------------- | ------------------------- |
+| **Delivery API**                 | Content delivery endpoints                           | None                      |
+| **Query API**                    | Access schema-transformed and auto indexed data      | None                      |
+| **Routes API**                   | Routes API access                                    | None                      |
+| **MCP Server (AI Agent Access)** | Enables MCP tool endpoints for AI agents             | Requires Query API        |
 
 :::info
 The MCP Server scope is designed for AI agents and does not provide data access by itself. It must be combined with the Query API scope to function properly.
@@ -62,7 +62,7 @@ The MCP Server scope is designed for AI agents and does not provide data access 
 For convenience, the Management App provides several preset configurations:
 
 - **Standard** - Delivery + Routes + Query (default for regular applications)
-- **AI Assistant** - Query + MCP Server (full data access for AI agents — both schema-transformed data and auto-indexed data)
+- **AI Assistant** - Query + MCP Server — Full data access for AI agents
 - **Custom** - Manually select specific scopes
 
 ### Managing Scopes
@@ -75,11 +75,11 @@ You can configure scopes when creating or updating an environment client through
 
 ## Index-Level Scopes (Advanced)
 
-Beyond controlling which APIs your environment client can access, you can also configure **index-level scopes** to restrict access to specific data within those APIs. This provides fine-grained control over exactly what content an AI agent or integration can access.
+Beyond controlling which APIs your environment client can access, you can also configure **index-level scopes** within the Query API to restrict access to specific data. This provides fine-grained control over exactly what content an AI agent or integration can access.
 
-### Query API Index Scopes
+### Schema indices
 
-When your environment client has Query API access, you can optionally restrict it to specific index schemas:
+When your environment client has Query API access, you can optionally restrict it to specific schema indices:
 
 - **All indices (default)** - Access to all deployed index schemas
 - **Specific indices** - Access only to selected schemas (e.g., `blogpost`, `product`)
@@ -91,11 +91,11 @@ When your environment client has Query API access, you can optionally restrict i
 - Product recommendation system: Restrict to `product` and `category` indices only
 - Content migration tool: Use `cms*` pattern for all CMS-related schemas
 
-### Source API Index Scopes
+### Auto indices
 
-When your environment client has Source API access, you can optionally restrict it to specific source group and entity type combinations:
+You can also optionally restrict Query API access to specific auto-indexed source group and entity type combinations:
 
-- **All sources (default)** - Access to all source entities
+- **All sources (default)** - Access to all auto-indexed source entities
 - **Specific combinations** - Access only to selected source group + entity type pairs (e.g., `cms:page`, `shop:product`)
 - **Wildcard patterns** - Access to all entity types within a source group (e.g., `cms:*`)
 
@@ -110,11 +110,7 @@ When your environment client has Source API access, you can optionally restrict 
 ### Index Scope Behavior
 
 :::info
-Index scopes are **optional** and only apply when the corresponding component scope is enabled:
-
-- Query index scopes only work if **Query API** component scope is enabled
-- Source index scopes only work if **Source API** component scope is enabled
-- If no index scopes are configured, the client has access to **all** data within its allowed component scopes
+Index scopes are **optional** and only apply when the **Query API** component scope is enabled. If no index scopes are configured, the client has access to **all** data within its allowed component scopes.
 :::
 
 This two-layer approach provides maximum flexibility:
