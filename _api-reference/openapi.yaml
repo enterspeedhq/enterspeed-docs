@@ -139,6 +139,8 @@ paths:
                   - $ref: "#/components/schemas/NoRouteFoundResponse"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
         "422":
           description: >-
             Invalid request. Server responded but the request was in an invalid
@@ -205,6 +207,8 @@ paths:
                   - $ref: "#/components/schemas/ViewResponse"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
         "422":
           description: >-
             Invalid request. Server responded but the request was in an invalid
@@ -530,7 +534,9 @@ paths:
                     redirect: null
                     updatedAt: "2021-05-21T10:22:21.262781Z"
         "401":
-          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+            description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
         "422":
           description: |
             Can be either of these: 
@@ -591,6 +597,8 @@ paths:
 
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
 
   /v1/{indexAlias}:
     servers:
@@ -650,12 +658,19 @@ paths:
                 $ref: "#/components/schemas/Query400Response"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
   /v1:
     servers:
       - url: https://query.enterspeed.com
         description: Query API
     post:
-      summary: Query items with multiple queries
+      summary: Multi query items
       description: > 
         The Query API is used to query items in an index, with this endpoint up to 5 queries can be requested in a single payload, each query defining the index to perform the lookup in. 
       tags:
@@ -708,6 +723,13 @@ paths:
                 $ref: "#/components/schemas/Query400ExtendedResponseList"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
   /v1/sourceGroupAlias/{sourceGroupAlias}/type/{sourceEntityType}:
     servers:
       - url: https://query.enterspeed.com
@@ -761,6 +783,78 @@ paths:
                 $ref: "#/components/schemas/Query400Response"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
+  /v1/source:
+    servers:
+      - url: https://query.enterspeed.com
+        description: Query API
+    post:
+      summary: Multi query items from Auto Indexing source groups
+      description: |
+        Note: This endpoint is currently in preview
+        
+        The Query API is used to query items in an index, this endpoint lets you query items ingested to Auto Indexing source groups with up to 5 queries requested in a single payload, each query defining the source groups alias and source entity type to perform the lookup in.
+      tags:
+        - Query
+      operationId: queryMultiAutoIndexingPost
+      parameters:
+        - name: X-Api-Key
+          required: true
+          in: header
+          description: Api key to validate your environment.
+          schema:
+            type: string
+            example: environment-1637c4d0-e878-4738-b866-152106a4f88c
+        - name: Content-Length
+          required: true
+          in: header
+          description: |
+            The length of the message body, in bytes (this header is automatically added by most clients).
+          schema:
+            type: number
+      requestBody:
+        description: |
+            The query consists of a list of query objects, on the format just like when [quering items in a single index](#tag/Query/operation/queryContentPost), so refer to this section when looking into `filters`, `sorting`, `pagination` etc.
+            
+            The only thing that differs with these query objects, is an addition of an `sourceGroupAlias`, `sourceEntityType` and a `name` fields, so you per query can define which index you want to perform the query against and also name the individual query. This means that this service can perform multiple queries on the same index, or perform queries on multiple indicies in one request, and also give you the ability to name queries for easier identification of the resulting result sets.
+            
+            ### Note
+            The request payload can at most take 5 queries in one request. 
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequestMultiAutoIndexing"
+      responses:
+        "200":
+          description: Valid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/QueryMultiAutoIndexingListResponse"
+        "400":
+          description: >-
+            Invalid request. Server responded but the request was in an invalid
+            format.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query400AutoIndexingResponseList"
+        "401":
+          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
 components:
   schemas:
     ViewProperties:
@@ -1079,6 +1173,76 @@ components:
             "pageSize": 20
           }
         }
+    QueryRequestMultiAutoIndexing:
+      type: array
+      description: List consisting of multiple queries using the extended query object format.  
+      example:
+        [
+          {
+            "sourceGroupAlias": "erp",
+            "sourceEntityType": "price",
+            "name": "priceData",
+            "filters": {
+              "and":  [
+                {
+                  "field": "sku",
+                  "operator": "equals",
+                  "value": "p-1234",
+                  "caseInsensitive": true
+                }
+              ]
+            },
+            "facets": [
+              {
+                "name": "Is promotional",
+                "field": "isPromotional",
+                "size": 20
+              }
+            ],
+            "sort": [
+              {
+                "field": "salesPrice",
+                "order": "desc"
+              }
+            ],
+            "pagination": {
+              "page": 0,
+              "pageSize": 20
+            }
+          },
+          {
+            "sourceGroupAlias": "erp",
+            "sourceEntityType": "inventory",
+            "name": "inventoryData",
+            "filters": {
+              "and":  [
+                {
+                  "field": "locationId",
+                  "operator": "equals",
+                  "value": "warehouse-01",
+                  "caseInsensitive": true
+                }
+              ]
+            },
+            "facets": [
+              {
+                "name": "Location",
+                "field": "locationId",
+                "size": 20
+              }
+            ],
+            "sort": [
+              {
+                "field": "stockAmount",
+                "order": "desc"
+              }
+            ],
+            "pagination": {
+              "page": 0,
+              "pageSize": 20
+            }
+          }
+        ]
     QueryRequestList:
       type: array
       description: List consisting of multiple queries using the extended query object format.  
@@ -1433,6 +1597,9 @@ components:
     QueryResponse:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         totalResults:
           type: number
           example: 200
@@ -1485,6 +1652,9 @@ components:
     QueryAutoIndexingResponse:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         totalResults:
           type: number
           example: 200
@@ -1524,9 +1694,69 @@ components:
                   }],
                   "isValid": true
                 }
+    QueryMultiAutoIndexingResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 0
+        sourceGroupAlias:
+          type: string
+          example: erp
+          description: The source group alias which were given for the query in the request.
+        sourceEntityType:
+          type: string
+          example: price
+          description: The source entity type which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        totalResults:
+          type: number
+          example: 200
+          description: The total number of results matched by query.
+        results:
+          type: array
+          description: |
+            List of items from the index matched by the query provided.
+
+            Built in fields are prefixed with underscore (`_`).
+          items:
+            type: object
+            example:
+                {
+                  "sku": "p-1234",
+                  "salesPrice": 20.50,
+                  "isPromotional": true,
+                  "_originId": "p-1234",
+                  "_sourceGuid": "9f741916-19e3-4791-9ebd-701634ba9b75",
+                  "_updatedAt": "2025-01-07T08:43:15.7351089Z",
+                }
+        facets:
+          type: array
+          description: List of aggregated field values based on the requested facet fields.
+          items:
+            type: object
+            example:
+                {
+                  "name": "Is promotional",
+                  "field": "isPromotional",
+                  "groups": [{
+                      "value": true,
+                      "count": 85
+                  }, {
+                      "value": false,
+                      "count": 115
+                  }],
+                  "isValid": true
+                }
     QueryResponseExtended:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         index:
           type: string
           example: products
@@ -1591,6 +1821,15 @@ components:
           - $ref: "#/components/schemas/QueryResponseExtended"
           - $ref: "#/components/schemas/Query400Response"
           - $ref: "#/components/schemas/Query400ResponseExtended"
+          - $ref: "#/components/schemas/Query403ResponseExtended"
+    QueryMultiAutoIndexingListResponse:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/QueryMultiAutoIndexingResponse"
+          - $ref: "#/components/schemas/Query400Response"
+          - $ref: "#/components/schemas/Query400ResponseExtendedMultiAutoIndexing"
+          - $ref: "#/components/schemas/Query403ResponseExtendedMultiAutoIndexing"
     Query400Response:
       type: object
       properties:
@@ -1605,8 +1844,14 @@ components:
             type: string
             example: "Operator not implemented: equal"
         status:
+          type: number
+          example: 0
+    Query403Response:
+      type: object
+      properties:
+        error:
           type: string
-          example: "error"
+          example: "Forbidden"
     Query400ResponseExtended:
       type: object
       properties:
@@ -1629,14 +1874,100 @@ components:
             type: string
             example: "Operator not implemented: equal"
         status:
+          type: number
+          example: 0
+    Query403ResponseExtended:
+      type: object
+      properties:
+        index:
           type: string
-          example: "error"
+          example: products
+          description: The index name which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        message:
+          type: string
+          description: Erros message
+          example: "Forbidden"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Forbidden"
+        status:
+          type: number
+          example: 1
+    Query400ResponseExtendedMultiAutoIndexing:
+      type: object
+      properties:
+        sourceGroupAlias:
+          type: string
+          example: erp
+          description: The source group alias which were given for the query in the request.
+        sourceEntityType:
+          type: string
+          example: price
+          description: The source entity type which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        message:
+          type: string
+          description: Erros message
+          example: "Query is not valid"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Operator not implemented: equal"
+        status:
+          type: number
+          example: 0
+    Query403ResponseExtendedMultiAutoIndexing:
+      type: object
+      properties:
+        sourceGroupAlias:
+          type: string
+          example: erp
+          description: The source group alias which were given for the query in the request.
+        sourceEntityType:
+          type: string
+          example: price
+          description: The source entity type which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        message:
+          type: string
+          description: Erros message
+          example: "Forbidden"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Forbidden"
+        status:
+          type: number
+          example: 1
     Query400ExtendedResponseList:
       type: array
       items:
         oneOf:
           - $ref: "#/components/schemas/Query400Response"
           - $ref: "#/components/schemas/Query400ResponseExtended"
+    Query400AutoIndexingResponseList:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/Query400Response"
+          - $ref: "#/components/schemas/Query400ResponseExtendedMultiAutoIndexing"
     NoIdsOrHandlesParametersResponse:
       type: object
       properties:
