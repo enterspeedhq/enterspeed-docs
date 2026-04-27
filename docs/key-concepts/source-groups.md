@@ -9,10 +9,6 @@ Source groups contains the sources you ingest your source entities into. Typical
 
 ## Modes
 
-:::info
-Modes are currently in preview.
-:::
-
 Source groups works in two different modes. Modes are selected on source group creation and can't be changed afterwards.
 
 ### Schema Transformation (default)
@@ -24,6 +20,10 @@ Once processed, views can be accessed via the [Delivery API](/api#tag/Delivery),
 The schema transformation is a powerfull feature, allowing you to tailor and structure data precisely to meet consumer needs. However, because the transformation process takes time, this mode is best suited for non-real-time data.
 
 ### Auto Indexing
+
+:::info
+Auto Indexing mode are currently in preview.
+:::
 
 On Auto indexing mode there is no transformation process. Instead, ingested source entities goes directly into an index, which can be queried using the [Query API](/api#tag/Query/operation/queryAutoIndengPost). 
 
