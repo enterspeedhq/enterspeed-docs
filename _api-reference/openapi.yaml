@@ -139,6 +139,8 @@ paths:
                   - $ref: "#/components/schemas/NoRouteFoundResponse"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
         "422":
           description: >-
             Invalid request. Server responded but the request was in an invalid
@@ -205,6 +207,8 @@ paths:
                   - $ref: "#/components/schemas/ViewResponse"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
         "422":
           description: >-
             Invalid request. Server responded but the request was in an invalid
@@ -530,7 +534,9 @@ paths:
                     redirect: null
                     updatedAt: "2021-05-21T10:22:21.262781Z"
         "401":
-          description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+            description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
         "422":
           description: |
             Can be either of these: 
@@ -591,6 +597,8 @@ paths:
 
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: Forbidden. The X-Api-Key is valid but does not have the necessary permissions.
 
   /v1/{indexAlias}:
     servers:
@@ -650,6 +658,13 @@ paths:
                 $ref: "#/components/schemas/Query400Response"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
   /v1:
     servers:
       - url: https://query.enterspeed.com
@@ -708,6 +723,13 @@ paths:
                 $ref: "#/components/schemas/Query400ExtendedResponseList"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
   /v1/sourceGroupAlias/{sourceGroupAlias}/type/{sourceEntityType}:
     servers:
       - url: https://query.enterspeed.com
@@ -761,6 +783,13 @@ paths:
                 $ref: "#/components/schemas/Query400Response"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
   /v1/source:
     servers:
       - url: https://query.enterspeed.com
@@ -819,6 +848,13 @@ paths:
                 $ref: "#/components/schemas/Query400AutoIndexingResponseList"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "403":
+          description: >-
+            Forbidden. The API key does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query403Response"
 components:
   schemas:
     ViewProperties:
@@ -1561,6 +1597,9 @@ components:
     QueryResponse:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         totalResults:
           type: number
           example: 200
@@ -1613,6 +1652,9 @@ components:
     QueryAutoIndexingResponse:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         totalResults:
           type: number
           example: 200
@@ -1655,6 +1697,9 @@ components:
     QueryMultiAutoIndexingResponse:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         sourceGroupAlias:
           type: string
           example: erp
@@ -1709,6 +1754,9 @@ components:
     QueryResponseExtended:
       type: object
       properties:
+        status:
+          type: number
+          example: 0
         index:
           type: string
           example: products
@@ -1773,6 +1821,7 @@ components:
           - $ref: "#/components/schemas/QueryResponseExtended"
           - $ref: "#/components/schemas/Query400Response"
           - $ref: "#/components/schemas/Query400ResponseExtended"
+          - $ref: "#/components/schemas/Query403ResponseExtended"
     QueryMultiAutoIndexingListResponse:
       type: array
       items:
@@ -1780,6 +1829,7 @@ components:
           - $ref: "#/components/schemas/QueryMultiAutoIndexingResponse"
           - $ref: "#/components/schemas/Query400Response"
           - $ref: "#/components/schemas/Query400ResponseExtendedMultiAutoIndexing"
+          - $ref: "#/components/schemas/Query403ResponseExtendedMultiAutoIndexing"
     Query400Response:
       type: object
       properties:
@@ -1794,8 +1844,14 @@ components:
             type: string
             example: "Operator not implemented: equal"
         status:
+          type: number
+          example: 0
+    Query403Response:
+      type: object
+      properties:
+        error:
           type: string
-          example: "error"
+          example: "Forbidden"
     Query400ResponseExtended:
       type: object
       properties:
@@ -1818,8 +1874,32 @@ components:
             type: string
             example: "Operator not implemented: equal"
         status:
+          type: number
+          example: 0
+    Query403ResponseExtended:
+      type: object
+      properties:
+        index:
           type: string
-          example: "error"
+          example: products
+          description: The index name which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        message:
+          type: string
+          description: Erros message
+          example: "Forbidden"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Forbidden"
+        status:
+          type: number
+          example: 1
     Query400ResponseExtendedMultiAutoIndexing:
       type: object
       properties:
@@ -1846,8 +1926,36 @@ components:
             type: string
             example: "Operator not implemented: equal"
         status:
+          type: number
+          example: 0
+    Query403ResponseExtendedMultiAutoIndexing:
+      type: object
+      properties:
+        sourceGroupAlias:
           type: string
-          example: "error"
+          example: erp
+          description: The source group alias which were given for the query in the request.
+        sourceEntityType:
+          type: string
+          example: price
+          description: The source entity type which were given for the query in the request.
+        name:
+          type: string
+          example: productData
+          description: The query name which were given for the query in the request.
+        message:
+          type: string
+          description: Erros message
+          example: "Forbidden"
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            example: "Forbidden"
+        status:
+          type: number
+          example: 1
     Query400ExtendedResponseList:
       type: array
       items:
