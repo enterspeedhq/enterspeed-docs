@@ -1,7 +1,6 @@
 [[edge_functions]]
-  path = "/docs/*"
+  path = "/*"
   function = "markdown-negotiation"
-  force = true
 
 [[headers]]
   for = "/*.md"
