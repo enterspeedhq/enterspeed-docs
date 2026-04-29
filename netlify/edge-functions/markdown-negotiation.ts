@@ -1,7 +1,6 @@
 import type { Config, Context } from "@netlify/edge-functions";
 
 export default async (request: Request, context: Context) => {
-     console.log("Edge function hit:", request.url);
   const accept = request.headers.get("accept") ?? "";
 
   // Only intercept if client explicitly wants markdown
