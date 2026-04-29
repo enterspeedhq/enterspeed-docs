@@ -263,7 +263,7 @@ paths:
           description: |
             Optional header to override type immutability validation. Include this header to bypass the type immutability check and allow re-ingesting an entity with a different type. This is a destructive operation that rebuilds affected views. Use only when intentional type changes are required.
             
-            **Note:** The value is not checked — presence of the header is sufficient.
+            The value needs to be one of `true`, `TRUE`, `1`.
           schema:
             type: string
             example: "true"
