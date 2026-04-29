@@ -23,6 +23,9 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
       },
     },
     plugins: [
+      ['docusaurus-markdown-source-plugin', {
+        docsPath: '/',
+      }],
       require.resolve("docusaurus-plugin-image-zoom"),
       [
         require.resolve("docusaurus-gtm-plugin"),
