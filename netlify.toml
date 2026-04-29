@@ -1,3 +1,17 @@
 [[edge_functions]]
   path = "/*"
   function = "markdown-negotiation"
+
+[[headers]]
+  for = "/*.md"
+  [headers.values]  
+    Content-Type = "text/plain; charset=utf-8"
+    X-Content-Type-Options = "nosniff"
+    X-Robots-Tag = "googlebot: noindex, nofollow, bingbot: noindex, nofollow"
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/docs/*/img/*"
+  [headers.values]
+    X-Robots-Tag = "googlebot: noindex, nofollow, bingbot: noindex, nofollow"
+    Cache-Control = "public, max-age=86400, immutable"

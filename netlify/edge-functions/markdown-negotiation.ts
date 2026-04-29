@@ -28,5 +28,5 @@ export default async (request: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: "/docs/*",
+  path: "/*",
 };
