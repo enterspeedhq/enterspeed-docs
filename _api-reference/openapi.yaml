@@ -256,9 +256,21 @@ paths:
             The type or alias of the type of entity being send to process.
             Eg. blogList, blogPage, frontPage, etc.
             Only used for raw body
+
+            The type is immutable after initial ingest. If an entity with the same originId already exists and the type differs, the ingest will be rejected with a type change error in the response. Type comparison is case-sensitive. To change the entity type, delete the entity and re-ingest with the new type, or use X-Enterspeed-Force-Type to override.
           schema:
             type: string
             example: "product"
+        - name: X-Enterspeed-Force-Type
+          required: false
+          in: header
+          description: |
+            Optional header to override type immutability validation. Include this header to bypass the type immutability check and allow re-ingesting an entity with a different type. This is a destructive operation that rebuilds affected views. Use only when intentional type changes are required.
+            
+            The value needs to be one of `true`, `TRUE`, `1`.
+          schema:
+            type: string
+            example: "true"
         - name: X-Enterspeed-Url
           in: header
           description: |
@@ -303,7 +315,7 @@ paths:
 
       responses:
         "200":
-          description: Valid request. Processing of posted entity has begun.
+          description: Valid request. Processing of posted entity has begun or source entity hasn't changed and won't be processed.
           content:
             application/json:
               schema:
@@ -314,11 +326,73 @@ paths:
                     example: 200
                   message:
                     type: string
-                    example: Processing entity has begun
+                    example: "Processing has been initiated."
+              example:
+                status: 200
+                message: "Processing has been initiated."
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
+        "413":
+          description: |
+            Payload Too Large. The entity is too large to process.
+            
+            Returns ErrorApiResponse with status, errorCode, and message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 413
+                  message:
+                    type: string
+                    description: Error message explaining the payload size issue
+                    example: "Source entity size exceeds 5,242,880B. Actual size 10,485,760B"
+                  errorCode:
+                    type: string
+                    example: "s-1007"
+              example:
+                status: 413
+                message: "Source entity size exceeds 5,242,880B. Actual size 10,485,760B"
+                errorCode: "s-1007"
         "422":
-          description: Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors.
+          description: |
+            Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 422
+                  message:
+                    type: string
+                    description: Error message explaining the validation failure
+                    example: "Invalid request"
+                  errorCode:
+                    type: string
+                    example: "s-1001"
+                  errors:
+                    type: object
+                    description: Dictionary mapping field names to error message strings
+                    additionalProperties:
+                      type: string
+              example:
+                status: 422
+                message: "Invalid request"
+                errorCode: "s-1001"
+                errors:
+                  type: "Type cannot be changed from 'product' to 'productVariant'. Use the X-Enterspeed-Force-Type header to override, or delete the source entity first."
+        "500":
+          description: |
+            Internal Server Error. Something went wrong on our end while processing the request.
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: "Internal server error"
 
     delete:
       summary: Delete entity
@@ -349,7 +423,6 @@ paths:
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
         "404":
           description: No entity found with that id.
- 
   /ingest/v2:
     post:
       summary: Save entities
@@ -392,32 +465,19 @@ paths:
             Valid request. Processing of posted entities has begun. 
             
             A successful response is returned if one or more entities were valid. Only if all entities are invalid a 422 response is returned.
+
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: number
-                    example: 200
-                  changedSourceEntities:
-                    type: array
-                    example: ["p-5427"]
-                  unchangedSourceEntities:
-                    type: array
-                    example: ["p-6724"]
-                  errors:
-                    type: object
-                    example:  {
-                      "1234": [
-                        "OriginId must be a string, not a number at position 3"
-                      ]
-                    }
+                $ref: "#/components/schemas/BulkIngestResult"
         "401":
           description: Unauthorized. Missing X-Api-Key header or the X-Api-Key is invalid.
         "422":
           description: Unprocessable request. The request was well-formed but was unable to be followed due to semantic errors.
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkIngestResult"
     delete:
       summary: Delete entities
       description: |
@@ -672,7 +732,7 @@ paths:
     post:
       summary: Multi query items
       description: > 
-        The Query API is used to query items in an index, with this endpoint up to 5 queries can be requested in a single payload, each query defining the index to perform the lookup in. 
+        The Query API is used to query items in an index, with this endpoint up to 5 queries can be requested in a single payload, each query defining the index to perform the lookup in.
       tags:
         - Query
       operationId: queryMultiContentPost
@@ -698,7 +758,7 @@ paths:
             The only thing that differs with these query objects, is an addition of an `index` and a `name` field, so you per query can define which index you want to perform the query against and also name the individual query. This means that this service can perform multiple queries on the same index, or perform queries on multiple indicies in one request, and also give you the ability to name queries for easier identification of the resulting result sets.
             
             ### Note
-            The request payload can at most take 5 queries in one request. 
+            The request payload can at most take 5 queries in one request.
         content:
           application/json:
             schema:
@@ -1103,7 +1163,7 @@ components:
                 "caseInsensitive": true
               },
               {
-                "or": [ 
+                "or": [
                   {
                     "field": "isInStock",
                     "operator": "equals",
@@ -1245,7 +1305,7 @@ components:
         ]
     QueryRequestList:
       type: array
-      description: List consisting of multiple queries using the extended query object format.  
+      description: List consisting of multiple queries using the extended query object format.
       items:
         $ref: "#/components/schemas/QueryRequestExtendedBody"
       example:
@@ -1262,7 +1322,7 @@ components:
                       "caseInsensitive": true
                     },
                     {
-                      "or": [ 
+                      "or": [
                         {
                           "field": "isInStock",
                           "operator": "equals",
@@ -1334,7 +1394,7 @@ components:
                   "caseInsensitive": true
                 },
                 {
-                  "or": [ 
+                  "or": [
                     {
                       "field": "isInStock",
                       "operator": "equals",
@@ -2076,3 +2136,59 @@ components:
       $ref: "#/components/schemas/PagedResult"
     RoutesV2Response:
       $ref: "#/components/schemas/PagedTokenResult"
+    IngestMetadata:
+      type: object
+      description: Metadata about the ingest operation
+      properties:
+        ingestVersion:
+          type: string
+          description: The version of the ingest process
+          example: "1.0"
+        ingestFormat:
+          type: string
+          description: The format of the ingested data (Raw or Simplified)
+          example: "Raw"
+        systemInfo:
+          type: string
+          nullable: true
+          description: Additional system information about the ingest operation
+          example: null
+        forceTypeOverwrite:
+          type: boolean
+          description: Indicates whether the X-Enterspeed-Force-Type header was present to bypass type immutability checks
+          example: false
+    BulkIngestResult:
+      type: object
+      description: |
+        Response for bulk ingest operations, containing lists of changed, unchanged, and errored entities.
+        
+        **Note:** This schema applies to bulk operations only. For single entity ingest responses, see the `/ingest/v2/{originId}` endpoint documentation.
+      properties:
+        status:
+          type: number
+          description: HTTP status code (200 for partial/full success, 422 for all entities failed)
+          example: 200
+        changedSourceEntities:
+          type: array
+          items:
+            type: string
+          description: List of originIds for entities that were changed
+          example: ["p-5427"]
+        unchangedSourceEntities:
+          type: array
+          items:
+            type: string
+          description: List of originIds for entities that were unchanged
+          example: ["p-6724"]
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Dictionary of originId to list of error messages
+          example: { "1234": ["Validation failed"] }
+        ingestMetadata:
+          $ref: "#/components/schemas/IngestMetadata"
+
+
