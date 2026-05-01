@@ -11,7 +11,6 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
     baseUrl: "/",
     trailingSlash: "false",
     onBrokenLinks: "throw",
-    onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.svg",
     organizationName: "enterspeedhq",
     projectName: "enterspeed-docs",
@@ -19,8 +18,12 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
       mdx1Compat: {
         comments: false,
         admonitions: false,
-        headingIds: false,
+        headingIds: false
       },
+      hooks: {
+        onBrokenMarkdownLinks: 'warn',
+        onBrokenMarkdownImages: 'warn',
+      }
     },
     plugins: [
       ['docusaurus-markdown-source-plugin', {
