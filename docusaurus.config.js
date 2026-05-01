@@ -11,6 +11,7 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
     baseUrl: "/",
     trailingSlash: "false",
     onBrokenLinks: "throw",
+    onBrokenAnchors: "throw",
     favicon: "img/favicon.svg",
     organizationName: "enterspeedhq",
     projectName: "enterspeed-docs",
@@ -21,8 +22,8 @@ const darkCodeTheme = require('prism-react-renderer').themes.dracula;
         headingIds: false
       },
       hooks: {
-        onBrokenMarkdownLinks: 'warn',
-        onBrokenMarkdownImages: 'warn',
+        onBrokenMarkdownLinks: 'throw',
+        onBrokenMarkdownImages: 'throw',
       }
     },
     plugins: [
