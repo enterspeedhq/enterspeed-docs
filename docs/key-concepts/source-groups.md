@@ -11,6 +11,8 @@ Source groups contains the sources you ingest your source entities into. Typical
 
 Source groups works in two different modes. Modes are selected on source group creation and can't be changed afterwards.
 
+![Source group modes](/img/docs/key-concepts/source-groups-modes.png)
+
 ### Schema Transformation (default)
 
 Schema Transformation is the default and recommended mode for most scenarios. It enables you to transform and combine source entities into views or index items using defined schemas.
