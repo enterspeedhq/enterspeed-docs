@@ -23,7 +23,7 @@ The `TriggersContext` object is passed into the `triggers` method and gives you 
 
 | Method                | Description                                                                                                             |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| [triggers](#triggers) | Defines the source group and the source entity types the schema should process.                                         |
+| [triggers](#triggers-1) | Defines the source group and the source entity types the schema should process.                                         |
 
 ### triggers
 
