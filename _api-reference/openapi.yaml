@@ -1152,6 +1152,10 @@ components:
 
             Repeat until `nextPageToken` is `null`.
 
+            **Token scoping** — a `nextPageToken` is tied to the index it was issued for. Using it against a different index alias returns an `Invalid nextPageToken` error. Always use the token with the same index it came from.
+
+            **Last page behaviour** — when the total number of results is an exact multiple of `pageSize`, the final page returns a full set of results with a non-null token. One additional request is needed to confirm there are no more results; that request returns an empty `results` array and a `null` token. This is expected — treat an empty response with `null` token as end-of-results, not an error.
+
             ### Aliases
             Using `aliases` in the query will return views for the provided schema aliases for each item in the result. The specific views returned for each item is the view created by the same source entity as the item. As views are returned, only schema aliases of full schemas are supported, as it's the only schema type that's creating views.
 
