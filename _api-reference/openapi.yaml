@@ -1114,7 +1114,7 @@ components:
             `pageSize`: 10
 
             #### Offset-based pagination
-            Use `page` and `pageSize` to paginate by offset. The total number of reachable items is limited to 10.000 (`from + pageSize`). The maximum page size is 1.000.
+            Use `page` and `pageSize` to paginate by offset. The total number of reachable items is limited to 10.000 (`from + pageSize`). The maximum page size is 1.000. Use this method when you need to display the current page number, allow users to jump to a specific page, or navigate back to previous pages.
 
             ```json
             "pagination": {
@@ -1124,7 +1124,7 @@ components:
             ```
 
             #### Token-based pagination
-            Use `nextPageToken` to paginate beyond the 10.000-item offset limit, or for more efficient iteration over large result sets. The token is returned in every response and is `null` when no further results exist. Pass it back in the next request to retrieve the next page. `page` is ignored when `nextPageToken` is provided.
+            Use `nextPageToken` to paginate beyond the 10.000-item offset limit, or for more efficient iteration over large result sets. The token is returned in every response and is `null` when no further results exist. Pass it back in the next request to retrieve the next page. `page` is ignored when `nextPageToken` is provided. Use this method for integrations and bulk processing where you need to iterate the full result set — note that it does not expose the current page number or support navigating back to a previous page.
 
             **First request** — omit the token to get the first page:
             ```json
