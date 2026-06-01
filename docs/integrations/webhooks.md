@@ -38,10 +38,10 @@ The request will send the following data.
 
 ```json
 {
-  "id": "gid://Environment/2052b78d-6c34-4f11-bea5-296cf2d26968/Source/053b598b-c3d1-46fb-91e3-53115169cdb2/Entity/1234/View/product", // the Enterspeed view id
-  "originId": "1234", // the origin id of the entity
-  "type": "product", // mapping schema alias
-  "action": "Deploy", // can have the value of Deploy or Remove
-  "url": "https://weu.delivery.enterspeed.com/v2?id=gid://Environment/40bb2d76-3b71-4121-b9b6-238cf4f325c4/Source/9e78f134-cf84-4ec5-9180-0b72b94949be/Entity/1099-en-us/View/home" // the absolute url for the delivery api to fetch the view
+  "Id": "gid://Environment/2052b78d-6c34-4f11-bea5-296cf2d26968/Source/053b598b-c3d1-46fb-91e3-53115169cdb2/Entity/1234/View/product", // the Enterspeed view id
+  "OriginId": "1234", // the origin id of the entity
+  "Type": "product", // mapping schema alias
+  "Action": "Deploy", // can have the value of Deploy or Remove
+  "Url": "https://weu.delivery.enterspeed.com/v2?id=gid://Environment/40bb2d76-3b71-4121-b9b6-238cf4f325c4/Source/9e78f134-cf84-4ec5-9180-0b72b94949be/Entity/1099-en-us/View/home" // the absolute url for the delivery api to fetch the view
 }
 ```
