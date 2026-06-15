@@ -29,8 +29,6 @@ The `meta` property on the index is optional.
 
 Use it to add a description to the index. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the index contains.
 
-_The max character length of the index description is 50 characters._
-
 ```js title="Index description example"
 index: {
   fields: { },
