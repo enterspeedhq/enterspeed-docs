@@ -12,7 +12,7 @@ index: {
     sku: { type: "keyword" }, 
     title: { type: "text" }, 
     description: { type: "text" },
-    isActive: { type: "boolean" }
+    isActive: { type: "boolean"}
   }
 }
 ```
@@ -20,6 +20,39 @@ index: {
 The index object must have a `fields` property with the fields you want to include in the index.
 
 Each field object must include `type`. The `type` specifies the data type for the index field.
+
+## Meta descriptions
+
+### Index
+
+The `meta` property on the index is optional. 
+
+Use it to add a description to the index. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the index contains.
+
+_The max character length of the index description is 50 characters._
+
+```js title="Index description example"
+index: {
+  fields: { },
+  metadata: { description: "The product index contains all product available in the assortment" }
+}
+```
+
+### Field
+
+The `meta` property on a field is optional. 
+
+Use it to add a description to the field. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the field is used for
+
+_The max character length of the field description is 50 characters._
+
+```js title="Field description example"
+index: {
+  fields: { 
+    isActive: { type: "boolean", metadata: { description: "A boolean value indicating if the SKU is active" } }
+  }
+}
+```
 
 ## Types
 
