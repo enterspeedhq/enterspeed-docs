@@ -12,7 +12,7 @@ index: {
     sku: { type: "keyword" }, 
     title: { type: "text" }, 
     description: { type: "text" },
-    isActive: { type: "boolean"}
+    isActive: { type: "boolean" }
   }
 }
 ```
@@ -25,7 +25,7 @@ Each field object must include `type`. The `type` specifies the data type for th
 
 ### Index
 
-The `meta` property on the index is optional. 
+The `metadata` property on the index is optional. 
 
 Use it to add a description to the index. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the index contains.
 
@@ -38,9 +38,9 @@ index: {
 
 ### Field
 
-The `meta` property on a field is optional. 
+The `metadata` property on a field is optional. 
 
-Use it to add a description to the field. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the field is used for
+Use it to add a description to the field. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the field is used for.
 
 _The max character length of the field description is 50 characters._
 
@@ -61,7 +61,7 @@ Setting the right types for the properties in your index is important. The types
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | keyword             | The `Keyword` type is for string values used in filtering and sorting                                       |
-| text                | The `text` type will analyze string values, improving results when querying using full text search           |
+| text                | The `text` type will analyze string values, improving results when querying using full text search          |
 
 ### Numeric
 
