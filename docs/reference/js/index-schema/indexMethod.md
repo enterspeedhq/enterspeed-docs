@@ -21,7 +21,7 @@ The index object must have a `fields` property with the fields you want to inclu
 
 Each field object must include `type`. The `type` specifies the data type for the index field.
 
-## Meta descriptions
+## Metadata descriptions
 
 ### Index
 
