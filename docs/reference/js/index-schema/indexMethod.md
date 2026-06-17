@@ -21,6 +21,37 @@ The index object must have a `fields` property with the fields you want to inclu
 
 Each field object must include `type`. The `type` specifies the data type for the index field.
 
+## Metadata descriptions
+
+### Index
+
+The `metadata` property on the index is optional. 
+
+Use it to add a description to the index. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the index contains.
+
+```js title="Index description example"
+index: {
+  fields: { },
+  metadata: { description: "The product index contains all products available in the assortment" }
+}
+```
+
+### Field
+
+The `metadata` property on a field is optional. 
+
+Use it to add a description to the field. The description is exposed by the [Enterspeed Query MCP](/mcp-server/overview) to give AI agents meaningful context about what the field is used for.
+
+_The max character length of the field description is 50 characters._
+
+```js title="Field description example"
+index: {
+  fields: { 
+    isActive: { type: "boolean", metadata: { description: "A boolean value indicating if the SKU is active" } }
+  }
+}
+```
+
 ## Types
 
 Setting the right types for the properties in your index is important. The types defines the intend of the fields and prevents data of other types from going into the index. The types also helps with effeciently index, search, and analyze of the data added to the index. 
@@ -30,7 +61,7 @@ Setting the right types for the properties in your index is important. The types
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | keyword             | The `Keyword` type is for string values used in filtering and sorting                                       |
-| text                | The `text` type will analyze string values, improving results when querying using full text search           |
+| text                | The `text` type will analyze string values, improving results when querying using full text search          |
 
 ### Numeric
 
