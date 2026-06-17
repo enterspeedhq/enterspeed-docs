@@ -32,7 +32,7 @@ Use it to add a description to the index. The description is exposed by the [Ent
 ```js title="Index description example"
 index: {
   fields: { },
-  metadata: { description: "The product index contains all product available in the assortment" }
+  metadata: { description: "The product index contains all products available in the assortment" }
 }
 ```
 
