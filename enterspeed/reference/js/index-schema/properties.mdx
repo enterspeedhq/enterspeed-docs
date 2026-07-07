@@ -1,0 +1,18 @@
+---
+title: Properties
+---
+
+The `properties` method is where you define the output of the items that goes into index you can query from the [Query API](/api-reference/query)
+
+```js title="Properties example"
+properties: function (sourceEntity) {
+  return {
+      sku: sourceEntity.properties.sku, 
+      title: sourceEntity.properties.title, 
+      description: sourceEntity.properties.description,
+      isActive: sourceEntity.properties.isActive
+  };
+}
+```
+
+The properties method must return an object with the values for the fields you defined in the [index](/enterspeed/reference/js/index-schema/index-method) object.

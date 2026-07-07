@@ -1,0 +1,13 @@
+/* Background colour behind logos in cards on the Integrations overview page.
+   Change the hex values below to recolour all card images on that page. */
+.integration-logos .card img {
+  background-color: #f0f3f7; /* light mode */
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+/* Dark mode — Mintlify adds a `.dark` class on the root element. */
+.dark .integration-logos .card img {
+  background-color: #000035; /* dark mode */
+}

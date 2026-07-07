@@ -1,0 +1,52 @@
+---
+title: Site settings
+---
+
+A schema containing essential site settings, here Site name, Logo and Login page link.
+
+<Note>
+Using a reference schema for the login page link ensures that the site settings view is always up to date with the latest login page data, even if the login page is updated after the site settings schema has been processed.
+</Note>
+
+<CodeGroup>
+```js JavaScript - Site settings schema icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['site']);
+  },
+  routes: function(sourceEntity, context) {
+    context.handle('settings');
+  },
+  properties: function (sourceEntity, context) {
+    const p = sourceEntity.properties;
+    return {
+      siteName: p.siteName,
+      logo: p.logo.url,
+      loginPage: context
+                  .reference("linkItem")
+                  .byOriginId(p.loginPage.id),
+    };
+  }
+}
+```
+</CodeGroup>
+
+Example of the _linkItem_ schema.
+
+<CodeGroup>
+```js JavaScript - Link item schema icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["page"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      name: sourceEntity.properties.title,
+      url: sourceEntity.url
+    };
+  }
+}
+```
+</CodeGroup>
