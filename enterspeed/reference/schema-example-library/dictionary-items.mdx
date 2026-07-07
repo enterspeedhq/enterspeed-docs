@@ -26,9 +26,22 @@ This example is based on the following dataset:
         "originId": "ee1ae347-616f-4595-8fea-00a58f0238c0-en-us",
         "originParentId": "dictionaries-root-en-us",
         "properties": {
-          "nodeId": 99,
+          "nodeId": 98,
           "key": "ButtonExit",
           "translation": "Exit",
+          "culture": "en-us"
+        }
+      }
+    ```
+    ```json
+      {
+        "type": "dictionary",
+        "originId": "dd1ae347-616f-4595-8fea-00a58f0238d1-en-us",
+        "originParentId": "dictionaries-root-en-us",
+        "properties": {
+          "nodeId": 99,
+          "key": "TooltipHelp",
+          "translation": "Help",
           "culture": "en-us"
         }
       }
@@ -79,6 +92,39 @@ export default {
 ```
 </CodeGroup>
 
+The result of the above schemas can be seen here with a requests to the [Delivery API](/api-reference/delivery) and the response.
+
+<CodeGroup>
+```bash Request
+curl -L -X GET 'https://delivery.enterspeed.com/v2?handle=dictionaries-en-us' \
+-H 'X-Api-Key: [your_environment_key]'
+```
+
+```json Response
+{
+	"meta": {
+		"status": 200,
+		"redirect": null,
+		"missingViewReferences": []
+	},
+	"views": {
+		"dictionaries-en-us": {
+			"translations": [
+				{
+					"key": "ButtonExit",
+					"translation": "Exit"
+				},
+				{
+					"key": "TooltipHelp",
+					"translation": "Help"
+				}
+			]
+		}
+	}
+}
+```
+</CodeGroup>
+
 ## Using index schemas
 
 <Note>
@@ -106,6 +152,59 @@ export default {
         culture: sourceEntity.properties.culture
       }
   }
+}
+```
+</CodeGroup>
+
+The result of the above index schema can be seen here with a requests to the [Query API](/api-reference/query) and the response.
+
+<CodeGroup>
+```bash Request
+curl -L -X POST 'https://query.enterspeed.com/v1/dictionaryIndex' \
+-H 'X-Api-Key: [your_environment_key]' \
+-H 'Content-Type: application/json' \
+-d '{
+	"filters": {
+    "and": [
+          {
+              "field": "culture",
+              "operator": "equals",
+              "value": "en-us",
+              "caseInsensitive": true
+          }
+      ]   
+    },
+    "pagination": {
+      "page": 0,
+      "pageSize": 1000
+    }
+  }'
+```
+
+```json Response
+{
+  "totalResults": 2,
+  "results": [
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2025-10-17T12:08:43.5022645Z",
+        "_originId": "f269a7fc-2a96-4246-b8d6-6e91e6bfa390",
+        "key": "ButtonExit",
+        "translation": "Exit",
+        "culture": "en-us"
+      },
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2025-10-17T12:08:41.9083304Z",
+        "_originId": "bb27cc54-3e72-4191-a096-081038e3fde9",
+        "key": "TooltipHelp",
+        "translation": "Help",
+        "culture": "en-us"
+      }
+  ],
+  "facets": [],
+  "nextPageToken": null,
+  "status": 0
 }
 ```
 </CodeGroup>
