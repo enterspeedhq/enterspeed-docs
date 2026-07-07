@@ -49,7 +49,7 @@ No, an Enterspeed user can either logon using email/password or a Microsoft Entr
 <details>
 <summary>Can I have two users, one for email/password and one for Microsoft Entra ID, with the same email?</summary>
 
-No, in Enterspeed the email is unique per user.
+No, in Enterspeed the email is unique per user..
 
 </details>
 
