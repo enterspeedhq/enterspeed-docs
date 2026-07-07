@@ -391,7 +391,8 @@
     { "source": "/tutorials/product-list-cms-pim/2-data-sources-environment", "destination": "/enterspeed/tutorials/product-list-cms-pim/2-data-sources-environment" },
     { "source": "/tutorials/product-list-cms-pim/3-ingest-data", "destination": "/enterspeed/tutorials/product-list-cms-pim/3-ingest-data" },
     { "source": "/tutorials/product-list-cms-pim/4-create-schemas", "destination": "/enterspeed/tutorials/product-list-cms-pim/4-create-schemas" },
-    { "source": "/tutorials/product-list-cms-pim/5-wrap-up", "destination": "/enterspeed/tutorials/product-list-cms-pim/5-wrap-up" }
+    { "source": "/tutorials/product-list-cms-pim/5-wrap-up", "destination": "/enterspeed/tutorials/product-list-cms-pim/5-wrap-up" },
+    { "source": "/api", "destination": "/enterspeed/api/overview" }
   ],
   "logo": {
     "light": "/images/Enterspeed_Logo_RGB_Black.svg",
