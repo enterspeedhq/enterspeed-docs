@@ -1,0 +1,95 @@
+---
+title: Elasticsearch
+---
+
+The Enterspeed Elasticsearch integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to send data from views directly to a configured Elasticsearch. This means that you can decide on the schema level which views you want to send to Elasticsearch cluster.
+
+You will only have to set the destination field on the entity schema you want to send to Elasticsearch.
+It's possible to configure multiple Elasticsearch destinations if you need to push different types of data to different Elasticsearch clusters or indexes.
+
+## Configuration
+
+In order to setup the Elasticsearch configuration you need the following:
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| Elasticsearch endpoint | The endpoint of Elasticsearch cluster you want to integrate to
+| API Key                       | The API key used for calling Elasticsearch `_bulk` endpoint for creating, updating, deleting documents |
+| Index name                       | Name of the default index to use when creating, updating, deleting documents in Elasticsearch. |
+| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Elasticsearch |
+
+## Options
+
+Table of available options, that you can optionally specify, if needed for your use case.
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| documentId                   | By default Enterspeed uses view id as the value for document id in elasticsearch. You can override default document id by providing value for this option. |
+| indexName                   | Option to override what index must be used for current view. By default `IndexName` of Elasticsearch configuration is used. |
+
+## Example of usage
+
+<Tabs>
+<Tab title="JavaScript">
+
+```js title="Schema with elasticsearch destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+     context.destination('elasticsearch').options({
+		documentId: `city-${sourceEntity.originId}`,
+        indexName: 'cities'
+	});
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.city,
+      country: p.country,
+      population: parseInt(p.population),
+      location: `${p.lat},${p.lng}`,
+      photo: p.photo,
+    }
+  }
+}
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```json title="Schema with elasticsearch destination"
+{
+	"triggers": {
+		"geodata": [
+			"city"
+		]
+	},
+	"destinations": [
+		{
+			"alias": "elasticsearch",
+			"options": {
+				"documentId": "city-{originId}",
+                "indexName": "cities"
+			}
+		}
+	],
+	"properties": {
+		"url": "{url}",
+		"name": "{p.city}",
+		"country": "{p.country}",
+		"photo": "{p.photo}",
+		"location": "{p.lat},{p.lng}",
+		"population": {
+		  "type": "number",
+		  "value": "{p.population}"
+		}
+	}
+}
+```
+
+</Tab>
+</Tabs>

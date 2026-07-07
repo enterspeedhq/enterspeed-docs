@@ -1,0 +1,46 @@
+---
+title: SEO composition
+---
+
+In a CMS, many different page types can often have the same SEO settings, like meta title, meta description and meta robots (index/noindex and follow/nofollow).  
+
+Instead of defining these properties in each page type schema, we can create a single [partial schema](/enterspeed/key-concepts/partial-schemas) for these properties and reference it from the different page type schemas.
+
+Here's a partial schema for basic SEO settings, here meta title, meta description and meta robots (index/noindex and follow/nofollow).
+
+<CodeGroup>
+```js JavaScript - Partial SEO composition schema icon="square-js"
+/** @type {Enterspeed.PartialSchema} */
+export default {
+  properties: function (input, context) {
+    const p = input.properties;
+    return {
+      title: p.seoTitle,
+      description: p.seoDescription,
+      robots: {
+        follow: p.robotsFollow,
+        index: p.robotsIndex,
+      },
+    };
+  }
+}
+```
+</CodeGroup>
+
+How the _partial SEO Composition schema_ will be used in one of the page type schemas.
+
+<CodeGroup>
+```js JavaScript - Full schema using partial SEO composition icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["article"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      seoComposition: context.partial("seoComposition", sourceEntity)
+    };
+  }
+}
+```
+</CodeGroup>

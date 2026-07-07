@@ -1,0 +1,29 @@
+---
+title: Troubleshooting
+---
+
+A section of some of the common issues that might occour. 
+
+### Ingest skipped if audit/notification pipeline is exisited by other extensions
+If another pipeline is changing the audit event or breaking the notification flow, this could cause the Enterspeed Umbraco source package to skip the ingest, as we listen for specific notifications (PublishVariant, Publish, Move)
+
+An example of this below
+
+```csharp
+    public class ContentEventsNotificationNotificationHandler : 
+        INotificationAsyncHandler<ContentPublishingNotification>,
+    { 
+        public async Task HandleAsync(ContentPublishingNotification notification, CancellationToken cancellationToken)
+        {
+            // Prematurely exiting
+            return;
+        }
+    }
+```
+
+### Does updating a domainon a root node in Umbraco trigger a re-ingest of the entire sub-tree?
+No. Changing a domain on a root node will not trigger a re-seed of the node and its descendants.
+
+If you want to trigger a re-seed in Umbraco after changing the domain, the best option is to use the "Publish with descendants"-feature in Umbraco.
+
+After updating the domain, click the node you changed the domain on and select "Publish with descendants". This will send the updates node and its descendants to Enterspeed.

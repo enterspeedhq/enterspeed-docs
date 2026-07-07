@@ -1,0 +1,169 @@
+---
+title: Algolia
+---
+
+The Enterspeed Algolia integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to send data from views directly to a configured Algolia index. This means that you can decide on the schema level which views you want to send to Algolia.
+
+You will only have to set the destination field on the entity schema you want to send to Algolia. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
+
+It's possible to configure multiple Algolia destinations if you need to push different types of data to different Algolia indexes.
+
+## Configuration
+
+In order to setup the Algolia configuration you need the following:
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| Algolia Index Name                    | The name of the Algolia index you want to integrate to |
+| Algolia Application ID                | The unique application identifier used to identify you when working with Algolia's API |
+| Algolia API Key                       | The API key needs `addObject` and `deleteObject` rights for the index you want to integrate to |
+| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Algolia |
+
+## Options
+
+Table of available options, that you can optionally specify, if needed for your use case.
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| objectId                              | By default Enterspeed uses view id as the value for object id in Algolia. You can override default object id by providing value for this option. |
+| indexName                             | Option to override what index must be used for current view. By default `IndexName` of Algolia configuration is used. |
+| partialUpdate                         | A boolean indicating if the update of the Algolia record should be a partial update. [See Algolia documentation](https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/).<br /><br />Default value: `false` |
+| createIfNotExists                     | A boolean indicating if the partial update should create a record in Algolia if it does not already exists. Only used if `partialUpdate` is set to `true`.<br /><br />Default value: `false`|
+| skipDelete                            | A boolean indicating if a deleted view should delete the record in Algolia. Typically set to `false` for `partialUpdate` if the schema is not working on the "master" object.<br /><br />Default value: `false` |
+
+<Info>
+Algolia does not support partial deletes. This means that if you are using partial updates and you want to clear the attributes from the partial update,
+you should not delete the source entity that triggers the partial update in Enterspeed.
+
+Instead you should update the source entity and set the properties to default values, like null, an empty string, an empty array and so on.
+</Info>
+
+## Example of usage
+
+<Tabs>
+<Tab title="JavaScript">
+
+```js title="Schema with Algolia destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('algolia').options({
+        objectId: `city-${sourceEntity.originId}`
+        partialUpdate: false
+    });
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.name
+    }
+  }
+}
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```json title="Schema with Algolia destination"
+{
+  "triggers": {
+        "geodata": ["city"]
+    },
+  "destinations": [
+    {
+      "alias": "algolia",
+      "options": {
+          "objectId": "city-{originId}"
+      }
+    }
+  ],
+  "properties": {
+    "url": "{url}",
+    "name": "{p.name}"
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Algolia specific properties
+
+### _geoloc
+
+`_geoloc` is a special property in Algolia used for doing geo-searching. [See Algolia documentation](https://www.algolia.com/doc/guides/managing-results/refine-results/geolocation/)
+
+As stated in the Algolia documentation, the `lat` and `lng` properties must be numeric values. This means that you will need to make sure that your Enterspeed schema is mapping these properties as numeric values and not as strings.
+
+<Tabs>
+<Tab title="JavaScript">
+
+```js title="Schema with Algolia destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('algolia').options({
+      objectId: `city-${sourceEntity.originId}`
+    });
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.name,
+      _geoloc: {
+        lat: p.lat,
+        lng: p.lng,
+      }
+    }
+  }
+}
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```json title="Schema with Algolia destination"
+{
+  "triggers": {
+        "geodata": ["city"]
+    },
+  "destinations": [
+    {
+      "alias": "algolia",
+      "options": {
+          "objectId": "city-{originId}"
+      }
+    }
+  ],
+  "properties": {
+    "url": "{url}",
+    "name": "{p.name}",
+    "_geoloc": {
+      "type": "object",
+      "properties": {
+        "lat": {
+          "type": "number",
+          "value": "40.639751",
+          "precision": 6
+        },
+        "lng": {
+          "type": "number",
+          "value": "-73.778925",
+          "precision": 6
+        }
+      }
+    }
+  }
+}
+```
+
+</Tab>
+</Tabs>

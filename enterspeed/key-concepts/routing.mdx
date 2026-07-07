@@ -1,0 +1,86 @@
+---
+title: Routing
+sidebarTitle: Routing
+---
+
+<Tip>
+This page gives you an introduction to the concept of routing. Go to [schema references](/reference/js/full-schema/routes) to find the API documentation for routing.
+</Tip>
+
+You can do routing by either Url or Handle.
+
+## URL
+
+If you want your schema to be routable by an URL, you can specify the `url` as an expression.
+
+If we take a look at this example we can see that we have a Url property available in the Data Source
+
+```json title="Source entity example"
+{
+  "id": "1044-en-us",
+  "type": "frontPage",
+  "url": "/frontPage",
+  "properties": {
+    "title": "Welcome",
+    "description": "description value"
+  }
+}
+```
+
+In the below example of the schema for this Data Source, we can see that the route is mapped to the url property on the Data Source. This means that you can get the data from this source
+by making a request to `https://delivery.enterspeed.com/v1?url=/frontpage`
+
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['frontPage'])
+  },
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url)
+  },
+  properties: function (sourceEntity, context) {
+    return sourceEntity.properties
+  }
+}
+```
+
+<Note>
+**What does "No environment client configured to support domain name for source entity url /relative-url/" mean?**
+
+If you are using relative URLs (_e.g. /about-us/_) and are trying to test the schema by making a CURL request, you might have seen this error message.
+
+The reason for this is that the URL doesn't have a domain that matches an environment client. Environment clients need to be able to match the URL in the source entity with the hostname provided for the environment client.
+
+The best way to solve this is to use absolute URLs in your schema (_e.g. [https://my-domain.com/about-us/](https://my-domain.com/about-us/)_).
+
+If you however want to use relative URLs, it can be done by adding a domain to your environment client with the hostname `root.tld`.
+</Note>
+
+## Handle
+
+Handle differentiates a bit from URL routing. A handle can be whatever you would like.
+In this example, a navigation structure is returned. The schema returns an array of navigation items and utilizes the lookup and [reference](/enterspeed/key-concepts/referencing-schemas) fields.
+This handle would be called like this: `https://delivery.enterspeed.com/v1?handle=mainNavigation`
+
+```js
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('umbraco', ['navigationGroup'])
+  },
+  routes: function(sourceEntity, context) {
+    context.handle('mainNavigation')
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      children: context.reference('navigationItem')
+                          .children()
+                          .orderBy({ 
+                            propertyName: 'properties.metaData.sortOrder', 
+                            direction: 'desc' 
+                          })
+    }
+  }
+}
+```

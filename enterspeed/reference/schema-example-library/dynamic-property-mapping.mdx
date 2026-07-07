@@ -1,0 +1,119 @@
+---
+title: Dynamic property mapping
+---
+
+## Map all source entity properties
+
+A schema which dynamically maps all properties from your source entity to the view.
+
+<CodeGroup>
+
+ ```js JavaScript icon="square-js"
+  /** @type {Enterspeed.FullSchema} */
+  export default {
+    triggers: function(context) {
+      context.triggers('cms', ['contentPage']);
+    },
+    routes: function(sourceEntity, context) {
+      context.url(sourceEntity.url);
+    },
+    properties: function (sourceEntity, context) {
+      return sourceEntity.properties;
+    }
+  }
+```
+
+```json JSON
+  {
+    "triggers": {
+      "cms": ["product"]
+    },
+    "route": {
+      "url": "{url}"
+    },
+    "properties": {
+      "product": {
+        "*": "p"
+      }
+    }
+  }
+```
+
+```json Output view
+  {
+    "sourceEntityProp1": "value1",
+    "sourceEntityProp2": "value2"
+  }
+```
+
+</CodeGroup>
+
+## Map all source entity properties plus some additional properties
+
+A schema which dynamically maps all properties from your source entity plus some additional properties using deconstruction.
+
+<CodeGroup>
+
+ ```js JavaScript icon="square-js"
+  /** @type {Enterspeed.FullSchema} */
+  export default {
+    triggers: function(context) {
+      context.triggers('cms', ['contentPage']);
+    },
+    routes: function(sourceEntity, context) {
+      context.url(sourceEntity.url);
+    },
+    properties: function (sourceEntity, context) {
+      return {
+        ...sourceEntity.properties,
+        additionalProperty: "some value"
+      };
+    }
+  }
+```
+
+```json Output view
+  {
+    "sourceEntityProp1": "value1",
+    "sourceEntityProp2": "value2",
+    "additionalProperty": "some value"
+  }
+```
+
+</CodeGroup>
+
+## Map all source entity properties with exceptions
+
+A schema which dynamically maps all properties from your source entity except the `sourceEntityProp1` property using deconstruction.
+
+<CodeGroup>
+
+ ```js JavaScript icon="square-js"
+  /** @type {Enterspeed.FullSchema} */
+  export default {
+    triggers: function(context) {
+      context.triggers('cms', ['contentPage']);
+    },
+    routes: function(sourceEntity, context) {
+      context.url(sourceEntity.url);
+    },
+    properties: function (sourceEntity, context) {
+      const { sourceEntityProp1, ...rest } = sourceEntity.properties;
+      return rest;
+    },
+    properties2: function (sourceEntity, context) {
+      return Object.fromEntries(
+        Object.entries(sourceEntity.properties)
+          .filter(([key]) => key !== "sourceEntityProp1")
+      );
+    }
+  }
+```
+
+```json Output view
+  {
+    "sourceEntityProp2": "value2"
+  }
+```
+
+</CodeGroup>

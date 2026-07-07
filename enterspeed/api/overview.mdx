@@ -1,0 +1,17 @@
+---
+title: Enterspeed API
+sidebarTitle: Overview
+---
+
+The Enterspeed API are based on REST principles.
+
+## OpenAPI specification
+
+<a href="/enterspeed/enterspeedv1Api.yaml" download>Download</a> the OpenAPI specification for the Enterspeed API.
+
+## API keys
+
+The API uses two types of API keys. One for reading data and one for writing data.
+
+- **Reading** - The <Tooltip headline="Example" tip="environment-1637c4d0-e878-4738-b866-152106a4f88c">environment client API key</Tooltip> is used for reading data from the Delivery API, Query API and Routes API. The key is sent in the request header as `X-Api-Key`.
+- **Writing** - The <Tooltip headline="Example" tip="source-90880177-e9a1-47b3-9a40-7b728a6bafd8">data source API key</Tooltip> is used for writing data to the Ingest API. The key is sent in the request header as `X-Api-Key`.

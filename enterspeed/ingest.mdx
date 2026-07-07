@@ -1,0 +1,42 @@
+---
+title: 1 - Ingesting data
+---
+
+The first step when working with Enterspeed is to get your current data sources into Enterspeed.
+
+Go to Data sources under Settings and click the Create group button. This will open a modal that allows you to create a new source group. A source group can have multiple data sources attached, which each have its own unique API key.
+
+![Data sources](/images/docs/ingest/data-sources.png)
+
+## How to ingest data
+
+There are several ways of doing this:
+
+- Using one of our integrations
+- Using our .NET SDK
+- Using our API
+- Using the Management App
+
+### Ingesting data via an integration
+
+Using one of our [integrations](/enterspeed/integrations/overview) is the easiest way to get data ingested. This integration takes care of calling the Enterspeed Ingest API when changes occur in your backend system.
+
+### Ingesting data via our .NET SDK
+
+Another way of ingesting data is by using our .NET SDK. You'll find more information about it here: https://github.com/enterspeedhq/enterspeed-sdk-dotnet
+
+### Ingesting data via our API
+
+Last but now least, you can of course use our API directly to ingest your data. [You can find the API documentation right here.](/api-reference/ingest)
+
+### Ingesting data via the Management App
+
+You can also use the Enterspeed Management App to manually ingest data directly from the [Source entities page](https://app.enterspeed.com/source-entities). This is useful for testing or for one-time data imports.
+
+## Viewing ingested data
+
+Once your data has been ingested into Enterspeed, it will be visible under Source Entities.
+
+You can click on the View button to see the data for the source entity.
+
+![Viewing ingested data](/images/docs/ingest/view-source-entities.png)

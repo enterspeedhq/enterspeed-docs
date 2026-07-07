@@ -1,0 +1,50 @@
+---
+title: Breadcrumb navigation
+---
+
+A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation).
+
+This schema can be used in other schemas using the [reference type](/enterspeed/key-concepts/referencing-schemas), as you can see in the code below.
+
+
+<CodeGroup>
+```js JavaScript - Breadcrumb item icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["homePage", "contentPage"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      link: {
+        name: sourceEntity.properties.metaData.name,
+        url: sourceEntity.url,
+        originId: sourceEntity.originId,
+      },
+      level: sourceEntity.properties.metaData.level,
+    };
+  }
+}
+```
+</CodeGroup>
+
+How the _breadcrumb item schema_ will be used in a page schema.
+
+<CodeGroup>
+```js JavaScript - Breadcrumb item used in another schema icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["contentPage"]);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      breadcrumbs: context
+                    .reference("breadcrumbItem")
+                    // The nodePath property is an array of ancestor ids.
+                    .byOriginIds(sourceEntity.properties.metaData.nodePath)
+    };
+  }
+}
+```
+</CodeGroup>

@@ -1,0 +1,111 @@
+---
+title: Dictionary items
+---
+
+## Using full schemas
+
+This example is based on the following dataset:
+<AccordionGroup>
+  <Accordion title="dictionaryRoot source entity">
+    A single dictionaryRoot entity per culture.
+    ```json
+      {
+        "type": "dictionaryRoot",
+        "originId": "dictionaries-root-en-us",
+        "properties": {
+          "culture": "en-us"
+        }
+      }
+    ```
+  </Accordion>
+  <Accordion title="dictionary source entity">
+    Multiple dictionary entities per culture.
+    ```json
+      {
+        "type": "dictionary",
+        "originId": "ee1ae347-616f-4595-8fea-00a58f0238c0-en-us",
+        "originParentId": "dictionaries-root-en-us",
+        "properties": {
+          "nodeId": 99,
+          "key": "ButtonExit",
+          "translation": "Exit",
+          "culture": "en-us"
+        }
+      }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+References has a limit of 500 items. If you have more than 500 dictionary items per culture, you could nest each dictionary items if they have a hierarchy and have the reprocess action reprocess the parent instead of the root as in the example below.
+</Note>
+
+<CodeGroup>
+```js JavaScript - Breadcrumb item icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["cms", "dictionary"]);
+  },
+  actions: function (sourceEntity, context) {
+    context.reprocess('dictionaryRoot').byOriginId(`dictionaries-root-${sourceEntity.properties.culture}`)
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      key: sourceEntity.properties.key,
+      translation: sourceEntity.properties.translation
+    };
+  }
+}
+```
+</CodeGroup>
+
+How the _breadcrumb item schema_ will be used in a page schema.
+
+<CodeGroup>
+```js JavaScript - Breadcrumb item used in another schema icon="square-js"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["cms", "dictionaryRoot"]);
+  },
+  routes: function(context) {
+    context.handle(`dictionaries-${sourceEntity.properties.culture)}`)
+  },
+  properties: (sourceEntity, context) => ({
+    translations: context.reference('dictionary').filter(`type eq 'dictionary' and properties.culture eq '${sourceEntity.properties.culture}'`)
+  })
+}
+```
+</CodeGroup>
+
+## Using index schemas
+
+<Note>
+Index schemas are a paid add-on. But using index schemas doesn't have a limitation on items per culture, doesn't need reprocessing, but lets you query the index using the [Query API](/api-reference/query) for the items you want to return, e.g. based on culture.
+</Note>
+
+<CodeGroup>
+```js JavaScript - Index schema with dictionary items icon="square-js"
+/** @type {Enterspeed.IndexSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['dictionary'])
+  },
+  index: {
+    fields {
+        key: { type: "keyword" }, 
+        translation: { type: "keyword" }, 
+        culture: { type: "keyword" }
+      }
+  },
+  properties: function (sourceEntity) {
+    return {
+        key: sourceEntity.properties.key, 
+        translation: sourceEntity.properties.translation, 
+        culture: sourceEntity.properties.culture
+      }
+  }
+}
+```
+</CodeGroup>

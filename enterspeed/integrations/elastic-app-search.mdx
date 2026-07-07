@@ -1,0 +1,98 @@
+---
+title: Elastic App Search
+---
+
+The Enterspeed Elastic App Search integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to send data from views directly to a configured Elastic App Search engine. This means that you can decide on the schema level which views you want to send to Elastic App Search.
+
+You will only have to set the destination field on the entity schema you want to send to Elastic App Search.
+It's possible to configure multiple Elastic App Search destinations if you need to push different types of data to different Elastic App Search engines.
+
+## Configuration
+
+In order to setup the Elastic App Search configuration you need the following:
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| Engine API Endpoint                   | The endpoint of Elastic App Search engine you want to integrate to |
+| Private API Key                       | The Private API key used for calling Engine API endpoint |
+| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be inserted into Enterspeed Elastic App |
+
+## Options
+
+Table of available options, that you can optionally specify, if needed for your use case.
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| documentId                   | By default Enterspeed uses view id as the value for document id in elastic app search. You can override default document id by providing value for this option. |
+
+
+## Example of usage
+
+<Tabs>
+<Tab title="JavaScript">
+
+```js title="Schema with elastic app search destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('geodata', ['city']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('elastic-app-search').options({
+		documentId: `city-${sourceEntity.originId}`
+	});
+  },
+  properties: function ({url, properties: p}, context) {
+    return {
+      url: url,
+      name: p.city,
+      country: p.country,
+      population: parseInt(p.population),
+      location: `${p.lat},${p.lng}`,
+      photo: p.photo,
+    }
+  }
+}
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```json title="Schema with elastic app search destination"
+{
+	"triggers": {
+		"geodata": [
+			"city"
+		]
+	},
+	"destinations": [
+		{
+			"alias": "elastic-app-search",
+			"options": {
+				"documentId": "city-{originId}"
+			}
+		}
+	],
+	"properties": {
+		"url": "{url}",
+		"name": "{p.city}",
+		"country": "{p.country}",
+		"photo": "{p.photo}",
+		"location": "{p.lat},{p.lng}",
+		"population": {
+		  "type": "number",
+		  "value": "{p.population}"
+		}
+	}
+}
+```
+
+</Tab>
+</Tabs>
+
+## Elastic App Search specific properties
+
+Useful resources about document limitations and other requirements:
+- https://www.elastic.co/guide/en/app-search/current/api-reference.html
+- https://www.elastic.co/guide/en/app-search/current/documents.html#documents-create
