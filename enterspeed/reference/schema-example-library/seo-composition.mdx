@@ -9,7 +9,7 @@ Instead of defining these properties in each page type schema, we can create a s
 Here's a partial schema for basic SEO settings, here meta title, meta description and meta robots (index/noindex and follow/nofollow).
 
 <CodeGroup>
-```js JavaScript - Partial SEO composition schema icon="square-js"
+```js Partial SEO composition schema icon="square-js"
 /** @type {Enterspeed.PartialSchema} */
 export default {
   properties: function (input, context) {
@@ -30,7 +30,7 @@ export default {
 How the _partial SEO Composition schema_ will be used in one of the page type schemas.
 
 <CodeGroup>
-```js JavaScript - Full schema using partial SEO composition icon="square-js"
+```js Full schema using partial SEO composition icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {

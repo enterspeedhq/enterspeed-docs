@@ -2,9 +2,10 @@
 title: Dictionary items
 ---
 
-## Using full schemas
+Here's two examples of how you could handle dictionary items using either [Full schemas](/enterspeed/reference/js/full-schema/intro) or [Index schemas](/enterspeed/reference/js/index-schema/intro). 
 
-This example is based on the following dataset:
+These examples are based on the following dataset:
+
 <AccordionGroup>
   <Accordion title="dictionaryRoot source entity">
     A single dictionaryRoot entity per culture.
@@ -49,12 +50,14 @@ This example is based on the following dataset:
   </Accordion>
 </AccordionGroup>
 
+## Using full schemas
+
 <Note>
 References has a limit of 500 items. If you have more than 500 dictionary items per culture, you could nest each dictionary items if they have a hierarchy and have the reprocess action reprocess the parent instead of the root as in the example below.
 </Note>
 
 <CodeGroup>
-```js JavaScript - Breadcrumb item icon="square-js"
+```js Breadcrumb item icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -76,7 +79,7 @@ export default {
 How the _breadcrumb item schema_ will be used in a page schema.
 
 <CodeGroup>
-```js JavaScript - Breadcrumb item used in another schema icon="square-js"
+```js Breadcrumb item used in another schema icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -132,7 +135,7 @@ Index schemas are a paid add-on. But using index schemas doesn't have a limitati
 </Note>
 
 <CodeGroup>
-```js JavaScript - Index schema with dictionary items icon="square-js"
+```js Index schema with dictionary items icon="square-js"
 /** @type {Enterspeed.IndexSchema} */
 export default {
   triggers: function(context) {
@@ -159,7 +162,7 @@ export default {
 The result of the above index schema can be seen here with a requests to the [Query API](/api-reference/query) and the response.
 
 <CodeGroup>
-```bash Request
+```bash Query API request
 curl -L -X POST 'https://query.enterspeed.com/v1/dictionaryIndex' \
 -H 'X-Api-Key: [your_environment_key]' \
 -H 'Content-Type: application/json' \
