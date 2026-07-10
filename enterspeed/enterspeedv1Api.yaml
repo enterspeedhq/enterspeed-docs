@@ -1807,6 +1807,24 @@ components:
               type: number
               example: 200
               description: Returns code 200
+            redirect:
+              type: string
+              example: https://enterspeed.com/product-enterspeed-tshirt-old/
+              description: URL that should be redirected to
+            missingViewReferences:
+              type: array
+              description: List of missing view references
+              items:
+                type: object
+                properties:
+                  path:
+                    type: string
+                    example: navigationItems[0]
+                    description: Path to the missing view reference
+                  viewId:
+                    type: string
+                    example: gid://Environment/8c1c6be0-535d-4d6c-b690-a7e3590a0644/Source/2576175a-112a-4322-b595-de90a81687f0/Entity/48bf4456-0aa4-4ce0-be8e-b01448484bf7/View/navigationItem
+                    description: ID of the missing view reference
         route:
           type: object
           $ref: '#/components/schemas/ViewProperties'
@@ -1831,6 +1849,18 @@ components:
               type: number
               example: 200
               description: Returns code 200
+            missingViewReferences:
+              type: array
+              description: List of missing view references
+              items:
+                type: object
+                properties:
+                  path:
+                    type: string
+                    description: Path to the missing view reference
+                  viewId:
+                    type: string
+                    description: ID of the missing view reference
         views:
           type: object
           example:
