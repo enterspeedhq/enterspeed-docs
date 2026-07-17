@@ -423,6 +423,25 @@
     ]
   },
   "footer": {
+    "links": [
+      {
+        "header": "Company",
+          "items": [
+          { "label": "Enterspeed", "href": "https://www.enterspeed.com" },
+          { "label": "Contact Us", "href": "https://www.enterspeed.com/contact" },
+          { "label": "Privacy Policy", "href": "https://www.enterspeed.com/privacy-policy" }
+        ]
+      },
+      {
+        "header": "Resources",
+        "items": [
+          { "label": "Blog", "href": "https://www.enterspeed.com/blog" },
+          { "label": "Product Updates", "href": "https://updates.enterspeed.com/" },
+          { "label": "Newsletter Signup", "href": "https://content.enterspeed.com/newsletter-signup" },
+          { "label": "Privacy Policy", "href": "https://www.enterspeed.com/privacy-policy" }
+        ]
+      }
+    ],
     "socials": {
       "github": "https://github.com/enterspeedhq",
       "linkedin": "https://www.linkedin.com/company/enterspeed",
