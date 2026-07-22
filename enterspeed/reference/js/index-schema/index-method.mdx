@@ -59,8 +59,8 @@ Setting the right types for the properties in your index is important. The types
 
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| keyword             | The `Keyword` type is for string values used in filtering and sorting                                       |
-| text                | The `text` type will analyze string values, improving results when querying using full text search          |
+| keyword             | The `Keyword` type is for non-analyzed string values used in e.g. filtering and sorting                     |
+| text                | The `text` type will analyze string values. This makes it possible to do fuzzy search using the `search` property in the [Query API](/api-reference/query/query-items) but index time takes a bit longer |
 
 ### Numeric
 
@@ -87,8 +87,8 @@ Setting the right types for the properties in your index is important. The types
 
 | Type                |  Description                                                                                                |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| keyword[]           | List of the `Keyword` type for string values used in filtering and sorting                                  |
-| text[]              | List of the `text` type for analyzing string values, improving results when querying using full text search |
+| keyword[]           | List of the `Keyword` type for non-analyzed string values used in e.g. filtering and sorting                |
+| text[]              | List of the `text` type for analyzing string values. This makes it possible to do fuzzy search using the `search` property in the [Query API](/api-reference/query/query-items) but index time takes a bit longer |
 | integer[]           | List of 32 bit signed integers                                                                              |
 | long[]              | List of 64 bit signed integers                                                                              |
 | float[]             | List of 32 bit signed floating numbers                                                                      |

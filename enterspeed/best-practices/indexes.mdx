@@ -19,9 +19,9 @@ From the name of the types, it's easy to think that every time you need to index
 However we also have the `keyword` type that also works on strings and it's important to know the difference.
 
 #### text
-When using the `text` type, the string value is analyzed when items are inserted into the index. This means it takes a bit longer to index and query the field, but it brings a lot of power as well.
-When using `text` you can you match your filter on part of the value. It could be that you have a title on a blog post and you want the users to be able to find the blog post by typing only part of the title or maybe even if they don't type the title fully correct.
+When using the `text` type, the string value is analyzed when an item is inserted into the index. This means it takes a bit longer to index and query the field, but it brings a lot of power as well.
+
+Analyzed means that the string value is split into tokens and stored in the index. This makes it possible to do fuzzy search using the `search` property in the [Query API](/api-reference/query/query-items).
 
 #### keyword
-When using the `keyword` type, the string value is not analyzed but indexed as is. This makes it faster and suitable when you need to match your filter on the whole value, such as ids, email adresses, tags and so on.
-Because `keyword` fields are faster it's also the best choice for fields you don't need to filter on, but only need to display on the frontend.
+When using the `keyword` type, the string value is not analyzed but indexed as is. This makes it faster and suitable when you just need to filter, sort, build facets or use the field for display on the frontend.

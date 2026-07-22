@@ -779,7 +779,7 @@ paths:
             type: number
       requestBody:
         description: >-
-          The query object including things like filters, sorting and
+          The query object including things like filters, search, sorting and
           pagination.
         content:
           application/json:
@@ -873,7 +873,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
                 $ref: '#/components/schemas/QueryResponseExtendedList'
         '400':
           description: >-
@@ -1019,7 +1019,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
                 $ref: '#/components/schemas/QueryMultiAutoIndexingListResponse'
         '400':
           description: >-
@@ -1165,11 +1165,11 @@ components:
         **contains**
 
 
-        Working on text or text list fields, it's possible to use wildcard
+        Working on `keyword`, `keyword[]`, `text` and `text[]` fields, it's possible to use wildcard
         annotations `*` if you want to query the fields only for specific words
         or sentences, no matter what comes before and after the phrase you
         search for. It's also possible to set if the search should be case
-        insentitive by setting `caseInsensitive` to `true`.
+        insensitive by setting `caseInsensitive` to `true`.
 
         ```json 
 
@@ -1186,7 +1186,7 @@ components:
         Working on list fields on the other hand, the `contains` operator
         performs an equals on the list items, which will look for an exact match
         within the list. If working on text lists, it's also possible here to
-        set if the search should be case insentitive by setting
+        set if the search should be case insensitive by setting
         `caseInsensitive` to `true` as above.
 
         ```json 
@@ -1266,6 +1266,46 @@ components:
         ```
 
 
+        ### Search
+
+        While `filters` are looking for exact matches, the `search` performs a fuzzy search. As it does a fuzzy search it only works on index fields of type `text` and `text[]` as they are analyzed on index time. The search is case insensitive and returns results based on the following logic:
+
+
+        The number of allowed inexact characters in a single word is calculated as follows:
+
+        - 1-2 characters: 0 inexact characters allowed
+
+        - 3-5 characters: 1 inexact character allowed
+
+        - 6-x characters: 2 inexact characters allowed
+        
+
+        The search can be combined with filters, sorting and pagination.
+
+
+        The `value` field has a maximum length of 256 characters. If the value is longer than 256 characters, the request will return a 400 error.
+
+
+        `literal` is an optional boolean that can be set to `true` if you want to search for the exact value, without any fuzzy search. 
+
+        Keep in mind, `text` fields are still analyzed and the search is still case insensitive, so a search for ""Red hoodie" with `literal` set to `true` will still match a field with the value of "red" as analyzed fields are split into tokens and there is an exact match on the word `red`.
+
+        #### Default values
+
+        `literal`: false
+
+
+        ```json
+
+        "search": {
+          "field": "name",
+          "value": "televisiom",
+          "literal": false
+        }
+
+        ```
+
+
         ### Sorting
 
         `sort` is an array of objects defining the sort order. Each object
@@ -1279,7 +1319,7 @@ components:
 
         #### Default values
 
-        `field`: _updatedAt \
+        `field`: _updatedAt (if the query contains a `search` the default value is _score) \
 
         `order`: desc
 
@@ -1475,6 +1515,10 @@ components:
                 - field: allowPreorder
                   operator: equals
                   value: true
+        search:
+          field: title
+          value: hoodie
+          literal: false
         aliases:
           - productTile
         facets:
@@ -1896,6 +1940,7 @@ components:
               url: /products/running-shoe/
               _originId: p-5427
               _sourceGuid: 9f741916-19e3-4791-9ebd-701634ba9b75
+              _score: 1.0
               _updatedAt: '2025-01-07T08:43:15.7351089Z'
               _views:
                 productTile:
