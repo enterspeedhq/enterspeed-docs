@@ -1283,6 +1283,13 @@ components:
         The search can be combined with filters, sorting and pagination.
 
 
+        The `value` field has a maximum length of 256 characters. If the value is longer than 256 characters, the request will return a 400 error.
+
+
+        `literal` is an optional boolean that can be set to `true` if you want to search for the exact value, without any fuzzy search. 
+
+        Keep in mind, `text` fields are still analyzed and the search is still case insensitive, so a search for ""Red hoodie" with `literal` set to `true` will still match a field with the value of "red" as analyzed fields are split into tokens and there is an exact match on the word `red`.
+
         #### Default values
 
         `literal`: false
@@ -1312,7 +1319,7 @@ components:
 
         #### Default values
 
-        `field`: _updatedAt \
+        `field`: _updatedAt (if the query contains a `search` the default value is _score) \
 
         `order`: desc
 
@@ -1989,7 +1996,6 @@ components:
               locationId: warehouse-01
               _originId: p-5427
               _sourceGuid: 9f741916-19e3-4791-9ebd-701634ba9b75
-              _score: 1.0
               _updatedAt: '2025-01-07T08:43:15.7351089Z'
         facets:
           type: array
@@ -2053,7 +2059,6 @@ components:
               isPromotional: true
               _originId: p-1234
               _sourceGuid: 9f741916-19e3-4791-9ebd-701634ba9b75
-              _score: 1.0
               _updatedAt: '2025-01-07T08:43:15.7351089Z'
         facets:
           type: array
@@ -2109,7 +2114,6 @@ components:
               url: /products/running-shoe/
               _originId: p-5427
               _sourceGuid: 9f741916-19e3-4791-9ebd-701634ba9b75
-              _score: 1.0
               _updatedAt: '2025-01-07T08:43:15.7351089Z'
               _views:
                 productTile:
