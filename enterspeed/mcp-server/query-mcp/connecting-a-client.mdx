@@ -19,7 +19,7 @@ VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single
 ```json
 {
   "servers": {
-    "enterspeed": {
+    "enterspeedQuery": {
       "type": "sse",
       "url": "https://mcp.query.enterspeed.com/",
       "headers": {
@@ -40,7 +40,7 @@ Never commit `.vscode/mcp.json` with a real key. Use `${input:enterspeed-key}` w
 <Tab title="Claude Code CLI">
 
 ```bash
-claude mcp add enterspeed \
+claude mcp add enterspeedQuery \
   --transport sse \
   https://mcp.query.enterspeed.com/ \
   -H "x-api-key: environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -68,7 +68,7 @@ Add the `mcpServers` entry:
 ```json
 {
   "mcpServers": {
-    "enterspeed": {
+    "enterspeedQuery": {
       "type": "sse",
       "url": "https://mcp.query.enterspeed.com/",
       "headers": {
