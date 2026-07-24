@@ -28,7 +28,7 @@ VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single
 ```json
 {
   "servers": {
-    "EnterspeedDocs": {
+    "enterspeedDocs": {
       "url": "https://docs.enterspeed.com/mcp",
       "type": "http"
     }
@@ -42,12 +42,17 @@ Reload the window (**Developer: Reload Window** from the command palette) and op
 <Tab title="Claude Code CLI">
 
 ```bash
-claude mcp add enterspeedDoc \
+claude mcp add enterspeedDocs \
+  --scope user \
   --transport http \
-  https://docs.enterspeed.com/mcp \
+  https://docs.enterspeed.com/mcp
 ```
 
-The CLI stores the server configuration under `~/.claude/mcp.json`. Edit that file if you need to tweak anything afterwards.
+<Note>
+The user scope (`--scope user`) installs the MCP for the current user across all projects. Use `--scope project` to install it for the current project only but for all users (written to a checked-in `.mcp.json`).
+</Note>
+
+The CLI stores the server configuration under `~/.claude.json`. Edit that file if you need to tweak anything afterwards.
 
 </Tab>
 <Tab title="Claude Desktop">

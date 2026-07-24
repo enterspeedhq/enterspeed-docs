@@ -6,7 +6,7 @@ The Enterspeed Query MCP Server speaks plain MCP Streamable HTTP, so any MCP-cap
 
 Prerequisites are the same in every case:
 
-- A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/overview#creating-a-scoped-key).
+- A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
 - The production endpoint `https://mcp.query.enterspeed.com`.
 
 ## Pick your client
@@ -20,11 +20,14 @@ VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single
 {
   "servers": {
     "enterspeedQuery": {
-      "type": "sse",
-      "url": "https://mcp.query.enterspeed.com/",
-      "headers": {
-        "x-api-key": "environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-      }
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.query.enterspeed.com/",
+        "--header",
+        "x-api-key:environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      ]
     }
   }
 }
@@ -53,7 +56,7 @@ claude
 > List the Enterspeed indices I have access to.
 ```
 
-The CLI stores the server configuration under `~/.claude/mcp.json`. Edit that file if you need to tweak the header or URL afterwards.
+The CLI stores the server configuration under `~/.claude.json`. Edit that file if you need to tweak the header or URL afterwards.
 
 </Tab>
 <Tab title="Claude Desktop">
@@ -247,5 +250,5 @@ If your client does not support custom headers, pass the key as an `?apiKey=` qu
 
 ## Next steps
 
-- [Overview](/enterspeed/mcp-server/overview) — sample prompts and scope reference.
-- [Connecting an agent](/enterspeed/mcp-server/connecting-an-agent) — Azure AI Foundry and custom-agent wiring.
+- [Overview](/enterspeed/mcp-server/query-mcp/overview) — sample prompts and scope reference.
+- [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent) — Azure AI Foundry and custom-agent wiring.
