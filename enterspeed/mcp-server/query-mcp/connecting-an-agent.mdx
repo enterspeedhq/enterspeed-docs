@@ -9,7 +9,7 @@ This guide covers two common agent setups:
 
 Before you start, you need:
 
-- A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/overview#creating-a-scoped-key).
+- A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
 - The production endpoint `https://mcp.query.enterspeed.com`.
 
 ## Part 1 — C# agent (MCP client SDK)
@@ -122,7 +122,7 @@ var kernel = Kernel.CreateBuilder()
 
 var tools = await mcp.ListToolsAsync();
 kernel.Plugins.AddFromFunctions(
-    "enterspeed",
+    "enterspeedQuery",
     tools.Select(t => t.AsKernelFunction()));
 
 var answer = await kernel.InvokePromptAsync(
@@ -205,7 +205,7 @@ var body = new
         new
         {
             type         = "mcp",
-            server_label = "enterspeed",
+            server_label = "enterspeedQuery",
             server_url   = "https://mcp.query.enterspeed.com/",
             // Foundry forwards this header to the MCP server on every call
             headers = new Dictionary<string, string>
@@ -257,5 +257,5 @@ If you are proxying the MCP server behind your own domain:
 
 ## Next steps
 
-- [Connecting a client](/enterspeed/mcp-server/connecting-a-client) — VS Code, Claude Code, Claude Desktop, and the Anthropic Messages API in C#.
-- [Overview](/enterspeed/mcp-server/overview) — sample prompts and the full scope table.
+- [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) — VS Code, Claude Code, Claude Desktop, and the Anthropic Messages API in C#.
+- [Overview](/enterspeed/mcp-server/query-mcp/overview) — sample prompts and the full scope table.

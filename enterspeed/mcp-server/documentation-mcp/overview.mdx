@@ -1,0 +1,91 @@
+---
+title: Documentation MCP
+---
+
+The Enterspeed Documentation MCP Server lets you search and retrieve content from the [docs.enterspeed.com](https://docs.enterspeed.com) site and even report back issues or suggestions to the content.
+
+It turns the Enterspeed documentation into a set of [Model Context Protocol](https://modelcontextprotocol.io/) tools that AI clients (Claude, Cursor, custom agents, Azure AI Foundry, etc.) can discover and call. You do not need to host anything yourself.
+
+## Hostname
+
+| Environment | URL | Transport |
+| --- | --- | --- |
+| **Production** | `https://docs.enterspeed.com/mcp` | HTTP |
+
+## Installation
+
+<Tabs>
+<Tab title="VS Code (GitHub Copilot)">
+
+Simply click the arrow next to the Copy page button on the top right of this page and select **Connect to VS Code** and click the install button in VS Code.
+
+![Install MCP server on VS Code](/images/docs/mcp-server/connect-to-vs-code.png)
+
+Or you can install it yourself in the VS Code configuration. 
+
+VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single workspace, put the config at `.vscode/mcp.json`; for every workspace, use the **MCP: Open User Configuration** command from the command palette.
+
+```json
+{
+  "servers": {
+    "enterspeedDocs": {
+      "url": "https://docs.enterspeed.com/mcp",
+      "type": "http"
+    }
+  }
+}
+```
+
+Reload the window (**Developer: Reload Window** from the command palette) and open the Copilot chat pane. The Enterspeed documentation tools appear in the tool picker once Copilot connects.
+
+</Tab>
+<Tab title="Claude Code CLI">
+
+```bash
+claude mcp add enterspeedDocs \
+  --scope user \
+  --transport http \
+  https://docs.enterspeed.com/mcp
+```
+
+<Note>
+The user scope (`--scope user`) installs the MCP for the current user across all projects. Use `--scope project` to install it for the current project only but for all users (written to a checked-in `.mcp.json`).
+</Note>
+
+The CLI stores the server configuration under `~/.claude.json`. Edit that file if you need to tweak anything afterwards.
+
+</Tab>
+<Tab title="Claude Desktop">
+
+Open your Claude Desktop config file:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the `mcpServers` entry:
+
+```json
+{
+  "mcpServers": {
+    "enterspeedDocs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://docs.enterspeed.com/mcp"
+      ]
+    }
+  }
+}
+```
+
+Fully quit and relaunch Claude Desktop. The Enterspeed doc tools now appear in the tool picker.
+
+</Tab>
+</Tabs>
+
+### Other MCP clients
+
+The three clients above are the ones we test against regularly, but the MCP server is client-agnostic. Any MCP-capable client follows the same pattern — point it at `https://docs.enterspeed.com/mcp` with `http` transport.
+
+Or simply just ask your favorite AI agent how to connect to the Enterspeed Documentation MCP Server. It should be able to generate the configuration for you.

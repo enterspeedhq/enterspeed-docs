@@ -267,7 +267,10 @@
       {
         "group": "MCP server",
         "icon": "plug",
-        "pages": [{
+        "pages": [
+          "enterspeed/mcp-server/overview",
+          "enterspeed/mcp-server/documentation-mcp/overview",
+          {
             "group": "Query MCP",
             "pages": [
               "enterspeed/mcp-server/query-mcp/overview",
