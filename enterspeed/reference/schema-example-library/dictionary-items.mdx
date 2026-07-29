@@ -57,11 +57,11 @@ References has a limit of 500 items. If you have more than 500 dictionary items 
 </Note>
 
 <CodeGroup>
-```js Breadcrumb item icon="square-js"
+```js Dictionary item icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    context.triggers("cms", ["cms", "dictionary"]);
+    context.triggers("cms", ["dictionary"]);
   },
   actions: function (sourceEntity, context) {
     context.reprocess('dictionaryRoot').byOriginId(`dictionaries-root-${sourceEntity.properties.culture}`)
@@ -76,14 +76,14 @@ export default {
 ```
 </CodeGroup>
 
-How the _breadcrumb item schema_ will be used in a page schema.
+How the _dictionary item schema_ will be used in the _dictionary root schema_.
 
 <CodeGroup>
-```js Breadcrumb item used in another schema icon="square-js"
+```js Dictionary item used in another schema icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
-    context.triggers("cms", ["cms", "dictionaryRoot"]);
+    context.triggers("cms", ["dictionaryRoot"]);
   },
   routes: function(context) {
     context.handle(`dictionaries-${sourceEntity.properties.culture)}`)
@@ -100,7 +100,7 @@ The result of the above schemas can be seen here with a requests to the [Deliver
 <CodeGroup>
 ```bash Request
 curl -L -X GET 'https://delivery.enterspeed.com/v2?handle=dictionaries-en-us' \
--H 'X-Api-Key: [your_environment_key]'
+-H 'X-Api-Key: <your_environment_key>'
 ```
 
 ```json Response
@@ -131,7 +131,7 @@ curl -L -X GET 'https://delivery.enterspeed.com/v2?handle=dictionaries-en-us' \
 ## Using index schemas
 
 <Note>
-Index schemas are a paid add-on. But using index schemas doesn't have a limitation on items per culture, doesn't need reprocessing, but lets you query the index using the [Query API](/api-reference/query) for the items you want to return, e.g. based on culture.
+Index schemas are a paid add-on. But index schemas don't have a limitation on items per culture, don't need reprocessing, and let you query the index using the [Query API](/api-reference/query) for the items you want to return, e.g. based on culture.
 </Note>
 
 <CodeGroup>

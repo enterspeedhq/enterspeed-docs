@@ -1,0 +1,244 @@
+---
+title: Dynamic sitemap.xml or llms.txt files
+---
+
+Here's two examples of how you could handle dynamic page list files like the sitemap.xml or llms.txt files. items using either the [Routes API](/api-reference/routes/get-routes-v2) or [Index schemas](/enterspeed/reference/js/index-schema/intro). 
+
+Enterspeed doesn't build these files (just like it doesn't build any of your frontend code), Enterspeed just exposes the data. The examples here shows you two ways of accessing the data you need in order for you to build the files.
+
+These examples are based on the following dataset:
+
+<AccordionGroup>
+  <Accordion title="page source entities">
+    ```json
+      {
+        "type": "page",
+        "originId": "1",
+        "originParentId": null,
+        "url": "/",
+        "updatedAt": "2026-07-28T10:24:22.8283418Z",
+        "properties": {
+          "title": "Home",
+          "description": "Home page"
+        }
+      }
+    ```
+    ```json
+      {
+        "type": "page",
+        "originId": "2",
+        "originParentId": "1",
+        "url": "/about-us",
+        "updatedAt": "2026-07-25T12:36:05.8283418Z",
+        "properties": {
+          "title": "About us",
+          "description": "About us page"
+        }
+      }
+    ```
+    ```json
+      {
+        "type": "page",
+        "originId": "3",
+        "originParentId": "1",
+        "url": "/contact",
+        "updatedAt": "2026-07-26T14:06:37.8283418Z",
+        "properties": {
+          "title": "Contact",
+          "description": "Contact page"
+        }
+      }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Using Route API
+
+In this example we will be using the [Routes API](/api-reference/routes/get-routes-v2) to get a list of all the active URL routes in your Enterspeed environment. The Routes API returns the URL and the last updated date for each route. So if this is all you need e.g. in your sitemap.xml file, this is a simple solution that doesn't require any extra schema or configuration in Enterspeed.
+
+Below is a very simple page schema example, a schema you already have to serve the content to your frontend application.
+
+The important part here is the url route created in the `routes` function. This is the active route for the page and the route we will be fetching from the [Routes API](/api-reference/routes/get-routes-v2).
+
+<CodeGroup>
+```js Page schema icon="square-js" highlight={7}
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["page"]);
+  },
+  routes: function (sourceEntity, context) {
+    context.url(sourceEntity.url);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.title
+    };
+  }
+}
+```
+</CodeGroup>
+
+With a schema like the one above creating views and routes, we can now call the [Routes API](/api-reference/routes/get-routes-v2) and have it returning all the URL routes in your Enterspeed environment.
+
+<CodeGroup>
+```bash Routes API request
+curl -L 'https://api.enterspeed.com/routes/v2' \
+-H 'X-Api-Key: <your_environment_key>' \
+-H 'X-Continuation-Token: <continuation_token>'
+```
+
+```json Response
+{
+    "continuationToken": null,
+    "results": [
+        {
+            "url": "/",
+            "redirect": null,
+            "updatedAt": "2026-07-28T10:24:22.8283418Z"
+        },
+        {
+            "url": "/about-us",
+            "redirect": null,
+            "updatedAt": "2026-07-25T12:36:05.8283418Z"
+        },
+        {
+            "url": "/contact",
+            "redirect": null,
+            "updatedAt": "2026-07-26T14:06:37.8283418Z"
+        }
+    ]
+}
+```
+</CodeGroup>
+
+Looking at the response above, you now have all the `url` and `updatedAt` values to build your sitemap.xml.
+
+<Note>
+The example only shows how to get data from Enterspeed. You will need to implement the logic for building the sitemap.xml or llms.txt file in your own application as this is not Enterspeed specific but depends on your own application and framework.
+</Note>
+
+<CodeGroup>
+```xml Sitemap.xml example
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mysite.com/</loc>
+    <lastmod>2026-07-28T10:24:22.8283418Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mysite.com/about-us</loc>
+    <lastmod>2026-07-25T12:36:05.8283418Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mysite.com/contact</loc>
+    <lastmod>2026-07-26T14:06:37.8283418Z</lastmod>
+  </url>
+</urlset>
+```
+</CodeGroup>
+
+## Using index schemas
+
+If you need more then just the URL and last updated date that is returned by the Routes API, you can use an index schema to index the exact properties you need.
+
+<Note>
+Note: Index schemas are a paid add-on.
+</Note>
+
+In this example we will be creating an index schema that contains the URL, the page title and a page description for each page entity.
+
+<CodeGroup>
+```js Index schema for pages icon="square-js"
+/** @type {Enterspeed.IndexSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['page'])
+  },
+  index: {
+    fields: {
+        url: { type: "keyword" }, 
+        title: { type: "keyword" },
+        description: { type: "keyword" }
+      }
+  },
+  properties: function (sourceEntity) {
+    return {
+        url: sourceEntity.url, 
+        title: sourceEntity.properties.title,
+        description: sourceEntity.properties.description
+      }
+  }
+}
+```
+</CodeGroup>
+
+Once the index is created, you can call the [Query API](/api-reference/query) to get the needed data for all pages.
+
+<CodeGroup>
+```bash Query API request
+curl -L -X POST 'https://query.enterspeed.com/v1/pageIndex' \
+-H 'X-Api-Key: [your_environment_key]' \
+-H 'Content-Type: application/json' \
+-d '{
+    "pagination": {
+      "pageSize": 1000
+    }
+  }'
+```
+
+```json Response
+{
+  "totalResults": 3,
+  "results": [
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2026-07-28T10:24:22.8283418Z",
+        "_originId": "1",
+        "url": "/",
+        "title": "Home",
+        "description": "Home page"
+      },
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2026-07-25T12:36:05.8283418Z",
+        "_originId": "2",
+        "url": "/about-us",
+        "title": "About us",
+        "description": "About us page"
+      },
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2026-07-26T14:06:37.8283418Z",
+        "_originId": "3",
+        "url": "/contact",
+        "title": "Contact",
+        "description": "Contact page"
+      }
+  ],
+  "facets": [],
+  "nextPageToken": null,
+  "status": 0
+}
+```
+</CodeGroup>
+
+Looking at the response above, you now have all the `url`, `title` and `description` values to build your llms.txt file.
+
+If you have more than 1000 pages, remember to keep fetching the next pages of the index until you have retrieved all content.
+
+<Note>
+The example only shows how to get data from Enterspeed. You will need to implement the logic for building the sitemap.xml or llms.txt file in your own application as this is not Enterspeed specific but depends on your own application and framework.
+</Note>
+
+<CodeGroup>
+```md LLMS.txt example
+# My Site
+
+## Content
+
+- [Home](https://mysite.com/): Home page
+- [About us](https://mysite.com/about-us): About us page
+- [Contact](https://mysite.com/contact): Contact page
+```
+</CodeGroup>
