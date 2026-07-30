@@ -10,7 +10,7 @@ This guide covers two common agent setups:
 Before you start, you need:
 
 - A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
-- The production endpoint `https://mcp.query.enterspeed.com`.
+- The production endpoint `https://mcp.query.enterspeed.com/` — the root URL, with `http` transport. There is no separate `/sse` endpoint.
 
 ## Part 1 — C# agent (MCP client SDK)
 
@@ -85,7 +85,7 @@ To turn this into an LLM-driven agent, hand the `tools` list to the model of you
 3. When the LLM emits a tool call, invoke `mcpClient.CallToolAsync(name, args)` and feed the response back in the next turn.
 4. Repeat until the LLM produces a final answer.
 
-For Claude specifically, see [Connecting a client](/enterspeed/mcp-server/connecting-a-client) for a complete Messages-API example that wires this loop.
+For Claude specifically, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) for a complete Messages-API example that wires this loop.
 
 ### Alternative — the Anthropic Remote MCP connector
 

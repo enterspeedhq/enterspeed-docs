@@ -1,0 +1,281 @@
+---
+title: Overview
+description: Connect an AI client to the Enterspeed Management API — read your tenant configuration, author schemas, and create environments, sources, domains, and clients.
+---
+
+The Enterspeed Management MCP Server turns the Enterspeed Management API into a set of [Model Context Protocol](https://modelcontextprotocol.io/) tools that AI clients (Claude, Cursor, VS Code, custom agents) can discover and call. It is the configuration counterpart to the [Query MCP](/enterspeed/mcp-server/query-mcp/overview) server: where Query MCP reads your *data*, Management MCP reads and changes your *setup*.
+
+You do not need to host anything yourself — Enterspeed runs the server for you.
+
+Typical uses:
+
+- Ask an agent to explain how a tenant is wired together — sources, environments, domains, clients, deployments.
+- Have an agent write a mapping schema, dry-run it against a real source entity, and save a new version.
+- Investigate a view or route that is not producing what you expect.
+- Query your tenant logs and metrics in natural language.
+
+## Hostname
+
+| Environment | URL | Transport |
+| --- | --- | --- |
+| **Production** | `https://mcp.management.enterspeed.com/` | MCP Streamable HTTP |
+
+A health check is available without authentication:
+
+```bash
+curl -s https://mcp.management.enterspeed.com/health
+# "ok"
+```
+
+<Info>
+The server speaks **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL.
+</Info>
+
+## How authentication works
+
+The Management MCP server is a **passthrough proxy**. It holds no credentials of its own. Your MCP client sends a Management API key on every request, the server forwards it unchanged, and the Management API makes every authorisation decision.
+
+```
+AI client ──x-api-key──► mcp.management.enterspeed.com ──x-api-key──► the Management API
+                                                                              │
+                                                              validates the key and its permissions
+```
+
+Clients authenticate with a single HTTP header on every MCP request:
+
+```
+x-api-key: management-<your-key>
+```
+
+The key is a **Management API key** issued from the Enterspeed Management App. It is *not* an environment client key — that is what [Query MCP](/enterspeed/mcp-server/query-mcp/overview) uses.
+
+<Warning>
+There is no query-string fallback on this server. The key must be sent as an `x-api-key` header, because a key in a URL ends up in access logs along the whole request path. If your client cannot set headers, see [Known limitations](#known-limitations).
+</Warning>
+
+### Use a read-only key for read-only work
+
+Management API keys carry their own permissions. Because the server passes your key straight through, **the key decides what an agent can do** — the server never widens it.
+
+We recommend the smallest key that does the job:
+
+| What you want the agent to do | Recommended key |
+| --- | --- |
+| Explain, inspect, investigate, dry-run, validate | **Read-only** Management API key |
+| Author schemas, create environments, sources, domains, or clients | A key with write permission |
+
+A read-only key reaches every read tool — including both dry-run tools and schema validation, which are read-only despite sounding like they change something. If an agent tries a write tool with a read-only key, the Management API rejects the call and the agent gets a clear permission error. That is the intended outcome, not a fault.
+
+## What the server can and cannot do
+
+The server exposes **35 tools: 22 reads and 13 additive writes**.
+
+- **Reads** cover tenant overview, sources and source entities, mapping schemas, environments and deployments, views and routes, indexes and index documents, domains and hostnames, environment clients, logs, and metrics.
+- **Writes** are **additive only** — create and update. They cover schema authoring (create a schema, save a version, deploy), environments, source groups and sources, domains, and environment clients.
+
+<Warning>
+**There are no delete tools, by design.** This is not a policy the server can be talked out of — it has no way to express a destructive call. Every request the server can make is a `GET`, or a `POST`/`PUT` that appears on a fixed allow-list checked when the server starts. No tool can delete a schema, environment, source, domain, client, or view.
+</Warning>
+
+The practical consequence: an agent connected to this server can create clutter you may need to tidy up manually, but it cannot destroy your configuration or your content.
+
+See [Tools](/enterspeed/mcp-server/management-mcp/tools) for the full inventory with each tool marked read or write.
+
+## Guardrails
+
+Beyond the key's own permissions, the hosted server applies three limits you should know about.
+
+<AccordionGroup>
+<Accordion title="Schema deploys are restricted to non-production environments">
+
+On the hosted server, `deploy_mapping_schema` only deploys to environments **named** `dev`, `development`, `test`, or `staging`. A deploy targeting any other environment — including anything named `prod`, `production`, or `live` — is refused with a `deploy_not_permitted` error naming the environments that are allowed.
+
+This is a restriction of the hosted server, not of your key. Renaming an environment to get around it does not work either: `update_environment` refuses a rename that would move an environment onto the allowed list.
+
+Production deploys stay a deliberate human action in the Management App.
+
+</Accordion>
+<Accordion title="Access keys are never returned through MCP">
+
+The server strips the `accessKey` field out of every response before your client sees it, at every level of nesting. This covers environment client keys and source ingest keys.
+
+It applies even to `create_environment_client`, which mints a key: the tool creates the client, and the key itself is not in the response. **Fetch the key in the Management App** when you need it.
+
+The field is removed rather than masked — an agent cannot see that a key exists at that path, so it will not go looking for it.
+
+</Accordion>
+<Accordion title="Rate limit — 60 requests per minute per key">
+
+Requests are counted per API key over a rolling one-minute window. Exceeding the limit returns:
+
+```
+HTTP 429 Too Many Requests
+Retry-After: <seconds>
+
+Too many requests. Retry after <n> seconds.
+```
+
+Well-behaved MCP clients back off and retry. The limit applies to the whole MCP endpoint, and `/health` is exempt.
+
+For comparison, [Query MCP](/enterspeed/mcp-server/query-mcp/overview) allows 120 requests per minute per key.
+
+</Accordion>
+</AccordionGroup>
+
+## Security model
+
+If you are reviewing this server before pointing an agent at your tenant, this is the short version:
+
+- **No server-held credentials.** The server has no Enterspeed key of its own and no way to configure one. It can only act with a key you send it.
+- **Passthrough authorisation.** Every permission decision is made by the Management API against your key, not by the MCP server.
+- **No destructive verbs.** The server cannot issue a `DELETE` or a `PATCH` at all.
+- **Secrets are not readable.** Access keys are removed from responses at the HTTP boundary, so no tool can observe one.
+- **Production deploys are out of reach** on the hosted server.
+- **Least privilege is yours to set.** Use a read-only key unless the agent genuinely needs to write.
+
+## Creating a Management API key
+
+1. Sign in to the **Enterspeed Management App**.
+2. Go to your tenant settings and open **API keys**.
+3. Create a key, giving it a descriptive name such as `claude-schema-authoring`.
+4. Grant it read-only permission unless the agent needs to create or update configuration.
+5. Copy the key — it starts with `management-`. Store it in your secret manager immediately.
+
+## Connecting a client
+
+The pattern is the same for every MCP client: point it at the root URL with **HTTP** transport and set an `x-api-key` header.
+
+<Tabs>
+<Tab title="Claude Code CLI">
+
+```bash
+claude mcp add enterspeed-management \
+  --scope user \
+  --transport http \
+  https://mcp.management.enterspeed.com/ \
+  -H "x-api-key: management-your-key"
+```
+
+<Note>
+The user scope (`--scope user`) installs the server for the current user across all projects. Use `--scope project` to install it for the current project only but for all users — that writes a checked-in `.mcp.json`, so use an environment variable for the key rather than pasting it.
+</Note>
+
+Then start a session and ask about your tenant:
+
+```bash
+claude
+> Give me an overview of my Enterspeed tenant.
+```
+
+</Tab>
+<Tab title="VS Code (GitHub Copilot)">
+
+VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single workspace, put the config at `.vscode/mcp.json`; for every workspace, use the **MCP: Open User Configuration** command from the command palette.
+
+```json
+{
+  "servers": {
+    "enterspeedManagement": {
+      "type": "http",
+      "url": "https://mcp.management.enterspeed.com/",
+      "headers": {
+        "x-api-key": "management-your-key"
+      }
+    }
+  }
+}
+```
+
+Reload the window (**Developer: Reload Window** from the command palette) and open the Copilot chat pane. The Enterspeed management tools appear in the tool picker once Copilot connects.
+
+<Tip>
+Never commit `.vscode/mcp.json` with a real key. Use `${input:enterspeed-management-key}` with a matching [`inputs` entry](https://code.visualstudio.com/docs/copilot/reference/mcp-configuration) so VS Code prompts for the key on first use, or put the config in your user profile instead of the workspace.
+</Tip>
+
+</Tab>
+<Tab title="Claude Desktop">
+
+Open your Claude Desktop config file:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the `mcpServers` entry:
+
+```json
+{
+  "mcpServers": {
+    "enterspeedManagement": {
+      "type": "http",
+      "url": "https://mcp.management.enterspeed.com/",
+      "headers": {
+        "x-api-key": "management-your-key"
+      }
+    }
+  }
+}
+```
+
+Fully quit and relaunch Claude Desktop. The Enterspeed management tools now appear in the tool picker.
+
+</Tab>
+<Tab title="Other MCP clients">
+
+Any MCP-capable client follows the same pattern — the root URL, `http` transport, and an `x-api-key` header. Known-good examples:
+
+- **Cursor** — `.cursor/mcp.json`, same schema as VS Code.
+- **Windsurf** — settings → Cascade → MCP Servers, using the URL + header form.
+- **Zed** — settings under `"context_servers"`.
+
+Or simply ask your favourite AI agent how to connect to an MCP server that needs an `x-api-key` header. It should be able to generate the configuration for you.
+
+</Tab>
+</Tabs>
+
+## Known limitations
+
+<Warning>
+**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and this server requires `x-api-key`. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
+
+We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required.
+</Warning>
+
+## Sample prompts
+
+Use these to smoke-test a fresh connection.
+
+**Orientation**
+
+> Give me an overview of my Enterspeed tenant — how many sources, environments, and domains do I have, and how are they connected?
+
+**Schema investigation**
+
+> List my mapping schemas and show me the current version of the one that produces my product pages. What triggers it?
+
+**Authoring loop (needs a write-capable key)**
+
+> Write an index schema that indexes my `article` entities with title, publish date, and author. Dry-run it against a real article first, then save it as a new version.
+
+**Troubleshooting**
+
+> The route for `/products/red-shoe` is not returning what I expect. Inspect the route and the view behind it and tell me what is wrong.
+
+**Logs**
+
+> Show me any processing errors in the last 24 hours, grouped by schema.
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| `401 Unauthorized` on every tool call | Wrong key type — an environment client key instead of a Management API key | Use a key starting with `management-`. Environment client keys belong to [Query MCP](/enterspeed/mcp-server/query-mcp/overview). |
+| Reads work, writes return a permission error | The key is read-only | Expected. Use a write-capable key only if the agent genuinely needs to create or update configuration. |
+| `deploy_not_permitted` when deploying a schema | The target environment is not one the hosted server may deploy to | Deploy to `dev`, `development`, `test`, or `staging`, or deploy to production from the Management App. |
+| `create_environment_client` succeeded but there is no key in the response | Working as intended — access keys are never returned through MCP | Fetch the key in the Management App. |
+| `429` with a `Retry-After` header | More than 60 requests in a minute on this key | Let the client back off, or split work across keys. |
+| Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
+
+## Next steps
+
+- [Tools](/enterspeed/mcp-server/management-mcp/tools) — the full tool inventory, read and write.
+- [Query MCP](/enterspeed/mcp-server/query-mcp/overview) — query your Enterspeed data instead of your configuration.

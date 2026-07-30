@@ -7,7 +7,11 @@ The Enterspeed Query MCP Server speaks plain MCP Streamable HTTP, so any MCP-cap
 Prerequisites are the same in every case:
 
 - A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
-- The production endpoint `https://mcp.query.enterspeed.com`.
+- The production endpoint `https://mcp.query.enterspeed.com/`.
+
+<Info>
+Configure the **root URL** with the `http` transport type. There is no separate `/sse` endpoint — the server delivers its responses as a server-sent event stream on the root URL itself.
+</Info>
 
 ## Pick your client
 
@@ -20,14 +24,11 @@ VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single
 {
   "servers": {
     "enterspeedQuery": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.query.enterspeed.com/",
-        "--header",
-        "x-api-key:environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-      ]
+      "type": "http",
+      "url": "https://mcp.query.enterspeed.com/",
+      "headers": {
+        "x-api-key": "environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      }
     }
   }
 }
@@ -43,11 +44,16 @@ Never commit `.vscode/mcp.json` with a real key. Use `${input:enterspeed-key}` w
 <Tab title="Claude Code CLI">
 
 ```bash
-claude mcp add enterspeedQuery \
-  --transport sse \
+claude mcp add enterspeed \
+  --scope user \
+  --transport http \
   https://mcp.query.enterspeed.com/ \
   -H "x-api-key: environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
+
+<Note>
+The user scope (`--scope user`) installs the server for the current user across all projects. Use `--scope project` to install it for the current project only but for all users — that writes a checked-in `.mcp.json`, so use an environment variable for the key rather than pasting it.
+</Note>
 
 Then start a session and ask Claude to list your indices:
 
@@ -72,7 +78,7 @@ Add the `mcpServers` entry:
 {
   "mcpServers": {
     "enterspeedQuery": {
-      "type": "sse",
+      "type": "http",
       "url": "https://mcp.query.enterspeed.com/",
       "headers": {
         "x-api-key": "environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -229,14 +235,20 @@ Expected output includes a short summary of three blog posts, and the loop's int
 
 ## Other MCP clients
 
-The four clients above are the ones we test against regularly, but the MCP server is client-agnostic. Any MCP-capable client follows the same pattern — point it at `https://mcp.query.enterspeed.com/` with SSE transport and set an `x-api-key` header. Some known-good examples:
+The four clients above are the ones we test against regularly, but the MCP server is client-agnostic. Any MCP-capable client follows the same pattern — point it at `https://mcp.query.enterspeed.com/` with `http` transport and set an `x-api-key` header. Some known-good examples:
 
 - **Cursor** — `.cursor/mcp.json` with the same `servers` schema as VS Code.
-- **Windsurf** — settings → Cascade → MCP Servers, using the SSE + header form.
+- **Windsurf** — settings → Cascade → MCP Servers, using the URL + header form.
 - **Continue** — `~/.continue/config.json` under `experimental.modelContextProtocolServers`.
-- **Zed** — settings under `"context_servers"` with `type: "sse"`.
+- **Zed** — settings under `"context_servers"`.
 
-If your client does not support custom headers, pass the key as an `?apiKey=` query-string parameter on the MCP URL instead. Avoid that in production — the key ends up in request logs.
+If your client does not support custom headers, pass the key as an `?apiKey=` query-string parameter on the MCP URL instead. Avoid that in production — the key ends up in request logs along the whole path.
+
+<Warning>
+**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and the query-string fallback is not a safe substitute for a shared URL. Use one of the clients above instead.
+
+We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required.
+</Warning>
 
 ## Troubleshooting
 
