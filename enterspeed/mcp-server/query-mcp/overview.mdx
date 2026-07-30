@@ -130,6 +130,33 @@ The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
 
 See [Using environment clients](/enterspeed/getting-started/environment-clients) for the full environment-client flow, including regenerating a key.
 
+## What tools the agent gets
+
+The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in three layers.
+
+**Always present** — the same eight tools for everyone:
+
+| Tool | What it does |
+| --- | --- |
+| `get_indices` | Lists the indexes the key can see. The usual starting point. |
+| `describe_index` | Describes one index — its fields, and which are searchable or sortable. |
+| `get_query_items` | Queries a single index with filters, sorting, pagination, and facets. |
+| `get_multiple_query_items` | Queries several indexes in one round-trip. |
+| `get_source_items` | Fetches auto-indexed source entities. |
+| `get_indices_raw_source_entities_by_source_group_alias` | Discovers which entity types exist in a source group. |
+| `get_operators` | Lists the filter operators available to you. |
+| `retrieve_query_api_status` | Reports Query API status. |
+
+**Per index** — one `query_<indexName>` tool for each index the key can reach, generated from that index's own fields. These give an agent a typed, index-specific way to query, so it does not have to construct a generic filter by hand.
+
+**Unified** — an `enterspeed_query` tool that targets several indexes in a single call.
+
+All three layers respect the key's [index scope](#index-scopes), so the agent is handed a pre-trimmed list rather than being told "no" after it tries.
+
+<Tip>
+If an agent only ever shows the eight tools above, the per-index layer is missing — which almost always means the key lacks the `MCP Server` scope, or is invalid.
+</Tip>
+
 ## Sample prompts
 
 Use these when demoing or smoke-testing a fresh MCP connection.

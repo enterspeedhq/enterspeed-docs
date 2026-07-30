@@ -97,16 +97,16 @@ All writes are **additive**: they create something new or update something that 
 | `create_environment_client` | **Write** | Creates an environment client. The generated access key is **not** returned — fetch it in the Management App. |
 | `update_environment_client` | **Write** | Updates an environment client's scopes. |
 
-<Warning>
-**Omitting a field can widen access.** On an environment client, an empty index scope means *unrestricted*, not *no access*. `update_environment_client` reads the current client and merges your changes precisely so a partial update cannot silently remove an index restriction — but it is worth knowing when you review what an agent changed.
-</Warning>
+<Note>
+**On an environment client, an empty index scope means *unrestricted*, not *no access*.** A partial update that dropped the field would therefore widen the client rather than narrow it. `update_environment_client` avoids this by reading the current client and merging your changes onto it, so an agent cannot silently remove an index restriction by omitting it — but it is worth knowing when you review what an agent changed.
+</Note>
 
 ## What is deliberately not exposed
 
 Some Management API capabilities are intentionally absent from the tool set:
 
 - **Anything that deletes.** No schema, environment, source, source group, domain, client, view, or index can be removed through MCP.
-- **Anything that returns a live access key.** Endpoints whose response includes an access key are excluded outright, on top of the redaction applied to every response.
+- **Key rotation.** No tool can regenerate an access key. Combined with the redaction applied to every response, that means an agent can neither read an existing key nor replace one.
 - **Bulk and production deploy paths.** Deploying broadly, or to production, stays in the Management App.
 
 For the update tools, the permission is the *verb*, not the address. Several of the allowed updates share an address with a delete operation in the underlying API — the server can reach the update and has no way to reach the delete.

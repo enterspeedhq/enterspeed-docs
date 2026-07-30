@@ -1,5 +1,6 @@
 ---
 title: Connecting a client
+description: Wire VS Code, Claude Code, Claude Desktop, or the Anthropic Messages API to the Enterspeed Query MCP Server.
 ---
 
 The Enterspeed Query MCP Server speaks plain MCP Streamable HTTP, so any MCP-capable client can use it. This page covers the four most common integrations; the pattern (MCP URL + `x-api-key` header) is identical for every other MCP client — see [Other MCP clients](#other-mcp-clients) at the bottom.
@@ -90,8 +91,29 @@ Add the `mcpServers` entry:
 
 Fully quit and relaunch Claude Desktop. The Enterspeed tools now appear in the tool picker.
 
+<Note>
+Older Claude Desktop versions cannot open a remote MCP server directly from this file. If the server does not appear at all, use the `mcp-remote` bridge instead:
+
+```json
+{
+  "mcpServers": {
+    "enterspeedQuery": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.query.enterspeed.com/",
+        "--header",
+        "x-api-key:environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      ]
+    }
+  }
+}
+```
+</Note>
+
 <Tip>
-If Claude Desktop shows *"no tools discovered"*, the key is almost certainly missing the `MCP Server` scope. Create a new key using the **AI Assistant** preset.
+If Claude Desktop connects but shows *"no tools discovered"*, the key is almost certainly missing the `MCP Server` scope. Create a new key using the **AI Assistant** preset.
 </Tip>
 
 </Tab>

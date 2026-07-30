@@ -1,5 +1,6 @@
 ---
 title: Connecting an agent
+description: Wire a custom C# agent or Azure AI Foundry to the Enterspeed Query MCP Server.
 ---
 
 This guide covers two common agent setups:
@@ -14,7 +15,11 @@ Before you start, you need:
 
 ## Part 1 — C# agent (MCP client SDK)
 
-Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens an SSE connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
+Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens the connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
+
+<Note>
+The transport class is named `SseClientTransport` for historical reasons. Pointed at the root URL, as below, it speaks Streamable HTTP — you do not need a separate `/sse` endpoint, and there isn't one.
+</Note>
 
 ### Prerequisites
 

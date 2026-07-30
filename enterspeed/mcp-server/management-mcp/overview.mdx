@@ -55,22 +55,26 @@ There is no query-string fallback on this server. The key must be sent as an `x-
 
 ### Use a read-only key for read-only work
 
-Management API keys carry their own permissions. Because the server passes your key straight through, **the key decides what an agent can do** — the server never widens it.
+Management clients have an access level — **read-write** or **read-only**. Because the server passes your key straight through, **the key decides what an agent can do** — the server never widens it.
 
 We recommend the smallest key that does the job:
 
-| What you want the agent to do | Recommended key |
+| What you want the agent to do | Recommended access level |
 | --- | --- |
-| Explain, inspect, investigate, dry-run, validate | **Read-only** Management API key |
-| Author schemas, create environments, sources, domains, or clients | A key with write permission |
+| Explain, inspect, investigate, dry-run, validate | **Read-only** |
+| Author schemas, create environments, sources, domains, or clients | **Read-write** |
 
 A read-only key reaches every read tool — including both dry-run tools and schema validation, which are read-only despite sounding like they change something. If an agent tries a write tool with a read-only key, the Management API rejects the call and the agent gets a clear permission error. That is the intended outcome, not a fault.
+
+<Warning>
+**Management clients created in the Management App are read-write.** The app's create form takes a name only, and the API defaults to read-write when no access level is supplied. To issue a read-only key today, create the management client through the Management API and set the access level explicitly — see [Creating a Management API key](#creating-a-management-api-key) below.
+</Warning>
 
 ## What the server can and cannot do
 
 The server exposes **35 tools: 22 reads and 13 additive writes**.
 
-- **Reads** cover tenant overview, sources and source entities, mapping schemas, environments and deployments, views and routes, indexes and index documents, domains and hostnames, environment clients, logs, and metrics.
+- **Reads** cover tenant overview, sources and source entities, mapping schemas, deployments, views and routes, indexes and index documents, domains and hostnames, environment clients, logs, and metrics.
 - **Writes** are **additive only** — create and update. They cover schema authoring (create a schema, save a version, deploy), environments, source groups and sources, domains, and environment clients.
 
 <Warning>
@@ -99,9 +103,9 @@ Production deploys stay a deliberate human action in the Management App.
 
 The server strips the `accessKey` field out of every response before your client sees it, at every level of nesting. This covers environment client keys and source ingest keys.
 
-It applies even to `create_environment_client`, which mints a key: the tool creates the client, and the key itself is not in the response. **Fetch the key in the Management App** when you need it.
+It applies even to `create_environment_client`, which mints a key: the tool creates the client, and the key value is not in the response. The agent is told a key was created and that it must be collected from the app — so it reports the right next step instead of inventing a value. **Fetch the key in the Management App** when you need it.
 
-The field is removed rather than masked — an agent cannot see that a key exists at that path, so it will not go looking for it.
+The field is removed rather than masked, so no tool can observe a key at any point.
 
 </Accordion>
 <Accordion title="Rate limit — 60 requests per minute per key">
@@ -135,11 +139,38 @@ If you are reviewing this server before pointing an agent at your tenant, this i
 
 ## Creating a Management API key
 
+<Tabs>
+<Tab title="Management App (read-write)">
+
 1. Sign in to the **Enterspeed Management App**.
-2. Go to your tenant settings and open **API keys**.
-3. Create a key, giving it a descriptive name such as `claude-schema-authoring`.
-4. Grant it read-only permission unless the agent needs to create or update configuration.
-5. Copy the key — it starts with `management-`. Store it in your secret manager immediately.
+2. Go to **Settings → Management clients**.
+3. Click to create a management client and give it a descriptive name, such as `claude-schema-authoring`.
+4. Copy the key — it starts with `management-`. Store it in your secret manager immediately.
+
+The key this creates is **read-write**. Use it when the agent genuinely needs to author schemas or create configuration.
+
+</Tab>
+<Tab title="Management API (read-only)">
+
+To issue a read-only key, create the management client through the Management API and set the access level explicitly:
+
+```bash
+curl -X POST https://management.enterspeed.com/api/v1/tenant/management-clients/ \
+  -H "X-Api-Key: management-your-existing-key" \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "claude-read-only", "accessLevel": "ReadOnly" }'
+```
+
+The response contains the new key. Store it in your secret manager immediately.
+
+Omitting `accessLevel` creates a **read-write** client, which is why the Management App's create form produces read-write keys today.
+
+</Tab>
+</Tabs>
+
+<Tip>
+Give each agent its own key with a name you will recognise later. That way you can revoke one integration without disturbing the others.
+</Tip>
 
 ## Connecting a client
 
@@ -218,6 +249,27 @@ Add the `mcpServers` entry:
 
 Fully quit and relaunch Claude Desktop. The Enterspeed management tools now appear in the tool picker.
 
+<Note>
+Older Claude Desktop versions cannot open a remote MCP server directly from this file. If the server does not appear, use the `mcp-remote` bridge instead:
+
+```json
+{
+  "mcpServers": {
+    "enterspeedManagement": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.management.enterspeed.com/",
+        "--header",
+        "x-api-key:management-your-key"
+      ]
+    }
+  }
+}
+```
+</Note>
+
 </Tab>
 <Tab title="Other MCP clients">
 
@@ -227,7 +279,7 @@ Any MCP-capable client follows the same pattern — the root URL, `http` transpo
 - **Windsurf** — settings → Cascade → MCP Servers, using the URL + header form.
 - **Zed** — settings under `"context_servers"`.
 
-Or simply ask your favourite AI agent how to connect to an MCP server that needs an `x-api-key` header. It should be able to generate the configuration for you.
+Or simply ask your favorite AI agent how to connect to an MCP server that needs an `x-api-key` header. It should be able to generate the configuration for you.
 
 </Tab>
 </Tabs>

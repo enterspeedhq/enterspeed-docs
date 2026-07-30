@@ -35,7 +35,7 @@ Query MCP and Management MCP are complementary — many people connect both, so 
 | --- | --- | --- | --- |
 | **URL** | `https://mcp.query.enterspeed.com/` | `https://mcp.management.enterspeed.com/` | `https://docs.enterspeed.com/mcp` |
 | **Authentication** | Environment client key (`environment-…`) | Management API key (`management-…`) | None |
-| **Sent as** | `x-api-key` header | `x-api-key` header | — |
+| **Sent as** | `x-api-key` header (or an `?apiKey=` fallback) | `x-api-key` header | — |
 | **Scope of access** | One environment's data | Tenant configuration | Public documentation |
 | **Writes?** | No | Additive only — no deletes | No |
 | **Rate limit** | 120 requests/min per key | 60 requests/min per key | — |
@@ -44,10 +44,10 @@ Query MCP and Management MCP are complementary — many people connect both, so 
 
 Both tenant-facing servers work the same way: they are **passthrough proxies that hold no credentials of their own**. Your client sends a key on every request, the server forwards it unchanged, and the underlying Enterspeed API makes every authorisation decision.
 
-That means the key you issue is the whole boundary. A key scoped to one environment and one index prefix gives an agent exactly that much and no more.
+That means the key you issue is the whole boundary. For Query MCP, a key scoped to one environment and one index prefix gives an agent exactly that much and no more. For Management MCP, the key's access level decides whether an agent can change anything at all.
 
 <Warning>
-**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and both tenant-facing servers require `x-api-key`. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
+**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and both tenant-facing servers authenticate with one. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
 
 We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required. The Documentation MCP server needs no authentication and is unaffected.
 </Warning>
