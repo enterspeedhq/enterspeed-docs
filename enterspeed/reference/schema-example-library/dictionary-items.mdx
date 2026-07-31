@@ -85,8 +85,8 @@ export default {
   triggers: function(context) {
     context.triggers("cms", ["dictionaryRoot"]);
   },
-  routes: function(context) {
-    context.handle(`dictionaries-${sourceEntity.properties.culture)}`)
+  routes: function(sourceEntity, context) {
+    context.handle(`dictionaries-${sourceEntity.properties.culture}`)
   },
   properties: (sourceEntity, context) => ({
     translations: context.reference('dictionary').filter(`type eq 'dictionary' and properties.culture eq '${sourceEntity.properties.culture}'`)
@@ -142,7 +142,7 @@ export default {
     context.triggers('cms', ['dictionary'])
   },
   index: {
-    fields {
+    fields: {
         key: { type: "keyword" }, 
         translation: { type: "keyword" }, 
         culture: { type: "keyword" }
@@ -164,7 +164,7 @@ The result of the above index schema can be seen here with a requests to the [Qu
 <CodeGroup>
 ```bash Query API request
 curl -L -X POST 'https://query.enterspeed.com/v1/dictionaryIndex' \
--H 'X-Api-Key: [your_environment_key]' \
+-H 'X-Api-Key: <your_environment_key>' \
 -H 'Content-Type: application/json' \
 -d '{
 	"filters": {

@@ -98,22 +98,26 @@ curl -L 'https://api.enterspeed.com/routes/v2' \
         {
             "url": "/",
             "redirect": null,
-            "updatedAt": "2026-07-28T10:24:22.8283418Z"
+            "updatedAt": "2026-07-28T10:26:22.8283418Z"
         },
         {
             "url": "/about-us",
             "redirect": null,
-            "updatedAt": "2026-07-25T12:36:05.8283418Z"
+            "updatedAt": "2026-07-25T12:38:05.8283418Z"
         },
         {
             "url": "/contact",
             "redirect": null,
-            "updatedAt": "2026-07-26T14:06:37.8283418Z"
+            "updatedAt": "2026-07-26T14:08:37.8283418Z"
         }
     ]
 }
 ```
 </CodeGroup>
+
+<Info>
+Be aware that the `updatedAt` value returned from the Routes API is the last time the route was updated, not the last time the source entity was updated. If you need the last updated date for the source entity, you will need to use an index schema instead.
+</Info>
 
 Looking at the response above, you now have all the `url` and `updatedAt` values to build your `sitemap.xml`.
 
@@ -200,7 +204,7 @@ curl -L -X POST 'https://query.enterspeed.com/v1/pageIndex' \
   "results": [
       {
         "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
-        "_updatedAt": "2026-07-28T10:24:22.8283418Z",
+        "_updatedAt": "2026-07-28T10:26:22.8283418Z",
         "_originId": "1",
         "url": "/",
         "title": "Home",
@@ -208,7 +212,7 @@ curl -L -X POST 'https://query.enterspeed.com/v1/pageIndex' \
       },
       {
         "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
-        "_updatedAt": "2026-07-25T12:36:05.8283418Z",
+        "_updatedAt": "2026-07-25T12:38:05.8283418Z",
         "_originId": "2",
         "url": "/about-us",
         "title": "About us",
@@ -216,7 +220,7 @@ curl -L -X POST 'https://query.enterspeed.com/v1/pageIndex' \
       },
       {
         "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
-        "_updatedAt": "2026-07-26T14:06:37.8283418Z",
+        "_updatedAt": "2026-07-26T14:08:37.8283418Z",
         "_originId": "3",
         "url": "/contact",
         "title": "Contact",
@@ -229,6 +233,11 @@ curl -L -X POST 'https://query.enterspeed.com/v1/pageIndex' \
 }
 ```
 </CodeGroup>
+
+<Info>
+Be aware that the `_updatedAt` value returned from the Query API is the last time the item in the index was updated, not the last time the source entity was updated. If you need the last updated date for the source entity, you will need to index the `updatedAt` field from the source entity or a custom date property from your source entity.
+</Info>
+
 
 Looking at the response above, you now have all the `url`, `title` and `description` values to build your `llms.txt` file.
 
