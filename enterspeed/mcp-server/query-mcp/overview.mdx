@@ -39,7 +39,7 @@ AI client ──x-api-key──► mcp.query.enterspeed.com ──x-api-key─�
 Clients authenticate with a single HTTP header on every MCP request:
 
 ```
-x-api-key: environment-<uuid>-<random>
+x-api-key: environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
 The key is a **scoped environment client key** issued from the Enterspeed Management App. It is *not* a Management API key — that is what [Management MCP](/enterspeed/mcp-server/management-mcp/overview) uses.
@@ -131,6 +131,8 @@ The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
 See [Using environment clients](/enterspeed/getting-started/environment-clients) for the full environment-client flow, including regenerating a key.
 
 ## What tools the agent gets
+
+Every tool is a read — the server has no way to change your data or your configuration. To configure a tenant, an agent needs [Management MCP](/enterspeed/mcp-server/management-mcp/overview) instead.
 
 The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in three layers.
 

@@ -29,17 +29,6 @@ Enterspeed hosts three [Model Context Protocol](https://modelcontextprotocol.io/
 
 Query MCP and Management MCP are complementary — many people connect both, so an agent can read a schema, change it, and then query the result.
 
-## At a glance
-
-| | Query MCP | Management MCP | Documentation MCP |
-| --- | --- | --- | --- |
-| **URL** | `https://mcp.query.enterspeed.com/` | `https://mcp.management.enterspeed.com/` | `https://docs.enterspeed.com/mcp` |
-| **Authentication** | Environment client key (`environment-…`) | Management API key (`management-…`) | None |
-| **Sent as** | `x-api-key` header (or an `?apiKey=` fallback) | `x-api-key` header | — |
-| **Scope of access** | One environment's data | Tenant configuration | Public documentation |
-| **Writes?** | No | Additive only — no deletes | No |
-| **Rate limit** | 120 requests/min per key | 60 requests/min per key | — |
-
 ## How authentication works
 
 Both tenant-facing servers work the same way: they are **passthrough proxies that hold no credentials of their own**. Your client sends a key on every request, the server forwards it unchanged, and the underlying Enterspeed API makes every authorisation decision.
