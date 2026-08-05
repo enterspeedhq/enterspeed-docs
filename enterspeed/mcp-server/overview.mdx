@@ -1,15 +1,46 @@
 ---
 title: Overview
+description: The Enterspeed MCP servers let AI clients query your data, manage your configuration, and search the documentation.
 ---
 
-Below you'll find a list of available Enterspeed MCP servers.
+Enterspeed hosts three [Model Context Protocol](https://modelcontextprotocol.io/) servers. Point an AI client at one and it discovers a set of tools it can call on your behalf. You do not need to host anything yourself.
 
-<Columns cols={2}>
-  <Card title="Documentation MCP" href="/enterspeed/mcp-server/documentation-mcp/overview" icon="book">
-    Search and retrieve documentation content or report back issues or suggestions
-  </Card>
-
+<Columns cols={3}>
   <Card title="Query MCP" href="/enterspeed/mcp-server/query-mcp/overview" icon="search">
     Ask questions about your data in Enterspeed using the MCP server for the Query API.
   </Card>
+
+  <Card title="Management MCP" href="/enterspeed/mcp-server/management-mcp/overview" icon="sliders">
+    Inspect and configure your tenant — schemas, environments, sources, domains, and clients.
+  </Card>
+
+  <Card title="Documentation MCP" href="/enterspeed/mcp-server/documentation-mcp/overview" icon="book">
+    Search and retrieve documentation content or report back issues or suggestions.
+  </Card>
 </Columns>
+
+## Which one do you need?
+
+| If you want to… | Use |
+| --- | --- |
+| Query content, indexes, and source entities in an environment | [Query MCP](/enterspeed/mcp-server/query-mcp/overview) |
+| Understand or change how a tenant is configured, or author schemas | [Management MCP](/enterspeed/mcp-server/management-mcp/overview) |
+| Ask questions about Enterspeed itself | [Documentation MCP](/enterspeed/mcp-server/documentation-mcp/overview) |
+
+Query MCP and Management MCP are complementary — many people connect both, so an agent can read a schema, change it, and then query the result.
+
+## How authentication works
+
+Both tenant-facing servers work the same way: they are **passthrough proxies that hold no credentials of their own**. Your client sends a key on every request, the server forwards it unchanged, and the underlying Enterspeed API makes every authorisation decision.
+
+That means the key you issue is the whole boundary. For Query MCP, a key scoped to one environment and one index prefix gives an agent exactly that much and no more. For Management MCP, the key's access level decides whether an agent can change anything at all.
+
+<Warning>
+**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and both tenant-facing servers authenticate with one. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
+
+We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required. The Documentation MCP server needs no authentication and is unaffected.
+</Warning>
+
+## Transport
+
+Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL, and use the `http` transport type where your client offers a choice.

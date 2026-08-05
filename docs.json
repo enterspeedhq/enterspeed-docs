@@ -277,6 +277,13 @@
               "enterspeed/mcp-server/query-mcp/connecting-an-agent",
               "enterspeed/mcp-server/query-mcp/connecting-a-client"
             ]
+          },
+          {
+            "group": "Management MCP",
+            "pages": [
+              "enterspeed/mcp-server/management-mcp/overview",
+              "enterspeed/mcp-server/management-mcp/tools"
+            ]
           }
         ]
       }
@@ -373,8 +380,10 @@
     { "source": "/best-practices/schemas", "destination": "/enterspeed/best-practices/schemas" },
     { "source": "/best-practices/indexes", "destination": "/enterspeed/best-practices/indexes" },
     { "source": "/mcp-server/overview", "destination": "/enterspeed/mcp-server/overview" },
-    { "source": "/mcp-server/connecting-an-agent", "destination": "/enterspeed/mcp-server/connecting-an-agent" },
-    { "source": "/mcp-server/connecting-a-client", "destination": "/enterspeed/mcp-server/connecting-a-client" },
+    { "source": "/mcp-server/connecting-an-agent", "destination": "/enterspeed/mcp-server/query-mcp/connecting-an-agent" },
+    { "source": "/mcp-server/connecting-a-client", "destination": "/enterspeed/mcp-server/query-mcp/connecting-a-client" },
+    { "source": "/enterspeed/mcp-server/connecting-an-agent", "destination": "/enterspeed/mcp-server/query-mcp/connecting-an-agent" },
+    { "source": "/enterspeed/mcp-server/connecting-a-client", "destination": "/enterspeed/mcp-server/query-mcp/connecting-a-client" },
     { "source": "/tutorials", "destination": "/enterspeed/tutorials/overview" },
     { "source": "/tutorials/creating-a-simple-site/intro", "destination": "/enterspeed/tutorials/creating-a-simple-site/intro" },
     { "source": "/tutorials/creating-a-simple-site/1-sources-environments", "destination": "/enterspeed/tutorials/creating-a-simple-site/1-sources-environments" },

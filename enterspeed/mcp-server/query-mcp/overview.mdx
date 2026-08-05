@@ -1,26 +1,30 @@
 ---
 title: Overview
+description: Connect an AI client to the Enterspeed Query API — query your indexes, views, and auto-indexed source entities in natural language.
 ---
-
-# Query MCP Server
 
 The Enterspeed Query MCP Server turns the Enterspeed Query API into a set of [Model Context Protocol](https://modelcontextprotocol.io/) tools that AI clients (Claude, Cursor, custom agents, Azure AI Foundry, etc.) can discover and call. You do not need to host anything yourself — Enterspeed runs the server for you.
 
-This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. For step-by-step wiring guides, see [Connecting an agent](/enterspeed/mcp-server/connecting-an-agent) and [Connecting a client](/enterspeed/mcp-server/connecting-a-client).
+This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. For step-by-step wiring guides, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) and [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent).
+
+To configure your tenant rather than query it, see [Management MCP](/enterspeed/mcp-server/management-mcp/overview).
 
 ## Hostname
 
 | Environment | URL | Transport |
 | --- | --- | --- |
-| **Production** | `https://mcp.query.enterspeed.com` | MCP Streamable HTTP (SSE) |
+| **Production** | `https://mcp.query.enterspeed.com/` | MCP Streamable HTTP |
 
 A health check is available without authentication:
 
 ```bash
-curl -i https://mcp.query.enterspeed.com/health
-# HTTP/2 200
-# ok
+curl -s https://mcp.query.enterspeed.com/health
+# "ok"
 ```
+
+<Info>
+The server speaks **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL.
+</Info>
 
 ## How authentication works
 
@@ -35,14 +39,29 @@ AI client ──x-api-key──► mcp.query.enterspeed.com ──x-api-key─�
 Clients authenticate with a single HTTP header on every MCP request:
 
 ```
-x-api-key: environment-<uuid>-<random>
+x-api-key: environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
-The key is a **scoped environment client key** issued from the Enterspeed Management App. It is *not* a Management API token and *not* a workspace-wide key.
+The key is a **scoped environment client key** issued from the Enterspeed Management App. It is *not* a Management API key — that is what [Management MCP](/enterspeed/mcp-server/management-mcp/overview) uses.
 
 <Info>
-The server also accepts an `?apiKey=` query-string fallback for tools that cannot set headers. Prefer the header whenever possible.
+The server also accepts an `?apiKey=` query-string fallback for tools that cannot set headers. Prefer the header whenever possible: a key in a URL ends up in access logs along the whole request path.
 </Info>
+
+The key is checked when a tool is *called*, not when the session is opened. A client with a missing or invalid key can still connect and list the static tools — which is why an unexpectedly short tool list is the fastest signal that a key is wrong or under-scoped.
+
+### Rate limit
+
+Requests are counted per API key over a rolling one-minute window, with a limit of **120 requests per minute**. Exceeding it returns:
+
+```
+HTTP 429 Too Many Requests
+Retry-After: <seconds>
+
+Too many requests. Retry after <n> seconds.
+```
+
+Well-behaved MCP clients back off and retry. The `/health` endpoint is exempt.
 
 ## Required scopes
 
@@ -53,7 +72,11 @@ The platform supports component-scoped environment keys. For MCP use, your key *
 | `MCP Server (AI Agent Access)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
 | `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
 
-`MCP Server` alone is not useful — it must be combined with `Query API`.
+`MCP Server` alone is not useful — it must be combined with `Query API`, and Enterspeed enforces that pairing when you save the client.
+
+<Info>
+There are exactly four scopes: **Delivery API**, **Query API**, **Routes API**, and **MCP Server**. There is no separate Source API scope — access to auto-indexed source entities comes with **Query API**, narrowed by the [index scope](#index-scopes) below.
+</Info>
 
 ### Scope presets
 
@@ -81,6 +104,17 @@ On top of component scopes, each environment client can carry an optional **Inde
 
 Filtering is enforced by the Query API, so AI clients get a pre-trimmed tool list. This is ideal when you want to give a public-facing AI assistant access to, say, only a marketing-blog index, without exposing the rest of the environment.
 
+<Warning>
+**An empty index scope means unrestricted, not restricted.** Leaving it unset grants every index the key's scopes allow. If you want to limit an AI assistant to a subset of your data, you must set a pattern explicitly — omitting the field is the *open* setting, not the safe one.
+</Warning>
+
+Patterns are read in two families, split by the colon:
+
+- **Without a colon** — matches index names, for example `blog*`.
+- **With a colon** — matches auto-indexed source entities as `sourceGroup:entityType`, for example `cms:*`.
+
+Each family is only restricted if you supply at least one pattern for it. So a key configured with only `cms:*` restricts auto-indexed source entities while leaving index queries **unrestricted**. Set patterns in both families when you want to narrow both.
+
 ## Creating a scoped key
 
 1. Sign in to the **Enterspeed Management App**.
@@ -95,6 +129,35 @@ Filtering is enforced by the Query API, so AI clients get a pre-trimmed tool lis
 The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
 
 See [Using environment clients](/enterspeed/getting-started/environment-clients) for the full environment-client flow, including regenerating a key.
+
+## What tools the agent gets
+
+Every tool is a read — the server has no way to change your data or your configuration. To configure a tenant, an agent needs [Management MCP](/enterspeed/mcp-server/management-mcp/overview) instead.
+
+The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in three layers.
+
+**Always present** — the same eight tools for everyone:
+
+| Tool | What it does |
+| --- | --- |
+| `get_indices` | Lists the indexes the key can see. The usual starting point. |
+| `describe_index` | Describes one index — its fields, and which are searchable or sortable. |
+| `get_query_items` | Queries a single index with filters, sorting, pagination, and facets. |
+| `get_multiple_query_items` | Queries several indexes in one round-trip. |
+| `get_source_items` | Fetches auto-indexed source entities. |
+| `get_indices_raw_source_entities_by_source_group_alias` | Discovers which entity types exist in a source group. |
+| `get_operators` | Lists the filter operators available to you. |
+| `retrieve_query_api_status` | Reports Query API status. |
+
+**Per index** — one `query_<indexName>` tool for each index the key can reach, generated from that index's own fields. These give an agent a typed, index-specific way to query, so it does not have to construct a generic filter by hand.
+
+**Unified** — an `enterspeed_query` tool that targets several indexes in a single call.
+
+All three layers respect the key's [index scope](#index-scopes), so the agent is handed a pre-trimmed list rather than being told "no" after it tries.
+
+<Tip>
+If an agent only ever shows the eight tools above, the per-index layer is missing — which almost always means the key lacks the `MCP Server` scope, or is invalid.
+</Tip>
 
 ## Sample prompts
 
@@ -150,9 +213,20 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | Agent lists only a small static set of tools | Key is missing the `MCP Server` scope | Recreate the key with the *AI Assistant* preset. |
 | Agent sees fewer indices than expected | `IndexScope` pattern is too narrow | Widen the Index Scope on the environment client, or remove it for all-index access. |
 | Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` | Add the `Query API` scope. |
-| `401` on every request | Wrong key type — Management API token instead of environment-client key | Create an **environment client** key, not a Management API token. |
+| `401` on every request | Wrong key type — a Management API key instead of an environment client key | Create an **environment client** key. Management API keys belong to [Management MCP](/enterspeed/mcp-server/management-mcp/overview). |
+| `429` with a `Retry-After` header | More than 120 requests in a minute on this key | Let the client back off, or split work across keys. |
+| Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
+
+## Known limitations
+
+<Warning>
+**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and this server requires `x-api-key`. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
+
+We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required.
+</Warning>
 
 ## Next steps
 
-- [Connecting an agent](/enterspeed/mcp-server/connecting-an-agent) — wire a custom C# agent or Azure AI Foundry to the MCP server.
-- [Connecting a client](/enterspeed/mcp-server/connecting-a-client) — VS Code, Claude Code, Claude Desktop, or the Anthropic Messages API in C#.
+- [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) — VS Code, Claude Code, Claude Desktop, or the Anthropic Messages API in C#.
+- [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent) — wire a custom C# agent or Azure AI Foundry to the MCP server.
+- [Management MCP](/enterspeed/mcp-server/management-mcp/overview) — configure your tenant instead of querying it.

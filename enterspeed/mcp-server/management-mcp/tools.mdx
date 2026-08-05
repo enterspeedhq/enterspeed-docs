@@ -1,0 +1,117 @@
+---
+title: Tools
+description: The full Management MCP tool inventory — 22 read tools and 13 additive write tools, with no delete tools by design.
+---
+
+The Management MCP server exposes **35 tools: 22 reads and 13 additive writes**. This page lists all of them so you can see exactly what an agent connected to your tenant is able to do.
+
+The tool set is fixed — it is the same for every tenant and every key. What differs is what your key is *allowed* to call: see [Authentication](/enterspeed/mcp-server/management-mcp/overview#how-authentication-works).
+
+<Warning>
+**There are no delete tools, by design.** The server has no way to express a destructive request — every call it can make is a read, or a create/update on a fixed allow-list checked when the server starts. No tool can delete a schema, environment, source, domain, client, or view.
+</Warning>
+
+## Reading your tenant
+
+### Orientation
+
+Start here when you want an agent to understand how a tenant is put together.
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `get_tenant_overview` | Read | A single summary of the tenant — sources, environments, domains, and how they relate. |
+| `list_sources` | Read | Lists the tenant's sources and source groups. |
+| `list_environment_clients` | Read | Lists environment clients and their scopes. Access keys are never included. |
+| `inspect_domains_and_hostnames` | Read | Domains and the hostnames mapped to them. |
+
+### Source entities
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `list_source_entities` | Read | Lists ingested source entities, filterable by source group and type. |
+| `get_source_entity` | Read | Fetches one source entity in full, as ingested. |
+
+### Mapping schemas
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `list_mapping_schemas` | Read | Lists the tenant's mapping schemas. |
+| `get_mapping_schema` | Read | Fetches a schema, including a specific version. |
+| `search_mapping_schemas` | Read | Searches across schema content — useful for "which schema sets this property?". |
+
+### Views, routes, and indexes
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `list_views` | Read | Lists generated views. |
+| `get_view` | Read | Fetches a single view's output. |
+| `inspect_route` | Read | Resolves a route and shows the view behind it. The first stop for "why is this URL wrong?". |
+| `inspect_indexes` | Read | Lists indexes and their field definitions. |
+| `get_index_document` | Read | Fetches a single indexed document. |
+
+### Deployments, logs, and metrics
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `get_environment_deployments` | Read | Deployment history for an environment. |
+| `query_tenant_logs` | Read | Queries tenant logs — errors, warnings, processing activity. |
+| `aggregate_tenant_logs` | Read | Aggregates logs, for example grouping errors by schema. |
+| `get_tenant_metrics` | Read | Tenant-level metrics. |
+
+## Authoring schemas
+
+This group is the reason most people connect the server. The four read tools let an agent design and prove a schema before anything is written.
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `get_schema_type_definitions` | Read | The type definitions an agent needs to write a valid schema. |
+| `dry_run_mapping_schema` | Read | Runs a schema without saving it and returns the output. |
+| `dry_run_mapping_schema_against_entity` | Read | Same, against one of your real source entities. |
+| `validate_mapping_schema_version` | Read | Validates a schema version without saving it. |
+| `create_mapping_schema` | **Write** | Creates a new mapping schema. |
+| `save_mapping_schema_version` | **Write** | Saves a new version of an existing schema. |
+| `deploy_mapping_schema` | **Write** | Deploys a schema version to an environment. Restricted — see below. |
+
+<Tip>
+The dry-run and validate tools are reads, despite sounding like they change something. A read-only key can design, test, and validate a schema end to end — it just cannot save it. That makes a read-only key a good default even for authoring work, until you are happy with the result.
+</Tip>
+
+<Warning>
+`deploy_mapping_schema` on the hosted server only deploys to environments **named** `dev`, `development`, `test`, or `staging`. Anything else — including environments named `prod`, `production`, or `live` — is refused with a `deploy_not_permitted` error. Production deploys stay a deliberate action in the Management App.
+</Warning>
+
+## Creating and updating configuration
+
+All writes are **additive**: they create something new or update something that exists. None of them remove anything.
+
+| Tool | Type | What it does |
+| --- | --- | --- |
+| `create_environment` | **Write** | Creates an environment. |
+| `update_environment` | **Write** | Updates an environment. Will not rename an environment onto the deploy-allowed list. |
+| `create_source_group` | **Write** | Creates a source group. |
+| `update_source_group` | **Write** | Updates a source group. |
+| `create_source` | **Write** | Creates a source. |
+| `update_source` | **Write** | Updates a source. |
+| `create_domain` | **Write** | Creates a domain. |
+| `update_domain` | **Write** | Updates a domain, including its hostnames. |
+| `create_environment_client` | **Write** | Creates an environment client. The generated access key is **not** returned — fetch it in the Management App. |
+| `update_environment_client` | **Write** | Updates an environment client's scopes. |
+
+<Note>
+**On an environment client, an empty index scope means *unrestricted*, not *no access*.** A partial update that dropped the field would therefore widen the client rather than narrow it. `update_environment_client` avoids this by reading the current client and merging your changes onto it, so an agent cannot silently remove an index restriction by omitting it — but it is worth knowing when you review what an agent changed.
+</Note>
+
+## What is deliberately not exposed
+
+Some Management API capabilities are intentionally absent from the tool set:
+
+- **Anything that deletes.** No schema, environment, source, source group, domain, client, view, or index can be removed through MCP.
+- **Key rotation.** No tool can regenerate an access key. Combined with the redaction applied to every response, that means an agent can neither read an existing key nor replace one.
+- **Bulk and production deploy paths.** Deploying broadly, or to production, stays in the Management App.
+
+For the update tools, the permission is the *verb*, not the address. Several of the allowed updates share an address with a delete operation in the underlying API — the server can reach the update and has no way to reach the delete.
+
+## Next steps
+
+- [Overview](/enterspeed/mcp-server/management-mcp/overview) — hostname, authentication, guardrails, and client setup.
+- [Query MCP](/enterspeed/mcp-server/query-mcp/overview) — query your Enterspeed data instead of your configuration.

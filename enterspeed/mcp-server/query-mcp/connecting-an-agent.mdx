@@ -1,5 +1,6 @@
 ---
 title: Connecting an agent
+description: Wire a custom C# agent or Azure AI Foundry to the Enterspeed Query MCP Server.
 ---
 
 This guide covers two common agent setups:
@@ -10,11 +11,15 @@ This guide covers two common agent setups:
 Before you start, you need:
 
 - A scoped environment client key (`Query API` + `MCP Server` at minimum). See the [Overview](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
-- The production endpoint `https://mcp.query.enterspeed.com`.
+- The production endpoint `https://mcp.query.enterspeed.com/` — the root URL, with `http` transport. There is no separate `/sse` endpoint.
 
 ## Part 1 — C# agent (MCP client SDK)
 
-Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens an SSE connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
+Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens the connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
+
+<Note>
+The transport class is named `SseClientTransport` for historical reasons. Pointed at the root URL, as below, it speaks Streamable HTTP — you do not need a separate `/sse` endpoint, and there isn't one.
+</Note>
 
 ### Prerequisites
 
@@ -85,7 +90,7 @@ To turn this into an LLM-driven agent, hand the `tools` list to the model of you
 3. When the LLM emits a tool call, invoke `mcpClient.CallToolAsync(name, args)` and feed the response back in the next turn.
 4. Repeat until the LLM produces a final answer.
 
-For Claude specifically, see [Connecting a client](/enterspeed/mcp-server/connecting-a-client) for a complete Messages-API example that wires this loop.
+For Claude specifically, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) for a complete Messages-API example that wires this loop.
 
 ### Alternative — the Anthropic Remote MCP connector
 
