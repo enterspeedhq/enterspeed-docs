@@ -182,10 +182,12 @@ For cases like this you can replace the type instead. Enterspeed tells you which
 
 ![An incompatible type change](/images/docs/key-concepts/auto-index-incompatible-change.png)
 
-Replacing rebuilds the index from your stored source entities, skipping the compatibility check. Every value that fits the new type is kept — so if all your `text` values really are numbers, they all survive the change to `double`. Values that don't fit are dropped for that field, which is exactly what the check normally protects you from, so make sure you know your data before using it.
+Replacing rebuilds the index from your stored source entities, skipping the compatibility check. Every entity whose values fit the new type is kept — so if all your `text` values really are numbers, they all survive the change to `double`.
+
+Any entity holding a value that doesn't fit is left out of the index entirely, not just that one field, so you can no longer query it. The entity itself is kept and is queryable again once re-ingested with a matching value — but this is exactly what the compatibility check normally protects you from, so make sure you know your data before replacing a type.
 
 ### Removing a type
 
 Removing a mapping deletes the index for that type, so you can no longer query it.
 
-Your source entities are kept. Entities of a removed type are marked **Not configured** in the source entities list, so you can see at a glance which ones aren't indexed. Add the mapping back later and Enterspeed fills the index again from the entities it already has.
+Your source entities are kept. Entities of a removed type — or of any type on a source with no mappings configured yet — are marked **Not configured** in the source entities list, so you can see at a glance which ones aren't indexed. Add the mapping back later and Enterspeed fills the index again from the entities it already has.
