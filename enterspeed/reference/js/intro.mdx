@@ -30,9 +30,9 @@ The concepts in JavaScript schemas are similar to the concepts from JSON schemas
 
 ## Destructuring
 
-You can destruct parameters, so the `routes` and `properties` method in the above example can be simplified to:
+You can destruct parameters, so the `routes` and `properties` methods in the above example can be simplified to:
 
-```js title="JavaScript destruct schema example"
+```js title="JavaScript destruct schema example" highlight={6,9}
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -81,7 +81,7 @@ When using the Test schema feature in the Enterspeed Management App, the followi
 - trace
 - warn
 
-```js title="JavaScript schema with conole usage"
+```js title="JavaScript schema with conole usage" highlight={10}
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
