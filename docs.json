@@ -12,277 +12,341 @@
     "dark": "/images/favicon.svg"
   },
   "navigation": {
-    "pages": [
+    "products": [
       {
-        "group": "Overview",
+        "product": "Enterspeed",
+        "description": "The data orchestration layer",    
+        "icon": "gear-complex-api",
         "pages": [
-          "enterspeed/welcome",
           {
-            "group": "Getting started",
+            "group": "Overview",
             "pages": [
+              "enterspeed/welcome",
               {
-                "group": "0 - Setup",
+                "group": "Getting started",
                 "pages": [
-                  "enterspeed/getting-started/intro",
-                  "enterspeed/getting-started/domains",
-                  "enterspeed/getting-started/environments",
-                  "enterspeed/getting-started/environment-clients",
-                  "enterspeed/getting-started/data-sources"
+                  {
+                    "group": "0 - Setup",
+                    "pages": [
+                      "enterspeed/getting-started/intro",
+                      "enterspeed/getting-started/domains",
+                      "enterspeed/getting-started/environments",
+                      "enterspeed/getting-started/environment-clients",
+                      "enterspeed/getting-started/data-sources"
+                    ]
+                  },
+                  "enterspeed/ingest",
+                  {
+                    "group": "2 - Transforming data",
+                    "pages": [
+                      "enterspeed/transform/intro",
+                      "enterspeed/transform/designing-a-schema",
+                      "enterspeed/transform/schema-versioning"
+                    ]
+                  },
+                  "enterspeed/deliver"
                 ]
               },
-              "enterspeed/ingest",
               {
-                "group": "2 - Transforming data",
+                "group": "Key concepts",
                 "pages": [
-                  "enterspeed/transform/intro",
-                  "enterspeed/transform/designing-a-schema",
-                  "enterspeed/transform/schema-versioning"
+                  "enterspeed/key-concepts/overview",
+                  "enterspeed/key-concepts/schemas",
+                  "enterspeed/key-concepts/partial-schemas",
+                  "enterspeed/key-concepts/index-schemas",
+                  "enterspeed/key-concepts/referencing-schemas",
+                  "enterspeed/key-concepts/source-entities",
+                  "enterspeed/key-concepts/source-groups",
+                  "enterspeed/key-concepts/routing",
+                  "enterspeed/key-concepts/views",
+                  "enterspeed/key-concepts/redirects",
+                  "enterspeed/key-concepts/domains-hostnames",
+                  "enterspeed/key-concepts/reprocessing"
                 ]
               },
-              "enterspeed/deliver"
+              "enterspeed/user-login",
+              "enterspeed/service-limits"
             ]
           },
           {
-            "group": "Key concepts",
-            "pages": [
-              "enterspeed/key-concepts/overview",
-              "enterspeed/key-concepts/schemas",
-              "enterspeed/key-concepts/partial-schemas",
-              "enterspeed/key-concepts/index-schemas",
-              "enterspeed/key-concepts/referencing-schemas",
-              "enterspeed/key-concepts/source-entities",
-              "enterspeed/key-concepts/source-groups",
-              "enterspeed/key-concepts/routing",
-              "enterspeed/key-concepts/views",
-              "enterspeed/key-concepts/redirects",
-              "enterspeed/key-concepts/domains-hostnames",
-              "enterspeed/key-concepts/reprocessing"
-            ]
-          },
-          "enterspeed/user-login",
-          "enterspeed/service-limits"
-        ]
-      },
-      {
-        "group": "Schema reference",
-        "icon": "book-open-cover",
-        "pages": [
-          {
-            "group": "schemas",
+            "group": "Schema reference",
+            "icon": "book-open-cover",
             "pages": [
               {
-                "group": "JavaScript schemas",
+                "group": "schemas",
                 "pages": [
-                  "enterspeed/reference/js/intro",
-                  "enterspeed/reference/js/jsdoc",
                   {
-                    "group": "Full schema",
+                    "group": "JavaScript schemas",
                     "pages": [
-                      "enterspeed/reference/js/full-schema/intro",
-                      "enterspeed/reference/js/full-schema/triggers",
-                      "enterspeed/reference/js/full-schema/properties",
-                      "enterspeed/reference/js/full-schema/routes",
-                      "enterspeed/reference/js/full-schema/actions"
+                      "enterspeed/reference/js/intro",
+                      "enterspeed/reference/js/jsdoc",
+                      {
+                        "group": "Full schema",
+                        "pages": [
+                          "enterspeed/reference/js/full-schema/intro",
+                          "enterspeed/reference/js/full-schema/triggers",
+                          "enterspeed/reference/js/full-schema/properties",
+                          "enterspeed/reference/js/full-schema/routes",
+                          "enterspeed/reference/js/full-schema/actions"
+                        ]
+                      },
+                      {
+                        "group": "Index schema",
+                        "pages": [
+                          "enterspeed/reference/js/index-schema/intro",
+                          "enterspeed/reference/js/index-schema/triggers",
+                          "enterspeed/reference/js/index-schema/properties",
+                          "enterspeed/reference/js/index-schema/index-method"
+                        ]
+                      },
+                      {
+                        "group": "Partial schema",
+                        "pages": [
+                          "enterspeed/reference/js/partial-schema/intro",
+                          "enterspeed/reference/js/partial-schema/properties"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Index schema",
+                    "group": "JSON schemas",
+                    "tag": "Deprecated",
                     "pages": [
-                      "enterspeed/reference/js/index-schema/intro",
-                      "enterspeed/reference/js/index-schema/triggers",
-                      "enterspeed/reference/js/index-schema/properties",
-                      "enterspeed/reference/js/index-schema/index-method"
+                      "enterspeed/reference/json/property-types",
+                      "enterspeed/reference/json/expression",
+                      "enterspeed/reference/json/path-selector"
+                    ]
+                  }
+                ]
+              },
+              "enterspeed/reference/filter-expressions",
+              {
+                "group": "Schema example library",
+                "pages": [
+                  "enterspeed/reference/schema-example-library/overview"
+                ]
+              },
+              "enterspeed/reference/folders"
+            ]
+          },
+          {
+            "group": "API",
+            "icon": "code",
+            "openapi": "enterspeed/enterspeedv1Api.yaml",
+            "pages": [
+              "enterspeed/api/overview"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "icon": "plug",
+            "pages": [
+              "enterspeed/integrations/overview",
+              {
+                "group": "Source integrations",
+                "pages": [
+                  "enterspeed/integrations/commercetools",
+                  {
+                    "group": "Umbraco",
+                    "pages": [
+                      "enterspeed/integrations/umbraco/getting-started",
+                      "enterspeed/integrations/umbraco/getting-data",
+                      "enterspeed/integrations/umbraco/services",
+                      "enterspeed/integrations/umbraco/service-registration",
+                      "enterspeed/integrations/umbraco/enterspeed-value-converter",
+                      "enterspeed/integrations/umbraco/umbraco-content-entity",
+                      "enterspeed/integrations/umbraco/additional-properties",
+                      "enterspeed/integrations/umbraco/background-tasks",
+                      "enterspeed/integrations/umbraco/content-dashboard",
+                      "enterspeed/integrations/umbraco/culture-and-hostnames",
+                      "enterspeed/integrations/umbraco/database",
+                      "enterspeed/integrations/umbraco/enterspeed-guards",
+                      "enterspeed/integrations/umbraco/enterspeed-propertys-service",
+                      "enterspeed/integrations/umbraco/grid-editor-value-converters",
+                      "enterspeed/integrations/umbraco/jobs",
+                      "enterspeed/integrations/umbraco/publishing",
+                      "enterspeed/integrations/umbraco/redirects",
+                      "enterspeed/integrations/umbraco/troubleshooting",
+                      "enterspeed/integrations/umbraco/umbraco-cloud",
+                      "enterspeed/integrations/umbraco/umbraco-tagging",
+                      "enterspeed/integrations/umbraco/updating-package"
                     ]
                   },
+                  "enterspeed/integrations/umbraco-cloudinary",
                   {
-                    "group": "Partial schema",
+                    "group": "Sitecore",
                     "pages": [
-                      "enterspeed/reference/js/partial-schema/intro",
-                      "enterspeed/reference/js/partial-schema/properties"
+                      "enterspeed/integrations/sitecore/getting-started",
+                      "enterspeed/integrations/sitecore/getting-data",
+                      "enterspeed/integrations/sitecore/services",
+                      "enterspeed/integrations/sitecore/processed-entities",
+                      "enterspeed/integrations/sitecore/sitecorecontententity",
+                      "enterspeed/integrations/sitecore/enterspeed-value-converter"
                     ]
                   }
                 ]
               },
               {
-                "group": "JSON schemas",
-                "tag": "Deprecated",
+                "group": "Destination integrations",
                 "pages": [
-                  "enterspeed/reference/json/property-types",
-                  "enterspeed/reference/json/expression",
-                  "enterspeed/reference/json/path-selector"
+                  "enterspeed/integrations/webhooks",
+                  "enterspeed/integrations/algolia",
+                  "enterspeed/integrations/clerk",
+                  "enterspeed/integrations/elastic-app-search",
+                  "enterspeed/integrations/elasticsearch",
+                  "enterspeed/integrations/relewise",
+                  "enterspeed/integrations/servicebus",
+                  "enterspeed/integrations/shopify",
+                  "enterspeed/integrations/typesense"
                 ]
               }
             ]
           },
-          "enterspeed/reference/filter-expressions",
           {
-            "group": "Schema example library",
+            "group": "Tutorials",
+            "icon": "graduation-cap",
             "pages": [
-              "enterspeed/reference/schema-example-library/overview"
-            ]
-          },
-          "enterspeed/reference/folders"
-        ]
-      },
-      {
-        "group": "API",
-        "icon": "code",
-        "openapi": "enterspeed/enterspeedv1Api.yaml",
-        "pages": [
-          "enterspeed/api/overview"
-        ]
-      },
-      {
-        "group": "Integrations",
-        "icon": "plug",
-        "pages": [
-          "enterspeed/integrations/overview",
-          {
-            "group": "Source integrations",
-            "pages": [
-              "enterspeed/integrations/commercetools",
+              "enterspeed/tutorials/overview",
               {
-                "group": "Umbraco",
+                "group": "Creating a simple site",
                 "pages": [
-                  "enterspeed/integrations/umbraco/getting-started",
-                  "enterspeed/integrations/umbraco/getting-data",
-                  "enterspeed/integrations/umbraco/services",
-                  "enterspeed/integrations/umbraco/service-registration",
-                  "enterspeed/integrations/umbraco/enterspeed-value-converter",
-                  "enterspeed/integrations/umbraco/umbraco-content-entity",
-                  "enterspeed/integrations/umbraco/additional-properties",
-                  "enterspeed/integrations/umbraco/background-tasks",
-                  "enterspeed/integrations/umbraco/content-dashboard",
-                  "enterspeed/integrations/umbraco/culture-and-hostnames",
-                  "enterspeed/integrations/umbraco/database",
-                  "enterspeed/integrations/umbraco/enterspeed-guards",
-                  "enterspeed/integrations/umbraco/enterspeed-propertys-service",
-                  "enterspeed/integrations/umbraco/grid-editor-value-converters",
-                  "enterspeed/integrations/umbraco/jobs",
-                  "enterspeed/integrations/umbraco/publishing",
-                  "enterspeed/integrations/umbraco/redirects",
-                  "enterspeed/integrations/umbraco/troubleshooting",
-                  "enterspeed/integrations/umbraco/umbraco-cloud",
-                  "enterspeed/integrations/umbraco/umbraco-tagging",
-                  "enterspeed/integrations/umbraco/updating-package"
+                  "enterspeed/tutorials/creating-a-simple-site/intro",
+                  "enterspeed/tutorials/creating-a-simple-site/1-sources-environments",
+                  "enterspeed/tutorials/creating-a-simple-site/2-ingesting-data",
+                  "enterspeed/tutorials/creating-a-simple-site/3-designing-your-apis",
+                  "enterspeed/tutorials/creating-a-simple-site/4-fetching-data"
                 ]
               },
-              "enterspeed/integrations/umbraco-cloudinary",
               {
-                "group": "Sitecore",
+                "group": "Multilevel navigation",
                 "pages": [
-                  "enterspeed/integrations/sitecore/getting-started",
-                  "enterspeed/integrations/sitecore/getting-data",
-                  "enterspeed/integrations/sitecore/services",
-                  "enterspeed/integrations/sitecore/processed-entities",
-                  "enterspeed/integrations/sitecore/sitecorecontententity",
-                  "enterspeed/integrations/sitecore/enterspeed-value-converter"
+                  "enterspeed/tutorials/multilevel-navigation/1-getting-started",
+                  "enterspeed/tutorials/multilevel-navigation/2-create-schemas",
+                  "enterspeed/tutorials/multilevel-navigation/3-going-further",
+                  "enterspeed/tutorials/multilevel-navigation/4-wrap-up"
+                ]
+              },
+              {
+                "group": "Umbraco and Next.js",
+                "pages": [
+                  "enterspeed/tutorials/umbraco-nextjs/intro",
+                  "enterspeed/tutorials/umbraco-nextjs/1-sources-environments",
+                  "enterspeed/tutorials/umbraco-nextjs/2-configuring-umbraco",
+                  "enterspeed/tutorials/umbraco-nextjs/3-designing-your-apis",
+                  "enterspeed/tutorials/umbraco-nextjs/4-fetching-data-in-nextjs"
+                ]
+              },
+              {
+                "group": "Product list (CMS + PIM)",
+                "pages": [
+                  "enterspeed/tutorials/product-list-cms-pim/1-getting-started",
+                  "enterspeed/tutorials/product-list-cms-pim/2-data-sources-environment",
+                  "enterspeed/tutorials/product-list-cms-pim/3-ingest-data",
+                  "enterspeed/tutorials/product-list-cms-pim/4-create-schemas",
+                  "enterspeed/tutorials/product-list-cms-pim/5-wrap-up"
                 ]
               }
             ]
           },
           {
-            "group": "Destination integrations",
+            "group": "Best practices",
+            "icon": "compass",
             "pages": [
-              "enterspeed/integrations/webhooks",
-              "enterspeed/integrations/algolia",
-              "enterspeed/integrations/clerk",
-              "enterspeed/integrations/elastic-app-search",
-              "enterspeed/integrations/elasticsearch",
-              "enterspeed/integrations/relewise",
-              "enterspeed/integrations/servicebus",
-              "enterspeed/integrations/shopify",
-              "enterspeed/integrations/typesense"
+              "enterspeed/best-practices/overview",
+              "enterspeed/best-practices/ingest-integrations",
+              "enterspeed/best-practices/schemas",
+              "enterspeed/best-practices/indexes"
+            ]
+          },
+          {
+            "group": "CLI",
+            "icon": "terminal",
+            "pages": [
+              "enterspeed/tooling/cli/overview",
+              "enterspeed/tooling/cli/getting-started",
+              "enterspeed/tooling/cli/keep-schemas-in-version-control",
+              "enterspeed/tooling/cli/continuous-deployment",
+              "enterspeed/tooling/cli/developer-setup"
+            ]
+          },
+          {
+            "group": "MCP server",
+            "icon": "plug",
+            "pages": [
+              "enterspeed/mcp-server/overview",
+              "enterspeed/mcp-server/documentation-mcp/overview",
+              {
+                "group": "Query MCP",
+                "pages": [
+                  "enterspeed/mcp-server/query-mcp/overview",
+                  "enterspeed/mcp-server/query-mcp/connecting-an-agent",
+                  "enterspeed/mcp-server/query-mcp/connecting-a-client"
+                ]
+              },
+              {
+                "group": "Management MCP",
+                "pages": [
+                  "enterspeed/mcp-server/management-mcp/overview",
+                  "enterspeed/mcp-server/management-mcp/tools"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "group": "Tutorials",
-        "icon": "graduation-cap",
+        "product": "Speedtrain",
+        "description": "AI content accelerator",
+        "icon": "microchip-ai",
         "pages": [
-          "enterspeed/tutorials/overview",
           {
-            "group": "Creating a simple site",
+            "group": "Overview",
             "pages": [
-              "enterspeed/tutorials/creating-a-simple-site/intro",
-              "enterspeed/tutorials/creating-a-simple-site/1-sources-environments",
-              "enterspeed/tutorials/creating-a-simple-site/2-ingesting-data",
-              "enterspeed/tutorials/creating-a-simple-site/3-designing-your-apis",
-              "enterspeed/tutorials/creating-a-simple-site/4-fetching-data"
+              "speedtrain/intro",
+              "speedtrain/use-cases",
+              {
+                "group": "Getting started",
+                "pages": [
+                  {
+                    "group": "0 - Setup",
+                    "pages": [
+                      "speedtrain/getting-started/intro",
+                      "speedtrain/getting-started/tenants",
+                      "speedtrain/getting-started/content-source"
+                    ]
+                  },
+                  "speedtrain/ingest",
+                  {
+                    "group": "2 - Task configuration",
+                    "pages": [
+                      "speedtrain/transform/intro",
+                      "speedtrain/task-configuration/task-configuration",
+                      "speedtrain/task-configuration/quality-gates"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Key concepts",
+                "pages": [
+                  "speedtrain/key-concepts/task-configuration",
+                  "speedtrain/key-concepts/quality-gates"
+                ]
+              }
             ]
           },
           {
-            "group": "Multilevel navigation",
+            "group": "MCP servers",
+            "icon": "plug",
             "pages": [
-              "enterspeed/tutorials/multilevel-navigation/1-getting-started",
-              "enterspeed/tutorials/multilevel-navigation/2-create-schemas",
-              "enterspeed/tutorials/multilevel-navigation/3-going-further",
-              "enterspeed/tutorials/multilevel-navigation/4-wrap-up"
-            ]
-          },
-          {
-            "group": "Umbraco and Next.js",
-            "pages": [
-              "enterspeed/tutorials/umbraco-nextjs/intro",
-              "enterspeed/tutorials/umbraco-nextjs/1-sources-environments",
-              "enterspeed/tutorials/umbraco-nextjs/2-configuring-umbraco",
-              "enterspeed/tutorials/umbraco-nextjs/3-designing-your-apis",
-              "enterspeed/tutorials/umbraco-nextjs/4-fetching-data-in-nextjs"
-            ]
-          },
-          {
-            "group": "Product list (CMS + PIM)",
-            "pages": [
-              "enterspeed/tutorials/product-list-cms-pim/1-getting-started",
-              "enterspeed/tutorials/product-list-cms-pim/2-data-sources-environment",
-              "enterspeed/tutorials/product-list-cms-pim/3-ingest-data",
-              "enterspeed/tutorials/product-list-cms-pim/4-create-schemas",
-              "enterspeed/tutorials/product-list-cms-pim/5-wrap-up"
-            ]
-          }
-        ]
-      },
-      {
-        "group": "Best practices",
-        "icon": "compass",
-        "pages": [
-          "enterspeed/best-practices/overview",
-          "enterspeed/best-practices/ingest-integrations",
-          "enterspeed/best-practices/schemas",
-          "enterspeed/best-practices/indexes"
-        ]
-      },
-      {
-        "group": "CLI",
-        "icon": "terminal",
-        "pages": [
-          "enterspeed/tooling/cli/overview",
-          "enterspeed/tooling/cli/getting-started",
-          "enterspeed/tooling/cli/keep-schemas-in-version-control",
-          "enterspeed/tooling/cli/continuous-deployment",
-          "enterspeed/tooling/cli/developer-setup"
-        ]
-      },
-      {
-        "group": "MCP server",
-        "icon": "plug",
-        "pages": [
-          "enterspeed/mcp-server/overview",
-          "enterspeed/mcp-server/documentation-mcp/overview",
-          {
-            "group": "Query MCP",
-            "pages": [
-              "enterspeed/mcp-server/query-mcp/overview",
-              "enterspeed/mcp-server/query-mcp/connecting-an-agent",
-              "enterspeed/mcp-server/query-mcp/connecting-a-client"
-            ]
-          },
-          {
-            "group": "Management MCP",
-            "pages": [
-              "enterspeed/mcp-server/management-mcp/overview",
-              "enterspeed/mcp-server/management-mcp/tools"
+              "speedtrain/mcp-server/overview",
+              "speedtrain/mcp-server/documentation-mcp",
+              {
+                "group": "Speedtrain MCP",
+                "pages": [
+                  "speedtrain/mcp-server/speedtrain-mcp/overview"
+                ]
+              }
             ]
           }
         ]
