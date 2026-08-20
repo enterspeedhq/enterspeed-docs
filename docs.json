@@ -141,6 +141,19 @@
             "group": "Source integrations",
             "pages": [
               "enterspeed/integrations/commercetools",
+              "enterspeed/integrations/n8n",
+              "enterspeed/integrations/umbraco-cloudinary",
+              {
+                "group": "Sitecore",
+                "pages": [
+                  "enterspeed/integrations/sitecore/getting-started",
+                  "enterspeed/integrations/sitecore/getting-data",
+                  "enterspeed/integrations/sitecore/services",
+                  "enterspeed/integrations/sitecore/processed-entities",
+                  "enterspeed/integrations/sitecore/sitecorecontententity",
+                  "enterspeed/integrations/sitecore/enterspeed-value-converter"
+                ]
+              },
               {
                 "group": "Umbraco",
                 "pages": [
@@ -166,33 +179,22 @@
                   "enterspeed/integrations/umbraco/umbraco-tagging",
                   "enterspeed/integrations/umbraco/updating-package"
                 ]
-              },
-              "enterspeed/integrations/umbraco-cloudinary",
-              {
-                "group": "Sitecore",
-                "pages": [
-                  "enterspeed/integrations/sitecore/getting-started",
-                  "enterspeed/integrations/sitecore/getting-data",
-                  "enterspeed/integrations/sitecore/services",
-                  "enterspeed/integrations/sitecore/processed-entities",
-                  "enterspeed/integrations/sitecore/sitecorecontententity",
-                  "enterspeed/integrations/sitecore/enterspeed-value-converter"
-                ]
               }
             ]
           },
           {
             "group": "Destination integrations",
             "pages": [
-              "enterspeed/integrations/webhooks",
               "enterspeed/integrations/algolia",
               "enterspeed/integrations/clerk",
               "enterspeed/integrations/elastic-app-search",
               "enterspeed/integrations/elasticsearch",
+              "enterspeed/integrations/n8n",
               "enterspeed/integrations/relewise",
               "enterspeed/integrations/servicebus",
               "enterspeed/integrations/shopify",
-              "enterspeed/integrations/typesense"
+              "enterspeed/integrations/typesense",
+              "enterspeed/integrations/webhooks"
             ]
           }
         ]

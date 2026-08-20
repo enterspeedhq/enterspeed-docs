@@ -1,0 +1,43 @@
+---
+title: n8n
+---
+
+n8n makes it easy to integrate with 1000+ apps and services -- including Enterspeed.
+
+With the official verified Enterspeed node type in n8n you can easily build workflows for ingesting or pulling data in and out of Enterspeed.
+
+The Enterspeed node type basicly supports everything that our [REST API](http://localhost:3000/enterspeed/api/overview) does, so everything you can do outside n8n, you can do inside n8n.
+
+Check out the [Enterspeed n8n node type](https://n8n.io/integrations/enterspeed/) and the [official n8n documentation](https://docs.n8n.io/integrations/community-nodes/installation-and-management/install-verified-community-nodes) about how to get starting using the Enterspeed n8n node types.
+
+## Supported actions
+
+The Enterspeed node type supports the following actions:
+
+### Ingest
+
+| Action                               | Description                                          |
+| ------------------------------------ | ---------------------------------------------------- |
+| Save                                 | Ingest / update a source entity                      |
+| Delete                               | Delete a source entity permanently                   |
+| Bulk save                            | Ingest / update up to 50 source entities in one call |
+| Bulk delete                          | Delete up to 50 source entities in one call          |
+
+### Delivery
+
+| Action                               | Description                                          |
+| ------------------------------------ | ---------------------------------------------------- |
+| Get content                          | Retrieve a view by URL, ID, or handle                |
+
+### Query
+
+| Action                               | Description                                          |
+| ------------------------------------ | ---------------------------------------------------- |
+| Query Items                          | Query a single index                                 |
+| Multi Query Items                    | Run up to 5 queries in a single request              |
+
+### Route
+
+| Action                               | Description                                          |
+| ------------------------------------ | ---------------------------------------------------- |
+| Get Many                             | Retrieve a list of routes for the environment        |
