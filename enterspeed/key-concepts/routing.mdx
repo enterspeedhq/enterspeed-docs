@@ -57,6 +57,21 @@ The best way to solve this is to use absolute URLs in your schema (_e.g. [https:
 If you however want to use relative URLs, it can be done by adding a domain to your environment client with the hostname `root.tld`.
 </Note>
 
+<Warning>
+**Your handles work, but your URL routes are missing?**
+
+A URL route is only created if the hostname in the source entity's URL is already registered as a hostname on a domain **at the moment the content is processed**. If no matching hostname exists at that point, the URL route is skipped, and no error is returned. Handles are not affected - handle routes are created regardless of your domain setup.
+
+Adding the domain afterwards does not create the missing routes. Nothing rebuilds routes for content that has already been processed. To fix it, register the hostname(s) first, then deploy the schemas in each affected environment so the content is reprocessed. A Published environment with its own data source needs its own deployment.
+
+This is **not** the same problem as the relative-URL message above, and the fixes are different:
+
+- **Relative URLs** (_e.g. /about-us/_) that can't be matched - add the `root.tld` hostname.
+- **Absolute URLs** whose routes were never created - `root.tld` won't help. The actual hostname has to be registered, and the content has to be processed again afterwards.
+
+See [Domains & hostnames](/enterspeed/key-concepts/domains-hostnames#domains-must-exist-before-content-is-processed) for the full explanation.
+</Warning>
+
 ## Handle
 
 Handle differentiates a bit from URL routing. A handle can be whatever you would like.

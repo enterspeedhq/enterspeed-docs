@@ -3,7 +3,14 @@ title: Domains & hostnames
 sidebarTitle: Domains & hostnames
 ---
 
-Domains and hostnames are used to route your delivery API requests to ensure the correct data is returned. This is especially important if you have a multiple-site setup.
+Domains and hostnames tie your content to the site it belongs to. They do two different jobs, at two different points in time:
+
+- **When your content is processed**, the hostname in a source entity's URL decides whether a URL route is created for the resulting view. If the hostname isn't registered on a domain at that point, no URL route is created.
+- **When you request data**, the domains linked to your environment client decide which data the request can return, so you get the data for the right site.
+
+Both matter, but the first one is the one that catches people out, because it depends on the order you do things in. See [Domains must exist before content is processed](#domains-must-exist-before-content-is-processed).
+
+This is especially important if you have a multiple-site setup.
 
 ## Environment clients
 
@@ -30,6 +37,31 @@ Don't use the same domain for hostnames associated with different sites, as doma
 
 Using the same domain for hostnames associated with different sites can result in data from the wrong site being returned from the delivery API if two source entities have the same relative path.
 </Danger>
+
+## Domains must exist before content is processed
+
+A URL route is only created if the hostname in the source entity's URL is already registered as a hostname on a domain **at the moment the content is processed**. If no matching hostname exists at that point, the URL route is skipped, and no error is returned.
+
+Handles are not affected. Handle routes are created regardless of your domain setup, which is why this problem nearly always shows up the same way:
+
+<Warning>
+**Your handles work, but your URLs return nothing.**
+
+This usually means the content was processed before its hostname was registered on a domain.
+</Warning>
+
+Adding the domain afterwards does not create the missing routes. Nothing goes back and rebuilds routes for content that has already been processed, so the URL routes stay missing until that content is processed again.
+
+### How to fix it
+
+1. Register the missing hostname(s) on a domain, as described in [Setting up domains](/enterspeed/getting-started/domains).
+2. Then deploy the schemas that produce the URL routes. Deploying a schema reprocesses the source entities it triggers on, which creates the routes that were skipped.
+
+Do this in **every affected environment**. Environments are processed independently, so a Published environment with its own data source needs its own schema deployment - fixing your Preview environment does not fix it.
+
+<Tip>
+Register your hostnames *before* you publish or ingest the content that uses them. Getting the order right avoids the problem entirely.
+</Tip>
 
 ## Relative URL's
 

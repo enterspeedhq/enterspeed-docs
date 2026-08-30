@@ -157,6 +157,31 @@ In this case the triggering source entity (the `product`) now has the knowledge 
 When working with referenced dependencies from a `byOriginId` or `byOriginIds` call, you never need to reprocess the referencing schema when the dependencies are updated.
 </Tip>
 
+## Configuration changes that require reprocessing
+
+Dependencies aren't the only reason to reprocess. Some configuration is applied while your content is being processed, which means a change only affects content that is processed *after* the change. Existing views keep what they were given when they were processed.
+
+### Adding or changing a domain or hostname
+
+A URL route is only created if the hostname in the source entity's URL is already registered as a hostname on a domain **at the moment the content is processed**. If no matching hostname exists at that point, the URL route is skipped, and no error is returned. Handles are not affected - handle routes are created regardless of your domain setup.
+
+Adding the domain afterwards does not create the missing routes. Nothing rebuilds routes for content that has already been processed. So whenever you:
+
+- add a new hostname,
+- move a hostname to a different domain, or
+- register a domain for a site whose content is already in Enterspeed,
+
+the views that were already processed keep the routes they were originally given, and any URL route that was skipped stays missing.
+
+To pick up the change:
+
+1. Register the hostname(s) on a domain first.
+2. Then deploy the schemas that produce the URL routes. Deploying a schema reprocesses the source entities it triggers on, which creates the routes that were skipped.
+
+Do this in **every affected environment**. Environments are processed independently, so a Published environment with its own data source needs its own schema deployment.
+
+See [Domains & hostnames](/enterspeed/key-concepts/domains-hostnames#domains-must-exist-before-content-is-processed) for the full explanation.
+
 ## Reprocess actions
 We've talked about dependencies, the different types of dependencies, when you need to reprocess, and when you *don't* need to reprocess. So, we just need the last part - How do we reprocess other schemas when a dependency changes?
 
