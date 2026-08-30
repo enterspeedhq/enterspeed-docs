@@ -52,12 +52,14 @@ This usually means the content was processed before its hostname was registered 
 
 Adding the domain afterwards does not create the missing routes. Nothing goes back and rebuilds routes for content that has already been processed, so the URL routes stay missing until that content is processed again.
 
+Redirects work the same way. A redirect whose *from* URL uses an unregistered hostname is skipped for the same reason.
+
 ### How to fix it
 
 1. Register the missing hostname(s) on a domain, as described in [Setting up domains](/enterspeed/getting-started/domains).
 2. Then deploy the schemas that produce the URL routes. Deploying a schema reprocesses the source entities it triggers on, which creates the routes that were skipped.
 
-Do this in **every affected environment**. Environments are processed independently, so a Published environment with its own data source needs its own schema deployment - fixing your Preview environment does not fix it.
+Repeat step 2 in **every affected environment**. A domain is registered once for your tenant, but content is processed per environment, so a Published environment with its own data source needs its own schema deployment - fixing your Preview environment does not fix it.
 
 <Tip>
 Register your hostnames *before* you publish or ingest the content that uses them. Getting the order right avoids the problem entirely.
@@ -66,5 +68,9 @@ Register your hostnames *before* you publish or ingest the content that uses the
 ## Relative URL's
 
 If you only have one site, you could skip the hostnames and use the relative URL's instead. This will, behind the scene, create a hostname with the value of `root.tld`, making it possible to use relative URL's when requesting the delivery API.
+
+<Note>
+`root.tld` is a hostname like any other, and the rule above applies to it too. A relative URL is resolved to `root.tld` when the content is processed, so `root.tld` has to be registered on a domain *before* that happens. If it wasn't, adding it afterwards does not create the missing routes - the content has to be processed again.
+</Note>
 
 ![Relative URL's](/images/docs/key-concepts/relative-urls.png)

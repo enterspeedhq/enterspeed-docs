@@ -178,7 +178,7 @@ To pick up the change:
 1. Register the hostname(s) on a domain first.
 2. Then deploy the schemas that produce the URL routes. Deploying a schema reprocesses the source entities it triggers on, which creates the routes that were skipped.
 
-Do this in **every affected environment**. Environments are processed independently, so a Published environment with its own data source needs its own schema deployment.
+Repeat step 2 in **every affected environment**. A domain is registered once for your tenant, but content is processed per environment, so a Published environment with its own data source needs its own schema deployment.
 
 See [Domains & hostnames](/enterspeed/key-concepts/domains-hostnames#domains-must-exist-before-content-is-processed) for the full explanation.
 

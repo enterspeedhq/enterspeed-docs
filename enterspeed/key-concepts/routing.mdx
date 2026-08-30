@@ -66,8 +66,8 @@ Adding the domain afterwards does not create the missing routes. Nothing rebuild
 
 This is **not** the same problem as the relative-URL message above, and the fixes are different:
 
-- **Relative URLs** (_e.g. /about-us/_) that can't be matched - add the `root.tld` hostname.
-- **Absolute URLs** whose routes were never created - `root.tld` won't help. The actual hostname has to be registered, and the content has to be processed again afterwards.
+- **Relative URLs** (_e.g. /about-us/_) that can't be matched - add the `root.tld` hostname. Note that `root.tld` is resolved when the content is processed, just like any other hostname, so content that was already processed without it still has to be processed again.
+- **Absolute URLs** whose routes were never created - `root.tld` won't help. The actual hostname has to be registered on a domain, and the content has to be processed again afterwards.
 
 See [Domains & hostnames](/enterspeed/key-concepts/domains-hostnames#domains-must-exist-before-content-is-processed) for the full explanation.
 </Warning>
