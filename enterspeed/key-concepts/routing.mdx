@@ -116,7 +116,7 @@ Do not use this as a way to choose which view wins. Because it follows processin
 
 ### Finding duplicate routes
 
-The **Tenant health** tile on the dashboard lists the duplicate routes across your environments, worst first, together with the schemas that claim each one. Open a route in the **route inspector** to see every view behind it and which one is returned.
+The **Tenant health** tile on the dashboard lists the duplicate routes across your environments, worst first, together with the schemas that claim each one. The schema whose view the Delivery API returns today is marked `(returned)`. Check it before you decide which schema keeps the route, so that resolving the duplicate does not quietly change what your application receives. Open a route in the **route inspector** to see every view behind it.
 
 Duplicate routes are detected as routes are written, not when you open the tile. A new collision appears once the colliding content is next processed, and one you have resolved disappears on the following refresh rather than immediately.
 
