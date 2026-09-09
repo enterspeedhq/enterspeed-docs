@@ -37,6 +37,10 @@ Handle allows you to specify a key from which you can fetch the view from the De
 | ------------ | ------- | --------------------------------------------------------------------------- |
 | `handle`     | string  | The key you use to fetch the view from the Delivery API                     |
 
+<Note>
+A view can have several handles, and a handle is not exclusive to one view. If more than one view uses the same handle, only one of them is returned by the Delivery API. See [Duplicate routes](/enterspeed/key-concepts/routing#duplicate-routes).
+</Note>
+
 ### lookup
 
 Lookup allows you to search source entities using a filter string and build dynamic handles or URLS based on data from other source entities.
@@ -178,6 +182,10 @@ url allows you to specify a url from which you can fetch the view from the deliv
 | ------------ | ------- | --------------------------------------------------------------------------- |
 | `url`        | string  | The url you use to fetch the view from the Delivery API                     |
 
+
+<Note>
+A view can only have one url, but the same url can be claimed by several views. If that happens, only one of them is returned by the Delivery API. See [Duplicate routes](/enterspeed/key-concepts/routing#duplicate-routes).
+</Note>
 
 ##### Optional function calls
 
