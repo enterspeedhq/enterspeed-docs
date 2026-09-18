@@ -22,13 +22,30 @@ The destination is the same in both cases. What differs is the shape of the view
 | **What Speedtrain does** | Stores the record in the index | Stores it, then runs the task configurations you named |
 | **Use when** | The sending system just wants its data indexed, or enrichment is started later from Speedtrain | Enterspeed should decide what gets enriched, and how |
 
+## Configuration
+
+The destination is configured per Enterspeed environment, so a destination set up in `Development` is separate from the one in `Production`. In order to setup the Speedtrain configuration you need the following:
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| Environment client                    | The Enterspeed environment client used to fetch the view that will be pushed to Speedtrain |
+| API key                               | A Speedtrain management client key. Created under **Settings → Management Clients** in Speedtrain |
+
+<Info>
+A Speedtrain management client belongs to one tenant and one environment, so the API key is what decides which Speedtrain environment the data lands in. There is no separate tenant or URL setting. [Management clients](/speedtrain/settings/management-clients)
+</Info>
+
+<Warning>
+Point a `Development` Enterspeed environment at a Speedtrain key for the same stage. A key created in one Speedtrain environment cannot reach another, so a mismatched pairing fails rather than writing to the wrong place.
+</Warning>
+
 ## Options
 
 Options are set on the destination in the schema's `actions` method.
 
 | Option      | Required | Description                                                      |
 | ----------- | -------- | ---------------------------------------------------------------- |
-| `indexAlias` | Required | The alias of the Speedtrain index this view is written to |
+| `indexAlias` | Required | The alias of the Speedtrain index this view is written to. The index lives in the Speedtrain environment the API key is scoped to |
 
 ## Example of usage
 
