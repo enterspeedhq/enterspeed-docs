@@ -53,7 +53,7 @@ Free-text context for generation only — campaign notes, edge cases, one-off gu
 
 ## Versions
 
-A configuration is versioned, and exactly one version is **active** at a time.
+A configuration is versioned, and exactly one version is **published** at a time.
 
 <Steps>
   <Step title="Draft">
@@ -64,13 +64,13 @@ A configuration is versioned, and exactly one version is **active** at a time.
     Run a preview session against the draft version and inspect the results — particularly the rejected items, whose feedback names the failing rule.
   </Step>
 
-  <Step title="Activate">
-    Publishing makes the version live. Activation names the version it displaces, so rollback is a single action.
+  <Step title="Publish">
+    Publishing makes the version live and names the version it displaces, so rollback is a single action.
   </Step>
 </Steps>
 
 <Warning>
-  Never let activation be the first time a version runs. Preview first.
+  Never let publishing be the first time a version runs. Preview first.
 </Warning>
 
 ## Every constraint in exactly one place

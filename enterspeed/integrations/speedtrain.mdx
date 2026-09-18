@@ -112,7 +112,7 @@ The view carries an `actions` array naming the task configurations to run, along
  * and how its output should be approved.
  *
  * @typedef {object} SpeedtrainAction
- * @property {{ alias: string }} taskConfiguration Alias of the task configuration (its ACTIVE version is used).
+ * @property {{ alias: string }} taskConfiguration Alias of the task configuration (its PUBLISHED version is used).
  * @property {TaskBinding} binding
  * @property {ApprovalPolicy} [lastMilePolicy] Omit to let Speedtrain apply its own default.
  */
@@ -198,13 +198,13 @@ When something should run, the source entity's `properties` carry two keys: `act
 | Field | Rules |
 |---|---|
 | `actions` | Array, one entry per enrichment you want run. Two entries means two runs against the same record. An empty array or an omitted key means the record is indexed and nothing runs |
-| `taskConfiguration.alias` | Required string. Must match a task configuration alias in the Speedtrain tenant that has an ACTIVE version |
+| `taskConfiguration.alias` | Required string. Must match a task configuration alias in the Speedtrain tenant that has a published version |
 | `binding` | Object of string values. Keys must match the input names the task configuration declares — `Language` above is an input of `generate-seo-titles-and-descriptions`. Use `{}` for a task configuration with no inputs |
 | `lastMilePolicy` | Optional. One of `AUTO_APPROVE`, `SMART_APPROVAL`, `MANUAL`. Omit it and Speedtrain applies the task configuration's own setting |
 | `value` | Required object. The content itself, untouched by the schema |
 
 <Warning>
-There is no version pinning in `taskConfiguration`. You get whichever version is ACTIVE at the moment the record is processed, so activating a new version changes what runs for every record that arrives afterwards. [Task configurations](/speedtrain/key-concepts/task-configurations)
+There is no version pinning in `taskConfiguration`. You get whichever version is published at the moment the record is processed, so publishing a new version changes what runs for every record that arrives afterwards. [Task configurations](/speedtrain/key-concepts/task-configurations)
 </Warning>
 
 ## What Speedtrain receives
