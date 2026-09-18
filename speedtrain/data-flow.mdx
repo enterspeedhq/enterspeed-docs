@@ -51,7 +51,7 @@ flowchart LR
 
     Because the destination is set per schema, you choose exactly which data crosses over — not the whole environment.
 
-    The view can also carry an `actions` array naming the task configurations to run, so Enterspeed decides not just *what* crosses over but *what happens to it*. Send the data on its own instead, and Speedtrain simply indexes it until someone starts a session.
+    The view can also carry an `actions` array naming the task configurations to run. That normally originates in the system the data came from — a button in the customer's own admin that asks for a specific task — and Enterspeed passes it through untouched. Send the data on its own instead, and Speedtrain indexes it until someone starts a session there.
 
     [Speedtrain destination](/enterspeed/integrations/speedtrain) · [Schemas](/enterspeed/key-concepts/schemas) · [Content sources](/speedtrain/key-concepts/content-sources)
   </Step>

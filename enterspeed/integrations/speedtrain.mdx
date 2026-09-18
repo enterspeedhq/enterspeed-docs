@@ -19,8 +19,12 @@ The destination is the same in both cases. What differs is the shape of the view
 | | Data only | Data with enrichment |
 |---|---|---|
 | **View shape** | Your properties, passed through | An envelope of `actions` and `value` |
-| **What Speedtrain does** | Stores the record in the index | Stores it, then runs the task configurations you named |
-| **Use when** | The sending system just wants its data indexed, or enrichment is started later from Speedtrain | Enterspeed should decide what gets enriched, and how |
+| **What Speedtrain does** | Stores the record in the index | Stores it, then runs the task configurations the envelope names |
+| **Use when** | The sending system just wants its data indexed, or enrichment is started later from Speedtrain | The sending system decides what to run — a button in the customer's own admin that triggers a specific task, for example |
+
+<Info>
+In both cases Enterspeed is a pass-through. The `actions` array is authored by the source system and travels in the source entity it pushes; the schema does not build it. Enterspeed *can* construct the envelope itself, but normally does not — control stays where the trigger is.
+</Info>
 
 ## Configuration
 
@@ -162,7 +166,7 @@ Both schemas above are pure proxies — no lookups, no validation, no remapping.
 
 ## The enrichment envelope
 
-When you want Speedtrain to run something, the source entity's `properties` carry two keys: `actions` and `value`. Everything under `properties` is controlled by the sending system.
+When something should run, the source entity's `properties` carry two keys: `actions` and `value`. Everything under `properties` is controlled by the sending system — it decides which tasks to request when it pushes the entity, and the schema passes that through unchanged.
 
 ```json title="Sample source entity"
 {
