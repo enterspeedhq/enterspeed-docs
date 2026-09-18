@@ -197,6 +197,7 @@
                   "enterspeed/integrations/relewise",
                   "enterspeed/integrations/servicebus",
                   "enterspeed/integrations/shopify",
+                  "enterspeed/integrations/speedtrain",
                   "enterspeed/integrations/typesense"
                 ]
               }
@@ -303,6 +304,7 @@
             "group": "Overview",
             "pages": [
               "speedtrain/intro",
+              "speedtrain/data-flow",
               "speedtrain/how-it-works",
               "speedtrain/use-cases"
             ]

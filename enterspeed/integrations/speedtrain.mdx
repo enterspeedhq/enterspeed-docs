@@ -1,0 +1,89 @@
+---
+title: Speedtrain
+---
+
+The Enterspeed Speedtrain integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to send data from views directly into a Speedtrain index. This means that you can decide on schema level which views you want enriched by AI.
+
+You will only have to set the destination field on the entity schema you want to send to Speedtrain. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
+
+It's possible to configure multiple Speedtrain destinations if you need to push different types of data to different indexes.
+
+<Info>
+This is the outbound half of the round trip. Content that Speedtrain produces comes **back** into Enterspeed as source entities, through a destination configured on the Speedtrain side. See [how data moves between Enterspeed and Speedtrain](/speedtrain/data-flow) for the full picture.
+</Info>
+
+## Configuration
+
+In order to setup the Speedtrain configuration you need the following:
+
+| Setting                               | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| Speedtrain Index Alias                | The alias of the Speedtrain index the views should be pushed to. The index must exist before the destination is used |
+| Speedtrain Environment                | The Speedtrain tenant and environment that owns the index. A management client is scoped to one environment, so this must match the key below |
+| Speedtrain Management Client API Key  | The API key used to push documents into the index. Created under **Settings → Management Clients** in Speedtrain |
+| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be pushed to Speedtrain |
+
+<Warning>
+A management client belongs to one tenant and one environment. A key created in a demo environment cannot reach production, so a destination pointed at the wrong key fails rather than writing to the wrong place.
+</Warning>
+
+## Example of usage
+
+<Tabs>
+<Tab title="JavaScript">
+
+```js title="Schema with Speedtrain destination"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function (context) {
+    context.triggers('pim', ['product']);
+  },
+  properties: function (sourceEntity) {
+    return {
+      sku: sourceEntity.properties.sku,
+      title: sourceEntity.properties.title,
+      material: sourceEntity.properties.material,
+      colour: sourceEntity.properties.colour
+    };
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('speedtrain');
+  }
+};
+```
+
+</Tab>
+</Tabs>
+
+## What Speedtrain receives
+
+Each view pushed to Speedtrain becomes one document in the index. The document keeps the shape your schema produced, so the fields you map are the fields the AI sees.
+
+<Tip>
+Send the raw attributes rather than a pre-written summary. A model does better work from structured fields than from prose someone else already condensed.
+</Tip>
+
+### Images
+
+To let a vision-capable model see your product photos, map a top-level `$images` array in the view:
+
+```js title="Schema mapping images for Speedtrain"
+properties: function (sourceEntity) {
+  return {
+    sku: sourceEntity.properties.sku,
+    title: sourceEntity.properties.title,
+    $images: sourceEntity.properties.media.map(m => ({
+      url: m.url,
+      text: m.altText
+    }))
+  };
+}
+```
+
+The `url` must be absolute and publicly fetchable, because the model provider fetches it directly. [Document shape](/speedtrain/getting-started/content-source)
+
+## Getting the content back
+
+Enriched content does not return through this destination. Speedtrain delivers accepted content into an Enterspeed source of its own, where it arrives as source entities and is picked up by your schemas like any other input.
+
+Set that up on the Speedtrain side. [Speedtrain destinations](/speedtrain/key-concepts/destinations)
