@@ -1,0 +1,39 @@
+---
+title: "Workflows"
+description: "Connecting a content source to a task configuration so documents are processed continuously rather than session by session."
+---
+
+<Info>
+  Workflows are a **preview** feature. The behaviour described here may change.
+</Info>
+
+A **workflow** connects a content source to a task configuration, so that new and changed documents are processed automatically instead of you starting a session by hand each time.
+
+Open **Workflows** to see them as a canvas: content sources on the left, the task configurations they feed on the right.
+
+## What the canvas shows
+
+| Element | Meaning |
+|---|---|
+| A source connected to a configuration | Documents from that source are processed by that configuration |
+| **Published** badge | The connection is running against the active version |
+| **Draft** badge | The connection exists but is not live |
+| **No live automation** | The configuration is not connected to any source, and runs only from manual sessions |
+
+The **Latest** and **Published** toggle switches between what you are editing and what is actually running.
+
+## When to use one
+
+A workflow suits a job that is genuinely continuous — a catalogue that changes daily, a content source that receives new records without warning.
+
+For a job that runs occasionally, or for anything still being tuned, manual review sessions give you more control over exactly what runs and when.
+
+<Warning>
+  Connect a workflow only once the configuration is performing well in review sessions. Automation multiplies whatever the configuration currently does, including its mistakes.
+</Warning>
+
+## Chained stages
+
+A workflow can also connect one task's stage output to the next task, which is how a multi-stage pipeline runs continuously — extract attributes in stage one, write copy from them in stage two.
+
+Remember that a chained stage carries no images: any configuration that needs to see pictures must sit first in the chain, directly on the index. [Content sources](/speedtrain/key-concepts/content-sources)

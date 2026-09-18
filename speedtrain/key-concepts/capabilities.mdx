@@ -1,0 +1,70 @@
+---
+title: "Capabilities"
+description: "Tools the model may call during a run, and the images capability that lets a vision model see the document's pictures."
+---
+
+Capabilities are extra powers a configuration declares. Two different things live under this heading, and they behave differently.
+
+## Tool capabilities
+
+Things the model may **call** during a run:
+
+| Capability | What it does |
+|---|---|
+| Data lookup | Query an Enterspeed index during generation or evaluation |
+| Query indexes | A broader index query capability |
+| MCP server | Tools from an external MCP server |
+| Web search | Search the web |
+
+These need platform-side credentials and are configured in the Speedtrain UI. [Tool credentials](/speedtrain/settings/tool-credentials)
+
+<Tip>
+  Live lookup beats pasted data. If reference information changes — stock, pricing tiers, a taxonomy — a capability keeps it current in a way a constant in the prompt cannot.
+</Tip>
+
+## The images capability
+
+This one is not a tool. It attaches the input document's pictures to the model call, so that a vision-capable model actually **sees** them instead of reading a URL as text.
+
+```json
+{
+  "$type": "images",
+  "uid": "img-1",
+  "name": "Product photos",
+  "scope": { "generation": true },
+  "onMissing": "FAIL"
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `uid` | Unique handle. A quality rule opts into the pictures by listing this value. |
+| `name` | Display name only — never rendered to the model as a callable tool. |
+| `scope.generation` | Whether the **generation** call gets the pictures. It does not gate quality rules. |
+| `onMissing` | `FAIL` or `SKIP` — what happens to a document with no usable pictures. Case-sensitive. |
+
+### Three rules that bite
+
+<Warning>
+  - **At most one images capability per configuration.** `onMissing` is therefore one decision for the whole job.
+  - **Nothing happens until a consumer opts in.** Declaring the capability while neither generation nor any rule uses it means the job still runs text-only.
+  - **The model must be vision-capable**, for the specialist *and* for every rule that opts in. Nothing checks this when you save — it surfaces at run time as a failed attempt.
+</Warning>
+
+### Checking pictures with a different model
+
+Generation and evaluation are separate calls with separate models. That is the property worth designing around: a strong model can write the description while a cheaper vision model — from a different vendor, if you like — independently checks that the colour and garment type named in the text match the photo.
+
+The evaluator starts from a clean context. It never sees the specialist prompt or the generation conversation — only the output, its own rule, and the images it opted into. Its verdict is a second opinion, not a model grading its own homework.
+
+<Info>
+  Images and source access are **independent** knobs. A rule can be given the pictures but not the source text, which is exactly the shape for "does this text match the photo, judged on the photo alone".
+</Info>
+
+### What cannot see pictures
+
+Schema and forbidden-terms rules are structurally text-only. Anything about the picture is a question for an AI rule — or better, where possible, a deterministic check on the resulting *text*.
+
+<Warning>
+  A vision rule is a model call with images attached on every item, which makes it the most expensive kind of check available. Put the vision question in one rule rather than three.
+</Warning>

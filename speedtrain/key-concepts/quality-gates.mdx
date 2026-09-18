@@ -1,0 +1,58 @@
+---
+title: "Quality gates"
+description: "How individual rule scores aggregate into an accept or reject verdict, and the arithmetic behind each gate."
+---
+
+The quality gate turns a set of rule scores into one verdict. It is **deterministic arithmetic** — no model is involved at this step.
+
+## The three gates
+
+| Gate | Accepts when | Character |
+|---|---|---|
+| `strict` | Every score is 4 or higher | One miss sends the item to a person. |
+| `balanced` | At least 70% of scores are 4 or higher **and** no score is below 2 | The default. Any outright failure vetoes the item. |
+| `lenient` | The average score is 3 or higher | A failure can be outvoted by enough passes. |
+
+If no rules apply, the gate passes — there is nothing to fail.
+
+## The arithmetic worth knowing
+
+<AccordionGroup>
+  <Accordion title="Under strict and balanced, any single failure rejects the item" icon="triangle-exclamation">
+    A score of 1 on any pass/fail or deterministic rule trips the floor. Deterministic rules are therefore hard gates under these two settings — which is usually what you want, since they only fail on things that are objectively wrong.
+  </Accordion>
+
+  <Accordion title="Under balanced, middling scores drag the ratio" icon="calculator">
+    Custom-scored rules returning 2 or 3 do not trip the floor, but they do count against the 70% threshold.
+
+    With only three rules, a single custom rule scoring 3 already means just 67% are at 4 or above — a reject. Few rules combined with custom scoring makes for a twitchy gate. Know the arithmetic before mixing them.
+  </Accordion>
+
+  <Accordion title="Under lenient, a hard failure can pass" icon="circle-exclamation">
+    Scores of 5, 5 and 1 average 3.67, which is accepted **despite** the failure.
+
+    Never use `lenient` alongside brand-critical deterministic rules.
+  </Accordion>
+</AccordionGroup>
+
+## Choosing one
+
+`balanced` is the default and right for most configurations.
+
+Move to `strict` when every rule is genuinely blocking. Use `lenient` only when the rules are advisory.
+
+## Calibrating to your economics
+
+<Info>
+  What happens to a rejected item decides the right strictness.
+
+  In Speedtrain's normal flow a rejection lands in a human review queue, which makes false rejections cheap and **missed violations** the expensive error. That argues for keeping deterministic rules strict and AI rules narrow.
+
+  If rejection instead triggers costly retries, bias the other way.
+</Info>
+
+## Routing
+
+The gate's verdict drives what happens next. Accepted items can auto-approve; rejected items go to human review with the failing rule's feedback attached, where a person can accept, decline, or retry.
+
+All decisions happen in the Speedtrain UI. [Review sessions](/speedtrain/key-concepts/review-sessions)

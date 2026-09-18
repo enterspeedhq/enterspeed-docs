@@ -1,0 +1,40 @@
+---
+title: "Management clients"
+description: "API keys for ingesting documents and integrating Speedtrain with CLI tools and other systems."
+---
+
+A **management client** is an API key that lets an external system talk to Speedtrain — pushing documents into an index, or driving the platform from a CLI or integration.
+
+Find them under **Settings → Management Clients**.
+
+## Creating one
+
+<Steps>
+  <Step title="Add a client">
+    Give it a name that says what uses it, not who created it. *PIM ingestion* is useful; *Frederik's key* is not.
+  </Step>
+
+  <Step title="Copy the key">
+    The key is shown once, when it is created.
+  </Step>
+
+  <Step title="Store it in your secret manager">
+    Then configure the system that needs it to read it from there.
+  </Step>
+</Steps>
+
+<Warning>
+  Never paste an API key into a chat, a ticket, a document, or source control. Keys belong in a secret manager or in environment variables.
+</Warning>
+
+## Scope
+
+A management client belongs to one tenant and one environment. A key created in `Demo` cannot reach `Production`, which is deliberate — it means a misconfigured integration pointed at the wrong key fails loudly rather than writing to the wrong place.
+
+## Rotation
+
+Create the replacement, move the consumers over, then remove the old client. Keys do not expire on their own, so periodic rotation is worth scheduling.
+
+<Info>
+  If a key may have been exposed, delete it immediately and issue a new one. A deleted client stops working at once.
+</Info>

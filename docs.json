@@ -296,57 +296,69 @@
       },
       {
         "product": "Speedtrain",
-        "description": "AI content accelerator",
+        "description": "Governed AI content enrichment",
         "icon": "microchip-ai",
         "pages": [
           {
             "group": "Overview",
             "pages": [
               "speedtrain/intro",
-              "speedtrain/use-cases",
-              {
-                "group": "Getting started",
-                "pages": [
-                  {
-                    "group": "0 - Setup",
-                    "pages": [
-                      "speedtrain/getting-started/intro",
-                      "speedtrain/getting-started/tenants",
-                      "speedtrain/getting-started/content-source"
-                    ]
-                  },
-                  "speedtrain/ingest",
-                  {
-                    "group": "2 - Task configuration",
-                    "pages": [
-                      "speedtrain/transform/intro",
-                      "speedtrain/task-configuration/task-configuration",
-                      "speedtrain/task-configuration/quality-gates"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Key concepts",
-                "pages": [
-                  "speedtrain/key-concepts/task-configuration",
-                  "speedtrain/key-concepts/quality-gates"
-                ]
-              }
+              "speedtrain/how-it-works",
+              "speedtrain/use-cases"
             ]
           },
           {
-            "group": "MCP servers",
+            "group": "Getting started",
+            "icon": "circle-play",
+            "pages": [
+              "speedtrain/getting-started/intro",
+              "speedtrain/getting-started/tenants-and-environments",
+              "speedtrain/getting-started/content-source",
+              "speedtrain/getting-started/task-configuration",
+              "speedtrain/getting-started/preview-and-review",
+              "speedtrain/getting-started/publish"
+            ]
+          },
+          {
+            "group": "Key concepts",
+            "icon": "lightbulb-on",
+            "pages": [
+              "speedtrain/key-concepts/overview",
+              "speedtrain/key-concepts/content-sources",
+              "speedtrain/key-concepts/task-configurations",
+              "speedtrain/key-concepts/ai-specialists",
+              "speedtrain/key-concepts/variants",
+              "speedtrain/key-concepts/capabilities",
+              "speedtrain/key-concepts/quality-checks",
+              "speedtrain/key-concepts/quality-gates",
+              "speedtrain/key-concepts/review-sessions",
+              "speedtrain/key-concepts/destinations",
+              "speedtrain/key-concepts/workflows"
+            ]
+          },
+          {
+            "group": "Authoring guide",
+            "icon": "compass",
+            "pages": [
+              "speedtrain/authoring/placement",
+              "speedtrain/authoring/best-practices",
+              "speedtrain/authoring/troubleshooting"
+            ]
+          },
+          {
+            "group": "Settings",
+            "icon": "gear",
+            "pages": [
+              "speedtrain/settings/management-clients",
+              "speedtrain/settings/tool-credentials"
+            ]
+          },
+          {
+            "group": "MCP server",
             "icon": "plug",
             "pages": [
               "speedtrain/mcp-server/overview",
-              "speedtrain/mcp-server/documentation-mcp",
-              {
-                "group": "Speedtrain MCP",
-                "pages": [
-                  "speedtrain/mcp-server/speedtrain-mcp/overview"
-                ]
-              }
+              "speedtrain/mcp-server/tools"
             ]
           }
         ]

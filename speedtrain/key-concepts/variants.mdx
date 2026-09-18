@@ -1,0 +1,69 @@
+---
+title: "Variants"
+description: "Dimensions the output varies across — language, brand, audience — and how to tell a dimension from a field."
+---
+
+A **variant** is one dimension of customisation. Language, brand, audience, and persona are the usual ones.
+
+Each dimension has **options**, and each option carries **fields** describing it:
+
+```json
+{
+  "label": "Audience",
+  "instruction": "Adapt tone, complexity, and messaging to resonate with this target group.",
+  "options": {
+    "B2B": [
+      { "key": "Description", "value": "Business professionals and decision-makers" },
+      { "key": "Communication style", "value": "Professional, outcome-focused" }
+    ],
+    "B2C": [
+      { "key": "Description", "value": "General public" },
+      { "key": "Communication style", "value": "Friendly and conversational" }
+    ]
+  }
+}
+```
+
+| Part | Meaning |
+|---|---|
+| `label` | The dimension name. Sessions bind to it, and rules can be scoped by it. |
+| `instruction` | Prose telling the model how to use this dimension. Sensible defaults exist per type. |
+| `options` | Option name to a list of `key`/`value` fields. |
+
+## One option per dimension, per session
+
+When a session starts, exactly one option is chosen per dimension — and **each combination produces its own separate output**.
+
+Two languages and two audiences is four generations per record, and four times the cost.
+
+## Dimension or field?
+
+<Info>
+  **The deciding test:** does this thing need its own output candidate per option?
+
+  If yes, it is a dimension. If it is additional information that shapes the *same* output — tone notes, reading level, terminology — it is a field on an existing option.
+</Info>
+
+Getting this wrong in the direction of too many dimensions is expensive, because the combinations multiply. Keep to three or four dimensions at most.
+
+## Why variants, and not the prompt
+
+Variant fields are injected into the generation prompt **and** into every AI quality check's context. That is what makes them different from special instructions or prompt text.
+
+Anything that must be *quality-checkable* — brand voice, terminology, audience traits — belongs in a variant, because it is the only way the checker knows what the writer was told.
+
+## Curating fields
+
+- Two or three fields per option is the safe baseline
+- Four to six needs testing
+- Seven or more risks the model quietly dropping some
+
+<Tip>
+  Every field is a constraint the model has to hold simultaneously. If removing a field would not change the output, remove it.
+</Tip>
+
+Keep the default instruction unless you have a specific reason to change it.
+
+## Scoping rules to variants
+
+A quality rule can be scoped to specific options — a forbidden-terms list that applies only to Danish, a formality check only for German. A rule that does not match the session's combination is not even shown to the generator. [Quality checks](/speedtrain/key-concepts/quality-checks)

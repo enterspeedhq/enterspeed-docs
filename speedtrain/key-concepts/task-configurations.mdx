@@ -1,0 +1,80 @@
+---
+title: "Task configurations"
+description: "The versioned document that defines one repeatable AI content job, and what each part of it controls."
+---
+
+A task configuration defines one repeatable AI content job. It answers five questions and deliberately leaves out a sixth.
+
+| Question | Answered by |
+|---|---|
+| Who is the AI? | [Specialist](/speedtrain/key-concepts/ai-specialists) |
+| What does the output vary across? | [Variants](/speedtrain/key-concepts/variants) |
+| What extra powers does it have? | [Capabilities](/speedtrain/key-concepts/capabilities) |
+| How is the output judged? | [Quality checks](/speedtrain/key-concepts/quality-checks) and the [quality gate](/speedtrain/key-concepts/quality-gates) |
+| What shape is the output? | A JSON Schema quality rule |
+| **What data does it run over?** | **Not the configuration** — chosen when a session starts |
+
+That last row is the important one. Because the input is bound at session time, one configuration serves many feeds. [Content sources](/speedtrain/key-concepts/content-sources)
+
+## Anatomy
+
+Underneath the editor, a configuration is a JSON document:
+
+```json
+{
+  "$type": "CHAT_COMPLETION@3",
+  "specialist": {
+    "alias": "Product content writer",
+    "model": { "id": "<deployment model id>" },
+    "prompt": "<role-only system prompt>"
+  },
+  "output": { "$type": "JSON" },
+  "variants": [],
+  "capabilities": [],
+  "qualityChecks": {
+    "qualityGate": { "$type": "balanced" },
+    "rules": []
+  },
+  "specialInstructions": ""
+}
+```
+
+<Info>
+  `output` is a fixed value — `{ "$type": "JSON" }` and nothing else. It does **not** define the output's shape. The shape contract lives in a JSON Schema quality rule, where it can actually be enforced.
+</Info>
+
+### Special instructions
+
+Free-text context for generation only — campaign notes, edge cases, one-off guidance.
+
+<Warning>
+  Quality checks never see special instructions. Anything that must be validated belongs in a rule or a variant, not here.
+</Warning>
+
+## Versions
+
+A configuration is versioned, and exactly one version is **active** at a time.
+
+<Steps>
+  <Step title="Draft">
+    Saving creates or updates a draft. Drafts affect nothing that is running.
+  </Step>
+
+  <Step title="Test">
+    Run a preview session against the draft version and inspect the results — particularly the rejected items, whose feedback names the failing rule.
+  </Step>
+
+  <Step title="Activate">
+    Publishing makes the version live. Activation names the version it displaces, so rollback is a single action.
+  </Step>
+</Steps>
+
+<Warning>
+  Never let activation be the first time a version runs. Preview first.
+</Warning>
+
+## Every constraint in exactly one place
+
+The most common way a configuration goes wrong is duplication — the same limit stated in the specialist prompt, again in special instructions, and again in a rule. They drift, and only the rule is enforced.
+
+[Where each requirement belongs](/speedtrain/authoring/placement) gives the placement rule for every kind of requirement.

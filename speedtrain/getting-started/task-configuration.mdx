@@ -1,0 +1,100 @@
+---
+title: "Build a task configuration"
+description: "Walk through the task configuration editor and build a working job from an empty configuration."
+---
+
+A task configuration describes one repeatable content job. This page walks through the editor top to bottom and builds a simple product description task.
+
+Open **Task configurations** and click **Add config**.
+
+## 1. Choose an AI specialist
+
+The specialist is the role the model plays, and the model it runs on. Pick one that matches the job — a content writer for marketing copy, an extractor for structured attributes.
+
+The specialist prompt describes **who the AI is and how it behaves**. It does not describe the output format, the field limits, or the quality criteria — the platform injects those from elsewhere in the configuration.
+
+<Warning>
+  Resist the urge to write everything into this prompt. A requirement repeated in the prompt *and* in a quality rule will drift out of sync, and the rule is the one that is actually enforced. [Where each requirement belongs](/speedtrain/authoring/placement)
+</Warning>
+
+## 2. Add variants
+
+A variant is a **dimension the output varies across** — language, brand, audience, persona. Each dimension has options, and each option carries fields describing it.
+
+```json
+{
+  "label": "Language",
+  "instruction": "Generate all customer-facing content in this language.",
+  "options": {
+    "Danish": [
+      { "key": "Tone", "value": "Direct, informal address" },
+      { "key": "Terminology", "value": "Use the Danish product vocabulary, not English loanwords" }
+    ],
+    "English (UK)": [
+      { "key": "Tone", "value": "Neutral, professional" },
+      { "key": "Spelling", "value": "UK spelling throughout" }
+    ]
+  }
+}
+```
+
+When you start a session you pick **one option per dimension**, and each combination produces its own output. Two languages and two audiences means four outputs per record.
+
+<Info>
+  **Dimension or field?** Add a new dimension only when the thing genuinely needs its own output per option. If it is extra information shaping the same output — tone notes, reading level, terminology — it belongs as a field on an existing option. [Variants](/speedtrain/key-concepts/variants)
+</Info>
+
+Keep to 2–3 fields per option. Every field is a constraint the model has to hold, and if removing a field would not change the output, remove it.
+
+## 3. Give the AI extra abilities
+
+Under **AI can also…** you attach capabilities — looking up data in an index, calling an external MCP server, searching the web, or seeing the document's images.
+
+Most first configurations need none of these. Add them when the job genuinely cannot be done from the document alone. [Capabilities](/speedtrain/key-concepts/capabilities)
+
+## 4. Write the quality checks
+
+This is the part that makes the job trustworthy. Three rule types are available:
+
+| Type | Runs as | Use it for |
+|---|---|---|
+| JSON Schema | Code | The output contract — field names, types, length limits, enums, patterns |
+| Forbidden terms | Code | Exact words and phrases that must never appear |
+| AI evaluation | A model call | Questions that genuinely need judgment — tone, naturalness, grounding |
+
+Start with a schema rule. Every configuration should have one, because it is the only thing that machine-enforces the shape of the output:
+
+```json
+{
+  "type": "object",
+  "required": ["title", "description"],
+  "properties": {
+    "title":       { "type": "string", "maxLength": 60 },
+    "description": { "type": "string", "minLength": 200, "maxLength": 800 }
+  }
+}
+```
+
+<Tip>
+  Route every black-and-white criterion to code. Models cannot reliably count characters or match strings; a schema rule does both in under ten milliseconds at zero token cost. Save AI evaluation for what actually requires language understanding. [Quality checks](/speedtrain/key-concepts/quality-checks)
+</Tip>
+
+Keep to around five rules. Quality checks are for what must be verified every single time, not a wish list — more rules mean more prompt weight, more cost, and a twitchier gate.
+
+## 5. Set the quality gate
+
+The gate decides how the individual scores add up to accept or reject. **Balanced** is the right default and is described in plain language in the editor. [Quality gates](/speedtrain/key-concepts/quality-gates)
+
+## 6. Add special instructions (optional)
+
+Free text for generation-only context — campaign notes, edge cases, one-off guidance.
+
+<Warning>
+  Quality checks never see special instructions. Anything that must be verified does not belong here.
+</Warning>
+
+## Save, preview, publish
+
+**Save Changes** stores a draft. **Preview** runs it over a few documents so you can see real output. **Publish** makes the version active.
+
+Do them in that order, every time. [Preview and review](/speedtrain/getting-started/preview-and-review)

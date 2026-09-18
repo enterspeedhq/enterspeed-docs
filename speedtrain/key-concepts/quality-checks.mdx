@@ -1,0 +1,135 @@
+---
+title: "Quality checks"
+description: "The three rule types that score every output, what each is good at, and how to choose between them."
+---
+
+Quality checks are the rules every output is scored against. There are three types, and choosing the right one for each requirement is most of the craft.
+
+## The three types
+
+| Type | Executed by | Score | Cost |
+|---|---|---|---|
+| **JSON Schema** | Code | 5 pass, 1 fail | Zero tokens, under 10 ms |
+| **Forbidden terms** | Code | 5 pass, 1 fail | Zero tokens, sub-millisecond |
+| **AI evaluation** | A model call per rule | Pass/fail gives 5 or 1; custom gives 1–5 | One model call per item |
+
+All applicable rules run in parallel, each isolated from the others. Every run persists its score and written feedback.
+
+## Deterministic first
+
+<Tip>
+  Route every black-and-white criterion to code, and reserve AI evaluation for what genuinely needs judgment.
+</Tip>
+
+Models cannot reliably count characters or match strings. Code does both instantly, at no token cost, with no false negatives. A rule that mixes the two — "never use these twenty terms, and use this word only as a buzzword" — should be **split**: the exact list into a forbidden-terms rule, the contextual part into a small AI rule.
+
+### JSON Schema rules
+
+The schema is the output contract: required fields, types, `minLength` and `maxLength`, `enum`, `pattern`, array bounds. Every configuration should have one.
+
+```json
+{
+  "type": "object",
+  "required": ["title", "description", "category"],
+  "properties": {
+    "title":       { "type": "string", "maxLength": 60, "pattern": "^[^<!]*$" },
+    "description": { "type": "string", "minLength": 200, "maxLength": 800 },
+    "category":    { "type": "string", "enum": ["Tops", "Bottoms", "Outerwear"] }
+  },
+  "additionalProperties": true
+}
+```
+
+A `pattern` can carry cross-cutting bans cheaply — `^[^<!]*$` on every text field blocks HTML tags and comment markers in one stroke.
+
+<Info>
+  **Word counts.** JSON Schema counts characters, not words. Convert word requirements using an agreed average word length for the target language, and confirm the factor with whoever set the requirement — it is an approximation they should own.
+</Info>
+
+Failure feedback names the exact path and problem, such as `/title: string is 67 characters, maximum 60`.
+
+### Forbidden terms rules
+
+An exact list of words and phrases that must never appear. Matching is case-insensitive, scans every string value recursively, and strips HTML first.
+
+| Pattern | Matches |
+|---|---|
+| `term` | Exact match |
+| `term*` | Prefix |
+| `*term` | Suffix |
+| `*term*` | Substring anywhere |
+
+<Warning>
+  Choose the form deliberately. A substring pattern also catches longer words that merely contain the term.
+</Warning>
+
+Use **exceptions** for allowed phrases that contain a banned term, rather than deleting the term from the list.
+
+The list is injected into the generation prompt term by term, so a very long list is real prompt weight. When a list explodes, move structural bans into the schema's `pattern` instead.
+
+### AI evaluation rules
+
+For questions that genuinely require language understanding — naturalness, tone, meaning preservation, whether a claim is supported by the source.
+
+Each rule carries:
+
+- A **name**, which the generator sees as a headline
+- A **description**: complete, self-contained criteria for what to evaluate
+- Its **own model**
+- An **evaluation type**: pass/fail (the default, and right about eighty percent of the time) or custom with a rubric
+- Whether it gets **access to the source document**
+
+<Warning>
+  Never put scoring language in a rule description. Describe *what* to evaluate; the platform owns *how* it is scored.
+</Warning>
+
+## The regex test
+
+Before writing any AI rule, ask: could this be expressed as a schema constraint or a keyword list that a human reviewer would agree with ninety-five percent of the time?
+
+If yes, it is a deterministic rule dressed up as a judgment call. Write it as code.
+
+## What each evaluator can see
+
+This table decides whether a verdict means anything:
+
+| Data | Generation | AI evaluation rule |
+|---|---|---|
+| Specialist prompt | Yes | No |
+| Variant instruction and fields | Yes | Yes, as reference context |
+| Special instructions | Yes | No |
+| Source document | Yes | Only with source access enabled |
+| Generated output | — | Yes |
+| Other rules | Yes, all of them | No — each rule is evaluated in isolation |
+| Document images | Only if generation is in scope | Only if the rule opts in by uid |
+
+<Warning>
+  **The trap.** A rule whose text talks about grounding or faithfulness to source data, but which was never given source access, will still produce confident feedback. It never received the source — it is judging phrasing while sounding like it checked the facts.
+
+  Enable source access on any rule that compares output to input. When reading results, check the setting before treating a grounding verdict as authoritative.
+</Warning>
+
+## Scoping
+
+A rule with no scope applies to every variant combination. Scope it when the criterion genuinely differs per option:
+
+- One dimension with several values means OR
+- Several dimensions means AND
+
+Scoping also controls injection: a session whose combination does not match never shows the rule to the generator.
+
+<Tip>
+  If you find yourself writing near-identical rules with different scopes, collapse them into one global rule.
+</Tip>
+
+## Rule budget
+
+<Warning>
+  Keep to about five rules per configuration. Quality checks are for what must be verified every single time, not a checklist of everything desirable. More rules mean more prompt weight, more evaluation cost, and a twitchier gate.
+</Warning>
+
+## Used twice
+
+Every rule is written into the generation prompt before the model responds, so it knows what it will be judged on, and then executed for real afterwards.
+
+The first pass improves first-attempt quality. Only the second proves anything — a model can violate a constraint it was shown, which is exactly why the deterministic rules exist.

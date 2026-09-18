@@ -1,0 +1,48 @@
+---
+title: "AI specialists"
+description: "The role the model plays, the model it runs on, and what belongs in a specialist prompt."
+---
+
+The **specialist** is who the AI is for this job: a role prompt plus the model that runs it.
+
+## What it contains
+
+| Part | Meaning |
+|---|---|
+| Alias | A short display name, such as *Product content writer*. |
+| Model | The deployment model the generation call runs on. |
+| Prompt | The role prompt, which goes first and verbatim into the generation prompt. |
+
+## Deployment models
+
+A specialist references a **deployment model**, not a model name. The same underlying model can exist as several deployments with different settings, so the deployment is what you pick. Available deployments are managed in tenant settings.
+
+You can override inference settings for one configuration without touching the shared deployment, which makes a configuration the safe place to experiment with them.
+
+<Info>
+  Quality rules that use AI evaluation carry their **own** model, separately from the specialist. The model that writes the content does not have to be the model that checks it.
+</Info>
+
+## What belongs in the prompt
+
+The specialist prompt describes role and behaviour:
+
+- Who the AI is and what expertise it brings
+- A short numbered list of behavioural rules — use only the data provided, adapt to the brand's voice, and so on
+- How to respond — deliver the content, not explanations of it
+
+## What does not belong in it
+
+<Warning>
+  Three things are commonly written into the prompt and should not be:
+
+  - **Output field names and limits** — the JSON Schema rule owns those, and unlike prose it is machine-enforced
+  - **Variant-specific guidance** — the variant owns that, and only the variant reaches the quality checks
+  - **Quality criteria** — the rules own those, and they are already injected into the prompt automatically
+</Warning>
+
+Repeating any of them creates two sources of truth that drift apart. When migrating an older configuration, a fifty-line prompt usually shrinks to ten or fifteen lines.
+
+## Why it stays short
+
+Every rule you write is already shown to the model before generation, so it knows what it will be judged on. The prompt does not need to restate them — it needs to establish who is writing. [Where each requirement belongs](/speedtrain/authoring/placement)

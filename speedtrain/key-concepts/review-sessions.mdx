@@ -1,0 +1,89 @@
+---
+title: "Review sessions"
+description: "One run of a configuration version over an input, the items it produces, and the decisions people make on them."
+---
+
+A **review session** is one run of a configuration version over a chosen input. It is where generation, scoring, and human decisions all happen.
+
+## Starting a session
+
+Creating a session binds three things:
+
+<Steps>
+  <Step title="A configuration version">
+    Usually the active version. During development, the draft you want to test.
+  </Step>
+
+  <Step title="An input source">
+    An index, another task's stage output, or the exact outputs of one past session. [Content sources](/speedtrain/key-concepts/content-sources)
+  </Step>
+
+  <Step title="One option per variant dimension">
+    The combination the session runs — for example Danish and B2C. [Variants](/speedtrain/key-concepts/variants)
+  </Step>
+</Steps>
+
+<Tip>
+  Before re-running a configuration that has run before, look at its existing sessions. A comparison between two runs only means something if both cover the same documents.
+</Tip>
+
+## Preview sessions and review sessions
+
+| | Preview | Review |
+|---|---|---|
+| Purpose | Testing a configuration | Producing content |
+| Version | Any, including drafts | The active version |
+| Input options | The full set, including filters and selection predicates | Feed identity only |
+| Delivers to destinations | Never | Yes, for accepted items |
+
+**Review activity** separates the two, along with sessions you created yourself.
+
+## Review items
+
+Each document produces one **review item** per variant combination. An item carries:
+
+- The generated output
+- One score per applicable quality rule, from 1 to 5
+- Written feedback from each rule
+- The gate's verdict
+- Its current state — waiting for review, accepted, or declined
+
+The session list shows one column per rule, so you can see at a glance which rule is doing the rejecting across the whole run.
+
+## The approval rate
+
+The session header shows the share of items the gate passed. This is the number that matters: it is the honest measure of how much human attention the job will cost.
+
+<Info>
+  Quote the approval rate from a preview before committing to a volume. A configuration passing 90% of items is a completely different proposition from one passing 40%.
+</Info>
+
+## Decisions
+
+For each item a person can:
+
+| Decision | Effect |
+|---|---|
+| Accept | The output is approved, and delivered if an active destination exists |
+| Decline | The output is rejected |
+| Retry | A new generation attempt, with the previous attempt's failure feedback fed back in |
+
+**Accept quality gate approvals** accepts every gate-passed item at once. That is the intended workflow at volume — let the gate handle the clear passes and spend attention on the rest.
+
+<Tip>
+  Spot-check gate-approved items anyway, especially early on. In the first few sessions you are validating the gate as much as the content.
+</Tip>
+
+## Reading rejections
+
+The feedback tells you which rule failed and why. From that you can tell whether the *generation* is wrong or the *rule* is wrong — they need opposite fixes.
+
+Deterministic failures are precise: a schema failure names the path and the violated constraint, a forbidden-term failure names the matched text and pattern.
+
+<Warning>
+  Be careful with grounding verdicts. An AI rule only sees the source document if it was given access. Without it, a rule can produce confident feedback about faithfulness to data it never received — read the rule's configuration before acting on the verdict. [Quality checks](/speedtrain/key-concepts/quality-checks)
+</Warning>
+
+## Export
+
+A session's results can be exported from the session header, for sharing with people who do not work in Speedtrain.

@@ -1,0 +1,54 @@
+---
+title: "Publish the results"
+description: "Activate a configuration version and deliver accepted content to a destination."
+---
+
+Accepted content does not go anywhere until you have an active destination and a real review session.
+
+## Activate the version
+
+When a draft performs well in preview, publish it. Activation makes that version the live one and names the version it displaces, so rolling back is a single action.
+
+<Warning>
+  Activation should never be the first time a version runs over real data. If you have not previewed it, go back a step. [Preview and review](/speedtrain/getting-started/preview-and-review)
+</Warning>
+
+## Set up a destination
+
+Go to **Settings → Destinations** and create one. A destination maps accepted content to an Enterspeed source, from where it flows into the rest of your data supply chain.
+
+<Steps>
+  <Step title="Choose the connector shape">
+    **Per-output** is the recommendation for anything new — each generated output is delivered as its own entity. **Merged** combines outputs into one.
+  </Step>
+
+  <Step title="Point it at an Enterspeed source">
+    One destination delivers to one source. Take the ingest details from the destination and use them on the Enterspeed side.
+  </Step>
+
+  <Step title="Set it active">
+    Only **active** destinations deliver.
+  </Step>
+</Steps>
+
+## Run a real review session
+
+Preview sessions never deliver. To publish content, start a review session — bound to an index or a stage output, on the active version.
+
+As items are accepted, they are delivered to the active destinations.
+
+<Warning>
+  Delivery is **never retroactive**. Content accepted before a destination existed, or while it was inactive, is not sent when you activate it later. Set up the destination first.
+</Warning>
+
+## Verify
+
+There is no per-item delivery receipt, so verify on the Enterspeed side: check that source entities are arriving in the expected source, and that the shape matches what your schemas expect.
+
+<Tip>
+  Judge the pipeline by its end outcome — does the downstream publication actually succeed? — rather than by the quality scores alone. Good scores on content that fails to land is not a working job.
+</Tip>
+
+## Keeping it running
+
+A **workflow** connects a content source to a task configuration so new and changed documents are processed automatically, rather than you starting sessions by hand. [Workflows](/speedtrain/key-concepts/workflows)

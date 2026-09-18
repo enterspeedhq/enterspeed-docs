@@ -1,0 +1,60 @@
+---
+title: "Content sources"
+description: "Indexes, stage outputs, and how a task's input is chosen at session time rather than baked into the configuration."
+---
+
+A content source is the data a task runs over. Speedtrain has two kinds.
+
+## Indexes
+
+An **index** holds documents ingested from an external system — a PIM, ERP, CMS, or anything else that can push JSON. Each document is a record: one product, one article, one row.
+
+Speedtrain reads indexes; it never writes back to them. Documents are managed by whoever pushes them in.
+
+Find them under **Content sources → Indices**.
+
+## Stage outputs
+
+A **stage output** is the content one task configuration has produced. Feeding it into a second task is how you chain jobs:
+
+```
+index ──▶ task 1: extract attributes ──▶ stage output ──▶ task 2: write copy
+```
+
+Find them under **Content sources → Stage outputs**.
+
+<Warning>
+  A chained stage carries no images. When the input is another task's output there is no source document and therefore no `$images` — so a configuration that needs to see pictures must run first, directly on the index.
+</Warning>
+
+## The input is chosen at session time
+
+This is the design decision worth internalising: **a task configuration does not name its input.**
+
+The input is bound when a review session starts. One configuration can therefore run over different indexes, over a filtered subset of an index, or over another task's output, with no change to the configuration itself.
+
+When starting a session you choose between:
+
+<AccordionGroup>
+  <Accordion title="Index" icon="database">
+    A raw index, optionally narrowed by a selection predicate so the session covers only part of it.
+  </Accordion>
+
+  <Accordion title="Stage output" icon="link">
+    Another task's output. By default this means that task's **active** version, accepted items only.
+  </Accordion>
+
+  <Accordion title="Prior session" icon="clock-rotate-left">
+    The exact outputs of one specific past run. Useful for pipeline testing, because stage two then consumes precisely what a chosen stage-one session accepted.
+  </Accordion>
+</AccordionGroup>
+
+<Info>
+  Testing sessions get the richer options — selection predicates, version selectors, filters. Real review sessions are deliberately stricter: they identify the feed and nothing else, so what runs in production is unambiguous.
+</Info>
+
+## Document shape
+
+A document is whatever JSON you push. Use your source system's own field names.
+
+One key is reserved: a top-level `$images` array attaches pictures to the record, so that a vision-capable model can see them. [Add a content source](/speedtrain/getting-started/content-source)

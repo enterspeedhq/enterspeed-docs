@@ -1,0 +1,45 @@
+---
+title: "Tenants and environments"
+description: "How Speedtrain separates organisations and their environments, and what lives at each level."
+---
+
+## Tenants
+
+A **tenant** is one organisation's workspace. It holds the content sources, task configurations, destinations, and credentials for that organisation, and nothing crosses between tenants.
+
+Switch tenants from the selector in the top right of the app. If you work with several organisations, each appears as its own tenant.
+
+## Environments
+
+Each tenant has **environments** — typically `Demo` and `Production`. An environment is a separate set of indexes, configurations, and destinations.
+
+Use them the way you would anywhere else:
+
+| Environment | What it is for |
+|---|---|
+| Demo | Building and tuning configurations against sample or copied data. Mistakes here are free. |
+| Production | The live job, feeding real destinations. |
+
+<Warning>
+  Check which environment you are in before starting a review session or publishing a version. The environment selector sits next to the tenant name and is easy to overlook.
+</Warning>
+
+## What lives where
+
+Everything in Speedtrain is scoped to a tenant **and** an environment:
+
+- Content sources (indexes and stage outputs)
+- Task configurations and their versions
+- Review sessions
+- Destinations
+- Management clients and tool credentials
+
+A configuration built in `Demo` does not automatically exist in `Production`. Moving it there is a deliberate step, which is what makes the separation useful.
+
+## Tenant settings
+
+**Tenant settings** covers organisation-level configuration — members, access, and the deployment models available to your task configurations. Which models you can use, and under which gateway, is set here rather than per configuration.
+
+<Info>
+  A task configuration references a **deployment model**, not a model name. The same underlying model can exist as more than one deployment with different settings, so the deployment is the thing you pick.
+</Info>
