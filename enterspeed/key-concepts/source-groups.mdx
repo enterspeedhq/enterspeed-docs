@@ -29,51 +29,55 @@ On Auto indexing mode there is no transformation process. Instead, ingested sour
 
 Since no transformation is involved, the Auto Indexing mode is suited for scenarios such as handling large volumes of small, custom price objects that don't require transformation, or frequently changing data like stock numbers.
 
-When setting up an Auto Indexing Source Group you will need to define the fields and their data types that goes into the index. This is done using a JSON format as the example below.
+For each source entity type you want to query, you add a type mapping. You name it after the source entity type it indexes — for example `price` — and define the fields and their data types in JSON, as in the example below.
 
 ```json
 {
-  "price": { // the type of the source entity that will use this index
-    "fields": { // the fields that are added to the index
-      "sku": {
-        "type": "keyword",
-        "metadata": {
-          "description": "The product key"
-        }
-      },
-      "price": {
-        "type": "float",
-        "metadata": {
-          "description": "The sales price of the product"
-        }
-      },
-      "validFrom": {
-        "type": "date",
-        "metadata": {
-          "description": "A from date where the price is active"
-        }
-      },
-      "validTo": {
-        "type": "date",
-        "metadata": {
-          "description": "A to date where the price is active"
-        }
+  "fields": { // the fields that are added to the index
+    "sku": {
+      "type": "keyword",
+      "metadata": {
+        "description": "The product key"
       }
     },
-    "metadata": {
-      "description": "The price of a product for a specific time interval"
+    "price": {
+      "type": "float",
+      "metadata": {
+        "description": "The sales price of the product"
+      }
+    },
+    "validFrom": {
+      "type": "date",
+      "metadata": {
+        "description": "A from date where the price is active"
+      }
+    },
+    "validTo": {
+      "type": "date",
+      "metadata": {
+        "description": "A to date where the price is active"
+      }
     }
+  },
+  "metadata": {
+    "description": "The price of a product for a specific time interval"
   }
 }
 ```
 
+The type name isn't part of this JSON — you set it on the mapping itself. Add one mapping per source entity type you want to query, and add more whenever you need them.
+
 <Info>
-Note. Once an index is created it can't be changed. Instead you will need to create a new data source.
+Only top-level properties holding a single value, or a list of single values, can be indexed. Nested objects, and lists of objects, are never indexed and can't be added to a mapping.
 </Info>
 
 <Info>
-Note. Ingested properties not defined in the index fields will be discarded.
+Properties that aren't defined in the type's fields aren't added to the index, so you can't query them. Your source entities are stored in full, so adding an indexable property to the mapping later populates it for the entities you have already ingested — you don't need to re-ingest them.
 </Info>
+
+<Tip>
+You can add, change, and remove type mappings after the source group is created. See [Managing type mappings](#managing-type-mappings).
+</Tip>
 
 ## Types
 
@@ -119,3 +123,71 @@ Setting the right types for the properties in your index is important. The types
 | double[]            | List of 64 bit signed floating numbers                                                                      |
 | boolean[]           | List of `true` / `false` values                                                                             |
 | date[]              | List of dates with supported values like a Javascript Date object, strings like `2024-11-21T23:00:00Z` or numbers of milliseconds since eclipse |
+
+## Managing type mappings
+
+You can add, change, and remove type mappings on an Auto Indexing source group at any time. Each type gets its own index, so a change to one type never affects the others.
+
+![Type mappings on a source group](/images/docs/key-concepts/auto-index-type-mappings.png)
+
+### Adding a type
+
+Add a mapping for a type that isn't indexed yet, and Enterspeed creates the index and fills it from the source entities you have already ingested. You don't need to re-ingest anything.
+
+Indexing runs in the background, so it can take a moment before every entity is queryable.
+
+### Changing a type
+
+What happens when you save depends on what you changed.
+
+| Change                                   | What happens                                                        |
+| ---------------------------------------- | ------------------------------------------------------------------- |
+| Descriptions and other metadata only     | Written to the index straight away. Nothing is re-indexed.          |
+| Adding or removing a field               | The index is rebuilt in the background.                             |
+| Changing a field's type                  | The index is rebuilt in the background, if the change is compatible.|
+
+![Editing a type mapping](/images/docs/key-concepts/auto-index-edit-type-mapping.png)
+
+Rebuilds are zero-downtime. Enterspeed builds a new version of the index alongside the live one and switches over once it has caught up, so your queries keep returning complete results throughout.
+
+Because a rebuild re-indexes from the source entities Enterspeed already stores, adding a field also populates it for your existing entities — including properties that weren't in the index before.
+
+### Compatible field type changes
+
+A rebuild re-indexes your existing values under the new type, so a type change is only allowed when every value can survive it. Adding and removing fields is always allowed.
+
+| From                                                     | To                    |
+| --------------------------------------------------------- | --------------------- |
+| `integer`                                                | `long`, `double`      |
+| `long`                                                   | `double`              |
+| `float`                                                  | `double`              |
+| `keyword`                                                | `text`                |
+| `integer`, `long`, `float`, `double`, `boolean`, `date`  | `text`, `keyword`     |
+| any type                                                 | a list of that type, or of any type it can change to |
+
+Converting a number or date to `text` or `keyword` keeps the value but loses range and sort behaviour, so filter on it as a string afterwards.
+
+These changes are rejected, because existing values would be lost:
+
+- Narrowing a number, such as `double` to `integer`
+- `text` to `keyword`, since a `keyword` value is capped at 32,766 bytes and longer text would be rejected outright
+- A list to a single value, such as `keyword[]` to `keyword`
+- Switching between unrelated types, such as `date` to `integer`
+
+### Replacing a type
+
+Sometimes you need a change that the rules above reject, but your data supports it anyway. Say you mapped a price field as `text` and it should have been `double` — that change is rejected because a `text` field *can* hold values that aren't numbers, not because yours does.
+
+For cases like this you can replace the type instead. Enterspeed tells you which fields are the problem and offers this per type, so you can replace one type and leave the rest of your changes to go through normally.
+
+![An incompatible type change](/images/docs/key-concepts/auto-index-incompatible-change.png)
+
+Replacing rebuilds the index from your stored source entities, skipping the compatibility check. Every entity whose values fit the new type is kept — so if all your `text` values really are numbers, they all survive the change to `double`.
+
+Any entity holding a value that doesn't fit is left out of the index entirely, not just that one field, so you can no longer query it. The entity itself is kept and is queryable again once re-ingested with a matching value — but this is exactly what the compatibility check normally protects you from, so make sure you know your data before replacing a type.
+
+### Removing a type
+
+Removing a mapping deletes the index for that type, so you can no longer query it.
+
+Your source entities are kept. Entities of a removed type — or of any type on a source with no mappings configured yet — are marked **Not configured** in the source entities list, so you can see at a glance which ones aren't indexed. Add the mapping back later and Enterspeed fills the index again from the entities it already has.

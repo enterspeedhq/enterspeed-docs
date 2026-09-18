@@ -20,6 +20,12 @@ If you for instance had a site called `Tacomania.com`, the domain could be `Taco
 If you're just testing something out, you can add `root.tld` as your hostname - this will work as a wildcard hostname. We don't recommend using this in production.
 </Tip>
 
+<Warning>
+Register your hostnames **before** you publish or ingest the content that uses them.
+
+A URL route is only created if the hostname is already registered as a hostname on a domain at the moment the content is processed, and adding the hostname afterwards does not create the missing routes - the content has to be processed again. See [Domains must exist before content is processed](/enterspeed/key-concepts/domains-hostnames#domains-must-exist-before-content-is-processed).
+</Warning>
+
 The domain(s) will be attached to your environment client, which is the "connection" between Enterspeed and your front-end. You will learn more about [environments](/enterspeed/getting-started/environments) and [environment clients](/enterspeed/getting-started/environment-clients) later on.
 
 By linking the domain(s) to your environment client(s), you are able to filter the data based on hostname and only fetch the data which matches the provided hostname(s).

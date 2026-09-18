@@ -146,6 +146,7 @@
                 "group": "Source integrations",
                 "pages": [
                   "enterspeed/integrations/commercetools",
+                  "enterspeed/integrations/n8n",
                   {
                     "group": "Umbraco",
                     "pages": [
