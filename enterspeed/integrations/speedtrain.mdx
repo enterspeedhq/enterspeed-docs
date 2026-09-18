@@ -2,7 +2,7 @@
 title: Speedtrain
 ---
 
-The Enterspeed Speedtrain integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to send data from views directly into a Speedtrain index. This means that you can decide on schema level which views you want enriched by AI.
+The Enterspeed Speedtrain integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to send data from views directly into a Speedtrain index. This means that you can decide on schema level which views you want available to AI enrichment.
 
 You will only have to set the destination field on the entity schema you want to send to Speedtrain. All schema references are automatically resolved so you don't have to set it on all referenced schemas.
 
@@ -12,42 +12,126 @@ It's possible to configure multiple Speedtrain destinations if you need to push 
 This is the outbound half of the round trip. Content that Speedtrain produces comes **back** into Enterspeed as source entities, through a destination configured on the Speedtrain side. See [how data moves between Enterspeed and Speedtrain](/speedtrain/data-flow) for the full picture.
 </Info>
 
-## Configuration
+## Two ways to use it
 
-In order to setup the Speedtrain configuration you need the following:
+The destination is the same in both cases. What differs is the shape of the view you send.
 
-| Setting                               | Description                            |
-| ------------------------------------- | -------------------------------------- |
-| Speedtrain Index Alias                | The alias of the Speedtrain index the views should be pushed to. The index must exist before the destination is used |
-| Speedtrain Environment                | The Speedtrain tenant and environment that owns the index. A management client is scoped to one environment, so this must match the key below |
-| Speedtrain Management Client API Key  | The API key used to push documents into the index. Created under **Settings → Management Clients** in Speedtrain |
-| Enterspeed Environment Client API Key | The API key for an Enterspeed Environment client. This is used to fetch the view that will be pushed to Speedtrain |
+| | Data only | Data with enrichment |
+|---|---|---|
+| **View shape** | Your properties, passed through | An envelope of `actions` and `value` |
+| **What Speedtrain does** | Stores the record in the index | Stores it, then runs the task configurations you named |
+| **Use when** | The sending system just wants its data indexed, or enrichment is started later from Speedtrain | Enterspeed should decide what gets enriched, and how |
 
-<Warning>
-A management client belongs to one tenant and one environment. A key created in a demo environment cannot reach production, so a destination pointed at the wrong key fails rather than writing to the wrong place.
-</Warning>
+## Options
+
+Options are set on the destination in the schema's `actions` method.
+
+| Option      | Required | Description                                                      |
+| ----------- | -------- | ---------------------------------------------------------------- |
+| `indexAlias` | Required | The alias of the Speedtrain index this view is written to |
 
 ## Example of usage
 
 <Tabs>
-<Tab title="JavaScript">
+<Tab title="Data only">
 
-```js title="Schema with Speedtrain destination"
+Speedtrain stores the record in the index and runs nothing against it.
+
+```js title="Speedtrain proxy schema — data only"
+/**
+ * The business payload, and the whole view. Received verbatim from the source
+ * system and passed through unchanged — its shape is owned by that system,
+ * not by this schema.
+ *
+ * @typedef {Record<string, unknown>} ProductValue
+ */
+
+/**
+ * Options accepted by the Speedtrain destination.
+ *
+ * @typedef {object} SpeedtrainDestinationOptions
+ * @property {string} indexAlias Required. Alias of the Speedtrain index this view is written to.
+ */
+
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function (context) {
-    context.triggers('pim', ['product']);
-  },
-  properties: function (sourceEntity) {
-    return {
-      sku: sourceEntity.properties.sku,
-      title: sourceEntity.properties.title,
-      material: sourceEntity.properties.material,
-      colour: sourceEntity.properties.colour
-    };
+    context.triggers('mySourceGroupAlias', ['mySourceEntityType']);
   },
   actions: function (sourceEntity, context) {
-    context.destination('speedtrain');
+    context.destination('speedtrain').options(
+      /** @type {SpeedtrainDestinationOptions} */ ({
+        indexAlias: 'products'
+      })
+    );
+  },
+  properties: function (sourceEntity, context) {
+    return /** @type {ProductValue} */ (sourceEntity.properties);
+  }
+};
+```
+
+</Tab>
+<Tab title="With enrichment">
+
+The view carries an `actions` array naming the task configurations to run, alongside the payload in `value`.
+
+```js title="Speedtrain proxy schema — with enrichment"
+/**
+ * @typedef {'AUTO_APPROVE' | 'SMART_APPROVAL' | 'MANUAL'} ApprovalPolicy
+ */
+
+/**
+ * Values bound into the task configuration's inputs, keyed by input name.
+ * @typedef {Record<string, string>} TaskBinding
+ */
+
+/**
+ * One enrichment request: which task configuration to run, with which inputs,
+ * and how its output should be approved.
+ *
+ * @typedef {object} SpeedtrainAction
+ * @property {{ alias: string }} taskConfiguration Alias of the task configuration (its ACTIVE version is used).
+ * @property {TaskBinding} binding
+ * @property {ApprovalPolicy} [lastMilePolicy] Omit to let Speedtrain apply its own default.
+ */
+
+/**
+ * The business payload. Received verbatim from the source system and passed
+ * through unchanged — its shape is owned by that system, not by this schema.
+ *
+ * @typedef {Record<string, unknown>} ProductValue
+ */
+
+/**
+ * The source entity properties, and the view Speedtrain receives.
+ *
+ * @typedef {object} SpeedtrainProductProperties
+ * @property {SpeedtrainAction[]} actions
+ * @property {ProductValue} value
+ */
+
+/**
+ * Options accepted by the Speedtrain destination.
+ *
+ * @typedef {object} SpeedtrainDestinationOptions
+ * @property {string} indexAlias Required. Alias of the Speedtrain index this view is written to.
+ */
+
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function (context) {
+    context.triggers('mySourceGroupAlias', ['mySourceEntityType']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('speedtrain').options(
+      /** @type {SpeedtrainDestinationOptions} */ ({
+        indexAlias: 'products'
+      })
+    );
+  },
+  properties: function (sourceEntity, context) {
+    return /** @type {SpeedtrainProductProperties} */ (sourceEntity.properties);
   }
 };
 ```
@@ -55,32 +139,62 @@ export default {
 </Tab>
 </Tabs>
 
+<Tip>
+Both schemas above are pure proxies — no lookups, no validation, no remapping. The typedefs are the contract: they document what a source entity must contain, which is also exactly what Speedtrain receives. Keeping them in the schema gives you IntelliSense while you write.
+</Tip>
+
+## The enrichment envelope
+
+When you want Speedtrain to run something, the source entity's `properties` carry two keys: `actions` and `value`. Everything under `properties` is controlled by the sending system.
+
+```json title="Sample source entity"
+{
+  "id": "product-4711",
+  "type": "mySourceEntityType",
+  "properties": {
+    "actions": [
+      {
+        "taskConfiguration": { "alias": "generate-seo-titles-and-descriptions" },
+        "binding": { "Language": "Danish" },
+        "lastMilePolicy": "SMART_APPROVAL"
+      },
+      {
+        "taskConfiguration": { "alias": "classify-product-category" },
+        "binding": {}
+      }
+    ],
+    "value": {
+      "sku": "4711",
+      "name": "Bosch GSR 18V-55 cordless drill",
+      "brand": "Bosch",
+      "category": "Power tools / Drills",
+      "bullets": ["18V brushless motor", "55 Nm torque"]
+    }
+  }
+}
+```
+
+| Field | Rules |
+|---|---|
+| `actions` | Array, one entry per enrichment you want run. Two entries means two runs against the same record. An empty array or an omitted key means the record is indexed and nothing runs |
+| `taskConfiguration.alias` | Required string. Must match a task configuration alias in the Speedtrain tenant that has an ACTIVE version |
+| `binding` | Object of string values. Keys must match the input names the task configuration declares — `Language` above is an input of `generate-seo-titles-and-descriptions`. Use `{}` for a task configuration with no inputs |
+| `lastMilePolicy` | Optional. One of `AUTO_APPROVE`, `SMART_APPROVAL`, `MANUAL`. Omit it and Speedtrain applies the task configuration's own setting |
+| `value` | Required object. The content itself, untouched by the schema |
+
+<Warning>
+There is no version pinning in `taskConfiguration`. You get whichever version is ACTIVE at the moment the record is processed, so activating a new version changes what runs for every record that arrives afterwards. [Task configurations](/speedtrain/key-concepts/task-configurations)
+</Warning>
+
 ## What Speedtrain receives
 
-Each view pushed to Speedtrain becomes one document in the index. The document keeps the shape your schema produced, so the fields you map are the fields the AI sees.
+Each view pushed to Speedtrain becomes one document in the index, in the shape your schema produced. The fields you map are the fields the AI sees.
 
 <Tip>
 Send the raw attributes rather than a pre-written summary. A model does better work from structured fields than from prose someone else already condensed.
 </Tip>
 
-### Images
-
-To let a vision-capable model see your product photos, map a top-level `$images` array in the view:
-
-```js title="Schema mapping images for Speedtrain"
-properties: function (sourceEntity) {
-  return {
-    sku: sourceEntity.properties.sku,
-    title: sourceEntity.properties.title,
-    $images: sourceEntity.properties.media.map(m => ({
-      url: m.url,
-      text: m.altText
-    }))
-  };
-}
-```
-
-The `url` must be absolute and publicly fetchable, because the model provider fetches it directly. [Document shape](/speedtrain/getting-started/content-source)
+For the document shape Speedtrain expects, including the `$images` array that lets a vision model see your product photos, see [add a content source](/speedtrain/getting-started/content-source).
 
 ## Getting the content back
 

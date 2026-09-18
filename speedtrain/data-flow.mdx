@@ -51,13 +51,15 @@ flowchart LR
 
     Because the destination is set per schema, you choose exactly which data crosses over — not the whole environment.
 
+    The view can also carry an `actions` array naming the task configurations to run, so Enterspeed decides not just *what* crosses over but *what happens to it*. Send the data on its own instead, and Speedtrain simply indexes it until someone starts a session.
+
     [Speedtrain destination](/enterspeed/integrations/speedtrain) · [Schemas](/enterspeed/key-concepts/schemas) · [Content sources](/speedtrain/key-concepts/content-sources)
   </Step>
 
   <Step title="Speedtrain does the work" icon="wand-magic-sparkles">
-    A **task configuration** describes the job: who the AI is, what the output varies across, and how each result will be judged. Running it over the index produces one output per document, each scored by your quality rules and routed through a quality gate.
+    A **task configuration** describes the job: who the AI is, what the output varies across, and how each result will be judged. Running it over a document produces an output, scored by your quality rules and routed through a quality gate.
 
-    Nothing leaves Speedtrain until a person accepts it in a **review session**.
+    Nothing leaves Speedtrain until it has been approved — either by a person in a **review session**, or automatically where the approval policy allows it.
 
     [Task configurations](/speedtrain/key-concepts/task-configurations) · [Quality gates](/speedtrain/key-concepts/quality-gates) · [Review sessions](/speedtrain/key-concepts/review-sessions)
   </Step>
