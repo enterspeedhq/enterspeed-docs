@@ -217,13 +217,23 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | `429` with a `Retry-After` header | More than 120 requests in a minute on this key | Let the client back off, or split work across keys. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
 
-## Known limitations
+## Signing in instead of using a key
 
-<Warning>
-**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and this server requires `x-api-key`. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
+Some clients take a server URL and nothing else — claude.ai in the browser and Claude Desktop's **Connectors** screen are the common examples. They have no field for a custom HTTP header, so they cannot send `x-api-key`.
 
-We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required.
-</Warning>
+Those clients sign you in instead. Add `https://mcp.query.enterspeed.com/` as a custom connector, authenticate with your Enterspeed credentials in the browser window that opens, and the session acts as you rather than as a key.
+
+The two routes differ in what they answer:
+
+| | Scoped key | Signing in |
+| --- | --- | --- |
+| Names the tenant and environment | The key does, on its own | You do, once per session |
+| Index scope | Whatever you set on the key | Not applied — access follows the environment you select |
+| Where it lives | A secret you store and rotate | Nothing to store |
+
+<Note>
+**A signed-in session has no tenant or environment until it is given one, and no index or query tool works before that.** Such a session is offered three extra tools — `list_available_contexts`, `select_context`, and `current_context` — so asking the client to list your contexts and select one is enough. A key-authenticated session is not offered them, because the key already answers both questions.
+</Note>
 
 ## Next steps
 
