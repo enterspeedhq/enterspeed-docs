@@ -15,7 +15,7 @@ Before you start, you need:
 
 ## Part 1 — C# agent (MCP client SDK)
 
-Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens the connection, negotiates the protocol, lists tools, and lets you call them. Authentication is a single `x-api-key` header on the transport.
+Agents talk to the Enterspeed MCP server over **MCP Streamable HTTP**. In C#, the most direct client is the official [`ModelContextProtocol`](https://www.nuget.org/packages/ModelContextProtocol) NuGet package — it opens the connection, negotiates the protocol, lists tools, and lets you call them. The server accepts two kinds of authentication, as described in [How authentication works](/enterspeed/mcp-server/query-mcp/overview#how-authentication-works): a scoped environment client key in an `x-api-key` header, or signing in with your Enterspeed account over OAuth. Signing in needs a person to complete it in a browser, so it suits interactive clients rather than an agent running on its own. The examples on this page use the key, set as a single `x-api-key` header on the transport.
 
 <Note>
 The transport class is named `SseClientTransport` for historical reasons. Pointed at the root URL, as below, it speaks Streamable HTTP — you do not need a separate `/sse` endpoint, and there isn't one.
@@ -94,7 +94,7 @@ For Claude specifically, see [Connecting a client](/enterspeed/mcp-server/query-
 
 ### Alternative — the Anthropic Remote MCP connector
 
-If you prefer to let Claude open the MCP connection itself via the inline `mcp_servers` feature of the Messages API, you can — but note that Anthropic's spec currently only supports an `Authorization: Bearer <token>` header on the upstream MCP server; it does not let you set a custom header name. The Enterspeed MCP server reads `x-api-key`, so the inline connector does not work with a raw scoped key today.
+If you prefer to let Claude open the MCP connection itself via the inline `mcp_servers` feature of the Messages API, note that it only sends an `Authorization: Bearer <token>` header to the MCP server; it does not let you set a custom header name. The Enterspeed MCP server reads a key from `x-api-key`, and accepts a bearer token only when it was issued by signing in to this server with an Enterspeed account. A scoped key sent as a bearer token is refused, so the inline connector cannot carry a key in its header.
 
 Workarounds:
 

@@ -47,4 +47,4 @@ A key remains the tighter boundary on Query MCP: one scoped to a single environm
 
 ## Transport
 
-Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL, and use the `http` transport type where your client offers a choice.
+Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL, and nothing else. Choose the **HTTP** or **Streamable HTTP** transport in your client. The older SSE transport does not work: a client set to *SSE* fails on its first request with an HTTP 400 error. There is no `/sse` endpoint — always configure the root URL.

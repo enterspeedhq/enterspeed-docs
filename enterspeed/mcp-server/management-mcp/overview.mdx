@@ -23,12 +23,12 @@ Typical uses:
 A health check is available without authentication:
 
 ```bash
-curl -s https://mcp.management.enterspeed.com/health
+curl -s "https://mcp.management.enterspeed.com/health"
 # "ok"
 ```
 
 <Info>
-The server speaks **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL.
+The server speaks **MCP Streamable HTTP** on the root URL, and nothing else. Choose the **HTTP** or **Streamable HTTP** transport in your client. The older SSE transport does not work: a client set to *SSE* can complete the sign-in and then fail on its first request with an HTTP 400 error. There is no `/sse` endpoint — always configure the root URL.
 </Info>
 
 ## How authentication works
@@ -151,13 +151,13 @@ Once you are signed in, ask your client to select the tenant you want to work on
 <Tab title="Claude Code">
 
 ```bash
-claude mcp add enterspeed-management --scope user --transport http "https://mcp.management.enterspeed.com/"
+claude mcp add enterspeed-management --transport http "https://mcp.management.enterspeed.com/"
 ```
 
 Start a session, run `/mcp`, and pick `enterspeed-management` to sign in. A browser window opens; authenticate with your Enterspeed credentials.
 
 <Note>
-The user scope (`--scope user`) installs the server for the current user across all projects. Use `--scope project` to install it for the current project only but for all users — that writes a checked-in `.mcp.json`. Nothing secret goes in it, because the sign-in is per person.
+This installs the server for the current project only. Add `--scope user` to make it available in every project.
 </Note>
 
 </Tab>
@@ -166,7 +166,7 @@ The user scope (`--scope user`) installs the server for the current user across 
 Codex configures MCP servers as local programs, so it reaches Enterspeed through the `mcp-remote` bridge:
 
 ```bash
-codex mcp add enterspeed-management -- npx -y mcp-remote https://mcp.management.enterspeed.com/
+codex mcp add enterspeed-management -- npx -y mcp-remote "https://mcp.management.enterspeed.com/"
 ```
 
 The first time the bridge runs it opens a browser window for you to sign in, and remembers the result for later sessions.
@@ -175,7 +175,7 @@ The first time the bridge runs it opens a browser window for you to sign in, and
 <Tab title="Gemini CLI">
 
 ```bash
-gemini mcp add --transport http enterspeed-management https://mcp.management.enterspeed.com/
+gemini mcp add --transport http enterspeed-management "https://mcp.management.enterspeed.com/"
 ```
 
 That writes the server into `~/.gemini/settings.json`. The equivalent by hand is:
@@ -297,7 +297,7 @@ Reload the window (**Developer: Reload Window**) and open the Copilot chat pane.
 
 The server is client-agnostic. Any MCP client that can open a remote **Streamable HTTP** server and follow an OAuth sign-in works — point it at the root URL above.
 
-If a client cannot open a remote server, or does not complete the sign-in, put `mcp-remote` in front of it the way the Codex tab does. Configure it as a local command, `npx -y mcp-remote https://mcp.management.enterspeed.com/`, and the bridge handles the remote connection and the sign-in on the client's behalf.
+If a client cannot open a remote server, or does not complete the sign-in, put `mcp-remote` in front of it the way the Codex tab does. Configure it as a local command, `npx -y mcp-remote "https://mcp.management.enterspeed.com/"`, and the bridge handles the remote connection and the sign-in on the client's behalf.
 
 ## Sample prompts
 
