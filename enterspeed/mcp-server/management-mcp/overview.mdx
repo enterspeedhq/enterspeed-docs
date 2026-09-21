@@ -45,6 +45,8 @@ A sign-in names a person, not a tenant, so **every signed-in session has to sele
 
 The selection is held in memory by the server instance that handled it. If your client reconnects, or the server restarts, a tool call can come back saying no tenant is selected. Nothing is lost when that happens: select the tenant again and carry on.
 
+**Selecting a tenant does not change which tools your client lists.** Every tool is offered from the moment you connect, the tenant-scoped ones included, and one called before a tenant is selected is refused at the call rather than withheld from the list — the refusal tells you to select a tenant. So nothing appears or disappears when you select one, and every tenant is offered the same tools. What a connection lists depends on the `toolsets` parameter (see [Limiting a connection](#limiting-a-connection)) and on whether your account is an Enterspeed administrator, never on which tenant you picked.
+
 ## What the server can and cannot do
 
 The server exposes **48 tools: 27 reads, 20 writes, and `set_tenant_context`**, which selects the tenant for the session and changes nothing in it. Enterspeed administrators are offered one more, for finding a tenant.
