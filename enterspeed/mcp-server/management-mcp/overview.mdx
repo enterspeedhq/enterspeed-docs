@@ -23,47 +23,74 @@ Typical uses:
 A health check is available without authentication:
 
 ```bash
-curl -s https://mcp.management.enterspeed.com/health
+curl -s "https://mcp.management.enterspeed.com/health"
 # "ok"
 ```
 
 <Info>
-The server speaks **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL.
+The server speaks **MCP Streamable HTTP** on the root URL, and nothing else. Choose the **HTTP** or **Streamable HTTP** transport in your client. The older SSE transport does not work: a client set to *SSE* can complete the sign-in and then fail on its first request with an HTTP 400 error. There is no `/sse` endpoint — always configure the root URL.
 </Info>
 
 ## How authentication works
 
-Authentication in the Management MCP server works through OAuth using your existing Enterspeed account.
+You sign in with your existing Enterspeed account, over OAuth. The first time your client connects, a browser window opens and you authenticate with your normal Enterspeed credentials. The session then acts as you, with the permissions your account has in each tenant.
 
-Once the Management MCP server is installed, a browser window will open and you sign in using your existing Enterspeed login credentials.
+An API key is refused as authentication on this server. Management API keys still exist, and this server has tools that list, rotate, and set an expiry on them, but a request that authenticates with an `x-api-key` header is turned away. Environment client keys belong to [Query MCP](/enterspeed/mcp-server/query-mcp/overview).
 
-When you are authenticated simply tell your AI client which tenant you want to work on if you have access to more then one tenant.
+### Selecting a tenant
+
+A sign-in names a person, not a tenant, so **every signed-in session has to select a tenant before any tenant-scoped tool works** — even if your account belongs to only one. The server's `set_tenant_context` tool does this, and `whoami` lists the tenants your account belongs to. You rarely call either by hand; ask your client:
+
+> Which Enterspeed tenants do I have access to? Select the one called *Acme*.
+
+The selection is held in memory by the server instance that handled it. If your client reconnects, or the server restarts, a tool call can come back saying no tenant is selected. Nothing is lost when that happens: select the tenant again and carry on.
 
 ## What the server can and cannot do
 
-The server exposes **35 tools: 22 reads and 13 additive writes**.
+The server exposes **48 tools: 27 reads, 20 writes, and `set_tenant_context`**, which selects the tenant for the session and changes nothing in it. Enterspeed administrators are offered one more, for finding a tenant.
 
-- **Reads** cover tenant overview, sources and source entities, mapping schemas, deployments, views and routes, indexes and index documents, domains and hostnames, environment clients, logs, and metrics.
-- **Writes** are **additive only** — create and update. They cover schema authoring (create a schema, save a version, deploy), environments, source groups and sources, domains, and environment clients.
+- **Reads** cover the tenant overview, sources and source entities, mapping schemas and deployments, views and routes, indexes and index documents, domains and hostnames, destinations, environment and management clients, logs, and metrics.
+- **Nine writes are additive**: the eight `create_*` tools, which only ever add, and `configure_destination`, which sets a destination up for an environment or changes that setup, but never removes a setting.
+- **Eleven writes can change or replace something that already exists**: all five `update_*` tools, `save_mapping_schema_version`, `deploy_mapping_schema`, `unpublish_mapping_schema`, `ingest_source_entities`, `rotate_management_client`, and `set_management_client_expiry`. An unpublish stops an environment serving a schema's views, a deploy changes what an environment serves, an ingest overwrites entities with the same origin id, and the two management-client tools can end a key's life early.
 
 <Warning>
-**There are no delete tools, by design.** This is not a policy the server can be talked out of — it has no way to express a destructive call. Every request the server can make is a `GET`, or a `POST`/`PUT` that appears on a fixed allow-list checked when the server starts. No tool can delete a schema, environment, source, domain, client, or view.
+**No tool deletes anything, by design.** The server has no way to send a `DELETE` or a `PATCH` request at all. Every request it can make is a `GET`, or a `POST`/`PUT` on a fixed allow-list checked when the server starts. No tool can delete a tenant, schema, environment, source, source group, domain, destination, client, or entity.
 </Warning>
 
-The practical consequence: an agent connected to this server can create clutter you may need to tidy up manually, but it cannot destroy your configuration or your content.
+The practical consequence: an agent connected to this server cannot delete your configuration, but the eleven writes above can change what your tenant serves. If an agent only needs to look, open the connection read-only — see [Limiting a connection](#limiting-a-connection).
 
 See [Tools](/enterspeed/mcp-server/management-mcp/tools) for the full inventory with each tool marked read or write.
 
+## Limiting a connection
+
+The server can only do what your account is allowed to do. To give an agent less than that, add parameters to the server URL when you configure your client. They are set by the person configuring the client, not by the agent, so nothing said in a conversation can lift them — you change them by reconnecting with a different URL.
+
+| Parameter | What it does | Example |
+| --- | --- | --- |
+| `readOnly` | `true` makes every write tool refuse for the life of the connection. Reads, and selecting a tenant, still work. | `?readOnly=true` |
+| `tenantId` | Pins the connection to one tenant. Selecting any other tenant is refused. The value is the tenant's id, in the form `gid://Tenant/{guid}` — `whoami` lists the ids of the tenants you belong to. | `?tenantId=gid://Tenant/xxxxxxxx-…` |
+| `toolsets` | Offers only the named groups of tools. The groups are `core`, `schemas`, `sources`, `delivery`, `domains`, `destinations`, `clients`, `observability`, and `provisioning`, or `all`. `core` (who you are, tenant selection, and the tenant overview) is always included. | `?toolsets=schemas,delivery` |
+
+Combine them with `&`, and wrap the URL in double quotes on the command line so your shell does not split it:
+
+```
+"https://mcp.management.enterspeed.com/?readOnly=true&tenantId=gid://Tenant/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+```
+
+**A value the server cannot read fails safe.** Anything other than `readOnly=true` or `readOnly=false` — `readOnly=1`, an empty `readOnly=`, or the parameter given twice — makes the connection read-only. A malformed or repeated `tenantId` refuses every tenant. An unknown group name in `toolsets`, or an empty value, offers `core` only. In each case the refusal names the parameter, and `whoami` reports how the connection was read.
+
+Leave all three off and the connection offers every tool, on every tenant your account can reach. `toolsets` is not a security control — it decides which tools the client is offered, which also helps clients that cap how many tools they load across all servers.
+
 ## Guardrails
 
-Beyond the key's own permissions, the hosted server applies three limits you should know about.
+Beyond your account's own permissions and the connection parameters above, the hosted server applies three limits you should know about.
 
 <AccordionGroup>
 <Accordion title="Schema deploys are restricted to non-production environments">
 
 On the hosted server, `deploy_mapping_schema` only deploys to environments **named** `dev`, `development`, `test`, or `staging`. A deploy targeting any other environment — including anything named `prod`, `production`, or `live` — is refused with a `deploy_not_permitted` error naming the environments that are allowed.
 
-This is a restriction of the hosted server, not of your key. Renaming an environment to get around it does not work either: `update_environment` refuses a rename that would move an environment onto the allowed list.
+This is a restriction of the hosted server, not of your account. Renaming an environment to get around it does not work either: `update_environment` refuses a rename that would move an environment onto the allowed list.
 
 Production deploys stay a deliberate human action in the Management App.
 
@@ -72,14 +99,14 @@ Production deploys stay a deliberate human action in the Management App.
 
 The server strips the `accessKey` field out of every response before your client sees it, at every level of nesting. This covers environment client keys and source ingest keys.
 
-It applies even to `create_environment_client`, which mints a key: the tool creates the client, and the key value is not in the response. The agent is told a key was created and that it must be collected from the app — so it reports the right next step instead of inventing a value. **Fetch the key in the Management App** when you need it.
+It applies even to the tools that mint a key. `create_environment_client` creates the client and `rotate_management_client` replaces a management client's key, but the key value is in neither response. The agent is told a key was created and that it must be collected from the app — so it reports the right next step instead of inventing a value. **Fetch the key in the Management App** when you need it.
 
 The field is removed rather than masked, so no tool can observe a key at any point.
 
 </Accordion>
-<Accordion title="Rate limit — 60 requests per minute per key">
+<Accordion title="Rate limit — 60 requests per minute per person">
 
-Requests are counted per API key over a rolling one-minute window. Exceeding the limit returns:
+Requests are counted per signed-in person, over a fixed one-minute window. Exceeding the limit returns:
 
 ```
 HTTP 429 Too Many Requests
@@ -88,9 +115,9 @@ Retry-After: <seconds>
 Too many requests. Retry after <n> seconds.
 ```
 
-Well-behaved MCP clients back off and retry. The limit applies to the whole MCP endpoint, and `/health` is exempt.
+Well-behaved MCP clients back off and retry. The limit applies to the whole MCP endpoint, and `/health` is exempt. It is counted by each server instance separately, so treat it as the rate a client should stay under rather than an exact figure.
 
-For comparison, [Query MCP](/enterspeed/mcp-server/query-mcp/overview) allows 120 requests per minute per key.
+For comparison, [Query MCP](/enterspeed/mcp-server/query-mcp/overview) allows 120 requests per minute.
 
 </Accordion>
 </AccordionGroup>
@@ -99,28 +126,178 @@ For comparison, [Query MCP](/enterspeed/mcp-server/query-mcp/overview) allows 12
 
 If you are reviewing this server before pointing an agent at your tenant, this is the short version:
 
-- **No server-held credentials.** The server has no Enterspeed key of its own and no way to configure one. It can only act with a key you send it.
-- **Passthrough authorisation.** Every permission decision is made by the Management API against your key, not by the MCP server.
-- **No destructive verbs.** The server cannot issue a `DELETE` or a `PATCH` at all.
+- **No server-held credentials.** The server has no Enterspeed credential of its own. It acts only as the person who signed in, and an API key is refused as authentication.
+- **Passthrough authorisation.** Every permission decision is made by the Management API against your account, not by the MCP server.
+- **No deletes.** The server cannot issue a `DELETE` or a `PATCH` at all. Eleven writes can still change or replace existing configuration or content — see [What the server can and cannot do](#what-the-server-can-and-cannot-do).
 - **Secrets are not readable.** Access keys are removed from responses at the HTTP boundary, so no tool can observe one.
 - **Production deploys are out of reach** on the hosted server.
-- **Least privilege is yours to set.** Use a read-only key unless the agent genuinely needs to write.
+- **Least privilege is yours to set.** Connect with `?readOnly=true` unless the agent genuinely needs to write, and with `?tenantId=` to keep it on one tenant — see [Limiting a connection](#limiting-a-connection).
 
 ## Connecting a client
 
+Every client connects the same way underneath: you give it the server URL, it sends you to Enterspeed in a browser window, and you sign in with your normal Enterspeed credentials. Nothing goes into your client's configuration except the URL — with any [connection parameters](#limiting-a-connection) you want on it.
+
+```
+https://mcp.management.enterspeed.com/
+```
+
+Once you are signed in, ask your client to select the tenant you want to work on. Every session needs this, however many tenants you belong to — see [Selecting a tenant](#selecting-a-tenant).
+
+<Info>
+**Some setups can only start local programs.** The Codex command below and Claude Desktop's `claude_desktop_config.json` file configure MCP servers as programs on your machine, not as remote URLs. From there, Enterspeed is reached through [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign-in the same way, and it needs Node.js installed. Claude Desktop does not need it: its **Connectors** screen opens the remote server directly.
+</Info>
+
 <Tabs>
-<Tab title="Claude">
+<Tab title="Claude Code">
 
-In Claude, open Settings and then select Connectors either in Claude desktop or on https://claude.ai/new#settings/customize-connectors. 
+```bash
+claude mcp add enterspeed-management --transport http "https://mcp.management.enterspeed.com/"
+```
 
-Click **Add custom connectors** and fill out a name (e.g. Enterspeed Management MCP) and the Remote MCP server URL (https://mcp.management.enterspeed.com/).
+Start a session, run `/mcp`, and pick `enterspeed-management` to sign in. A browser window opens; authenticate with your Enterspeed credentials.
 
-![Install MCP server on VS Code](/images/docs/mcp-server/connect-to-claude.png)
+<Note>
+This installs the server for the current project only. Add `--scope user` to make it available in every project.
+</Note>
 
-Once you click Add a browser window opens and you authenticate using your Enterspeed credentials. The MCP server is now connected.
+</Tab>
+<Tab title="Codex">
+
+Codex configures MCP servers as local programs, so it reaches Enterspeed through the `mcp-remote` bridge:
+
+```bash
+codex mcp add enterspeed-management -- npx -y mcp-remote "https://mcp.management.enterspeed.com/"
+```
+
+The first time the bridge runs it opens a browser window for you to sign in, and remembers the result for later sessions.
+
+</Tab>
+<Tab title="Gemini CLI">
+
+```bash
+gemini mcp add --transport http enterspeed-management "https://mcp.management.enterspeed.com/"
+```
+
+That writes the server into `~/.gemini/settings.json`. The equivalent by hand is:
+
+```json
+{
+  "mcpServers": {
+    "enterspeed-management": {
+      "httpUrl": "https://mcp.management.enterspeed.com/"
+    }
+  }
+}
+```
+
+<Warning>
+Use `httpUrl`, not `url`. In Gemini CLI, `url` selects the older SSE transport, and this server does not speak it.
+</Warning>
+
+Run `/mcp` inside the CLI to check the server is listed and to complete the sign-in.
+
+</Tab>
+<Tab title="Copilot CLI">
+
+```bash
+copilot mcp add --transport http enterspeed-management "https://mcp.management.enterspeed.com/"
+```
+
+That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand is:
+
+```json
+{
+  "mcpServers": {
+    "enterspeed-management": {
+      "type": "http",
+      "url": "https://mcp.management.enterspeed.com/",
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+`"tools": ["*"]` offers every tool the server lists, which is also Copilot CLI's default. You can add the server interactively instead: start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign-in in your browser the first time it connects.
+
+</Tab>
+<Tab title="Claude.ai">
+
+1. Open **Settings**, then **Connectors**.
+2. Choose **Add custom connector**.
+3. Paste `https://mcp.management.enterspeed.com/` as the server URL.
+4. Sign in with your Enterspeed account when Claude asks.
+
+![Adding the Enterspeed Management MCP Server as a custom connector in Claude](/images/docs/mcp-server/connect-to-claude.png)
+
+</Tab>
+<Tab title="ChatGPT">
+
+1. Open **Settings**, then **Connectors**, then **Advanced**, and turn on **developer mode**.
+2. Back under **Connectors**, choose **Create**.
+3. Paste `https://mcp.management.enterspeed.com/` as the MCP server URL.
+4. Sign in with your Enterspeed account when ChatGPT asks.
+
+<Note>
+Custom MCP connectors sit behind developer mode, and which plans expose it is ChatGPT's decision rather than ours. If you cannot find **Advanced**, the setting is not available on your plan.
+</Note>
+
+</Tab>
+<Tab title="Claude Desktop">
+
+Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign-in.
+
+1. Open **Settings**, then **Connectors**.
+2. Choose **Add custom connector**.
+3. Name it — for example `Enterspeed Management` — and paste `https://mcp.management.enterspeed.com/`.
+4. Click **Add**, then sign in with your Enterspeed account in the browser window that opens.
+
+<Note>
+There is no reason to use `claude_desktop_config.json` for this server. That file starts local programs, so it would need the `mcp-remote` bridge, and the result would be the same sign-in the Connectors screen gives you. On [Query MCP](/enterspeed/mcp-server/query-mcp/connecting-a-client) the config-file route exists because it can carry a scoped key; this server does not accept keys.
+</Note>
+
+</Tab>
+<Tab title="Cursor">
+
+Cursor reads MCP servers from `~/.cursor/mcp.json` for every project, or `.cursor/mcp.json` for one.
+
+```json
+{
+  "mcpServers": {
+    "enterspeed-management": {
+      "url": "https://mcp.management.enterspeed.com/"
+    }
+  }
+}
+```
+
+A remote server is identified by `url` — there is no `type` field to set. Open **Settings → MCP**, and Cursor takes you through the Enterspeed sign-in in your browser.
+
+</Tab>
+<Tab title="VS Code">
+
+VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single workspace, put the config at `.vscode/mcp.json`; for every workspace, use the **MCP: Open User Configuration** command from the command palette.
+
+```json
+{
+  "servers": {
+    "enterspeed-management": {
+      "type": "http",
+      "url": "https://mcp.management.enterspeed.com/"
+    }
+  }
+}
+```
+
+Reload the window (**Developer: Reload Window**) and open the Copilot chat pane. VS Code prompts you to sign in to Enterspeed the first time it connects, and the Enterspeed tools appear in the tool picker afterwards.
 
 </Tab>
 </Tabs>
+
+### Other MCP clients
+
+The server is client-agnostic. Any MCP client that can open a remote **Streamable HTTP** server and follow an OAuth sign-in works — point it at the root URL above.
+
+If a client cannot open a remote server, or does not complete the sign-in, put `mcp-remote` in front of it the way the Codex tab does. Configure it as a local command, `npx -y mcp-remote "https://mcp.management.enterspeed.com/"`, and the bridge handles the remote connection and the sign-in on the client's behalf.
 
 ## Sample prompts
 
@@ -134,7 +311,7 @@ Use these to smoke-test a fresh connection.
 
 > List my mapping schemas and show me the current version of the one that produces my product pages. What triggers it?
 
-**Authoring loop (needs a write-capable key)**
+**Authoring loop (needs write permission in the tenant, and a connection without `?readOnly=true`)**
 
 > Write an index schema that indexes my `article` entities with title, publish date, and author. Dry-run it against a real article first, then save it as a new version.
 
@@ -150,11 +327,14 @@ Use these to smoke-test a fresh connection.
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| `401 Unauthorized` on every tool call | Wrong key type — an environment client key instead of a Management API key | Use a key starting with `management-`. Environment client keys belong to [Query MCP](/enterspeed/mcp-server/query-mcp/overview). |
-| Reads work, writes return a permission error | The key is read-only | Expected. Use a write-capable key only if the agent genuinely needs to create or update configuration. |
+| `401 Unauthorized` on every tool call | The client is not signed in, or its token has expired | Reconnect the server in your client and complete the Enterspeed sign-in. This server authenticates people, not keys — an `x-api-key` header is refused as authentication. Environment client keys belong to [Query MCP](/enterspeed/mcp-server/query-mcp/overview). |
+| Tenant-scoped tools fail with "no tenant is selected" | The session has not selected a tenant yet, or the selection was lost when the client reconnected or the server restarted | Ask the client to select your tenant. Every signed-in session needs this, even with only one tenant. |
+| Writes are refused, naming read-only | The connection URL has `?readOnly=true`, or a `readOnly` value the server could not read | Expected if you set it. Reconnect without the parameter if the agent genuinely needs to write. |
+| Writes return a permission error from Enterspeed | Your account does not have write permission in that tenant | Ask a tenant administrator for the access, or make the change in the Management App. |
+| A tool is refused as "not offered" | The connection URL has a `?toolsets=` value that does not include that tool's group | Add the group to `toolsets`, or use `toolsets=all`. |
 | `deploy_not_permitted` when deploying a schema | The target environment is not one the hosted server may deploy to | Deploy to `dev`, `development`, `test`, or `staging`, or deploy to production from the Management App. |
 | `create_environment_client` succeeded but there is no key in the response | Working as intended — access keys are never returned through MCP | Fetch the key in the Management App. |
-| `429` with a `Retry-After` header | More than 60 requests in a minute on this key | Let the client back off, or split work across keys. |
+| `429` with a `Retry-After` header | More than 60 requests in a minute from your sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
 
 ## Next steps

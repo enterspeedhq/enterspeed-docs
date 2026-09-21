@@ -31,16 +31,20 @@ Query MCP and Management MCP are complementary — many people connect both, so 
 
 ## How authentication works
 
-Both tenant-facing servers work the same way: they are **passthrough proxies that hold no credentials of their own**. Your client sends a key on every request, the server forwards it unchanged, and the underlying Enterspeed API makes every authorisation decision.
+Both tenant-facing servers are **passthrough proxies that hold no credentials of their own**. Every authorisation decision is made by the underlying Enterspeed API, never by the MCP server.
 
-That means the key you issue is the whole boundary. For Query MCP, a key scoped to one environment and one index prefix gives an agent exactly that much and no more. For Management MCP, the key's access level decides whether an agent can change anything at all.
+They differ in how you identify yourself to them:
 
-<Warning>
-**Custom connectors on claude.ai in the browser are not supported yet.** Browser-based custom connectors cannot send a custom HTTP header, and both tenant-facing servers authenticate with one. Use Claude Code, Claude Desktop, VS Code, Cursor, or your own agent instead.
+| Server | How you authenticate |
+| --- | --- |
+| [Query MCP](/enterspeed/mcp-server/query-mcp/overview) | A scoped environment client key in an `x-api-key` header, **or** signing in with your Enterspeed account. |
+| [Management MCP](/enterspeed/mcp-server/management-mcp/overview) | Signing in with your Enterspeed account. |
+| [Documentation MCP](/enterspeed/mcp-server/documentation-mcp/overview) | Nothing — the documentation is public. |
 
-We are working on OAuth support to remove this restriction. Until it ships, a header-capable client is required. The Documentation MCP server needs no authentication and is unaffected.
-</Warning>
+Signing in means the client sends you to Enterspeed in a browser window and keeps the resulting token. Clients that take a server URL and nothing else — claude.ai in the browser, Claude Desktop's **Connectors** screen — work this way, because they have no field for a custom header.
+
+A key remains the tighter boundary on Query MCP: one scoped to a single environment and index prefix gives an agent exactly that much and no more. On Management MCP, you narrow a signed-in connection with parameters on the server URL instead — for example `?readOnly=true` — see [Limiting a connection](/enterspeed/mcp-server/management-mcp/overview#limiting-a-connection).
 
 ## Transport
 
-Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL. Responses are delivered as a server-sent event stream on that same URL, so clients that label their transport *SSE* generally work when pointed at the root. There is no separate `/sse` endpoint — always configure the root URL, and use the `http` transport type where your client offers a choice.
+Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL, and nothing else. Choose the **HTTP** or **Streamable HTTP** transport in your client. The older SSE transport does not work: a client set to *SSE* fails on its first request with an HTTP 400 error. There is no `/sse` endpoint — always configure the root URL.
