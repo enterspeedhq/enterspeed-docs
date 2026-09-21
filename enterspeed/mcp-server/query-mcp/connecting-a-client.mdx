@@ -53,12 +53,11 @@ Never commit `.vscode/mcp.json` with a real key. Use `${input:enterspeed-key}` w
 <Tab title="Claude Code CLI">
 
 ```bash
-claude mcp add enterspeed \
-  --scope user \
-  --transport http \
-  https://mcp.query.enterspeed.com/ \
+claude mcp add enterspeed --scope user --transport http "https://mcp.query.enterspeed.com/" \
   -H "x-api-key: environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
+
+To sign in instead of using a key, leave out the `-H` line. Then start a session, run `/mcp`, pick `enterspeed`, and sign in with your Enterspeed credentials in the browser window that opens.
 
 <Note>
 The user scope (`--scope user`) installs the server for the current user across all projects. Use `--scope project` to install it for the current project only but for all users — that writes a checked-in `.mcp.json`, so use an environment variable for the key rather than pasting it.
@@ -110,6 +109,8 @@ A signed-in session is given three extra tools for this — `list_available_cont
 > List my available Enterspeed contexts, then select the production environment.
 
 If you belong to exactly one tenant with exactly one environment, asking Claude to select your context is enough — it resolves to the only one available.
+
+The first selection in an environment sets up an environment client for the sign-in route, and the first query needs a short wait after it. A selection can also need repeating after a reconnect. See [what to expect from the sign-in route](/enterspeed/mcp-server/query-mcp/overview#signing-in-instead-of-using-a-key).
 </Note>
 
 ### Route 2 — Config file with a scoped key
@@ -300,9 +301,9 @@ Expected output includes a short summary of three blog posts, and the loop's int
 
 ## Other MCP clients
 
-The four clients above are the ones we test against regularly, but the MCP server is client-agnostic. Any MCP-capable client follows the same pattern — point it at `https://mcp.query.enterspeed.com/` with `http` transport and set an `x-api-key` header. Some known-good examples:
+The four clients above are the ones we test against regularly, but the MCP server is client-agnostic. Any MCP-capable client follows one of the two routes — point it at `https://mcp.query.enterspeed.com/` with `http` transport, and either set an `x-api-key` header or let the client sign you in with your Enterspeed account. Some known-good examples, all of which can set a header:
 
-- **Cursor** — `.cursor/mcp.json` with the same `servers` schema as VS Code.
+- **Cursor** — `.cursor/mcp.json`, under `mcpServers`, with `url` and `headers` (Cursor uses `mcpServers` where VS Code uses `servers`).
 - **Windsurf** — settings → Cascade → MCP Servers, using the URL + header form.
 - **Continue** — `~/.continue/config.json` under `experimental.modelContextProtocolServers`.
 - **Zed** — settings under `"context_servers"`.

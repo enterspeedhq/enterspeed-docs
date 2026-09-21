@@ -43,7 +43,7 @@ They differ in how you identify yourself to them:
 
 Signing in means the client sends you to Enterspeed in a browser window and keeps the resulting token. Clients that take a server URL and nothing else — claude.ai in the browser, Claude Desktop's **Connectors** screen — work this way, because they have no field for a custom header.
 
-A key remains the tighter boundary on Query MCP: one scoped to a single environment and index prefix gives an agent exactly that much and no more.
+A key remains the tighter boundary on Query MCP: one scoped to a single environment and index prefix gives an agent exactly that much and no more. On Management MCP, you narrow a signed-in connection with parameters on the server URL instead — for example `?readOnly=true` — see [Limiting a connection](/enterspeed/mcp-server/management-mcp/overview#limiting-a-connection).
 
 ## Transport
 
