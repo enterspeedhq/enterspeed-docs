@@ -3,7 +3,7 @@ title: Tools
 description: The full Management MCP tool inventory — 27 reads, 20 writes and tenant selection, grouped by the toolsets a connection can choose, with no delete tools by design.
 ---
 
-The Management MCP server exposes **48 tools: 27 reads, 20 writes, and `set_tenant_context`**, which selects the tenant a session works on. Enterspeed administrators are offered one more, `search_tenants`. This page lists all of them so you can see exactly what an agent connected to your tenant is able to do.
+The Management MCP server exposes **48 tools: 27 reads, 20 writes, and `set_tenant_context`**, which selects the tenant a session works on. This page lists all of them so you can see exactly what an agent connected to your tenant is able to do.
 
 The tools are grouped here by **toolset** — the group names you can pass in the [`?toolsets=` connection parameter](/enterspeed/mcp-server/management-mcp/overview#limiting-a-connection) to offer an agent only part of the surface. A connection that names no toolsets gets every group. What an agent can actually do with a tool is still decided by your account's permissions in the tenant, and by `?readOnly=true` if you set it.
 
@@ -25,7 +25,6 @@ Always offered, whatever `toolsets` says: without these a session cannot say who
 | `whoami` | Read | Who the session is acting as, the tenants the account belongs to, the tenant currently selected, and how the connection's parameters were read. |
 | `set_tenant_context` | Tenant selection | Selects the tenant every later tool call acts on. Required on every signed-in session before any tenant-scoped tool, even for an account with one tenant. Changes nothing in the tenant. |
 | `get_tenant_overview` | Read | Start here. The tenant's plan, delivery regions, and environments — with the environment ids most other tools take. |
-| `search_tenants` | Read | Enterspeed administrators only. Finds a tenant to select. |
 
 ## schemas
 

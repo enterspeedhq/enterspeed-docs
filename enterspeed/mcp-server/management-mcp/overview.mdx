@@ -45,11 +45,11 @@ A sign-in names a person, not a tenant, so **every signed-in session has to sele
 
 The selection is held in memory by the server instance that handled it. If your client reconnects, or the server restarts, a tool call can come back saying no tenant is selected. Nothing is lost when that happens: select the tenant again and carry on.
 
-**Selecting a tenant does not change which tools your client lists.** Every tool is offered from the moment you connect, the tenant-scoped ones included, and one called before a tenant is selected is refused at the call rather than withheld from the list — the refusal tells you to select a tenant. So nothing appears or disappears when you select one, and every tenant is offered the same tools. What a connection lists depends on the `toolsets` parameter (see [Limiting a connection](#limiting-a-connection)) and on whether your account is an Enterspeed administrator, never on which tenant you picked.
+Your client lists the same tools before and after you select a tenant. A tenant-scoped tool called without a selection is still listed, and calling it fails against the Management API rather than telling you a tenant is missing, so run `whoami` if a call is refused and you are not sure which tenant the session is on. It reports the tenant in force, or tells you to select one. What the list depends on is the `toolsets` parameter (see [Limiting a connection](#limiting-a-connection)) and your account's access level, never which tenant you picked.
 
 ## What the server can and cannot do
 
-The server exposes **48 tools: 27 reads, 20 writes, and `set_tenant_context`**, which selects the tenant for the session and changes nothing in it. Enterspeed administrators are offered one more, for finding a tenant.
+The server exposes **48 tools: 27 reads, 20 writes, and `set_tenant_context`**, which selects the tenant for the session and changes nothing in it.
 
 - **Reads** cover the tenant overview, sources and source entities, mapping schemas and deployments, views and routes, indexes and index documents, domains and hostnames, destinations, environment and management clients, logs, and metrics.
 - **Nine writes are additive**: the eight `create_*` tools, which only ever add, and `configure_destination`, which sets a destination up for an environment or changes that setup, but never removes a setting.
