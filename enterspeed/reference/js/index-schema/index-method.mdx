@@ -40,7 +40,9 @@ The `metadata` property on a field is optional.
 
 Use it to add a description to the field. The description is exposed by the [Enterspeed Query MCP](/enterspeed/mcp-server/query-mcp/overview) to give AI agents meaningful context about what the field is used for.
 
-_The max character length of the field description is 50 characters._
+Field metadata can hold at most 5 entries, with keys of at most 20 characters and string values of at most 50 characters.
+
+Field metadata is not supported on `object` fields — see [Object](#object).
 
 ```js title="Field description example"
 index: {
@@ -111,3 +113,5 @@ Setting the right types for the properties in your index is important. The types
 | Type                | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | object              | Supports any value of an object type, this object is not indexed and therefore not searchable, it can be used to associate a complex data type to an index item. |
+
+`metadata` (including `description`) is **not supported** on `object` fields and is ignored. An `object` field is a container for other values rather than a leaf field in its own right, and only leaf fields can carry metadata. Object fields are not searchable, but their value is returned as-is on the index items your queries return.
