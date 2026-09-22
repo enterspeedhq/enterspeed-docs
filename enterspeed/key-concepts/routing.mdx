@@ -99,3 +99,33 @@ export default {
   }
 }
 ```
+
+## Duplicate routes
+
+More than one schema can claim the same route. When that happens, Enterspeed keeps all the views but serves only one of them.
+
+A route is duplicated when several views resolve to the same URL within an environment, or when several views use the same handle. URLs are compared after they are normalised - the scheme, query string and fragment are removed, the casing is lowered, and a trailing slash is trimmed - so `https://example.com/Products/` and `https://example.com/products` are the same route.
+
+Nothing fails when this happens. The Delivery API returns one view, the remaining views stay in your tenant but cannot be reached, and no error is raised. This is why a duplicate route usually shows up as "the wrong view is returned" or "my view is not updating" rather than as an error.
+
+### Which view is returned
+
+When several views claim the same route, the view that was processed most recently is the one returned.
+
+Do not use this as a way to choose which view wins. Because it follows processing order, the view that is returned can change whenever the content behind any of the colliding views is processed again - the Delivery API starts returning something different without you having changed anything.
+
+### Finding duplicate routes
+
+The **Tenant health** tile on the dashboard lists the duplicate routes across your environments, worst first, together with the schemas that claim each one. The schema whose view the Delivery API returns today is marked `(returned)`. Check it before you decide which schema keeps the route, so that resolving the duplicate does not quietly change what your application receives. Open a route in the **route inspector** to see every view behind it.
+
+Duplicate routes are detected as routes are written, not when you open the tile. A new collision appears once the colliding content is next processed, and one you have resolved disappears on the following refresh rather than immediately.
+
+### Resolving a duplicate route
+
+Decide which schema owns the route, then stop the others from claiming it:
+
+- Narrow the triggers so only one schema runs for the source entity type.
+- Map the URL or handle so each view gets a route of its own - add the culture, the source group, or another distinguishing value.
+- Remove the route from the schema that should not be addressable on its own, and [reference](/enterspeed/key-concepts/referencing-schemas) its view from the owning schema instead.
+
+Deploy the schemas afterwards so the affected content is processed again.

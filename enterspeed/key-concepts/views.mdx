@@ -7,3 +7,5 @@ A view is the output of the data that is mapped in a [Schema](/enterspeed/key-co
 Views are reprocessed when a change in the Source Entity has happened.
 
 It is possible to test the output of your schema mappings in your tenant from the administration. Navigate [here](https://app.enterspeed.com/views) for an overview of your generated views.
+
+If several views claim the same route, only one of them is returned by the Delivery API. See [Duplicate routes](/enterspeed/key-concepts/routing#duplicate-routes) for how that view is chosen and how to resolve the conflict.
