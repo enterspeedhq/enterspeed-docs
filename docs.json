@@ -361,6 +361,7 @@
             "icon": "plug",
             "pages": [
               "speedtrain/mcp-server/overview",
+              "speedtrain/mcp-server/connect",
               "speedtrain/mcp-server/tools"
             ]
           }

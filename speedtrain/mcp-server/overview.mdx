@@ -6,6 +6,8 @@ description: "Drive Speedtrain from an AI agent — what the MCP server can do, 
 
 Speedtrain exposes a **Model Context Protocol** server, so an AI agent can author task configurations, run test sessions, and read results without a person clicking through the UI.
 
+To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of any Speedtrain page, or see [Connect to the MCP server](/speedtrain/mcp-server/connect).
+
 <Info>
   The MCP server is for **building and inspecting**. It can create a configuration, run a preview, and read every score and piece of feedback — but it cannot accept content or ship it. Those decisions stay with people, in the Speedtrain UI.
 </Info>
@@ -54,4 +56,12 @@ Two things are worth knowing before an agent calls anything:
   </Step>
 </Steps>
 
-[Management MCP tools](/speedtrain/mcp-server/tools)
+<Columns cols={2}>
+  <Card title="Connect to the MCP server" icon="plug" href="/speedtrain/mcp-server/connect">
+    Add the server to Claude, Claude Code, or a script.
+  </Card>
+
+  <Card title="Management MCP tools" icon="wrench" href="/speedtrain/mcp-server/tools">
+    Every tool the server exposes, and what it takes.
+  </Card>
+</Columns>
