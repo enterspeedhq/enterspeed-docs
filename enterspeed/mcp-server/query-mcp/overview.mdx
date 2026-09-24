@@ -74,7 +74,7 @@ The platform supports component-scoped environment keys. For MCP use, your key *
 
 | Scope | Why | Grants |
 | --- | --- | --- |
-| `MCP Server (AI Agent Access)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
+| `MCP Server (Public Preview)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
 | `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
 
 `MCP Server` alone is not useful — it must be combined with `Query API`, and Enterspeed enforces that pairing when you save the client.
@@ -122,16 +122,23 @@ Each family is only restricted if you supply at least one pattern for it. So a k
 
 ## Creating a scoped key
 
-1. Sign in to the **Enterspeed Management App**.
-2. Select the tenant and environment you want the AI client to query.
-3. Go to **Environment → API Keys**.
-4. Click **Create API key**.
-5. Pick the **AI Assistant** preset.
-6. *(Optional)* Set an **Index Scope** pattern like `blog*` to restrict access.
-7. Give the key a descriptive name, e.g. `claude-prod-blog-assistant`.
-8. Click **Create** — the key is shown **once**. Store it in your secret manager immediately.
+A scoped key is the API key of an environment client.
 
-The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+1. Sign in to the **Enterspeed Management App** and select your tenant.
+2. Go to **Settings → Environments**.
+3. Under **Environment clients**, click **Create**.
+4. Give the environment client a descriptive name, for example `claude-prod-blog-assistant`, and select the environment you want the AI client to query.
+5. Under **Quick Setup**, pick the **AI Assistant** preset. It selects **Query API** and **MCP Server (Public Preview)**.
+6. *(Optional)* Set an **Index Scope** pattern like `blog*` to restrict access.
+7. Click **Create**.
+
+The key appears in the **API Key** column of the environment client list. It has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Store it in your secret manager rather than in a file you commit.
+
+To use an environment client you already have, open its menu in the list and choose **Edit Scopes** instead.
+
+<Warning>
+**Choosing a preset replaces the environment client's scopes.** The **AI Assistant** preset sets exactly **Query API** and **MCP Server (Public Preview)**, so an existing client that also had **Delivery API** or **Routes API** loses them, and its key stops working against those APIs. To keep them, leave the preset alone and tick **MCP Server (Public Preview)** alongside the scopes the client already has. It needs **Query API** to be ticked too.
+</Warning>
 
 See [Using environment clients](/enterspeed/getting-started/environment-clients) for the full environment-client flow, including regenerating a key.
 
@@ -234,7 +241,7 @@ The two routes differ in what they answer:
 | --- | --- | --- |
 | Names the tenant and environment | The key does, on its own | You do, in each session |
 | Index scope | Whatever you set on the key | Not applied — access follows the environment you select |
-| Where it lives | A secret you store and rotate | An environment client Enterspeed creates in your tenant — see below |
+| Where it lives | A secret you store and rotate | An environment client Enterspeed creates in your tenant, with your permission — see below |
 
 <Note>
 **A signed-in session has no tenant or environment until it is given one, and no index or query tool works before that.** Such a session is offered three extra tools — `list_available_contexts`, `select_context`, and `current_context` — so asking the client to list your contexts and select one is enough. A key-authenticated session is not offered them, because the key already answers both questions.
@@ -242,7 +249,8 @@ The two routes differ in what they answer:
 
 What to expect the first time you use the sign-in route:
 
-- **An environment client appears in your tenant.** The first time a context is selected in an environment, the server creates an environment client there named **Enterspeed MCP (sign-in)**, with the `Query API` and `MCP Server` scopes and no index scope, and uses it for the session. Later sessions, including other people's, reuse it — there is one per environment, not one per person. You will see it in the environment's client list in the Management App. Deleting it revokes the access; the next selection creates it again.
+- **You are asked before an environment client is created in your tenant.** The first time a context is selected in an environment, the server needs an environment client there named **Enterspeed MCP (sign-in)**, with the `Query API` and `MCP Server` scopes and no index scope. It creates nothing on that first call. Your AI client tells you what will be created and asks for your permission, and the environment client is only created once you agree. It is created with your own sign-in, as if you had added it in the Management App. If you decline, nothing is created, and you can connect with a [scoped key](#creating-a-scoped-key) of your own instead.
+- **It is reused after that.** Later sessions, including other people's, reuse the same environment client without asking — there is one per environment, not one per person. You will see it in the environment's list of environment clients in the Management App. Deleting it revokes the access, and the next selection asks again.
 - **The first query needs a short wait.** A newly created client takes about ten seconds to become usable, and a query made sooner fails. The select response says so when it has just created the client. Wait, then query.
 - **The selection can need repeating.** It is held in memory by the server instance that handled it. If your client reconnects, or a later request is served by a different instance, a tool call can come back saying no context is selected. Nothing is lost: select the context again and carry on.
 
