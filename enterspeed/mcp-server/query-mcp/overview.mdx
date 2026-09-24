@@ -5,7 +5,7 @@ description: Connect an AI client to the Enterspeed Query API — query your ind
 
 The Enterspeed Query MCP Server turns the Enterspeed Query API into a set of [Model Context Protocol](https://modelcontextprotocol.io/) tools that AI clients (Claude, Cursor, custom agents, Azure AI Foundry, etc.) can discover and call. You do not need to host anything yourself — Enterspeed runs the server for you.
 
-This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. There are two ways in: a scoped environment client key, or [signing in with your Enterspeed account](#signing-in-instead-of-using-a-key). For step-by-step wiring guides, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) and [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent).
+This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. You connect by [signing in with your Enterspeed account](#what-to-expect-when-you-sign-in). A scoped environment client key is the alternative, for an agent that runs unattended or a connection fixed to one environment and one index scope. For step-by-step wiring guides, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) and [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent).
 
 To configure your tenant rather than query it, see [Management MCP](/enterspeed/mcp-server/management-mcp/overview).
 
@@ -28,14 +28,15 @@ The server speaks **MCP Streamable HTTP** on the root URL, and nothing else. Cho
 
 ## How authentication works
 
-The MCP server is a thin proxy. All authorisation decisions happen in the Enterspeed Query API. You authenticate in one of two ways:
+The MCP server is a thin proxy. All authorisation decisions happen in the Enterspeed Query API.
 
-- **A scoped environment client key**, sent in an `x-api-key` header. The key names its own tenant and environment, and carries any index restrictions you set on it. This is the tighter boundary, and it is described below.
-- **Signing in with your Enterspeed account**, over OAuth. This is the route for clients that take a server URL and nothing else, such as claude.ai and Claude Desktop's **Connectors** screen. See [Signing in instead of using a key](#signing-in-instead-of-using-a-key).
+You connect by **signing in with your Enterspeed account**, over OAuth. You give your client the server URL and sign in in a browser window. Then you ask the session to select the tenant and environment it works in. See [What to expect when you sign in](#what-to-expect-when-you-sign-in).
+
+The server also accepts **a scoped environment client key**, sent in an `x-api-key` header. Use one for an agent that runs unattended, because it cannot complete a browser sign in. Use one too when you want the connection fixed to one environment and one index scope. The key names its own tenant and environment, and carries any index restrictions you set on it.
 
 ```
 Key:      AI client ──x-api-key──► mcp.query.enterspeed.com ──x-api-key──► query.enterspeed.com
-Sign-in:  AI client ──sign-in────► mcp.query.enterspeed.com ──key of the ──► query.enterspeed.com
+Sign in:  AI client ──sign in────► mcp.query.enterspeed.com ──key of the ──► query.enterspeed.com
                                                                selected environment
                                                                            │
                                                            validates scopes + IndexScope
@@ -53,7 +54,7 @@ The key is a **scoped environment client key** issued from the Enterspeed Manage
 The server also accepts an `?apiKey=` query-string fallback for tools that cannot set headers. Prefer the header whenever possible: a key in a URL ends up in access logs along the whole request path.
 </Info>
 
-The key is checked when a tool is *called*, not when the session is opened. A client with a missing or invalid key can still connect and list the static tools — which is why an unexpectedly short tool list is the fastest signal that a key is wrong or under-scoped.
+The key is checked when a tool is *called*, not when the session is opened. A client with an invalid key can still connect and list the static tools, which is why an unexpectedly short tool list is the fastest signal that a key is wrong or has too few scopes. A request that carries no key and has not signed in is refused with a `401`, and the response points the client to the sign in.
 
 ### Rate limit
 
@@ -68,13 +69,36 @@ Too many requests. Retry after <n> seconds.
 
 Well-behaved MCP clients back off and retry. The `/health` endpoint is exempt. The limit is counted by each server instance separately, so treat it as the rate a client should stay under rather than an exact figure.
 
+## What to expect when you sign in
+
+Give your client `https://mcp.query.enterspeed.com/`, and it opens a browser window where you sign in with your Enterspeed credentials. [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) has the steps for each client.
+
+Signing in and a scoped key differ in what they answer.
+
+| | Scoped key | Signing in |
+| --- | --- | --- |
+| Names the tenant and environment | The key does, on its own | You do, in each session |
+| Index scope | Whatever you set on the key | Not applied. Access follows the environment you select. |
+| Where it lives | A secret you store and rotate | An environment client Enterspeed creates in your tenant with your permission. See below. |
+
+<Note>
+**A signed in session has no tenant or environment until it is given one, and no index or query tool works before that.** Such a session is offered three extra tools, `list_available_contexts`, `select_context` and `current_context`, so asking the client to list your contexts and select one is enough. A session that uses a key is not offered them, because the key already answers both questions.
+</Note>
+
+When you first sign in and select an environment, expect the following.
+
+- **You are asked before an environment client is created in your tenant.** The first time a context is selected in an environment, the server needs an environment client there named **Enterspeed MCP (sign-in)**, with the `Query API` and `MCP Server` scopes and no index scope. It creates nothing on that first call. Your AI client tells you what will be created and asks for your permission, and the environment client is only created once you agree. It is created with your own account, as if you had added it in the Management App. If you decline, nothing is created, and you can connect with a [scoped key](#creating-a-scoped-key) of your own instead.
+- **It is reused after that.** Later sessions, including other people's, reuse the same environment client without asking. There is one per environment, shared by everyone who signs in. You will see it in the environment's list of environment clients in the Management App. Deleting it revokes the access, and the next selection asks again.
+- **The first query needs a short wait.** A newly created client takes about ten seconds to become usable, and a query made sooner fails. The select response says so when it has just created the client. Wait, then query.
+- **The selection can need repeating.** It is held in memory by the server instance that handled it. If your client reconnects, or a later request is served by a different instance, a tool call can come back saying no context is selected. Nothing is lost. Select the context again and carry on.
+
 ## Required scopes
 
-The platform supports component-scoped environment keys. For MCP use, your key **must** include:
+This section and the next two apply when you connect with a key. The platform supports component-scoped environment keys. For MCP use, your key **must** include both scopes in this table.
 
 | Scope | Why | Grants |
 | --- | --- | --- |
-| `MCP Server (AI Agent Access)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
+| `MCP Server (Public Preview)` | Gates the MCP tool endpoints. Without it, the server sees none of the dynamic tools or the tools for each index. | Ability to list MCP tools. |
 | `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
 
 `MCP Server` alone is not useful — it must be combined with `Query API`, and Enterspeed enforces that pairing when you save the client.
@@ -122,16 +146,23 @@ Each family is only restricted if you supply at least one pattern for it. So a k
 
 ## Creating a scoped key
 
-1. Sign in to the **Enterspeed Management App**.
-2. Select the tenant and environment you want the AI client to query.
-3. Go to **Environment → API Keys**.
-4. Click **Create API key**.
-5. Pick the **AI Assistant** preset.
-6. *(Optional)* Set an **Index Scope** pattern like `blog*` to restrict access.
-7. Give the key a descriptive name, e.g. `claude-prod-blog-assistant`.
-8. Click **Create** — the key is shown **once**. Store it in your secret manager immediately.
+A scoped key is the API key of an environment client.
 
-The new key has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+1. Sign in to the **Enterspeed Management App** and select your tenant.
+2. Go to **Settings → Environments**.
+3. Under **Environment clients**, click **Create**.
+4. Give the environment client a descriptive name, for example `claude-prod-blog-assistant`, and select the environment you want the AI client to query.
+5. Under **Quick Setup**, pick the **AI Assistant** preset. It selects **Query API** and **MCP Server (Public Preview)**.
+6. *(Optional)* To restrict access, choose **Select specific indices** and add a pattern like `blog*` under **Or use wildcard patterns**.
+7. Click **Create**. The app then asks which domains the client may be used from. The client has already been created at that point, so you can choose **Cancel** there if you do not want to add a domain.
+
+The key appears in the **API Key** column of the environment client list. It has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Store it in your secret manager rather than in a file you commit.
+
+To use an environment client you already have, open its menu in the list and choose **Edit Scopes** instead.
+
+<Warning>
+**Choosing a preset replaces the environment client's scopes.** The **AI Assistant** preset sets exactly **Query API** and **MCP Server (Public Preview)**, so an existing client that also had **Delivery API** or **Routes API** loses them, and its key stops working against those APIs. To keep them, leave the preset alone and tick **MCP Server (Public Preview)** alongside the scopes the client already has. It needs **Query API** to be ticked too.
+</Warning>
 
 See [Using environment clients](/enterspeed/getting-started/environment-clients) for the full environment-client flow, including regenerating a key.
 
@@ -139,7 +170,7 @@ See [Using environment clients](/enterspeed/getting-started/environment-clients)
 
 Every tool is a read — the server has no way to change your data or your configuration. To configure a tenant, an agent needs [Management MCP](/enterspeed/mcp-server/management-mcp/overview) instead.
 
-The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in three layers. A signed-in session also gets three tools for choosing its tenant and environment — see [Signing in instead of using a key](#signing-in-instead-of-using-a-key).
+The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in three layers. A signed in session also gets three tools for choosing its tenant and environment. See [What to expect when you sign in](#what-to-expect-when-you-sign-in).
 
 **Always present** — the same eight tools for everyone:
 
@@ -221,30 +252,6 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | `401` on every request | Wrong key type — a Management API key instead of an environment client key | Create an **environment client** key. A Management API key does not work here, and [Management MCP](/enterspeed/mcp-server/management-mcp/overview) does not take keys at all. |
 | `429` with a `Retry-After` header | More than 120 requests in a minute on this key, or from your signed-in sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
-
-## Signing in instead of using a key
-
-Some clients take a server URL and nothing else — claude.ai in the browser and Claude Desktop's **Connectors** screen are the common examples. They have no field for a custom HTTP header, so they cannot send `x-api-key`.
-
-Those clients sign you in instead. Add `https://mcp.query.enterspeed.com/` as a custom connector, authenticate with your Enterspeed credentials in the browser window that opens, and the session acts as you rather than as a key.
-
-The two routes differ in what they answer:
-
-| | Scoped key | Signing in |
-| --- | --- | --- |
-| Names the tenant and environment | The key does, on its own | You do, in each session |
-| Index scope | Whatever you set on the key | Not applied — access follows the environment you select |
-| Where it lives | A secret you store and rotate | An environment client Enterspeed creates in your tenant — see below |
-
-<Note>
-**A signed-in session has no tenant or environment until it is given one, and no index or query tool works before that.** Such a session is offered three extra tools — `list_available_contexts`, `select_context`, and `current_context` — so asking the client to list your contexts and select one is enough. A key-authenticated session is not offered them, because the key already answers both questions.
-</Note>
-
-What to expect the first time you use the sign-in route:
-
-- **An environment client appears in your tenant.** The first time a context is selected in an environment, the server creates an environment client there named **Enterspeed MCP (sign-in)**, with the `Query API` and `MCP Server` scopes and no index scope, and uses it for the session. Later sessions, including other people's, reuse it — there is one per environment, not one per person. You will see it in the environment's client list in the Management App. Deleting it revokes the access; the next selection creates it again.
-- **The first query needs a short wait.** A newly created client takes about ten seconds to become usable, and a query made sooner fails. The select response says so when it has just created the client. Wait, then query.
-- **The selection can need repeating.** It is held in memory by the server instance that handled it. If your client reconnects, or a later request is served by a different instance, a tool call can come back saying no context is selected. Nothing is lost: select the context again and carry on.
 
 ## Next steps
 
