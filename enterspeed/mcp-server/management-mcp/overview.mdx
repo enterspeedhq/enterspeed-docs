@@ -146,7 +146,7 @@ https://mcp.management.enterspeed.com/
 Once you are signed in, ask your client to select the tenant you want to work on. Every session needs this, however many tenants you belong to — see [Selecting a tenant](#selecting-a-tenant).
 
 <Info>
-**The Codex command below adds Enterspeed as a program on your machine**, and so would Claude Desktop's `claude_desktop_config.json` file. That program is [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign in the same way, and it needs Node.js installed. Claude Desktop does not need it, because its **Connectors** screen opens the remote server directly.
+**Every client below opens the remote server directly and takes you through the sign in itself.** None of them needs Node.js or a bridge program on your machine. Claude Desktop's `claude_desktop_config.json` file would, because it only starts local programs, so use its **Connectors** screen instead. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge is only for a client that cannot open a remote server.
 </Info>
 
 <Tabs>
@@ -165,13 +165,11 @@ This installs the server for the current project only. Add `--scope user` to mak
 </Tab>
 <Tab title="Codex">
 
-This command reaches Enterspeed through the `mcp-remote` bridge.
-
 ```bash
-codex mcp add enterspeed-management -- npx -y mcp-remote "https://mcp.management.enterspeed.com/"
+codex mcp add enterspeed-management --url "https://mcp.management.enterspeed.com/"
 ```
 
-The first time the bridge runs it opens a browser window for you to sign in, and remembers the result for later sessions.
+Codex sees that the server asks for a sign in and opens a browser window for you straight away. To sign in again later, run `codex mcp login enterspeed-management`.
 
 </Tab>
 <Tab title="Gemini CLI">
@@ -224,23 +222,25 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 </Tab>
 <Tab title="Claude.ai">
 
-1. Open **Settings**, then **Connectors**.
-2. Choose **Add custom connector**.
-3. Paste `https://mcp.management.enterspeed.com/` as the server URL.
-4. Sign in with your Enterspeed account when Claude asks.
+1. Open **Customize**, then **Connectors**.
+2. Click **+** and then **Add custom connector**.
+3. Paste `https://mcp.management.enterspeed.com/` as the remote MCP server URL.
+4. Click **Add**, then sign in with your Enterspeed account when Claude asks.
+5. On a Team or Enterprise plan an Owner adds the connector first, under **Organization settings** and then **Connectors**. Everyone else then finds it under **Customize**, then **Connectors**, and clicks **Connect**.
 
 ![Adding the Enterspeed Management MCP Server as a custom connector in Claude](/images/docs/mcp-server/connect-to-claude.png)
 
 </Tab>
 <Tab title="ChatGPT">
 
-1. Open **Settings**, then **Connectors**, then **Advanced**, and turn on **developer mode**.
-2. Back under **Connectors**, choose **Create**.
-3. Paste `https://mcp.management.enterspeed.com/` as the MCP server URL.
-4. Sign in with your Enterspeed account when ChatGPT asks.
+1. Open **Settings**, then **Security and login**, and turn on **Developer mode**.
+2. Go to **ChatGPT Plugins** and select the plus button.
+3. Enter a name, and under **Connection** paste `https://mcp.management.enterspeed.com/` as the MCP server URL.
+4. Create the connection, then sign in with your Enterspeed account when ChatGPT asks.
+5. In a chat, choose **Developer mode** from the plus menu and select the app.
 
 <Note>
-Custom MCP connectors sit behind developer mode, and which plans expose it is ChatGPT's decision rather than ours. If you cannot find **Advanced**, the setting is not available on your plan.
+OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education accounts on the web, and a workspace policy can turn it off. That is ChatGPT's decision rather than ours. If you cannot find **Developer mode** under **Security and login**, it is not available to you.
 </Note>
 
 </Tab>
@@ -248,10 +248,11 @@ Custom MCP connectors sit behind developer mode, and which plans expose it is Ch
 
 Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign-in.
 
-1. Open **Settings**, then **Connectors**.
-2. Choose **Add custom connector**.
-3. Name it — for example `Enterspeed Management` — and paste `https://mcp.management.enterspeed.com/`.
+1. Open **Customize**, then **Connectors**.
+2. Click **+** and then **Add custom connector**.
+3. Give it a name, for example `Enterspeed Management`, and paste `https://mcp.management.enterspeed.com/` as the remote MCP server URL.
 4. Click **Add**, then sign in with your Enterspeed account in the browser window that opens.
+5. On a Team or Enterprise plan an Owner adds the connector first, under **Organization settings** and then **Connectors**. Everyone else then finds it under **Customize**, then **Connectors**, and clicks **Connect**.
 
 <Note>
 There is no reason to use `claude_desktop_config.json` for this server. That file starts local programs, so it would need the `mcp-remote` bridge, and the result would be the same sign-in the Connectors screen gives you. On [Query MCP](/enterspeed/mcp-server/query-mcp/connecting-a-client) the config-file route exists because it can carry a scoped key; this server does not accept keys.
@@ -299,7 +300,7 @@ Reload the window (**Developer: Reload Window**) and open the Copilot chat pane.
 
 The server is client-agnostic. Any MCP client that can open a remote **Streamable HTTP** server and follow an OAuth sign-in works — point it at the root URL above.
 
-If a client cannot open a remote server, or does not complete the sign-in, put `mcp-remote` in front of it the way the Codex tab does. Configure it as a local command, `npx -y mcp-remote "https://mcp.management.enterspeed.com/"`, and the bridge handles the remote connection and the sign-in on the client's behalf.
+If a client cannot open a remote server, or does not complete the sign-in, put `mcp-remote` in front of it. Configure it as a local command, `npx -y mcp-remote "https://mcp.management.enterspeed.com/"`, and the bridge handles the remote connection and the sign-in on the client's behalf.
 
 ## Sample prompts
 

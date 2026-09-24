@@ -22,7 +22,7 @@ Configure the **root URL** with the `http` transport type. There is no separate 
 ## Connect by signing in
 
 <Info>
-**The Codex command below adds Enterspeed as a program on your machine.** That program is [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign in the same way, and it needs Node.js installed.
+**Every client below opens the remote server directly and takes you through the sign in itself.** None of them needs Node.js or a bridge program on your machine. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge is only for a client that cannot open a remote server, and for Claude Desktop's config file when you connect with a scoped key.
 </Info>
 
 <Tabs>
@@ -41,13 +41,11 @@ This installs the server for the current project only. Add `--scope user` to mak
 </Tab>
 <Tab title="Codex">
 
-This command reaches Enterspeed through the `mcp-remote` bridge.
-
 ```bash
-codex mcp add enterspeed-query -- npx -y mcp-remote "https://mcp.query.enterspeed.com/"
+codex mcp add enterspeed-query --url "https://mcp.query.enterspeed.com/"
 ```
 
-The first time the bridge runs it opens a browser window for you to sign in, and remembers the result for later sessions.
+Codex sees that the server asks for a sign in and opens a browser window for you straight away. To sign in again later, run `codex mcp login enterspeed-query`.
 
 </Tab>
 <Tab title="Gemini CLI">
@@ -100,21 +98,23 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 </Tab>
 <Tab title="Claude.ai">
 
-1. Open **Settings**, then **Connectors**.
-2. Choose **Add custom connector**.
-3. Paste `https://mcp.query.enterspeed.com/` as the server URL.
-4. Sign in with your Enterspeed account when Claude asks.
+1. Open **Customize**, then **Connectors**.
+2. Click **+** and then **Add custom connector**.
+3. Paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
+4. Click **Add**, then sign in with your Enterspeed account when Claude asks.
+5. On a Team or Enterprise plan an Owner adds the connector first, under **Organization settings** and then **Connectors**. Everyone else then finds it under **Customize**, then **Connectors**, and clicks **Connect**.
 
 </Tab>
 <Tab title="ChatGPT">
 
-1. Open **Settings**, then **Connectors**, then **Advanced**, and turn on **developer mode**.
-2. Back under **Connectors**, choose **Create**.
-3. Paste `https://mcp.query.enterspeed.com/` as the MCP server URL.
-4. Sign in with your Enterspeed account when ChatGPT asks.
+1. Open **Settings**, then **Security and login**, and turn on **Developer mode**.
+2. Go to **ChatGPT Plugins** and select the plus button.
+3. Enter a name, and under **Connection** paste `https://mcp.query.enterspeed.com/` as the MCP server URL.
+4. Create the connection, then sign in with your Enterspeed account when ChatGPT asks.
+5. In a chat, choose **Developer mode** from the plus menu and select the app.
 
 <Note>
-Custom MCP connectors sit behind developer mode, and which plans expose it is ChatGPT's decision rather than ours. If you cannot find **Advanced**, the setting is not available on your plan.
+OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education accounts on the web, and a workspace policy can turn it off. That is ChatGPT's decision rather than ours. If you cannot find **Developer mode** under **Security and login**, it is not available to you.
 </Note>
 
 </Tab>
@@ -122,10 +122,11 @@ Custom MCP connectors sit behind developer mode, and which plans expose it is Ch
 
 Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign in.
 
-1. Open **Settings**, then **Connectors**.
-2. Choose **Add custom connector**.
-3. Name it, for example `Enterspeed Query`, and paste `https://mcp.query.enterspeed.com/`.
+1. Open **Customize**, then **Connectors**.
+2. Click **+** and then **Add custom connector**.
+3. Give it a name, for example `Enterspeed Query`, and paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
 4. Click **Add**, then sign in with your Enterspeed account in the browser window that opens.
+5. On a Team or Enterprise plan an Owner adds the connector first, under **Organization settings** and then **Connectors**. Everyone else then finds it under **Customize**, then **Connectors**, and clicks **Connect**.
 
 <Note>
 The **Connectors** screen cannot send an `x-api-key` header. To connect Claude Desktop with a scoped key, use its config file and the `mcp-remote` bridge, as shown under [Using a scoped key instead](#using-a-scoped-key-instead).
@@ -185,7 +186,7 @@ vscode:mcp/install?%7B%22name%22%3A%22enterspeed-query%22%2C%22type%22%3A%22http
 
 The server works with any MCP client that can open a remote **Streamable HTTP** server and follow an OAuth sign in. Point it at the root URL above.
 
-If a client cannot open a remote server, or does not complete the sign in, put `mcp-remote` in front of it the way the Codex tab does. Configure it as a local command, `npx -y mcp-remote "https://mcp.query.enterspeed.com/"`, and the bridge handles the remote connection and the sign in for the client.
+If a client cannot open a remote server, or does not complete the sign in, put `mcp-remote` in front of it. Configure it as a local command, `npx -y mcp-remote "https://mcp.query.enterspeed.com/"`, and the bridge handles the remote connection and the sign in for the client.
 
 ## After you connect
 
@@ -460,7 +461,7 @@ If your client cannot set a header, sign in instead. As a last resort you can pa
 | `401` on every request | The client is not signed in and sends no key | Reconnect and complete the sign in, or send a scoped key in the `x-api-key` header. |
 | Connected with a key, but every tool call is refused as `Unauthorized` or *Access denied* | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here. |
 | Connected and signed in, but every index or query tool fails | The session has not been pointed at a tenant and environment yet | Ask the client to list your available Enterspeed contexts and select one. This applies only when you sign in, because a key already names its environment. |
-| Claude Desktop shows the server but no tools, and the config uses `url` and `headers` | `claude_desktop_config.json` has no remote transport, so those fields go nowhere | Use the `mcp-remote` bridge shown above, or add the server under **Settings → Connectors** instead. |
+| Claude Desktop shows the server but no tools, and the config uses `url` and `headers` | `claude_desktop_config.json` has no remote transport, so those fields go nowhere | Use the `mcp-remote` bridge shown above, or add the server under **Customize → Connectors** instead. |
 
 ## Next steps
 
