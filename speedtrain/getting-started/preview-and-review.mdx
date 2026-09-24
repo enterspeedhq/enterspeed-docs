@@ -1,0 +1,66 @@
+---
+title: "Preview and review"
+description: "Run a configuration over real documents, read the quality scores, and decide what to accept."
+---
+
+A configuration is a hypothesis until you run it. Previewing is how you find out whether it holds.
+
+## Run a preview
+
+From the configuration editor, click **Preview**. Choose the input — an index, another task's stage output, or the exact outputs of a past session — and one option per variant dimension.
+
+<Tip>
+  Preview against the **draft** version, before publishing. The whole point is to learn something while the change is still cheap.
+</Tip>
+
+A preview produces a review session flagged as a preview, so it never delivers to a destination.
+
+## Read the session
+
+Open **Review activity** to find it. The session header shows what you most need to know:
+
+| What you see | What it tells you |
+|---|---|
+| Configuration name and version | Exactly which version produced these results |
+| Variant chips | The option combination this session was bound to |
+| Total and ready counts | How far the run has progressed |
+| Quality gate approval rate | The share of items the gate passed |
+
+The item table lists one row per document, with a column per quality rule showing that rule's score from 1 to 5.
+
+<Info>
+  The approval rate is the number to watch. It is the honest measure of how much human time this job will cost, and it is the number to quote before committing to a volume.
+</Info>
+
+## Read the rejections, not the acceptances
+
+The useful information is in the failures. Open a rejected item and look at which rule scored low and what feedback it gave:
+
+- **Schema failures** name the exact path and problem — `/title: string is 67 characters, maximum 60`
+- **Forbidden-term failures** name the matched text, the pattern that caught it, and where it appeared
+- **AI evaluation failures** give written reasoning
+
+From that feedback you can tell whether the *generation* is wrong or the *rule* is wrong. Both happen, and they need opposite fixes. [Iterating a configuration](/speedtrain/authoring/troubleshooting)
+
+<Warning>
+  Treat a grounding verdict with care. An AI rule only sees the source document if it was given access to it — without that, a rule can produce confident-sounding feedback about faithfulness to source data it never received. Check the rule's configuration before acting on that kind of verdict.
+</Warning>
+
+## Make decisions
+
+For each item you can accept, decline, or retry. On a retry, the previous attempt's failure feedback is fed into the next generation, so the model sees specifically what went wrong.
+
+**Accept quality gate approvals** accepts every item the gate passed in one action. That is the intended workflow at volume: let the gate handle the clear passes, spend your attention on the rest.
+
+<Tip>
+  Spot-check a sample of gate-approved items anyway, especially in the first few sessions. You are validating the gate as much as the content.
+</Tip>
+
+## When it is good enough
+
+There is no universal target, but two signals matter more than the raw percentage:
+
+- Rejections are for **real** problems, not rule artefacts
+- The same item does not pass one run and fail the next
+
+If approval sits below about half after three rounds of tuning, simplify the configuration rather than sharpening it further.

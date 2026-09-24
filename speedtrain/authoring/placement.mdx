@@ -1,0 +1,60 @@
+---
+title: "Where each requirement belongs"
+sidebarTitle: "Placement"
+description: "Every constraint lives in exactly one place. This page says which place, for every kind of requirement."
+---
+
+The single most common way a task configuration goes wrong is **duplication**: the same limit stated in the specialist prompt, again in special instructions, and again in a quality rule. They drift apart, and only the rule is enforced.
+
+<Warning>
+  Every constraint lives in exactly **one** place.
+</Warning>
+
+## The placement table
+
+| You have… | It goes in… | Why |
+|---|---|---|
+| The AI's role, expertise, and approach | The specialist prompt | The only free-form slot, and it comes first in the generation prompt. |
+| Output field names and types | A JSON Schema rule | Injected as guidance **and** machine-enforced. |
+| Length limits, required fields, enums, formats | A JSON Schema rule | Deterministic. Models cannot count characters. |
+| Exact banned words and phrases | A forbidden-terms rule | Deterministic, with no misses. |
+| Context-dependent judgment — tone, naturalness, a word used only as a buzzword | An AI evaluation rule | Needs understanding, not matching. |
+| Brand voice, terminology, audience traits | A variant option's fields | Reaches the generator **and** the checks, and can be scoped. |
+| How the AI should use a dimension | That variant's instruction | Per-dimension direction. The defaults usually suffice. |
+| Reference data to look up at runtime | A capability | Live data beats pasted data. |
+| Pictures the model must actually see | The images capability, plus `$images` on the document | A vision model reads the picture; a text model reads a URL and guesses. |
+| Whether the generated text matches the pictures | An AI rule that opts into the images capability | Verification is a separate call, and can use a different model than generation. |
+| Generation-only context — campaign notes, edge cases | Special instructions | Checks cannot see it, so only put things here that never need checking. |
+| Which data the job runs over | The session's input binding, not the configuration | One configuration, many feeds. |
+
+## The three-question test
+
+For any new requirement, ask in this order:
+
+<Steps>
+  <Step title="Must it be enforced?">
+    Then it is a quality rule — deterministic if it can be expressed as a schema constraint or a term list, an AI rule if it genuinely needs judgment.
+  </Step>
+
+  <Step title="Must it vary by language, brand, or audience?">
+    Then it is a variant field, and possibly a scoped rule alongside it.
+  </Step>
+
+  <Step title="Is it just context for generation?">
+    Then it is a special instruction — and that is a last resort, not a default.
+  </Step>
+</Steps>
+
+## Why special instructions are last
+
+<Warning>
+  Quality checks never see special instructions. Anything written there is invisible to every check, so it can never be verified.
+</Warning>
+
+That makes them right for genuinely unverifiable context — a campaign's mood, a one-off note about an unusual batch — and wrong for anything you would be unhappy to see violated.
+
+## Why variants beat prompt text
+
+Variant fields reach the generator **and** every AI check's context. Prompt text reaches only the generator.
+
+So if a brand's tone rules live in the specialist prompt, the brand-voice check has no idea what the tone was supposed to be. Put them in the variant and the checker is working from the same brief as the writer.

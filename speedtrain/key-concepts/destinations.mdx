@@ -1,0 +1,37 @@
+---
+title: "Destinations"
+description: "Where accepted content is delivered, how the connector shapes it, and the delivery rules that surprise people."
+---
+
+A **destination** is where accepted content goes. Each destination delivers to one Enterspeed source, from where the content flows into the rest of your data supply chain.
+
+Find them under **Settings → Destinations**.
+
+## Connector shape
+
+| Shape | Behaviour |
+|---|---|
+| **Per-output** | Each generated output is delivered as its own entity. The recommendation for anything new. |
+| **Merged** | Outputs are combined into one entity. |
+
+## Three rules that catch people out
+
+<Warning>
+  - **Only active destinations deliver.** An inactive destination silently delivers nothing.
+  - **Only review-mode sessions deliver.** Preview sessions never publish, by design.
+  - **Delivery is never retroactive.** Content accepted before a destination existed, or while it was inactive, is not sent when you activate it later.
+</Warning>
+
+Set the destination up **before** the review session that is meant to fill it.
+
+## Verifying delivery
+
+There is no per-item delivery receipt. Verify on the Enterspeed side instead: check that source entities arrive in the expected source and that their shape matches what your schemas expect.
+
+<Tip>
+  Judge the pipeline by whether the downstream publication actually succeeds, not by the quality scores alone. Good scores on content that never lands is not a working job.
+</Tip>
+
+## Several destinations
+
+A configuration's accepted content can go to more than one destination — for example a production source and a staging source used for verification. Each destination is independent, with its own active state.

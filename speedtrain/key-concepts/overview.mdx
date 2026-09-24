@@ -1,0 +1,53 @@
+---
+title: "Key concepts"
+sidebarTitle: "Overview"
+description: "The Speedtrain vocabulary — one page per concept, in the order they fit together."
+---
+
+Speedtrain has a small vocabulary. These pages define each term precisely, in the order the concepts build on each other.
+
+<Columns cols={2}>
+  <Card title="Content sources" icon="database" href="/speedtrain/key-concepts/content-sources">
+    Indexes and stage outputs — the data a task runs over.
+  </Card>
+
+  <Card title="Task configurations" icon="sliders" href="/speedtrain/key-concepts/task-configurations">
+    The versioned document describing one repeatable content job.
+  </Card>
+
+  <Card title="AI specialists" icon="user-gear" href="/speedtrain/key-concepts/ai-specialists">
+    Who the AI is, and which model it runs on.
+  </Card>
+
+  <Card title="Variants" icon="code-branch" href="/speedtrain/key-concepts/variants">
+    The dimensions the output varies across.
+  </Card>
+
+  <Card title="Capabilities" icon="plug" href="/speedtrain/key-concepts/capabilities">
+    Tools the model may call, and letting it see images.
+  </Card>
+
+  <Card title="Quality checks" icon="clipboard-check" href="/speedtrain/key-concepts/quality-checks">
+    The rules that score every output.
+  </Card>
+
+  <Card title="Quality gates" icon="filter" href="/speedtrain/key-concepts/quality-gates">
+    How scores aggregate into accept or reject.
+  </Card>
+
+  <Card title="Review sessions" icon="list-check" href="/speedtrain/key-concepts/review-sessions">
+    One run of a configuration over an input.
+  </Card>
+
+  <Card title="Destinations" icon="paper-plane" href="/speedtrain/key-concepts/destinations">
+    Where accepted content is delivered.
+  </Card>
+
+  <Card title="Workflows" icon="diagram-project" href="/speedtrain/key-concepts/workflows">
+    Connecting a source to a task for continuous processing.
+  </Card>
+</Columns>
+
+## The one-sentence version
+
+A **task configuration** describes a content job. A **review session** runs a version of it over a **content source**, generating one output per item per **variant** combination. **Quality checks** score each output, a **quality gate** turns those scores into a verdict, a person decides, and accepted content goes to a **destination**.

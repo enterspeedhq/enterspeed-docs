@@ -1,0 +1,108 @@
+---
+title: "Connect to the MCP server"
+sidebarTitle: "Connect"
+description: "Add the Speedtrain MCP server to Claude, Claude Code, or a script — sign in with your account, or use an access token where you can't."
+---
+
+The easiest way to set this up is from inside Speedtrain. On every page, click the **Use Speedtrain in Claude** bubble in the bottom-right corner. It shows the steps for your setup and gives you links and commands you can copy.
+
+The connector URL is:
+
+```text
+https://mcp.speedtrain.ai
+```
+
+<Tabs>
+  <Tab title="Claude">
+    Use this for Claude Desktop, claude.ai, and the Claude mobile apps. You sign in with your Speedtrain account. You don't need an API key.
+
+    <Steps>
+      <Step title="Open connectors">
+        Open [Customize → Connectors](https://claude.ai/customize/connectors). In Claude Desktop, go to your profile → **Customize** → **Connectors**.
+      </Step>
+
+      <Step title="Add a custom connector">
+        Click **+** and choose **Add custom connector**.
+      </Step>
+
+      <Step title="Paste the URL">
+        Paste `https://mcp.speedtrain.ai` and click **Add**.
+      </Step>
+
+      <Step title="Sign in">
+        Sign in with your Speedtrain account when asked.
+      </Step>
+    </Steps>
+
+    Your chat history, projects, and tools then work the same on desktop, web, and mobile.
+  </Tab>
+
+  <Tab title="Claude Team or Enterprise">
+    An organisation Owner adds the connector once under [**Organization settings → Connectors**](https://claude.ai/admin-settings/connectors). After that, everyone on the team can use it. Nobody has to set it up themselves.
+  </Tab>
+
+  <Tab title="Claude Code">
+    Run this command:
+
+    ```bash
+    claude mcp add --transport http speedtrain https://mcp.speedtrain.ai
+    ```
+
+    Then run `/mcp` in Claude Code, select **speedtrain**, and sign in with your Speedtrain account.
+  </Tab>
+
+  <Tab title="Access token">
+    <Warning>
+      Use an access token only when you can't sign in yourself — for example, in a CI pipeline or on a server. For Claude and other AI clients, use sign-in instead. With sign-in, there is no key to copy, rotate, or leak.
+    </Warning>
+
+    <Steps>
+      <Step title="Create a token">
+        Go to [**Settings → Access tokens**](https://app.speedtrain.ai/settings/access-tokens), click **Create token**, and give it a name.
+      </Step>
+
+      <Step title="Store it">
+        Copy the token and store it in your secret manager or an environment variable.
+      </Step>
+
+      <Step title="Send it with your requests">
+        Send the token in the `X-Api-Key` header with your requests to `https://mcp.speedtrain.ai`.
+      </Step>
+    </Steps>
+
+    For example, in an MCP client config:
+
+    ```json
+    {
+      "mcpServers": {
+        "speedtrain": {
+          "type": "http",
+          "url": "https://mcp.speedtrain.ai",
+          "headers": {
+            "X-Api-Key": "<your-access-token>"
+          }
+        }
+      }
+    }
+    ```
+
+    Config formats differ a little between MCP clients, so check your client's docs.
+
+    With Claude Code:
+
+    ```bash
+    claude mcp add --transport http speedtrain https://mcp.speedtrain.ai \
+      --header "X-Api-Key: <your-access-token>"
+    ```
+
+    <Info>
+      Access tokens are not [management clients](/speedtrain/settings/management-clients). A management client key is for ingesting documents into an index. It does not connect to the MCP server.
+    </Info>
+  </Tab>
+</Tabs>
+
+## After you connect
+
+The server does not infer a tenant or environment from your sign-in or token. An agent's first two calls in any session pick them. [Getting oriented](/speedtrain/mcp-server/overview#getting-oriented)
+
+[Management MCP tools](/speedtrain/mcp-server/tools)

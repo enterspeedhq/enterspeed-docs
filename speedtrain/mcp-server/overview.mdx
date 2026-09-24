@@ -1,0 +1,67 @@
+---
+title: "MCP server"
+sidebarTitle: "Overview"
+description: "Drive Speedtrain from an AI agent — what the MCP server can do, and the boundary it deliberately does not cross."
+---
+
+Speedtrain exposes a **Model Context Protocol** server, so an AI agent can author task configurations, run test sessions, and read results without a person clicking through the UI.
+
+To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of any Speedtrain page, or see [Connect to the MCP server](/speedtrain/mcp-server/connect).
+
+<Info>
+  The MCP server is for **building and inspecting**. It can create a configuration, run a preview, and read every score and piece of feedback — but it cannot accept content or ship it. Those decisions stay with people, in the Speedtrain UI.
+</Info>
+
+## What it is good at
+
+<Columns cols={2}>
+  <Card title="Authoring configurations" icon="pen-to-square">
+    Create and push versions from a document, using the platform's own authoring guide as reference.
+  </Card>
+
+  <Card title="Inspecting results" icon="magnifying-glass">
+    Query review items, read per-rule scores and feedback, and find which rule is doing the rejecting.
+  </Card>
+
+  <Card title="Running test sessions" icon="flask">
+    Preview a draft version over a selection of documents before anyone publishes it.
+  </Card>
+
+  <Card title="Managing destinations" icon="paper-plane">
+    List, create, and set the status of destinations.
+  </Card>
+</Columns>
+
+## What it deliberately cannot do
+
+<Warning>
+  - **Accept or decline content.** Every human decision stays in the UI.
+  - **Configure tool capabilities.** Those need platform-side credentials and are set up in the UI. A configuration's existing capability entries are carried through untouched when an agent edits the document.
+  - **Write documents.** Index documents are read-only over MCP.
+</Warning>
+
+That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy — while the decisions that carry consequences remain with a person.
+
+## Getting oriented
+
+Two things are worth knowing before an agent calls anything:
+
+<Steps>
+  <Step title="Nothing is inferred from your credential">
+    Every call takes a tenant and an environment. The first two calls in any session get them.
+  </Step>
+
+  <Step title="The authoring guide is a tool, not a document">
+    The server serves its own complete configuration reference and a fill-in template. An agent should read them before authoring or before interpreting classifier feedback, rather than guessing at the document shape.
+  </Step>
+</Steps>
+
+<Columns cols={2}>
+  <Card title="Connect to the MCP server" icon="plug" href="/speedtrain/mcp-server/connect">
+    Add the server to Claude, Claude Code, or a script.
+  </Card>
+
+  <Card title="Management MCP tools" icon="wrench" href="/speedtrain/mcp-server/tools">
+    Every tool the server exposes, and what it takes.
+  </Card>
+</Columns>

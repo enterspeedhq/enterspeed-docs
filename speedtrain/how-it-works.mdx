@@ -1,0 +1,93 @@
+---
+title: "How it works"
+description: "The path a record takes through Speedtrain, from an indexed document to approved content in a destination."
+---
+
+Every Speedtrain job follows the same path. Understanding it once makes the rest of the documentation straightforward.
+
+```
+Content source          Task configuration         Review session         Destination
+─────────────────       ──────────────────         ──────────────         ───────────
+index document    ──▶   specialist + variants  ──▶   generate       ──▶   accepted
+(your product data)     quality checks               score               content
+                        quality gate                 gate verdict        published
+                                                     human decision
+```
+
+## The four moving parts
+
+<AccordionGroup>
+  <Accordion title="1. A content source holds the data" icon="database">
+    Your records live in an **index** — documents pushed in from a PIM, ERP, CMS, or any other system. Speedtrain reads them; it never edits them.
+
+    A task can also run over another task's approved output, which is how you chain jobs together. [Content sources](/speedtrain/key-concepts/content-sources)
+  </Accordion>
+
+  <Accordion title="2. A task configuration describes the job" icon="sliders">
+    The configuration says who the AI is, what dimensions the output varies across, what tools it may use, and how the result will be judged.
+
+    It deliberately does **not** say which data to run over. That is chosen when you start a session, so one configuration can serve several feeds. [Task configurations](/speedtrain/key-concepts/task-configurations)
+  </Accordion>
+
+  <Accordion title="3. A review session runs it over real records" icon="list-check">
+    Starting a session binds a configuration version to an input source and one option per variant dimension. Each document produces one generation, which is then scored by every applicable quality rule.
+
+    The quality gate aggregates those scores into accept or reject, and the item is presented for a human decision. [Review sessions](/speedtrain/key-concepts/review-sessions)
+  </Accordion>
+
+  <Accordion title="4. A destination publishes what was accepted" icon="paper-plane">
+    Accepted content is delivered to an Enterspeed source, from where it flows on to wherever you need it.
+
+    Only accepted items in an active destination are delivered, and delivery is never retroactive. [Destinations](/speedtrain/key-concepts/destinations)
+  </Accordion>
+</AccordionGroup>
+
+## What happens to a single item
+
+<Steps>
+  <Step title="Generation">
+    The platform assembles a prompt from the specialist's role, the bound variant options, the output contract, the quality rules, and any special instructions. The model returns a JSON object.
+  </Step>
+
+  <Step title="Scoring">
+    Every applicable rule runs in parallel. Deterministic rules execute as code in milliseconds at zero token cost. AI rules are separate model calls, each judging one question in isolation.
+  </Step>
+
+  <Step title="Gate">
+    Scores are aggregated by the configured gate — `strict`, `balanced`, or `lenient`. This is pure arithmetic.
+  </Step>
+
+  <Step title="Routing">
+    Passing items can auto-approve. Failing items go to human review with the failing rule's feedback attached.
+  </Step>
+
+  <Step title="Decision">
+    A person accepts, declines, or retries. On a retry, the previous attempt's failure feedback is fed back into the next generation.
+  </Step>
+</Steps>
+
+<Note>
+  Quality rules are used **twice**. Before generation they are injected into the prompt so the model knows what it will be judged on. After generation they execute for real. The first pass improves quality; only the second proves anything.
+</Note>
+
+## Versions and rollout
+
+A configuration is versioned, and exactly one version is published at a time. The safe path is always the same:
+
+<Steps>
+  <Step title="Save a draft">
+    Edit freely. Drafts do not affect anything running.
+  </Step>
+
+  <Step title="Preview against the draft">
+    Run a test session over a handful of documents and read the results — especially the rejected ones.
+  </Step>
+
+  <Step title="Publish">
+    Publishing names the version it displaces, so rolling back is a single action.
+  </Step>
+</Steps>
+
+<Warning>
+  Never let publishing be the first time a version runs over real data. Preview first, every time.
+</Warning>

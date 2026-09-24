@@ -1,0 +1,75 @@
+---
+title: "What is Speedtrain"
+sidebarTitle: "Introduction"
+description: "Speedtrain applies AI to structured business data at scale, with humans on the loop and quality checked on every output."
+---
+
+Speedtrain is a governed platform for agentic data enrichment. You point it at structured business data — products, articles, records — describe the content you want generated, and it produces that content for every item, scores each output against your own quality rules, and routes the results to people for approval.
+
+It is built on Enterspeed, so the data you enrich and the content you produce move through the same data supply chain as the rest of your stack.
+
+<Info>
+  Speedtrain is for **repeatable content jobs over many records**, not one-off writing. If you need one product description, write it. If you need 40,000 of them in four languages, each one checked against your brand rules, that is a task configuration.
+</Info>
+
+## What you do with it
+
+<Columns cols={2}>
+  <Card title="Enrich records" icon="wand-magic-sparkles" href="/speedtrain/use-cases">
+    Turn sparse product data into descriptions, bullet points, and marketing copy.
+  </Card>
+
+  <Card title="Classify and structure" icon="tags" href="/speedtrain/use-cases">
+    Assign categories, extract attributes, and normalise messy values.
+  </Card>
+
+  <Card title="Translate and localise" icon="language" href="/speedtrain/use-cases">
+    Produce the same content per market, with per-language rules.
+  </Card>
+
+  <Card title="Read images" icon="image" href="/speedtrain/key-concepts/capabilities">
+    Let a vision model describe what is actually in the product photo.
+  </Card>
+</Columns>
+
+## The governance model
+
+Speedtrain assumes AI output needs checking. Three mechanisms do that work, and they run on every single item:
+
+<Steps>
+  <Step title="Quality checks score the output">
+    Deterministic rules (schema validation, forbidden terms) run as code in milliseconds. AI rules handle the questions that genuinely need judgment. Each produces a score from 1 to 5 and written feedback. [Quality checks](/speedtrain/key-concepts/quality-checks)
+  </Step>
+
+  <Step title="A quality gate aggregates the scores">
+    The gate is arithmetic, not an opinion — no model is involved. It decides whether an item can auto-approve or must go to a person. [Quality gates](/speedtrain/key-concepts/quality-gates)
+  </Step>
+
+  <Step title="People decide">
+    Every item lands in a review session where a human can accept, decline, or send it back for another attempt. Nothing reaches a destination without passing through this. [Review sessions](/speedtrain/key-concepts/review-sessions)
+  </Step>
+</Steps>
+
+<Tip>
+  Humans are **on** the loop, not in it. You are not editing 40,000 descriptions — you are inspecting the ones the gate flagged, and spot-checking the ones it passed.
+</Tip>
+
+## Where to go next
+
+<Columns cols={2}>
+  <Card title="Data flow" icon="arrow-right-arrow-left" href="/speedtrain/data-flow">
+    How data moves between Enterspeed and Speedtrain, in four steps.
+  </Card>
+
+  <Card title="How it works" icon="diagram-project" href="/speedtrain/how-it-works">
+    The full path from source data to published content.
+  </Card>
+
+  <Card title="Getting started" icon="circle-play" href="/speedtrain/getting-started/intro">
+    Build and run your first task configuration.
+  </Card>
+
+  <Card title="Key concepts" icon="lightbulb-on" href="/speedtrain/key-concepts/overview">
+    The vocabulary, one page per concept.
+  </Card>
+</Columns>

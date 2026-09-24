@@ -1,0 +1,90 @@
+---
+title: "Iterating a configuration"
+sidebarTitle: "Troubleshooting"
+description: "Diagnosing a configuration that underperforms, recognising AI evaluator drift, and knowing when to simplify instead of sharpen."
+---
+
+A configuration that passes 40% of items is not necessarily a bad configuration — but it is telling you something. This page is about reading that signal correctly.
+
+## Diagnose before editing
+
+Query the rejected items and read the per-rule feedback. The question to answer first is which rule is failing, and then whether the **rule** is wrong or the **generation** is wrong. They need opposite fixes, and guessing wastes rounds.
+
+Common cures, in rough order of frequency:
+
+| Symptom | Cure |
+|---|---|
+| The same criterion stated in two places, slightly differently | Delete one. [Placement](/speedtrain/authoring/placement) |
+| A prose criterion that could be a schema constraint or a term list | Convert it to a deterministic rule |
+| An option with seven or more fields | Curate it down to two or three |
+| Rejections that a human reviewer disagrees with | The rule is wrong, not the output |
+
+<Warning>
+  If approval stays below about half after three or more iterations, **simplify** rather than sharpen. Continuing to add criteria to a struggling configuration reliably makes it worse.
+</Warning>
+
+## Recognising evaluator drift
+
+An AI evaluation rule is a model sampling from a distribution. At the pass/fail margin, noise dominates — and the symptoms are recognisable:
+
+<AccordionGroup>
+  <Accordion title="The same output passes one run and fails the next" icon="arrows-rotate">
+    With nothing changed in between. This is the clearest signal that the rule is measuring its own variance rather than the content.
+  </Accordion>
+
+  <Accordion title="Feedback cites rules the description never stated" icon="ghost">
+    The evaluator has invented a criterion — sometimes one that directly contradicts a worked example the generator was given.
+  </Accordion>
+
+  <Accordion title="Contradictory verdicts within one batch" icon="scale-unbalanced-flip">
+    Two items of the same semantic class get opposite verdicts.
+  </Accordion>
+
+  <Accordion title="Feedback essays getting longer and more hedged" icon="file-lines">
+    Strictness creeping up from iteration to iteration is drift, not improvement.
+  </Accordion>
+</AccordionGroup>
+
+### The fix is a dumber evaluator
+
+The instinct is to write a smarter evaluation prompt. That does not work — meta-instructions only partially suppress drift.
+
+What works is converting the structural parts of the rule into deterministic checks and shrinking the AI rule to the one genuinely fuzzy question. Sometimes deleting it entirely.
+
+<Tip>
+  In one production retrospective, replacing a judgment-call evaluation with mechanical conditions took acceptance from a noisy 85% to a stable 100% on fresh data. Quality did not drop — the evaluation simply stopped measuring its own opinions.
+
+  The honest framing for a customer: *we did not make the pipeline less strict, we made the strictness trustworthy.*
+</Tip>
+
+## Avoid test-set contamination
+
+Iterating against the same fixed set of test documents for more than two or three rounds turns them into training data. Worked examples get lifted from their failures, approval climbs on that set, and generalises nowhere.
+
+<Steps>
+  <Step title="Hold out fresh documents">
+    Keep a set you have not tuned against.
+  </Step>
+
+  <Step title="Re-test on them every couple of rounds">
+    If approval on fresh documents is much lower than on your working set, you have been fitting to the test.
+  </Step>
+</Steps>
+
+<Warning>
+  **Whack-a-mole is a design signal.** If each round fixes the named cases and surfaces new ones of the same shape, the approach is wrong — usually enumeration where a principle or a deterministic rule belongs.
+</Warning>
+
+## Calibrate to rejection economics
+
+What happens to a rejected item decides the right strictness.
+
+In Speedtrain's normal flow, rejection lands in a human review queue. That makes false rejections cheap and **missed violations** the expensive error — so keep deterministic rules strict and AI rules narrow.
+
+If rejection instead triggers costly retries, bias the other way.
+
+## Document what the checks do not cover
+
+Every configuration has blind spots. Write them down, because the people relying on the output will otherwise assume the checks cover more than they do.
+
+And judge the pipeline by its end outcome — does the downstream publication succeed? — rather than by the evaluation scores alone.

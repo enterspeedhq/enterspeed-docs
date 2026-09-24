@@ -1,0 +1,68 @@
+---
+title: "Use cases"
+description: "The kinds of work Speedtrain is built for, and the ones it is a poor fit for."
+---
+
+Speedtrain suits any job where the same content operation has to be applied to many records, consistently, with the result verifiable.
+
+## Common jobs
+
+<AccordionGroup>
+  <Accordion title="Product content enrichment" icon="tag">
+    Generate descriptions, bullet points, and marketing copy from structured product attributes.
+
+    Typical setup: a **Brand** variant carrying voice and terminology, a **Language** variant per market, a JSON Schema rule enforcing field lengths, and a forbidden-terms rule blocking claims your legal team will not sign off on.
+  </Accordion>
+
+  <Accordion title="Feed compliance" icon="check-double">
+    Rewrite catalogue content so it satisfies a channel's content policy — character limits, banned phrasing, required attributes, no HTML.
+
+    Most of this job is deterministic. A JSON Schema rule with `maxLength` and `pattern` constraints does the heavy lifting; AI checks cover only the judgment calls.
+  </Accordion>
+
+  <Accordion title="Classification and attribute extraction" icon="tags">
+    Assign category codes, extract structured attributes from free text, or normalise inconsistent values across suppliers.
+
+    Constrain the output with an `enum` in the schema rule so the model cannot invent a category that does not exist in your taxonomy.
+  </Accordion>
+
+  <Accordion title="Translation and localisation" icon="language">
+    Produce per-market content from one source, with per-language rules — formality, terminology, forbidden contractions.
+
+    Use a **Language** variant and scope the rules that genuinely differ per language rather than writing near-identical global rules.
+  </Accordion>
+
+  <Accordion title="Image-grounded content" icon="image">
+    Let a vision model see the product photos and describe what is actually there — colour, pattern, cut — instead of guessing from a URL.
+
+    The generator and the checker are separate calls, so one model can write the description while a different model independently verifies it against the picture. [Capabilities](/speedtrain/key-concepts/capabilities)
+  </Accordion>
+
+  <Accordion title="Chained pipelines" icon="link">
+    Feed one task's approved output into the next: extract attributes in stage one, write copy from those attributes in stage two.
+
+    Stage two reads the first task's stage output rather than the raw index. [Content sources](/speedtrain/key-concepts/content-sources)
+  </Accordion>
+</AccordionGroup>
+
+## When Speedtrain is the wrong tool
+
+<Warning>
+  Speedtrain is a poor fit for one-off or highly bespoke content. The platform's value is in repetition and verification — a job run once cannot amortise the cost of writing the quality rules that make it trustworthy.
+</Warning>
+
+It is also the wrong tool when the criteria for a good output cannot be written down. If you cannot express what "correct" means as a schema, a term list, or a question a reviewer could answer consistently, no amount of prompt work will make the results dependable.
+
+## Sizing a job
+
+Three numbers decide whether a job is worth automating:
+
+| Number | Why it matters |
+|---|---|
+| Records in scope | Below a few hundred, manual work may be cheaper than authoring and tuning the configuration. |
+| Variant combinations | Each combination produces its own output. Two languages and two audiences means four generations per record, and four times the cost. |
+| Approval rate | The share of items the gate passes. This decides how much human time the job actually consumes. |
+
+<Tip>
+  Measure the approval rate on a preview session before committing to a volume. A configuration that passes 90% of items is a different proposition from one that passes 40%.
+</Tip>

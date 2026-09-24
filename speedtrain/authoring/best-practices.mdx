@@ -1,0 +1,102 @@
+---
+title: "Best practices"
+description: "Patterns that make task configurations perform well — rule budgets, deterministic-first design, and safe rollout."
+---
+
+These are the habits that separate a configuration that works from one that merely runs.
+
+## Always enforce a JSON Schema
+
+Every configuration with JSON output gets a schema rule. It is the output contract: required fields, types, length bounds, enums, patterns.
+
+Set `additionalProperties: true` if the output legitimately carries extra fields — it stays permissive while still enforcing what matters.
+
+<Tip>
+  Patterns carry cross-cutting bans cheaply. A `pattern` of `^[^<!]*$` on every text field blocks HTML tags and comment markers in one stroke, without a single forbidden term.
+</Tip>
+
+## Deterministic first, AI for judgment
+
+Route every black-and-white criterion to code. Split hybrid rules: the exact term list into a forbidden-terms rule, the contextual part into a small AI rule.
+
+<Warning>
+  Prompt-wrestling a model into string matching or character counting is a well-worn path to nowhere. Teams have spent several configuration versions and a model upgrade on it. Code does the same job in under ten milliseconds, at zero token cost, with no false negatives.
+</Warning>
+
+## Keep the specialist prompt short
+
+Role and behaviour only. No field names, no limits, no quality criteria — those belong in rules, which are both enforced and automatically shown to the model anyway.
+
+A migrated fifty-line prompt usually shrinks to ten or fifteen lines, and performs better for it.
+
+## Curate variant fields
+
+Two or three fields per option is the safe baseline. Four to six needs testing. Seven or more risks the model dropping some.
+
+Keep to three or four dimensions at most, and remember that dimensions multiply — each combination is a separate generation with its own cost.
+
+## Writing AI evaluation rules
+
+<AccordionGroup>
+  <Accordion title="One question per rule" icon="circle-question">
+    When an AI rule is flaky, the instinct is to add more criteria, examples, and meta-instructions. That gives the model more surface to reason from and makes it flakier.
+
+    Strip the rule back to one question and move everything else to deterministic checks or the generator prompt. Narrower, not smarter.
+  </Accordion>
+
+  <Accordion title="Make violations observable in the output" icon="eye">
+    The evaluator defaults to passing on ambiguity. Write criteria whose violation can actually be seen in the output, rather than criteria that require guessing at intent.
+  </Accordion>
+
+  <Accordion title="Enable source access only when the check needs it" icon="file-lines">
+    Translation fidelity, grounding, and no-invented-facts checks need the source document. Most rules do not, and it costs context.
+
+    A rule that talks about grounding without source access will still produce confident feedback — about data it never received.
+  </Accordion>
+
+  <Accordion title="Do not hand the evaluator the generator's principle" icon="scale-unbalanced">
+    Giving both the same fuzzy heuristic does not make them converge — it gives both a licence to have opinions, and they drift independently.
+
+    The generator gets the principle and worked examples. The evaluator gets narrow, observable failure conditions.
+  </Accordion>
+</AccordionGroup>
+
+## Forbidden terms craft
+
+- Choose the wildcard form deliberately: a substring pattern also catches longer words containing the term
+- Use exceptions for allowed phrases that contain a banned term, rather than removing the term
+- When a list grows very long, move structural bans into the schema's `pattern` — the list is injected into the prompt term by term and becomes real prompt weight
+
+<Info>
+  A deterministic list is black and white and never misses. An AI rule can catch synonyms and cross-language equivalents but *can* miss, and a slipped term may be brand-damaging. Use the AI form only where that risk is understood and accepted — or combine the two.
+</Info>
+
+## Keep to about five rules
+
+Quality checks are for what must be verified every single time, not a checklist of everything desirable. Catch the majority of real risk and let good-enough content through.
+
+More rules mean more prompt weight, more evaluation cost, and a gate that rejects on noise.
+
+## Choose the gate consciously
+
+`balanced` for most configurations. `strict` when every rule is genuinely blocking. `lenient` only when the rules are advisory — never alongside brand-critical deterministic rules. [Quality gates](/speedtrain/key-concepts/quality-gates)
+
+## Roll out safely
+
+<Steps>
+  <Step title="Push as a draft">
+    Nothing running is affected.
+  </Step>
+
+  <Step title="Test against the draft version">
+    Inspect the results, especially the rejected items — their feedback names the failing rule.
+  </Step>
+
+  <Step title="Publish only on an explicit decision">
+    Publishing names the version it displaces, so rollback is one action.
+  </Step>
+</Steps>
+
+<Warning>
+  Never let publishing be the first time a version runs.
+</Warning>

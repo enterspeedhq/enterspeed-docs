@@ -1,0 +1,88 @@
+---
+title: "Management MCP tools"
+sidebarTitle: "Tools"
+description: "The tool surface of the Speedtrain Management MCP server, grouped by what you are trying to do."
+---
+
+Every tool takes a tenant and an environment — neither is inferred from your credential.
+
+## Start here
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_tenants` | The tenants your credential can reach. Call this first. |
+| `speedtrain_list_environments` | The environments in a tenant. Call this second. |
+
+<Tip>
+  Most credentials reach exactly one tenant. If only one comes back, use it rather than asking which to use.
+</Tip>
+
+## Reference
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_get_task_config_authoring_guide` | The complete configuration reference — field meanings, prompt assembly, rule types, gate arithmetic, worked examples. |
+| `speedtrain_get_task_config_template` | The document skeleton to fill in, with one fully-formed variant so the shape is unambiguous. |
+| `speedtrain_list_deployment_models` | Available deployment models and their inference settings. |
+
+<Warning>
+  Read the authoring guide before **either** authoring a configuration **or** interpreting classifier feedback. Misreading a classifier verdict is the easier of the two to get wrong — an evaluator can produce confident feedback about source data it structurally never received.
+</Warning>
+
+## Content sources
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_indices` | Indexes in the environment. |
+| `speedtrain_list_index_documents` | Documents in an index. **Paginated.** |
+| `speedtrain_get_index_document` | One document, including its `$images`. |
+
+## Task configurations
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_task_configs` | Configurations in the environment. |
+| `speedtrain_get_task_config` | One configuration's document. |
+| `speedtrain_create_task_config` | Create a new configuration. |
+| `speedtrain_push_task_config` | Push a new version of an existing configuration. |
+| `speedtrain_list_task_config_versions` | Version history, and which one is published. |
+| `speedtrain_activate_task_config_version` | Make a version the published one. Names the version it displaces. |
+
+## Review sessions
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_preview_review_session` | Run a test session, including against a draft version. |
+| `speedtrain_start_review_session` | Start a real review session. |
+| `speedtrain_list_review_sessions` | Sessions for a configuration. **Paginated.** |
+| `speedtrain_get_review_session_status` | Progress and approval rate for one session. |
+| `speedtrain_query_review_items` | Items with their scores and feedback, filterable by decision. **Paginated.** |
+| `speedtrain_get_review_item` | One item in full. |
+
+<Tip>
+  Before re-running a configuration that has run before, list its existing sessions and consider reusing one. Comparing two runs only means something if both cover the same documents.
+</Tip>
+
+## Destinations
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_destinations` | Destinations in the environment. |
+| `speedtrain_get_destination` | One destination, including its ingest details. |
+| `speedtrain_create_destination` | Create a destination. |
+| `speedtrain_set_destination_status` | Activate or deactivate it. |
+| `speedtrain_delete_destination` | Remove it. |
+
+## Pagination
+
+<Info>
+  Exactly three tools paginate: `speedtrain_list_index_documents`, `speedtrain_list_review_sessions`, and `speedtrain_query_review_items`.
+
+  Each returns a `total` and a `cursor`. Pass the cursor back unchanged, with the same filters, for the next page. A `null` cursor is the only end signal.
+
+  **Every other tool returns its list complete** — the server walks the platform's pagination for you, so there is no cursor to look for.
+</Info>
+
+## Reading results safely
+
+When an item's classifier scores include a grounding or faithfulness verdict, check the rule's source-access setting before trusting it. The item projections surface that setting next to each score, and `null` there means **unknown, not false** — read the source document before treating the verdict as authoritative. [Quality checks](/speedtrain/key-concepts/quality-checks)
