@@ -98,11 +98,14 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 </Tab>
 <Tab title="Claude.ai">
 
+<Note>
+On a Team or Enterprise plan only an Owner can add a custom connector. The Owner adds it under **Organization settings**, then **Connectors**. Everyone else finds it under **Customize**, then **Connectors**, and clicks **Connect**.
+</Note>
+
 1. Open **Customize**, then **Connectors**.
 2. Click **+** and then **Add custom connector**.
 3. Paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
 4. Click **Add**, then sign in with your Enterspeed account when Claude asks.
-5. On a Team or Enterprise plan an Owner adds the connector first, under **Organization settings** and then **Connectors**. Everyone else then finds it under **Customize**, then **Connectors**, and clicks **Connect**.
 
 </Tab>
 <Tab title="ChatGPT">
@@ -122,11 +125,14 @@ OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education ac
 
 Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign in.
 
+<Note>
+On a Team or Enterprise plan only an Owner can add a custom connector. The Owner adds it under **Organization settings**, then **Connectors**. Everyone else finds it under **Customize**, then **Connectors**, and clicks **Connect**.
+</Note>
+
 1. Open **Customize**, then **Connectors**.
 2. Click **+** and then **Add custom connector**.
 3. Give it a name, for example `Enterspeed Query`, and paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
 4. Click **Add**, then sign in with your Enterspeed account in the browser window that opens.
-5. On a Team or Enterprise plan an Owner adds the connector first, under **Organization settings** and then **Connectors**. Everyone else then finds it under **Customize**, then **Connectors**, and clicks **Connect**.
 
 <Note>
 The **Connectors** screen cannot send an `x-api-key` header. To connect Claude Desktop with a scoped key, use its config file and the `mcp-remote` bridge, as shown under [Using a scoped key instead](#using-a-scoped-key-instead).
