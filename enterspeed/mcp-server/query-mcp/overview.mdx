@@ -74,7 +74,7 @@ The platform supports component-scoped environment keys. For MCP use, your key *
 
 | Scope | Why | Grants |
 | --- | --- | --- |
-| `MCP Server (Public Preview)` | Gates the MCP tool endpoints. Without it, the server sees zero dynamic or per-index tools. | Ability to list MCP tools. |
+| `MCP Server (Public Preview)` | Gates the MCP tool endpoints. Without it, the server sees none of the dynamic tools or the tools for each index. | Ability to list MCP tools. |
 | `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
 
 `MCP Server` alone is not useful — it must be combined with `Query API`, and Enterspeed enforces that pairing when you save the client.
@@ -130,7 +130,7 @@ A scoped key is the API key of an environment client.
 4. Give the environment client a descriptive name, for example `claude-prod-blog-assistant`, and select the environment you want the AI client to query.
 5. Under **Quick Setup**, pick the **AI Assistant** preset. It selects **Query API** and **MCP Server (Public Preview)**.
 6. *(Optional)* To restrict access, choose **Select specific indices** and add a pattern like `blog*` under **Or use wildcard patterns**.
-7. Click **Create**.
+7. Click **Create**. The app then asks which domains the client may be used from. The client has already been created at that point, so you can choose **Cancel** there if you do not want to add a domain.
 
 The key appears in the **API Key** column of the environment client list. It has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Store it in your secret manager rather than in a file you commit.
 

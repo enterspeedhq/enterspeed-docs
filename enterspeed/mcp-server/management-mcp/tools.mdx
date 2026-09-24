@@ -115,13 +115,13 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | Tool | Type | What it does |
 | --- | --- | --- |
 | `create_tenant` | **Write (additive)** | Creates a new tenant, with you as its administrator. A tenant is billable, so this always asks for confirmation first. |
-| `upsert_environment` | **Write (changes existing)** | Creates an empty environment. With `environment`, it renames that environment instead. It refuses to rename an environment onto the list of names `deploy_mapping_schema` may deploy to. |
+| `upsert_environment` | **Write (changes existing)** | Creates an empty environment. With `environment`, it renames that environment instead. It refuses a rename that would move an environment onto the list of names `deploy_mapping_schema` may deploy to. |
 
 ## How the upsert tools decide what to do
 
 `upsert_environment`, `upsert_source_group`, `upsert_source`, and `upsert_domain` each create a resource or change one. The arguments you pass decide which, never what already exists in your tenant.
 
-- **Without the argument that names an existing resource** (`environment`, `sourceGroup`, `source`, or `domain`), the call can only create. If a resource with that name already exists exactly as asked, nothing is sent and the result says `unchanged`. If one exists with that name but differs, the call is refused and nothing changes. The refusal lists the differences and the call that would make the change.
+- **Without the argument that names an existing resource** (`environment`, `sourceGroup`, `source`, or `domain`), the call can only create. If a resource with that name already exists exactly as asked, nothing is written and the result says `unchanged`. If one exists with that name but differs, the call is refused and nothing changes. The refusal lists the differences and, where they can be changed, the call that would change them.
 - **With that argument**, the call only changes that one resource. If the argument does not match anything, the call is refused. It never falls back to creating something.
 
 A misspelled edit therefore fails instead of creating something new. A call that succeeds reports an `outcome` of `created`, `updated`, or `unchanged`.
@@ -148,7 +148,7 @@ The tools below no longer exist. If a saved prompt, script, or log filter names 
 | `create_domain` | `upsert_domain` without `domain` |
 | `update_domain` | `upsert_domain` with `domain` |
 
-Called with those arguments, each `list_*` tool returns what the earlier tool returned. The upsert tools report `outcome` where the earlier tools reported `created` or `updated`. Your tenant's logs record the name of the tool that was actually called, so a log filter on an earlier name stops matching.
+Called with those arguments, each `list_*` tool returns what the earlier tool returned. The upsert tools report `outcome` where the earlier tools reported `created` or `updated`. Your tenant's logs record the name of the tool that was actually called, so a log filter on an earlier tool name stops matching. Log entries for the upsert tools still carry an action named after the earlier tools, such as `create_source` or `update_source`.
 
 ## What is deliberately not exposed
 
