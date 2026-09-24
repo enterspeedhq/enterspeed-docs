@@ -191,7 +191,7 @@ That writes the server into `.gemini/settings.json` in the current project. Add 
 ```
 
 <Warning>
-Use `httpUrl`, not `url`. In Gemini CLI, `url` selects the older SSE transport, and this server does not speak it.
+Use `httpUrl` rather than a bare `url`. Older Gemini CLI releases, and Gemini CLI's configuration reference, treat `url` as the older SSE transport, which this server does not speak.
 </Warning>
 
 Run `/mcp` inside the CLI to check the server is listed, and `/mcp auth enterspeed-management` to complete the sign in.
@@ -217,7 +217,7 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 }
 ```
 
-`"tools": ["*"]` offers every tool the server lists, which is also Copilot CLI's default. You can add the server interactively instead: start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign-in in your browser the first time it connects.
+`"tools": ["*"]` offers every tool the server lists. The file needs the `tools` field, and `*` is what the command above writes when you give it no `--tools`. You can add the server interactively instead. Start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign in in your browser the first time it connects. If `/mcp` shows the server as needing authentication, run `/mcp auth enterspeed-management`.
 
 </Tab>
 <Tab title="Claude.ai">
@@ -240,7 +240,7 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 5. In a chat, choose **Developer mode** from the plus menu and select the app.
 
 <Note>
-OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education accounts on the web, and a workspace policy can turn it off. That is ChatGPT's decision rather than ours. If you cannot find **Developer mode** under **Security and login**, it is not available to you.
+OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education accounts on the web, and your account or workspace policy can decide whether you have it. If you cannot find **Developer mode** under **Security and login**, it is not available to you.
 </Note>
 
 </Tab>
@@ -300,7 +300,7 @@ Reload the window (**Developer: Reload Window**) and open the Copilot chat pane.
 
 The server is client-agnostic. Any MCP client that can open a remote **Streamable HTTP** server and follow an OAuth sign-in works — point it at the root URL above.
 
-If a client cannot open a remote server, or does not complete the sign-in, put `mcp-remote` in front of it. Configure it as a local command, `npx -y mcp-remote "https://mcp.management.enterspeed.com/"`, and the bridge handles the remote connection and the sign-in on the client's behalf.
+If a client cannot open a remote server, or does not complete the sign in, put `mcp-remote` in front of it. Configure it as a local command, `npx -y mcp-remote "https://mcp.management.enterspeed.com/"`, and the bridge handles the remote connection and the sign in for the client.
 
 ## Sample prompts
 

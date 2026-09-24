@@ -192,7 +192,7 @@ The tool list is assembled per key, so two clients pointed at the same server ca
 All three layers respect the key's [index scope](#index-scopes), so the agent is handed a pre-trimmed list rather than being told "no" after it tries.
 
 <Tip>
-If an agent only ever shows the eight tools above, the layer of tools for each index is missing. On a signed in session, select a context first. With a key, it almost always means the key lacks the `MCP Server` scope, or is invalid.
+If an agent only ever shows the eight tools above, the layer of tools for each index is missing. On a signed in session, select a context first. The server does not tell your client when the list changes, so the tools for each index appear only if the client asks for the list again in the same session. `get_indices` and `get_query_items` still reach every index in the selected environment. With a key, it almost always means the key lacks the `MCP Server` scope, or is invalid.
 </Tip>
 
 ## Sample prompts
@@ -249,7 +249,7 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | Agent lists only a small static set of tools | Key is missing the `MCP Server` scope | Recreate the key with the *AI Assistant* preset. |
 | Agent sees fewer indices than expected | `IndexScope` pattern is too narrow | Widen the Index Scope on the environment client, or remove it for all-index access. |
 | Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` | Add the `Query API` scope. |
-| Connected with a key, but every tool call is refused as `Unauthorized` or *Access denied* | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here, and [Management MCP](/enterspeed/mcp-server/management-mcp/overview) does not take keys at all. |
+| Connected with a key, but every index and query tool fails | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here, and [Management MCP](/enterspeed/mcp-server/management-mcp/overview) does not take keys at all. |
 | `429` with a `Retry-After` header | More than 120 requests in a minute on this key, or from your signed-in sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
 

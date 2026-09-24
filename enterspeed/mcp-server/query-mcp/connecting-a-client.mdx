@@ -67,7 +67,7 @@ That writes the server into `.gemini/settings.json` in the current project. Add 
 ```
 
 <Warning>
-Use `httpUrl`, not `url`. In Gemini CLI, `url` selects the older SSE transport, and this server does not speak it.
+Use `httpUrl` rather than a bare `url`. Older Gemini CLI releases, and Gemini CLI's configuration reference, treat `url` as the older SSE transport, which this server does not speak.
 </Warning>
 
 Run `/mcp` inside the CLI to check the server is listed, and `/mcp auth enterspeed-query` to complete the sign in.
@@ -93,7 +93,7 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 }
 ```
 
-`"tools": ["*"]` offers every tool the server lists, which is also Copilot CLI's default. You can add the server interactively instead. Start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign in in your browser the first time it connects.
+`"tools": ["*"]` offers every tool the server lists. The file needs the `tools` field, and `*` is what the command above writes when you give it no `--tools`. You can add the server interactively instead. Start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign in in your browser the first time it connects. If `/mcp` shows the server as needing authentication, run `/mcp auth enterspeed-query`.
 
 </Tab>
 <Tab title="Claude.ai">
@@ -114,7 +114,7 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 5. In a chat, choose **Developer mode** from the plus menu and select the app.
 
 <Note>
-OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education accounts on the web, and a workspace policy can turn it off. That is ChatGPT's decision rather than ours. If you cannot find **Developer mode** under **Security and login**, it is not available to you.
+OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education accounts on the web, and your account or workspace policy can decide whether you have it. If you cannot find **Developer mode** under **Security and login**, it is not available to you.
 </Note>
 
 </Tab>
@@ -459,7 +459,7 @@ If your client cannot set a header, sign in instead. As a last resort you can pa
 | `mcp add` / config reload fails with *"failed to establish connection"* | Local proxy, VPN, or corporate firewall stripping SSE headers | Bypass the proxy (`NO_PROXY=mcp.query.enterspeed.com`) or try a different network. |
 | Tools list is empty after reload | Client caches tool lists per session | Fully quit and relaunch the client (on macOS, Cmd-Q in Claude Desktop; **Developer: Reload Window** in VS Code). |
 | `401` on every request | The client is not signed in and sends no key | Reconnect and complete the sign in, or send a scoped key in the `x-api-key` header. |
-| Connected with a key, but every tool call is refused as `Unauthorized` or *Access denied* | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here. |
+| Connected with a key, but every index and query tool fails | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here. |
 | Connected and signed in, but every index or query tool fails | The session has not been pointed at a tenant and environment yet | Ask the client to list your available Enterspeed contexts and select one. This applies only when you sign in, because a key already names its environment. |
 | Claude Desktop shows the server but no tools, and the config uses `url` and `headers` | `claude_desktop_config.json` has no remote transport, so those fields go nowhere | Use the `mcp-remote` bridge shown above, or add the server under **Customize → Connectors** instead. |
 
