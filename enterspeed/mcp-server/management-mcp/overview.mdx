@@ -49,17 +49,17 @@ Your client lists the same tools before and after you select a tenant. A tenant-
 
 ## What the server can and cannot do
 
-The server exposes **40 tools: 23 reads, 16 writes, and `set_tenant_context`**, which selects the tenant for the session and changes nothing in it.
+The server exposes **40 tools**, made up of 23 reads, 16 writes, and `set_tenant_context`, which selects the tenant for the session and changes nothing in it.
 
 - **Reads** cover the tenant overview, sources and source entities, mapping schemas and deployments, views and routes, indexes and index documents, domains and hostnames, destinations, environment and management clients, logs, and metrics. One read, `diagnose_missing_content`, combines several of them to find where content stops on its way to a URL.
-- **Four writes are additive**: `create_tenant`, `create_mapping_schema`, `create_destination`, and `create_environment_client`. They only ever add.
-- **Twelve writes can change or replace something that already exists**: the four `upsert_*` tools, `update_environment_client`, `configure_destination`, `save_mapping_schema_version`, `deploy_mapping_schema`, `unpublish_mapping_schema`, `ingest_source_entities`, `rotate_management_client`, and `set_management_client_expiry`. An upsert can create or change, `configure_destination` can change an environment's existing destination setup, an unpublish stops an environment serving a schema's views, a deploy changes what an environment serves, an ingest overwrites entities with the same origin id, and the two management-client tools can end a key's life early.
+- **Four writes are additive.** `create_tenant`, `create_mapping_schema`, `create_destination`, and `create_environment_client` only ever add.
+- **Twelve writes can change or replace something that already exists.** They are the four `upsert_*` tools, `update_environment_client`, `configure_destination`, `save_mapping_schema_version`, `deploy_mapping_schema`, `unpublish_mapping_schema`, `ingest_source_entities`, `rotate_management_client`, and `set_management_client_expiry`. An upsert can change an existing resource as well as create one, `configure_destination` can change an environment's existing destination setup, an unpublish stops an environment serving a schema's views, a deploy changes what an environment serves, an ingest overwrites entities with the same origin id, and the two tools for management clients can end a key's life early.
 
 <Warning>
 **No tool deletes anything, by design.** The server has no way to send a `DELETE` or a `PATCH` request at all. Every request it can make is a `GET`, or a `POST`/`PUT` on a fixed allow-list checked when the server starts. No tool can delete a tenant, schema, environment, source, source group, domain, destination, client, or entity.
 </Warning>
 
-The practical consequence: an agent connected to this server cannot delete your configuration, but the twelve writes above can change what your tenant serves. If an agent only needs to look, open the connection read-only — see [Limiting a connection](#limiting-a-connection).
+In practice, an agent connected to this server cannot delete your configuration, but the twelve writes above can change what your tenant serves. If an agent only needs to look, open the connection read only. See [Limiting a connection](#limiting-a-connection).
 
 See [Tools](/enterspeed/mcp-server/management-mcp/tools) for the full inventory with each tool marked read or write.
 
@@ -70,7 +70,7 @@ The server can only do what your account is allowed to do. To give an agent less
 | Parameter | What it does | Example |
 | --- | --- | --- |
 | `readOnly` | `true` makes every write tool refuse for the life of the connection. Reads, and selecting a tenant, still work. | `?readOnly=true` |
-| `tenantId` | Pins the connection to one tenant, or to several separated by commas. Selecting any tenant outside the list is refused. Each value is a tenant's id, in the form `gid://Tenant/{guid}` — `whoami` lists the ids of the tenants you belong to. | `?tenantId=gid://Tenant/xxxxxxxx-…` or `?tenantId=gid://Tenant/aaaaaaaa-…,gid://Tenant/bbbbbbbb-…` |
+| `tenantId` | Pins the connection to one tenant, or to several separated by commas. Selecting any tenant outside the list is refused. Each value is a tenant's id, in the form `gid://Tenant/{guid}`. `whoami` lists the ids of the tenants you belong to. | `?tenantId=gid://Tenant/xxxxxxxx-…` or `?tenantId=gid://Tenant/aaaaaaaa-…,gid://Tenant/bbbbbbbb-…` |
 | `toolsets` | Offers only the named groups of tools. The groups are `core`, `schemas`, `sources`, `delivery`, `domains`, `destinations`, `clients`, `observability`, and `provisioning`, or `all`. `core` (who you are, tenant selection, and the tenant overview) is always included. | `?toolsets=schemas,delivery` |
 
 Combine them with `&`, and wrap the URL in double quotes on the command line so your shell does not split it:
@@ -79,9 +79,9 @@ Combine them with `&`, and wrap the URL in double quotes on the command line so 
 "https://mcp.management.enterspeed.com/?readOnly=true&tenantId=gid://Tenant/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
-**A value the server cannot read fails safe.** Anything other than `readOnly=true` or `readOnly=false` — `readOnly=1`, an empty `readOnly=`, or the parameter given twice — makes the connection read-only. A malformed `tenantId` refuses every tenant. So does a list with even one entry the server cannot read: the well-formed entries are refused too, and the refusal names each entry it could not read. Give several tenants as one comma-separated value — the parameter given twice (`?tenantId=…&tenantId=…`) also refuses every tenant. An unknown group name in `toolsets`, or an empty value, offers `core` only. In each case the refusal names the parameter, and `whoami` reports how the connection was read.
+**A value the server cannot read fails safe.** Anything other than `readOnly=true` or `readOnly=false`, such as `readOnly=1`, an empty `readOnly=`, or the parameter given twice, makes the connection read only. A malformed `tenantId` refuses every tenant. So does a list with even one entry the server cannot read. The entries it can read are refused too, and the refusal names each entry it could not read. Give several tenants as one value with commas between them, because giving the parameter twice (`?tenantId=…&tenantId=…`) also refuses every tenant. An unknown group name in `toolsets`, or an empty value, offers `core` only. In each case the refusal names the parameter, and `whoami` reports how the connection was read.
 
-`whoami` reports the pinned tenants as `connection.pinnedTenantIds`: `null` when the connection is not pinned, the list of tenants when it is, and an empty list when the pin could not be read. Check it after connecting. The pin only works if your client sends the query string with every request, and a client that drops it opens an unpinned connection without saying so.
+`whoami` reports the pinned tenants in `connection.pinnedTenantIds`. It is `null` when the connection is not pinned, the list of tenants when it is, and an empty list when the pin could not be read. Check it after connecting. The pin only works if your client sends the query string with every request, and a client that drops it opens an unpinned connection without saying so.
 
 Leave all three off and the connection offers every tool, on every tenant your account can reach. `toolsets` is not a security control — it decides which tools the client is offered, which also helps clients that cap how many tools they load across all servers.
 
@@ -94,7 +94,7 @@ Beyond your account's own permissions and the connection parameters above, the h
 
 On the hosted server, `deploy_mapping_schema` only deploys to environments **named** `dev`, `development`, `test`, or `staging`. A deploy targeting any other environment — including anything named `prod`, `production`, or `live` — is refused with a `deploy_not_permitted` error naming the environments that are allowed.
 
-This is a restriction of the hosted server, not of your account. Renaming an environment to get around it does not work either: `upsert_environment` refuses a rename that would move an environment onto the allowed list.
+This is a restriction of the hosted server, not of your account. Renaming an environment to get around it does not work either, because `upsert_environment` refuses a rename that would move an environment onto the allowed list.
 
 Production deploys stay a deliberate human action in the Management App.
 
@@ -132,10 +132,10 @@ If you are reviewing this server before pointing an agent at your tenant, this i
 
 - **No server-held credentials.** The server has no Enterspeed credential of its own. It acts only as the person who signed in, and an API key is refused as authentication.
 - **Passthrough authorisation.** Every permission decision is made by the Management API against your account, not by the MCP server.
-- **No deletes.** The server cannot issue a `DELETE` or a `PATCH` at all. Twelve writes can still change or replace existing configuration or content — see [What the server can and cannot do](#what-the-server-can-and-cannot-do).
+- **No deletes.** The server cannot issue a `DELETE` or a `PATCH` at all. Twelve writes can still change or replace existing configuration or content. See [What the server can and cannot do](#what-the-server-can-and-cannot-do).
 - **Secrets are not readable.** Access keys are removed from responses at the HTTP boundary, so no tool can observe one.
 - **Production deploys are out of reach** on the hosted server.
-- **Least privilege is yours to set.** Connect with `?readOnly=true` unless the agent genuinely needs to write, and with `?tenantId=` to keep it on the tenants you name — see [Limiting a connection](#limiting-a-connection).
+- **Least privilege is yours to set.** Connect with `?readOnly=true` unless the agent needs to write, and with `?tenantId=` to keep it on the tenants you name. See [Limiting a connection](#limiting-a-connection).
 
 ## Connecting a client
 

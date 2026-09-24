@@ -129,7 +129,7 @@ A scoped key is the API key of an environment client.
 3. Under **Environment clients**, click **Create**.
 4. Give the environment client a descriptive name, for example `claude-prod-blog-assistant`, and select the environment you want the AI client to query.
 5. Under **Quick Setup**, pick the **AI Assistant** preset. It selects **Query API** and **MCP Server (Public Preview)**.
-6. *(Optional)* Set an **Index Scope** pattern like `blog*` to restrict access.
+6. *(Optional)* To restrict access, choose **Select specific indices** and add a pattern like `blog*` under **Or use wildcard patterns**.
 7. Click **Create**.
 
 The key appears in the **API Key** column of the environment client list. It has the form `environment-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Store it in your secret manager rather than in a file you commit.
@@ -241,7 +241,7 @@ The two routes differ in what they answer:
 | --- | --- | --- |
 | Names the tenant and environment | The key does, on its own | You do, in each session |
 | Index scope | Whatever you set on the key | Not applied — access follows the environment you select |
-| Where it lives | A secret you store and rotate | An environment client Enterspeed creates in your tenant, with your permission — see below |
+| Where it lives | A secret you store and rotate | An environment client Enterspeed creates in your tenant with your permission. See below. |
 
 <Note>
 **A signed-in session has no tenant or environment until it is given one, and no index or query tool works before that.** Such a session is offered three extra tools — `list_available_contexts`, `select_context`, and `current_context` — so asking the client to list your contexts and select one is enough. A key-authenticated session is not offered them, because the key already answers both questions.
@@ -249,8 +249,8 @@ The two routes differ in what they answer:
 
 What to expect the first time you use the sign-in route:
 
-- **You are asked before an environment client is created in your tenant.** The first time a context is selected in an environment, the server needs an environment client there named **Enterspeed MCP (sign-in)**, with the `Query API` and `MCP Server` scopes and no index scope. It creates nothing on that first call. Your AI client tells you what will be created and asks for your permission, and the environment client is only created once you agree. It is created with your own sign-in, as if you had added it in the Management App. If you decline, nothing is created, and you can connect with a [scoped key](#creating-a-scoped-key) of your own instead.
-- **It is reused after that.** Later sessions, including other people's, reuse the same environment client without asking — there is one per environment, not one per person. You will see it in the environment's list of environment clients in the Management App. Deleting it revokes the access, and the next selection asks again.
+- **You are asked before an environment client is created in your tenant.** The first time a context is selected in an environment, the server needs an environment client there named **Enterspeed MCP (sign-in)**, with the `Query API` and `MCP Server` scopes and no index scope. It creates nothing on that first call. Your AI client tells you what will be created and asks for your permission, and the environment client is only created once you agree. It is created with your own account, as if you had added it in the Management App. If you decline, nothing is created, and you can connect with a [scoped key](#creating-a-scoped-key) of your own instead.
+- **It is reused after that.** Later sessions, including other people's, reuse the same environment client without asking. There is one per environment, not one per person. You will see it in the environment's list of environment clients in the Management App. Deleting it revokes the access, and the next selection asks again.
 - **The first query needs a short wait.** A newly created client takes about ten seconds to become usable, and a query made sooner fails. The select response says so when it has just created the client. Wait, then query.
 - **The selection can need repeating.** It is held in memory by the server instance that handled it. If your client reconnects, or a later request is served by a different instance, a tool call can come back saying no context is selected. Nothing is lost: select the context again and carry on.
 

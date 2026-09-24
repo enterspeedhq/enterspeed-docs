@@ -1,16 +1,16 @@
 ---
 title: Tools
-description: The full Management MCP tool inventory — 23 reads, 16 writes and tenant selection, grouped by the toolsets a connection can choose, with no delete tools by design.
+description: The full Management MCP tool inventory of 23 reads, 16 writes and tenant selection, grouped by the toolsets a connection can choose. No tool deletes anything, by design.
 ---
 
-The Management MCP server exposes **40 tools: 23 reads, 16 writes, and `set_tenant_context`**, which selects the tenant a session works on. This page lists all of them so you can see exactly what an agent connected to your tenant is able to do.
+The Management MCP server exposes **40 tools**, made up of 23 reads, 16 writes, and `set_tenant_context`, which selects the tenant a session works on. This page lists all of them so you can see exactly what an agent connected to your tenant is able to do.
 
 The tools are grouped here by **toolset** — the group names you can pass in the [`?toolsets=` connection parameter](/enterspeed/mcp-server/management-mcp/overview#limiting-a-connection) to offer an agent only part of the surface. A connection that names no toolsets gets every group. What an agent can actually do with a tool is still decided by your account's permissions in the tenant, and by `?readOnly=true` if you set it.
 
 Writes come in two kinds:
 
-- **Write (additive)** — adds something new and removes nothing.
-- **Write (changes existing)** — can change, replace, or stop serving something that already exists. These are marked destructive to MCP clients, which is why some clients ask before running them. A tool counts as this kind if any call to it can change something that exists, even when other calls to it only add — `configure_destination` and the four `upsert_*` tools are examples.
+- **Write (additive)** tools add something new and remove nothing.
+- **Write (changes existing)** tools can change, replace, or stop serving something that already exists. These are marked destructive to MCP clients, which is why some clients ask before running them. A tool is this kind if any call to it can change something that exists, even when other calls to it only add. `configure_destination` and the four `upsert_*` tools are examples.
 
 <Warning>
 **There are no delete tools, by design.** The server has no way to send a `DELETE` or a `PATCH` request — every call it can make is a read, or a create or update on a fixed allow-list checked when the server starts. No tool can delete a tenant, schema, environment, source, source group, domain, destination, client, or entity.
@@ -32,7 +32,7 @@ The reason most people connect the server. The read tools let an agent design an
 
 | Tool | Type | What it does |
 | --- | --- | --- |
-| `list_mapping_schemas` | Read | Lists the tenant's mapping schemas and where each is deployed. Pass `alias` or `schemaId` (and optionally `version`) to fetch one schema with its versions, or `query` to search across schema source — useful for "which schema sets this property?". |
+| `list_mapping_schemas` | Read | Lists the tenant's mapping schemas and where each is deployed. Pass `alias`, or `schemaId` and optionally `version`, to fetch one schema with its versions. Pass `query` to search schema source, for example to find which schema sets a property. |
 | `get_schema_type_definitions` | Read | The type definitions an agent needs to write a valid schema. |
 | `dry_run_mapping_schema` | Read | Runs a schema against input you supply and returns the output, without saving anything. |
 | `dry_run_mapping_schema_against_entity` | Read | Same, against one of your real source entities. |
@@ -57,8 +57,8 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | --- | --- | --- |
 | `list_sources` | Read | Lists sources and source groups, with their storage mode and the environments they publish to. |
 | `list_source_entities` | Read | Browses or searches a source's ingested entities. Pass `originId` to fetch one entity in full. |
-| `upsert_source_group` | **Write (changes existing)** | Creates a source group. Named with `sourceGroup`, it changes an existing group's name or type instead. A group's alias and storage mode cannot be changed. |
-| `upsert_source` | **Write (changes existing)** | Creates a source in a source group and attaches it to environments. Named with `source`, it changes an existing source's name, or which environments it publishes to, instead. A source cannot move to another group. |
+| `upsert_source_group` | **Write (changes existing)** | Creates a source group. With `sourceGroup`, it changes an existing group's name or type instead. A group's alias and storage mode cannot be changed. |
+| `upsert_source` | **Write (changes existing)** | Creates a source in a source group and attaches it to environments. With `source`, it changes an existing source's name, or which environments it publishes to, instead. A source cannot move to another group. |
 | `ingest_source_entities` | **Write (changes existing)** | Writes entities into a source. An entity with the same origin id is overwritten, and the schemas on that source reprocess. Always asks for confirmation first. |
 
 ## delivery
@@ -76,7 +76,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | Tool | Type | What it does |
 | --- | --- | --- |
 | `inspect_domains_and_hostnames` | Read | Domains and their hostnames, and optionally hostnames your content uses that no domain covers. |
-| `upsert_domain` | **Write (changes existing)** | Creates a domain with one or more hostnames. Named with `domain`, it changes an existing domain's name or the hostnames it covers instead. |
+| `upsert_domain` | **Write (changes existing)** | Creates a domain with one or more hostnames. With `domain`, it changes an existing domain's name or the hostnames it covers instead. |
 
 ## destinations
 
@@ -85,7 +85,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | `list_destinations` | Read | Lists where the tenant's published data is sent. Pass `alias` to read one destination and its configuration per environment. |
 | `list_destination_apps` | Read | Lists the connectors a destination can be built on. |
 | `create_destination` | **Write (additive)** | Creates a destination. It sends nothing until it is configured for an environment. |
-| `configure_destination` | **Write (changes existing)** | Sets a destination up for one environment, or changes the setup that environment already has. It never removes a setting, but it can change a setting's value, switch the setup off, change its regions, or point it at a different environment client. Credentials cannot be set through it — those are filled in in the Management App. |
+| `configure_destination` | **Write (changes existing)** | Sets a destination up for one environment, or changes the setup that environment already has. It never removes a setting, but it can change a setting's value, switch the setup off, change its regions, or point it at a different environment client. Credentials cannot be set through it, only in the Management App. |
 
 ## clients
 
@@ -115,29 +115,29 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | Tool | Type | What it does |
 | --- | --- | --- |
 | `create_tenant` | **Write (additive)** | Creates a new tenant, with you as its administrator. A tenant is billable, so this always asks for confirmation first. |
-| `upsert_environment` | **Write (changes existing)** | Creates an empty environment. Named with `environment`, it renames that environment instead. Will not rename an environment onto the deploy-allowed list. |
+| `upsert_environment` | **Write (changes existing)** | Creates an empty environment. With `environment`, it renames that environment instead. It refuses to rename an environment onto the list of names `deploy_mapping_schema` may deploy to. |
 
 ## How the upsert tools decide what to do
 
-`upsert_environment`, `upsert_source_group`, `upsert_source`, and `upsert_domain` each create a resource or change one. The arguments decide which, never what already exists in your tenant:
+`upsert_environment`, `upsert_source_group`, `upsert_source`, and `upsert_domain` each create a resource or change one. The arguments you pass decide which, never what already exists in your tenant.
 
-- **Without the argument that names an existing resource** (`environment`, `sourceGroup`, `source`, or `domain`), the call only creates. If a resource with that name already exists exactly as asked, nothing is sent and the result says `unchanged`. If one exists with that name but differs, the call is refused and nothing changes. The refusal lists the differences and the call that would make the change.
+- **Without the argument that names an existing resource** (`environment`, `sourceGroup`, `source`, or `domain`), the call can only create. If a resource with that name already exists exactly as asked, nothing is sent and the result says `unchanged`. If one exists with that name but differs, the call is refused and nothing changes. The refusal lists the differences and the call that would make the change.
 - **With that argument**, the call only changes that one resource. If the argument does not match anything, the call is refused. It never falls back to creating something.
 
-So a misspelled edit fails instead of creating something new. Every result has an `outcome` field: `created`, `updated`, or `unchanged`.
+A misspelled edit therefore fails instead of creating something new. A call that succeeds reports an `outcome` of `created`, `updated`, or `unchanged`.
 
-Environment clients keep separate `create_environment_client` and `update_environment_client` tools, because creating an environment client issues an access key.
+Environment clients keep separate `create_environment_client` and `update_environment_client` tools, because an environment client is itself a credential. Creating one issues a key that can read your content, and updating one changes what that key can reach.
 
 ## Tools that were renamed or merged
 
-If a saved prompt, script, or log filter names one of the tools below, it no longer exists. Use the call on the right instead. The arguments keep their names.
+The tools below no longer exist. If a saved prompt, script, or log filter names one of them, use the call on the right instead. The arguments keep their names.
 
 | Earlier tool | Call instead |
 | --- | --- |
 | `get_mapping_schema` | `list_mapping_schemas` with `alias`, or with `schemaId` and optionally `version` |
 | `search_mapping_schemas` | `list_mapping_schemas` with `query` |
 | `get_source_entity` | `list_source_entities` with `sourceId` and `originId` |
-| `get_view` | `list_views` with `viewId`. `environmentId` is no longer needed. |
+| `get_view` | `list_views` with `viewId` |
 | `get_destination` | `list_destinations` with `alias` |
 | `create_environment` | `upsert_environment` with `name` |
 | `update_environment` | `upsert_environment` with `environment` and `name` |
@@ -148,7 +148,7 @@ If a saved prompt, script, or log filter names one of the tools below, it no lon
 | `create_domain` | `upsert_domain` without `domain` |
 | `update_domain` | `upsert_domain` with `domain` |
 
-Called with those arguments, each `list_*` tool returns what the earlier tool returned. Your tenant's logs record the name of the tool that was actually called, so a log filter on an earlier name stops matching.
+Called with those arguments, each `list_*` tool returns what the earlier tool returned. The upsert tools report `outcome` where the earlier tools reported `created` or `updated`. Your tenant's logs record the name of the tool that was actually called, so a log filter on an earlier name stops matching.
 
 ## What is deliberately not exposed
 
