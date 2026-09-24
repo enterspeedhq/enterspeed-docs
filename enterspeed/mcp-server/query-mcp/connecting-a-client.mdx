@@ -14,7 +14,7 @@ https://mcp.query.enterspeed.com/
 How you authenticate is a choice between two routes, and it decides what else you need:
 
 - **A scoped environment client key** (`Query API` + `MCP Server` at minimum), sent as an `x-api-key` header. The key names its own tenant and environment, and carries whatever [index scope](/enterspeed/mcp-server/query-mcp/overview#index-scopes) you gave it. See [Creating a scoped key](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
-- **Signing in with your Enterspeed account**, over OAuth. There is no key for you to store, but the session has to be told which tenant and environment to work in before any query tool runs. The first time anyone selects an environment this way, the server asks your permission to create an environment client named **Enterspeed MCP (sign-in)** there, and reuses it afterwards. See [Signing in instead of using a key](/enterspeed/mcp-server/query-mcp/overview#signing-in-instead-of-using-a-key).
+- **Signing in with your Enterspeed account**, over OAuth. Nothing to issue and nothing to store, but the session has to be told which tenant and environment to work in before any query tool runs.
 
 Not every client can do both. A client that lets you set a custom HTTP header can use either; one that only takes a URL — such as Claude Desktop's **Connectors** screen — can only sign you in.
 
@@ -110,7 +110,7 @@ A signed-in session is given three extra tools for this — `list_available_cont
 
 If you belong to exactly one tenant with exactly one environment, asking Claude to select your context is enough — it resolves to the only one available.
 
-The first selection in an environment asks your permission to create the environment client that signing in relies on, and the first query needs a short wait after it is created. A selection can also need repeating after a reconnect. See [what to expect when you sign in](/enterspeed/mcp-server/query-mcp/overview#signing-in-instead-of-using-a-key).
+The first selection in an environment sets up an environment client for the sign-in route, and the first query needs a short wait after it. A selection can also need repeating after a reconnect. See [what to expect from the sign-in route](/enterspeed/mcp-server/query-mcp/overview#signing-in-instead-of-using-a-key).
 </Note>
 
 ### Route 2 — Config file with a scoped key
