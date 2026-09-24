@@ -33,17 +33,15 @@ Query MCP and Management MCP are complementary — many people connect both, so 
 
 Both tenant-facing servers are **passthrough proxies that hold no credentials of their own**. Every authorisation decision is made by the underlying Enterspeed API, never by the MCP server.
 
-They differ in how you identify yourself to them:
+You connect to both servers by **signing in with your Enterspeed account**. You give your client the server URL, and it sends you to Enterspeed in a browser window where you sign in. The client keeps the resulting token. The steps for each client are under [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) for the Query MCP and [Connecting a client](/enterspeed/mcp-server/management-mcp/overview#connecting-a-client) for the Management MCP.
+
+The Query MCP also accepts a scoped environment client key in an `x-api-key` header. Use one for an agent that runs unattended, because it cannot complete a browser sign in. Use one too when you want the connection fixed to one environment and one index scope. The Management MCP takes no key. You narrow a connection to it with parameters on the server URL instead, for example `?readOnly=true`. See [Limiting a connection](/enterspeed/mcp-server/management-mcp/overview#limiting-a-connection).
 
 | Server | How you authenticate |
 | --- | --- |
-| [Query MCP](/enterspeed/mcp-server/query-mcp/overview) | A scoped environment client key in an `x-api-key` header, **or** signing in with your Enterspeed account. |
+| [Query MCP](/enterspeed/mcp-server/query-mcp/overview) | Signing in with your Enterspeed account, **or** a scoped environment client key in an `x-api-key` header. |
 | [Management MCP](/enterspeed/mcp-server/management-mcp/overview) | Signing in with your Enterspeed account. |
 | [Documentation MCP](/enterspeed/mcp-server/documentation-mcp/overview) | Nothing — the documentation is public. |
-
-Signing in means the client sends you to Enterspeed in a browser window and keeps the resulting token. Clients that take a server URL and nothing else — claude.ai in the browser, Claude Desktop's **Connectors** screen — work this way, because they have no field for a custom header.
-
-A key remains the tighter boundary on Query MCP: one scoped to a single environment and index prefix gives an agent exactly that much and no more. On Management MCP, you narrow a signed-in connection with parameters on the server URL instead — for example `?readOnly=true` — see [Limiting a connection](/enterspeed/mcp-server/management-mcp/overview#limiting-a-connection).
 
 ## Transport
 
