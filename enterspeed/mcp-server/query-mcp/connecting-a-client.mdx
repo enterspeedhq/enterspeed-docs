@@ -22,7 +22,7 @@ Configure the **root URL** with the `http` transport type. There is no separate 
 ## Connect by signing in
 
 <Info>
-**Some setups can only start local programs.** The Codex command below configures MCP servers as programs on your machine, not as remote URLs. From there, Enterspeed is reached through [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign in the same way, and it needs Node.js installed.
+**The Codex command below adds Enterspeed as a program on your machine.** That program is [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign in the same way, and it needs Node.js installed.
 </Info>
 
 <Tabs>
@@ -41,7 +41,7 @@ This installs the server for the current project only. Add `--scope user` to mak
 </Tab>
 <Tab title="Codex">
 
-Codex configures MCP servers as local programs, so it reaches Enterspeed through the `mcp-remote` bridge.
+This command reaches Enterspeed through the `mcp-remote` bridge.
 
 ```bash
 codex mcp add enterspeed-query -- npx -y mcp-remote "https://mcp.query.enterspeed.com/"
@@ -56,7 +56,7 @@ The first time the bridge runs it opens a browser window for you to sign in, and
 gemini mcp add --transport http enterspeed-query "https://mcp.query.enterspeed.com/"
 ```
 
-That writes the server into `~/.gemini/settings.json`. The equivalent by hand is this.
+That writes the server into `.gemini/settings.json` in the current project. Add `--scope user` to write it into `~/.gemini/settings.json` for every project instead. The equivalent by hand is this.
 
 ```json
 {
@@ -72,7 +72,7 @@ That writes the server into `~/.gemini/settings.json`. The equivalent by hand is
 Use `httpUrl`, not `url`. In Gemini CLI, `url` selects the older SSE transport, and this server does not speak it.
 </Warning>
 
-Run `/mcp` inside the CLI to check the server is listed and to complete the sign in.
+Run `/mcp` inside the CLI to check the server is listed, and `/mcp auth enterspeed-query` to complete the sign in.
 
 </Tab>
 <Tab title="Copilot CLI">
@@ -146,7 +146,7 @@ Cursor reads MCP servers from `~/.cursor/mcp.json` for every project, or `.curso
 }
 ```
 
-A remote server is identified by `url`, and there is no `type` field to set. Open **Settings → MCP**, and Cursor takes you through the Enterspeed sign in in your browser.
+A remote server is identified by `url`, and there is no `type` field to set. Cursor takes you through the Enterspeed sign in in your browser when it first connects.
 
 The **Add to Cursor** button in the Management App adds the same entry for you. It opens this link.
 
@@ -457,7 +457,8 @@ If your client cannot set a header, sign in instead. As a last resort you can pa
 | Every tool call returns *"forbidden"* | `x-api-key` forwarded correctly but scope missing | Add `Query API` to the environment client. |
 | `mcp add` / config reload fails with *"failed to establish connection"* | Local proxy, VPN, or corporate firewall stripping SSE headers | Bypass the proxy (`NO_PROXY=mcp.query.enterspeed.com`) or try a different network. |
 | Tools list is empty after reload | Client caches tool lists per session | Fully quit and relaunch the client (on macOS, Cmd-Q in Claude Desktop; **Developer: Reload Window** in VS Code). |
-| `401` on every request | The client is not signed in and sends no key, or it sends a Management API key instead of an environment client key | Reconnect and complete the sign in. If you use a key, create an **environment client** key, not a Management API key. |
+| `401` on every request | The client is not signed in and sends no key | Reconnect and complete the sign in, or send a scoped key in the `x-api-key` header. |
+| Connected with a key, but every tool call is refused as `Unauthorized` or *Access denied* | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here. |
 | Connected and signed in, but every index or query tool fails | The session has not been pointed at a tenant and environment yet | Ask the client to list your available Enterspeed contexts and select one. This applies only when you sign in, because a key already names its environment. |
 | Claude Desktop shows the server but no tools, and the config uses `url` and `headers` | `claude_desktop_config.json` has no remote transport, so those fields go nowhere | Use the `mcp-remote` bridge shown above, or add the server under **Settings → Connectors** instead. |
 

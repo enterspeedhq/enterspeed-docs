@@ -5,7 +5,7 @@ description: Connect an AI client to the Enterspeed Query API — query your ind
 
 The Enterspeed Query MCP Server turns the Enterspeed Query API into a set of [Model Context Protocol](https://modelcontextprotocol.io/) tools that AI clients (Claude, Cursor, custom agents, Azure AI Foundry, etc.) can discover and call. You do not need to host anything yourself — Enterspeed runs the server for you.
 
-This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. You connect by [signing in with your Enterspeed account](#what-to-expect-when-you-sign-in). A scoped environment client key is the alternative, for an agent that runs unattended or a connection fixed to one environment and one index scope. For step-by-step wiring guides, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) and [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent).
+This page tells you **where the server lives**, **how authentication works**, and **what scopes to request**. You connect by [signing in with your Enterspeed account](#what-to-expect-when-you-sign-in). A scoped environment client key is the alternative, for an agent that runs unattended or a connection fixed to one environment and one index scope. For the steps for each client, see [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) and [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent).
 
 To configure your tenant rather than query it, see [Management MCP](/enterspeed/mcp-server/management-mcp/overview).
 
@@ -94,7 +94,7 @@ When you first sign in and select an environment, expect the following.
 
 ## Required scopes
 
-This section and the next two apply when you connect with a key. The platform supports component-scoped environment keys. For MCP use, your key **must** include both scopes in this table.
+This section and the next two apply when you connect with a key. The platform lets you limit an environment key to the APIs it needs. For MCP use, your key **must** include both scopes in this table.
 
 | Scope | Why | Grants |
 | --- | --- | --- |
@@ -192,7 +192,7 @@ The tool list is assembled per key, so two clients pointed at the same server ca
 All three layers respect the key's [index scope](#index-scopes), so the agent is handed a pre-trimmed list rather than being told "no" after it tries.
 
 <Tip>
-If an agent only ever shows the eight tools above, the per-index layer is missing — which almost always means the key lacks the `MCP Server` scope, or is invalid.
+If an agent only ever shows the eight tools above, the layer of tools for each index is missing. On a signed in session, select a context first. With a key, it almost always means the key lacks the `MCP Server` scope, or is invalid.
 </Tip>
 
 ## Sample prompts
@@ -245,16 +245,16 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| `401 Unauthorized` from the MCP server | `x-api-key` missing or malformed, or on the sign-in route, the sign-in has expired | Confirm the header is present on every MCP request, or reconnect and sign in again. |
+| `401 Unauthorized` from the MCP server | The client is not signed in, its sign in has expired, or it sends no key | Reconnect and complete the sign in. If you use a key, confirm the `x-api-key` header is present on every MCP request. |
 | Agent lists only a small static set of tools | Key is missing the `MCP Server` scope | Recreate the key with the *AI Assistant* preset. |
 | Agent sees fewer indices than expected | `IndexScope` pattern is too narrow | Widen the Index Scope on the environment client, or remove it for all-index access. |
 | Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` | Add the `Query API` scope. |
-| `401` on every request | Wrong key type — a Management API key instead of an environment client key | Create an **environment client** key. A Management API key does not work here, and [Management MCP](/enterspeed/mcp-server/management-mcp/overview) does not take keys at all. |
+| Connected with a key, but every tool call is refused as `Unauthorized` or *Access denied* | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here, and [Management MCP](/enterspeed/mcp-server/management-mcp/overview) does not take keys at all. |
 | `429` with a `Retry-After` header | More than 120 requests in a minute on this key, or from your signed-in sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
 
 ## Next steps
 
-- [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) — VS Code, Claude Code, Claude Desktop, or the Anthropic Messages API in C#.
+- [Connecting a client](/enterspeed/mcp-server/query-mcp/connecting-a-client) to sign in from Claude Code, Codex, Gemini CLI, Copilot CLI, Claude.ai, ChatGPT, Claude Desktop, Cursor or VS Code, or to connect with a scoped key.
 - [Connecting an agent](/enterspeed/mcp-server/query-mcp/connecting-an-agent) — wire a custom C# agent or Azure AI Foundry to the MCP server.
 - [Management MCP](/enterspeed/mcp-server/management-mcp/overview) — configure your tenant instead of querying it.

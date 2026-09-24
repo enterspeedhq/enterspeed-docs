@@ -146,7 +146,7 @@ https://mcp.management.enterspeed.com/
 Once you are signed in, ask your client to select the tenant you want to work on. Every session needs this, however many tenants you belong to — see [Selecting a tenant](#selecting-a-tenant).
 
 <Info>
-**Some setups can only start local programs.** The Codex command below and Claude Desktop's `claude_desktop_config.json` file configure MCP servers as programs on your machine, not as remote URLs. From there, Enterspeed is reached through [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign-in the same way, and it needs Node.js installed. Claude Desktop does not need it: its **Connectors** screen opens the remote server directly.
+**The Codex command below adds Enterspeed as a program on your machine**, and so would Claude Desktop's `claude_desktop_config.json` file. That program is [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), a small bridge that runs locally and holds the remote connection. It handles the sign in the same way, and it needs Node.js installed. Claude Desktop does not need it, because its **Connectors** screen opens the remote server directly.
 </Info>
 
 <Tabs>
@@ -165,7 +165,7 @@ This installs the server for the current project only. Add `--scope user` to mak
 </Tab>
 <Tab title="Codex">
 
-Codex configures MCP servers as local programs, so it reaches Enterspeed through the `mcp-remote` bridge:
+This command reaches Enterspeed through the `mcp-remote` bridge.
 
 ```bash
 codex mcp add enterspeed-management -- npx -y mcp-remote "https://mcp.management.enterspeed.com/"
@@ -180,7 +180,7 @@ The first time the bridge runs it opens a browser window for you to sign in, and
 gemini mcp add --transport http enterspeed-management "https://mcp.management.enterspeed.com/"
 ```
 
-That writes the server into `~/.gemini/settings.json`. The equivalent by hand is:
+That writes the server into `.gemini/settings.json` in the current project. Add `--scope user` to write it into `~/.gemini/settings.json` for every project instead. The equivalent by hand is this.
 
 ```json
 {
@@ -196,7 +196,7 @@ That writes the server into `~/.gemini/settings.json`. The equivalent by hand is
 Use `httpUrl`, not `url`. In Gemini CLI, `url` selects the older SSE transport, and this server does not speak it.
 </Warning>
 
-Run `/mcp` inside the CLI to check the server is listed and to complete the sign-in.
+Run `/mcp` inside the CLI to check the server is listed, and `/mcp auth enterspeed-management` to complete the sign in.
 
 </Tab>
 <Tab title="Copilot CLI">
@@ -272,7 +272,7 @@ Cursor reads MCP servers from `~/.cursor/mcp.json` for every project, or `.curso
 }
 ```
 
-A remote server is identified by `url` — there is no `type` field to set. Open **Settings → MCP**, and Cursor takes you through the Enterspeed sign-in in your browser.
+A remote server is identified by `url`, and there is no `type` field to set. Cursor takes you through the Enterspeed sign in in your browser when it first connects.
 
 </Tab>
 <Tab title="VS Code">
