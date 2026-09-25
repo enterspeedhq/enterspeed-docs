@@ -69,7 +69,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | `inspect_route` | Read | Resolves a URL or handle and shows which route wins. The first stop for "why is this URL wrong?". |
 | `inspect_indexes` | Read | Lists indexes and their field definitions. |
 | `get_index_document` | Read | Fetches a single indexed document. |
-| `diagnose_missing_content` | Read | Answers "why is my content not showing up?". Give it an environment and either a source entity's origin id or a URL that does not resolve. It checks the source, the entity, the deployed schema, the view, the route, and the domain in that order, and reports the first link that is broken and what to do about it. It changes nothing. |
+| `diagnose_missing_content` | Read | Answers "why is my content not showing up?". Give it an `environment` and a source entity's `originId`, a `url` that does not resolve, or both. Add `sourceId` if you know which source the entity is in. It checks the source, the entity, the deployed schema, the view, the route and the domain, and for a URL also whether it resolves and which environment clients can read it. It reports the first link that is broken and what to do about it. A check it could not complete is reported as `could_not_determine`, never as missing. It changes nothing. |
 
 ## domains
 
