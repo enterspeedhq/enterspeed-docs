@@ -25,6 +25,8 @@ Configure the **root URL** with the `http` transport type. There is no separate 
 **Every client below opens the remote server directly and takes you through the sign in itself.** None of them needs Node.js or a bridge program on your machine. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge is only for a client that cannot open a remote server, and for Claude Desktop's config file when you connect with a scoped key.
 </Info>
 
+### Agent CLIs
+
 <Tabs>
 <Tab title="Claude Code">
 
@@ -96,6 +98,11 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 `"tools": ["*"]` offers every tool the server lists. The file needs the `tools` field, and `*` is what the command above writes when you give it no `--tools`. You can add the server interactively instead. Start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign in in your browser the first time it connects. If `/mcp` shows the server as needing authentication, run `/mcp auth enterspeed-query`.
 
 </Tab>
+</Tabs>
+
+### Web
+
+<Tabs>
 <Tab title="Claude.ai">
 
 <Note>
@@ -121,7 +128,9 @@ OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education ac
 </Note>
 
 </Tab>
-<Tab title="Claude Desktop">
+</Tabs>
+
+### Desktop apps
 
 Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign in.
 
@@ -138,7 +147,9 @@ On a Team or Enterprise plan only an Owner can add a custom connector. The Owner
 The **Connectors** screen cannot send an `x-api-key` header. To connect Claude Desktop with a scoped key, use its config file and the `mcp-remote` bridge, as shown under [Using a scoped key instead](#using-a-scoped-key-instead).
 </Note>
 
-</Tab>
+### IDEs
+
+<Tabs>
 <Tab title="Cursor">
 
 Cursor reads MCP servers from `~/.cursor/mcp.json` for every project, or `.cursor/mcp.json` for one.
