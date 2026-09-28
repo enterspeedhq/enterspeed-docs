@@ -40,7 +40,7 @@ The reason most people connect the server. The read tools let an agent design an
 | `get_environment_deployments` | Read | What is live in an environment, and what is edited but not deployed yet. |
 | `create_mapping_schema` | **Write (additive)** | Creates a new mapping schema and its first version. Deploys nothing. |
 | `save_mapping_schema_version` | **Write (changes existing)** | Saves schema source into a version. An editable version is overwritten in place; a deployed one gets a new version instead. |
-| `deploy_mapping_schema` | **Write (changes existing)** | Deploys schema versions to an environment, which changes what it serves. Restricted — see below. |
+| `deploy_mapping_schema` | **Write (changes existing)** | Deploys schema versions to an environment, which changes what it serves. Always asks for confirmation first. |
 | `unpublish_mapping_schema` | **Write (changes existing)** | Removes a schema from one environment, so it stops serving that schema's views there. The schema and its versions are untouched. |
 
 <Tip>
@@ -48,7 +48,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 </Tip>
 
 <Warning>
-`deploy_mapping_schema` on the hosted server only deploys to environments **named** `dev`, `development`, `test`, or `staging`. Anything else — including environments named `prod`, `production`, or `live` — is refused with a `deploy_not_permitted` error. Production deploys stay a deliberate action in the Management App.
+Every `deploy_mapping_schema` call asks you to confirm before anything is published. The confirmation names the environment and the schema versions. This applies to every environment, whatever it is called.
 </Warning>
 
 ## sources
@@ -115,7 +115,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | Tool | Type | What it does |
 | --- | --- | --- |
 | `create_tenant` | **Write (additive)** | Creates a new tenant, with you as its administrator. A tenant is billable, so this always asks for confirmation first. |
-| `upsert_environment` | **Write (changes existing)** | Creates an empty environment. With `environment`, it renames that environment instead. It refuses a rename that would move an environment onto the list of names `deploy_mapping_schema` may deploy to. |
+| `upsert_environment` | **Write (changes existing)** | Creates an empty environment. With `environment`, it renames that environment instead. |
 
 ## How the upsert tools decide what to do
 
@@ -156,7 +156,7 @@ Some Management API capabilities are intentionally absent from the tool set:
 
 - **Anything that deletes.** No tenant, schema, environment, source, source group, domain, destination, client, view, or index can be removed through MCP.
 - **Reading or regenerating a key on demand.** No tool returns an access key, and the immediate key regeneration used when a key has leaked stays in the Management App. `rotate_management_client` is the routine rotation, with a grace window, and its new key is only readable in the app.
-- **Bulk and production deploy paths.** Deploying broadly, or to production, stays in the Management App.
+- **Bulk deploy paths.** Deploying broadly stays in the Management App.
 
 For the update tools, the permission is the *verb*, not the address. Several of the allowed updates share an address with a delete operation in the underlying API — the server can reach the update and has no way to reach the delete.
 

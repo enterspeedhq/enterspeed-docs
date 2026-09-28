@@ -90,13 +90,11 @@ Leave all three off and the connection offers every tool, on every tenant your a
 Beyond your account's own permissions and the connection parameters above, the hosted server applies three limits you should know about.
 
 <AccordionGroup>
-<Accordion title="Schema deploys are restricted to non-production environments">
+<Accordion title="Every schema deploy asks you to confirm first">
 
-On the hosted server, `deploy_mapping_schema` only deploys to environments **named** `dev`, `development`, `test`, or `staging`. A deploy targeting any other environment — including anything named `prod`, `production`, or `live` — is refused with a `deploy_not_permitted` error naming the environments that are allowed.
+Every `deploy_mapping_schema` call asks you to confirm before anything is published. The confirmation names the environment and the schema versions, and it is only good for that environment and those versions.
 
-This is a restriction of the hosted server, not of your account. Renaming an environment to get around it does not work either, because `upsert_environment` refuses a rename that would move an environment onto the allowed list.
-
-Production deploys stay a deliberate human action in the Management App.
+This applies to every environment, whatever it is called. You can deploy to any environment your account can deploy to in the Management App.
 
 </Accordion>
 <Accordion title="Access keys are never returned through MCP">
@@ -134,7 +132,7 @@ If you are reviewing this server before pointing an agent at your tenant, this i
 - **Passthrough authorisation.** Every permission decision is made by the Management API against your account, not by the MCP server.
 - **No deletes.** The server cannot issue a `DELETE` or a `PATCH` at all. Twelve writes can still change or replace existing configuration or content. See [What the server can and cannot do](#what-the-server-can-and-cannot-do).
 - **Secrets are not readable.** Access keys are removed from responses at the HTTP boundary, so no tool can observe one.
-- **Production deploys are out of reach** on the hosted server.
+- **Every deploy is confirmed.** Nothing is published until you confirm the environment and the schema versions.
 - **Least privilege is yours to set.** Connect with `?readOnly=true` unless the agent needs to write, and with `?tenantId=` to keep it on the tenants you name. See [Limiting a connection](#limiting-a-connection).
 
 ## Connecting a client
@@ -343,7 +341,7 @@ Use these to smoke-test a fresh connection.
 | Writes are refused, naming read-only | The connection URL has `?readOnly=true`, or a `readOnly` value the server could not read | Expected if you set it. Reconnect without the parameter if the agent genuinely needs to write. |
 | Writes return a permission error from Enterspeed | Your account does not have write permission in that tenant | Ask a tenant administrator for the access, or make the change in the Management App. |
 | A tool is refused as "not offered" | The connection URL has a `?toolsets=` value that does not include that tool's group | Add the group to `toolsets`, or use `toolsets=all`. |
-| `deploy_not_permitted` when deploying a schema | The target environment is not one the hosted server may deploy to | Deploy to `dev`, `development`, `test`, or `staging`, or deploy to production from the Management App. |
+| `deploy_not_permitted` when deploying a schema | Deploying is switched off on this server | Deploy from the Management App. |
 | `create_environment_client` succeeded but there is no key in the response | Working as intended — access keys are never returned through MCP | Fetch the key in the Management App. |
 | `429` with a `Retry-After` header | More than 60 requests in a minute from your sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
