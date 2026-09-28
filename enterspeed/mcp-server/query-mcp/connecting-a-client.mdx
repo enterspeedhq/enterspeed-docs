@@ -104,7 +104,7 @@ On a Team or Enterprise plan only an Owner can add a custom connector. The Owner
 
 1. Open **Customize**, then **Connectors**.
 2. Click **+** and then **Add custom connector**.
-3. Paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
+3. Give it a name, for example `Enterspeed Query`, and paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
 4. Click **Add**, then sign in with your Enterspeed account when Claude asks.
 
 </Tab>
@@ -463,7 +463,8 @@ If your client cannot set a header, sign in instead. As a last resort you can pa
 | Client responds *"I don't have any tools"* | MCP server entry missing, or the URL is wrong | Confirm the config was reloaded by the client; hit `/health` on the MCP endpoint. |
 | Every tool call returns *"forbidden"* | `x-api-key` forwarded correctly but scope missing | Add `Query API` to the environment client. |
 | `mcp add` / config reload fails with *"failed to establish connection"* | Local proxy, VPN, or corporate firewall stripping SSE headers | Bypass the proxy (`NO_PROXY=mcp.query.enterspeed.com`) or try a different network. |
-| Tools list is empty after reload | Client caches tool lists per session | Fully quit and relaunch the client (on macOS, Cmd-Q in Claude Desktop; **Developer: Reload Window** in VS Code). |
+| Tools list is empty after reload, with a key | Client caches tool lists per session | Fully quit and relaunch the client (on macOS, Cmd-Q in Claude Desktop; **Developer: Reload Window** in VS Code). |
+| Signed in, but no tools for your indexes | No context is selected yet, or the client has not listed its tools again since you selected one | Select a context, then have the client list its tools again in the same session. Don't quit and relaunch, because a new session starts without a context and shows only the static tools. |
 | `401` on every request | The client is not signed in and sends no key | Reconnect and complete the sign in, or send a scoped key in the `x-api-key` header. |
 | Connected with a key, but every index and query tool fails | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here. |
 | Connected and signed in, but every index or query tool fails | The session has not been pointed at a tenant and environment yet | Ask the client to list your available Enterspeed contexts and select one. This applies only when you sign in, because a key already names its environment. |
