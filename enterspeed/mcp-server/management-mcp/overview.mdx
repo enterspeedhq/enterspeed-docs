@@ -151,6 +151,8 @@ Once you are signed in, ask your client to select the tenant you want to work on
 **Every client below opens the remote server directly and takes you through the sign in itself.** None of them needs Node.js or a bridge program on your machine. Claude Desktop's `claude_desktop_config.json` file would, because it only starts local programs, so use its **Connectors** screen instead. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge is only for a client that cannot open a remote server.
 </Info>
 
+### Agent CLIs
+
 <Tabs>
 <Tab title="Claude Code">
 
@@ -222,6 +224,11 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 `"tools": ["*"]` offers every tool the server lists. The file needs the `tools` field, and `*` is what the command above writes when you give it no `--tools`. You can add the server interactively instead. Start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign in in your browser the first time it connects. If `/mcp` shows the server as needing authentication, run `/mcp auth enterspeed-management`.
 
 </Tab>
+</Tabs>
+
+### Web
+
+<Tabs>
 <Tab title="Claude.ai">
 
 <Note>
@@ -249,7 +256,9 @@ OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education ac
 </Note>
 
 </Tab>
-<Tab title="Claude Desktop">
+</Tabs>
+
+### Desktop apps
 
 Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign-in.
 
@@ -266,7 +275,9 @@ On a Team or Enterprise plan only an Owner can add a custom connector. The Owner
 There is no reason to use `claude_desktop_config.json` for this server. That file starts local programs, so it would need the `mcp-remote` bridge, and the result would be the same sign-in the Connectors screen gives you. On [Query MCP](/enterspeed/mcp-server/query-mcp/connecting-a-client) the config-file route exists because it can carry a scoped key; this server does not accept keys.
 </Note>
 
-</Tab>
+### IDEs
+
+<Tabs>
 <Tab title="Cursor">
 
 Cursor reads MCP servers from `~/.cursor/mcp.json` for every project, or `.cursor/mcp.json` for one.
