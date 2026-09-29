@@ -25,6 +25,8 @@ Configure the **root URL** with the `http` transport type. There is no separate 
 **Every client below opens the remote server directly and takes you through the sign in itself.** None of them needs Node.js or a bridge program on your machine. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge is only for a client that cannot open a remote server, and for Claude Desktop's config file when you connect with a scoped key.
 </Info>
 
+### Agent CLIs
+
 <Tabs>
 <Tab title="Claude Code">
 
@@ -96,6 +98,11 @@ That writes the server into `~/.copilot/mcp-config.json`. The equivalent by hand
 `"tools": ["*"]` offers every tool the server lists. The file needs the `tools` field, and `*` is what the command above writes when you give it no `--tools`. You can add the server interactively instead. Start `copilot` and run `/mcp add`. Copilot CLI takes you through the Enterspeed sign in in your browser the first time it connects. If `/mcp` shows the server as needing authentication, run `/mcp auth enterspeed-query`.
 
 </Tab>
+</Tabs>
+
+### Web
+
+<Tabs>
 <Tab title="Claude.ai">
 
 <Note>
@@ -121,24 +128,19 @@ OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education ac
 </Note>
 
 </Tab>
-<Tab title="Claude Desktop">
+</Tabs>
 
-Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign in.
+### Desktop apps
 
-<Note>
-On a Team or Enterprise plan only an Owner can add a custom connector. The Owner adds it under **Organization settings**, then **Connectors**. Everyone else finds it under **Customize**, then **Connectors**, and clicks **Connect**.
-</Note>
-
-1. Open **Customize**, then **Connectors**.
-2. Click **+** and then **Add custom connector**.
-3. Give it a name, for example `Enterspeed Query`, and paste `https://mcp.query.enterspeed.com/` as the remote MCP server URL.
-4. Click **Add**, then sign in with your Enterspeed account in the browser window that opens.
+Claude Desktop uses the same **Connectors** steps as [Claude.ai](#web), including the note for Team and Enterprise plans. The only difference is that after you click **Add**, the sign-in opens in a browser window.
 
 <Note>
 The **Connectors** screen cannot send an `x-api-key` header. To connect Claude Desktop with a scoped key, use its config file and the `mcp-remote` bridge, as shown under [Using a scoped key instead](#using-a-scoped-key-instead).
 </Note>
 
-</Tab>
+### IDEs
+
+<Tabs>
 <Tab title="Cursor">
 
 Cursor reads MCP servers from `~/.cursor/mcp.json` for every project, or `.cursor/mcp.json` for one.
@@ -213,7 +215,7 @@ A scoped environment client key is the other way to connect. Use one for an agen
 The key needs the `Query API` and `MCP Server` scopes at minimum, and your client sends it in an `x-api-key` header. See [Creating a scoped key](/enterspeed/mcp-server/query-mcp/overview#creating-a-scoped-key).
 
 <Tabs>
-<Tab title="VS Code (GitHub Copilot)">
+<Tab title="VS Code">
 
 VS Code's GitHub Copilot reads MCP servers from an `mcp.json` file. For a single workspace, put the config at `.vscode/mcp.json`; for every workspace, use the **MCP: Open User Configuration** command from the command palette.
 
@@ -238,7 +240,7 @@ Never commit `.vscode/mcp.json` with a real key. Use `${input:enterspeed-key}` w
 </Tip>
 
 </Tab>
-<Tab title="Claude Code CLI">
+<Tab title="Claude Code">
 
 ```bash
 claude mcp add enterspeed --scope user --transport http "https://mcp.query.enterspeed.com/" \
@@ -307,7 +309,7 @@ If Claude Desktop connects but shows *"no tools discovered"*, the key is almost 
 </Tip>
 
 </Tab>
-<Tab title="Anthropic Messages API (C#)">
+<Tab title="Messages API (C#)">
 
 This is the production path: a C# service opens an MCP session to the Enterspeed server, discovers the available tools, and runs a tool-use loop with Claude. The `x-api-key` header is set once on the MCP transport.
 
