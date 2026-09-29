@@ -260,16 +260,7 @@ OpenAI offers developer mode to Pro, Plus, Business, Enterprise and Education ac
 
 ### Desktop apps
 
-Use Claude Desktop's **Connectors** screen, which opens the remote server directly and handles the sign-in.
-
-<Note>
-On a Team or Enterprise plan only an Owner can add a custom connector. The Owner adds it under **Organization settings**, then **Connectors**. Everyone else finds it under **Customize**, then **Connectors**, and clicks **Connect**.
-</Note>
-
-1. Open **Customize**, then **Connectors**.
-2. Click **+** and then **Add custom connector**.
-3. Give it a name, for example `Enterspeed Management`, and paste `https://mcp.management.enterspeed.com/` as the remote MCP server URL.
-4. Click **Add**, then sign in with your Enterspeed account in the browser window that opens.
+Claude Desktop uses the same **Connectors** steps as [Claude.ai](#web), including the note for Team and Enterprise plans. The only difference is that after you click **Add**, the sign-in opens in a browser window.
 
 <Note>
 There is no reason to use `claude_desktop_config.json` for this server. That file starts local programs, so it would need the `mcp-remote` bridge, and the result would be the same sign-in the Connectors screen gives you. On [Query MCP](/enterspeed/mcp-server/query-mcp/connecting-a-client) the config-file route exists because it can carry a scoped key; this server does not accept keys.
