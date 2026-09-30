@@ -2,9 +2,7 @@
 title: Filter Expressions
 ---
 
-Filter expressions are used when doing lookups in JSON or JavaScript schemas.
-
-Below is a list of examples of what you can do with the filter.
+Filter expressions are used when doing lookups in JSON or JavaScript schemas. Each section below shows what you can write, with an example for both schema types.
 
 <Tip>
 If you are using JavaScript and your filter contains expressions, it's often easier to use string interpolation instead of string concatination. See [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation) .
@@ -18,9 +16,7 @@ filter(`originParentId eq '${encodeURIComponent(sourceEntity.originId)}'`)
 ```
 </Info>
 
-## Examples
-
-Examples of supported binary operators & expressions:
+## Compare values
 
 <Tabs>
 <Tab title="JavaScript">
@@ -122,78 +118,71 @@ properties.isFeatured ne true
 </Tab>
 </Tabs>
 
-<Tabs>
-<Tab title="JavaScript">
-
-```javascript title="AND operator"
-type eq 'article' and properties.isFeatured eq true
-```
-
-</Tab>
-
-<Tab title="JSON">
-
-```javascript title="AND operator"
-type eq 'article' and properties.isFeatured eq true
-```
-
-</Tab>
-</Tabs>
-
-<Tabs>
-<Tab title="JavaScript">
-
-```javascript title="OR operator"
-type eq 'article' or type eq 'contentPage'
-```
-
-</Tab>
-
-<Tab title="JSON">
-
-```javascript title="OR operator"
-type eq 'article' or type eq 'contentPage'
-```
-
-</Tab>
-</Tabs>
-
-<Tabs>
-<Tab title="JavaScript">
-
-```javascript title="An array contains any matching value:"
-// Contains specific redirect with constant string value
-redirects/any(r: r eq '/old-page')
-
-// Contains specific tags with expression string value
-properties.tags/any(t: t eq '${sourceEntity.properties.selectedTag}')
-
-// Contains articles that feature, matching constant boolean value
-properties.articles/any(a: a.isFeatured eq true)
-```
-
-</Tab>
-
-<Tab title="JSON">
-
-```javascript title="An array contains any matching value:"
-// Contains specific redirect with constant string value
-redirects/any(r: r eq '/old-page')
-
-// Contains specific tags with expression string value
-properties.tags/any(t: t eq '{p.selectedTag}')
-
-// Contains articles that feature, matching constant boolean value
-properties.articles/any(a: a.isFeatured eq true)
-```
-
-</Tab>
-</Tabs>
-
 <Info>
-Please note that our filter expressions only support one use of `any` per expression.  
-E.g. `properties.tags/any(t: t eq 'tag1') or properties.tags/any(t: t eq 'tag2')` is not supported.
+`ne` doesn't match source entities that don't have the property. `properties.status ne 'archived'` skips every source entity without a `status`. `eq null` doesn't match them either, as it only matches a property that is set to `null`. If you need to include them, make sure every source entity has the property.
 </Info>
+
+## Combine conditions
+
+<Tabs>
+<Tab title="JavaScript">
+
+```javascript title="AND operator"
+type eq 'article' and properties.isFeatured eq true
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="AND operator"
+type eq 'article' and properties.isFeatured eq true
+```
+
+</Tab>
+</Tabs>
+
+<Tabs>
+<Tab title="JavaScript">
+
+```javascript title="OR operator"
+type eq 'article' or type eq 'contentPage'
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="OR operator"
+type eq 'article' or type eq 'contentPage'
+```
+
+</Tab>
+</Tabs>
+
+Use parentheses to group conditions when you mix `and` and `or`.
+
+<Tabs>
+<Tab title="JavaScript">
+
+```javascript title="Group conditions with parentheses"
+// Articles in either the news or the sport category
+type eq 'article' and (properties.category eq 'news' or properties.category eq 'sport')
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="Group conditions with parentheses"
+// Articles in either the news or the sport category
+type eq 'article' and (properties.category eq 'news' or properties.category eq 'sport')
+```
+
+</Tab>
+</Tabs>
+
+## Match a value in a list
 
 <Tabs>
 <Tab title="JavaScript">
@@ -233,6 +222,175 @@ properties.color in {properties.selectedColors}
 </Tab>
 </Tabs>
 
+## Arrays
+
+Use `any` to check the items of an array property, for example `redirects` or an array property on the source entity. Name the item in front of the colon, then write the condition for one item after it.
+
+### Contains a matching value
+
+<Tabs>
+<Tab title="JavaScript">
+
+```javascript title="Contains a matching value"
+// Contains specific redirect with constant string value
+redirects/any(r: r eq '/old-page')
+
+// Contains specific tags with expression string value
+properties.tags/any(t: t eq '${sourceEntity.properties.selectedTag}')
+
+// Contains articles that feature, matching constant boolean value
+properties.articles/any(a: a.isFeatured eq true)
+
+// Contains an article that is both featured and in the sport category
+properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')
+
+// Contains either tag
+properties.tags/any(t: t eq 'news' or t eq 'sport')
+
+// Contains both tags
+properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
+
+// Articles tagged news or sport
+type eq 'article' and (properties.tags/any(t: t eq 'news') or properties.tags/any(t: t eq 'sport'))
+
+// Contains a featured article in either category
+properties.articles/any(a: a.isFeatured eq true and (a.category eq 'news' or a.category eq 'sport'))
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="Contains a matching value"
+// Contains specific redirect with constant string value
+redirects/any(r: r eq '/old-page')
+
+// Contains specific tags with expression string value
+properties.tags/any(t: t eq '{p.selectedTag}')
+
+// Contains articles that feature, matching constant boolean value
+properties.articles/any(a: a.isFeatured eq true)
+
+// Contains an article that is both featured and in the sport category
+properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')
+
+// Contains either tag
+properties.tags/any(t: t eq 'news' or t eq 'sport')
+
+// Contains both tags
+properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
+
+// Articles tagged news or sport
+type eq 'article' and (properties.tags/any(t: t eq 'news') or properties.tags/any(t: t eq 'sport'))
+
+// Contains a featured article in either category
+properties.articles/any(a: a.isFeatured eq true and (a.category eq 'news' or a.category eq 'sport'))
+```
+
+</Tab>
+</Tabs>
+
+<Info>
+Conditions combined with `and` inside `any` must all match the same item. `properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')` only matches if one article is both featured and in the sport category, not if one article is featured and another is in the sport category.
+
+An `and` that no single item can satisfy isn't an error, it just never matches. `properties.tags/any(t: t eq 'news' and t eq 'sport')` finds nothing, because no tag is both. To match source entities that have both tags, use two `any` joined with `and`, as in the "Contains both tags" example.
+</Info>
+
+### Build the list of values from the source entity
+
+In a JavaScript schema you can build the `or` list inside `any` from the source entity, for example from a list of selected tags. `in` isn't supported inside `any`, so join `eq` comparisons with `or` instead:
+
+```javascript title="Match any of the selected tags"
+export default {
+  // ...
+  properties: async function (sourceEntity, context) {
+    const selectedTags = sourceEntity.properties.selectedTags ?? [];
+
+    // An empty any() isn't a valid filter, so skip the lookup when nothing is selected
+    const relatedArticles = selectedTags.length === 0
+      ? []
+      : await context
+          .lookup(`type eq 'article' and properties.tags/any(t: ${selectedTags.map(tag => `t eq '${tag}'`).join(' or ')})`)
+          .toPromise();
+
+    return {
+      relatedArticles
+    };
+  },
+};
+```
+
+With `selectedTags` set to `['news', 'sport']`, the filter becomes `type eq 'article' and properties.tags/any(t: t eq 'news' or t eq 'sport')`.
+
+<Info>
+JSON schemas can't build a list inside `any`. If you need to match an array property against a list of values from the source entity, use a JavaScript schema.
+</Info>
+
+### Doesn't contain a matching value
+
+<Tabs>
+<Tab title="JavaScript">
+
+```javascript title="Doesn't contain a matching value"
+// Doesn't contain a specific redirect
+not redirects/any(r: r eq '/old-page')
+
+// Doesn't contain a specific tag with expression string value
+not properties.tags/any(t: t eq '${sourceEntity.properties.excludedTag}')
+
+// Articles that aren't tagged as archived
+type eq 'article' and not properties.tags/any(t: t eq 'archived')
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="Doesn't contain a matching value"
+// Doesn't contain a specific redirect
+not redirects/any(r: r eq '/old-page')
+
+// Doesn't contain a specific tag with expression string value
+not properties.tags/any(t: t eq '{p.excludedTag}')
+
+// Articles that aren't tagged as archived
+type eq 'article' and not properties.tags/any(t: t eq 'archived')
+```
+
+</Tab>
+</Tabs>
+
+<Info>
+`not` in front of `any` also matches source entities that don't have the array, or where it's `null` or not an array.
+</Info>
+
+### What you can write inside `any`
+
+<Warning>
+Inside `any`, compare the item with `eq` and combine comparisons with `and` and `or`. Keep the item on the left (`t eq 'news'`, not `'news' eq t`), and put conditions on the source entity itself outside `any`. Otherwise the filter can match nothing, without an error.
+
+The following aren't supported and return a validation error:
+
+- `ne` inside `any`. To match source entities where no item equals a value, use `eq` and put `not` in front of `any`.
+- `in` inside `any`. Join `eq` comparisons with `or` instead.
+- `eq null` inside `any`.
+- `any` inside `any`, and `all`.
+- `not` anywhere other than directly in front of `any`.
+- An `any` where `and` over `or` groups expands to more than 256 combinations, for example nine `(a or b)` groups combined with `and`. A plain `or` list isn't limited. Reduce the number of `or` groups combined with `and`.
+</Warning>
+
+### Common mistakes
+
+| You write | What happens | Write this instead |
+| --- | --- | --- |
+| `properties.tags/any(t: t eq 'news' and t eq 'sport')` | Never matches, because no single tag is both | `properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')` |
+| `properties.tags/any(t: t ne 'archived')` | Validation error | `not properties.tags/any(t: t eq 'archived')` |
+| `properties.tags/any(t: t in ('news', 'sport'))` | Validation error | `properties.tags/any(t: t eq 'news' or t eq 'sport')` |
+| `properties.articles/any(a: 'sport' eq a.category)` | Never matches | `properties.articles/any(a: a.category eq 'sport')` |
+| `properties.tags/any(t: t eq 'news' and type eq 'article')` | Validation error, or never matches for a property under `properties` | `type eq 'article' and properties.tags/any(t: t eq 'news')` |
+
+## Full example
+
 <Tabs>
 <Tab title="JavaScript">
 
@@ -244,7 +402,7 @@ export default {
         // ...
         sportArticles: context
                 .reference('featuredSportArticle')
-                .filter(`type eq 'article' and properties.tags/any(t: t eq '${sourceEntity.properties.tag}')`)
+                .filter(`type eq 'article' and properties.tags/any(t: t eq '${sourceEntity.properties.tag}') and not properties.tags/any(t: t eq 'archived')`)
                 .orderBy({ propertyName: 'properties.metaData.sortOrder', direction: "asc"})
                 .limit(5)
     }
@@ -261,7 +419,7 @@ export default {
     "type": "array",
     "input": {
         "$lookup": {
-            "filter": "type eq 'article' and properties.tags/any(t: t eq '{p.tag}')",
+            "filter": "type eq 'article' and properties.tags/any(t: t eq '{p.tag}') and not properties.tags/any(t: t eq 'archived')",
             "orderBy": {
               "property": "properties.metaData.sortOrder",
               "sort": "asc"
