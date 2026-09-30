@@ -90,11 +90,17 @@ Leave all three off and the connection offers every tool, on every tenant your a
 Beyond your account's own permissions and the connection parameters above, the hosted server applies three limits you should know about.
 
 <AccordionGroup>
-<Accordion title="Every schema deploy asks you to confirm first">
+<Accordion title="Every deploy and unpublish asks you to confirm first">
 
-Every `deploy_mapping_schema` call asks you to confirm before anything is published. The confirmation names the environment and the schema versions, and it is only good for that environment and those versions.
+`deploy_mapping_schema` and `unpublish_mapping_schema` ask you directly, in your client, before anything changes. The prompt names the schema, the versions and the environment, and you confirm by typing the environment's name. Declining, cancelling, a name that doesn't match, or no answer within about 50 seconds changes nothing.
 
 This applies to every environment, whatever it is called. You can deploy to any environment your account can deploy to in the Management App.
+
+The prompt needs a client that supports MCP elicitation, such as Claude Code, Codex, GitHub Copilot CLI, VS Code or Cursor. Clients that don't, such as Claude.ai, Claude Desktop chat and Gemini CLI, are refused for these two tools; deploy from the Management App instead.
+
+<Warning>
+A client set to answer on your behalf will confirm without asking you. That includes auto-approve modes, Copilot's Autopilot, and client hooks that answer prompts. Turn those off for connections that can deploy.
+</Warning>
 
 </Accordion>
 <Accordion title="Access keys are never returned through MCP">
@@ -132,7 +138,7 @@ If you are reviewing this server before pointing an agent at your tenant, this i
 - **Passthrough authorisation.** Every permission decision is made by the Management API against your account, not by the MCP server.
 - **No deletes.** The server cannot issue a `DELETE` or a `PATCH` at all. Twelve writes can still change or replace existing configuration or content. See [What the server can and cannot do](#what-the-server-can-and-cannot-do).
 - **Secrets are not readable.** Access keys are removed from responses at the HTTP boundary, so no tool can observe one.
-- **Every deploy is confirmed.** Nothing is published until you confirm the environment and the schema versions.
+- **Every deploy and unpublish is confirmed in your client.** You type the environment's name before anything changes. A client set to auto-approve can answer for you, so keep that off on connections that can deploy.
 - **Least privilege is yours to set.** Connect with `?readOnly=true` unless the agent needs to write, and with `?tenantId=` to keep it on the tenants you name. See [Limiting a connection](#limiting-a-connection).
 
 ## Connecting a client
@@ -342,6 +348,8 @@ Use these to smoke-test a fresh connection.
 | Writes return a permission error from Enterspeed | Your account does not have write permission in that tenant | Ask a tenant administrator for the access, or make the change in the Management App. |
 | A tool is refused as "not offered" | The connection URL has a `?toolsets=` value that does not include that tool's group | Add the group to `toolsets`, or use `toolsets=all`. |
 | `deploy_not_permitted` when deploying a schema | Deploying is switched off on this server | Deploy from the Management App. |
+| A deploy or unpublish is refused asking for a client that supports confirmations | Your client can't show MCP confirmation prompts (elicitation) | Use a client that supports them, or deploy from the Management App. |
+| A deploy or unpublish returns "not confirmed" | The prompt was declined, cancelled, timed out, or the environment name didn't match | Run it again and type the environment's name exactly. |
 | `create_environment_client` succeeded but there is no key in the response | Working as intended — access keys are never returned through MCP | Fetch the key in the Management App. |
 | `429` with a `Retry-After` header | More than 60 requests in a minute from your sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |

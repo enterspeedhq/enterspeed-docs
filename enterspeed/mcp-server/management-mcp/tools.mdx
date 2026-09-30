@@ -40,15 +40,15 @@ The reason most people connect the server. The read tools let an agent design an
 | `get_environment_deployments` | Read | What is live in an environment, and what is edited but not deployed yet. |
 | `create_mapping_schema` | **Write (additive)** | Creates a new mapping schema and its first version. Deploys nothing. |
 | `save_mapping_schema_version` | **Write (changes existing)** | Saves schema source into a version. An editable version is overwritten in place; a deployed one gets a new version instead. |
-| `deploy_mapping_schema` | **Write (changes existing)** | Deploys schema versions to an environment, which changes what it serves. Always asks for confirmation first. |
-| `unpublish_mapping_schema` | **Write (changes existing)** | Removes a schema from one environment, so it stops serving that schema's views there. The schema and its versions are untouched. |
+| `deploy_mapping_schema` | **Write (changes existing)** | Deploys schema versions to an environment, which changes what it serves. Always asks you to confirm in your client first. |
+| `unpublish_mapping_schema` | **Write (changes existing)** | Removes a schema from one environment, so it stops serving that schema's views there. The schema and its versions are untouched. Always asks you to confirm in your client first. |
 
 <Tip>
 The dry-run and validate tools are reads, despite sounding like they change something. They work on a `?readOnly=true` connection, so an agent can design, test, and validate a schema end to end without being able to save it — a good default even for authoring work, until you are happy with the result.
 </Tip>
 
 <Warning>
-Every `deploy_mapping_schema` call asks you to confirm before anything is published. The confirmation names the environment and the schema versions. This applies to every environment, whatever it is called.
+`deploy_mapping_schema` and `unpublish_mapping_schema` ask you to confirm in your client, by typing the environment's name, before anything changes. Clients without MCP elicitation support are refused for these two tools. A client set to auto-approve can answer for you.
 </Warning>
 
 ## sources
