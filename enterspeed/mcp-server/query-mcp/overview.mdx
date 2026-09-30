@@ -98,7 +98,7 @@ This section and the next two apply when you connect with a key. The platform le
 
 | Scope | Why | Grants |
 | --- | --- | --- |
-| `MCP Server (Public Preview)` | Gates the MCP tool endpoints. Without it, the server sees none of the dynamic tools or the tools for each index. | Ability to list MCP tools. |
+| `MCP Server` | Gates the MCP tool endpoints. Without it, the server sees none of the dynamic tools or the tools for each index. | Ability to list MCP tools. |
 | `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
 
 `MCP Server` alone is not useful — it must be combined with `Query API`, and Enterspeed enforces that pairing when you save the client.
@@ -152,7 +152,7 @@ A scoped key is the API key of an environment client.
 2. Go to **Settings → Environments**.
 3. Under **Environment clients**, click **Create**.
 4. Give the environment client a descriptive name, for example `claude-prod-blog-assistant`, and select the environment you want the AI client to query.
-5. Under **Quick Setup**, pick the **AI Assistant** preset. It selects **Query API** and **MCP Server (Public Preview)**.
+5. Under **Quick Setup**, pick the **AI Assistant** preset. It selects **Query API** and **MCP Server**.
 6. *(Optional)* To restrict access, choose **Select specific indices** and add a pattern like `blog*` under **Or use wildcard patterns**.
 7. Click **Create**. The app then asks which domains the client may be used from. The client has already been created at that point, so you can choose **Cancel** there if you do not want to add a domain.
 
@@ -161,7 +161,7 @@ The key appears in the **API Key** column of the environment client list. It has
 To use an environment client you already have, open its menu in the list and choose **Edit Scopes** instead.
 
 <Warning>
-**Choosing a preset replaces the environment client's scopes.** The **AI Assistant** preset sets exactly **Query API** and **MCP Server (Public Preview)**, so an existing client that also had **Delivery API** or **Routes API** loses them, and its key stops working against those APIs. To keep them, leave the preset alone and tick **MCP Server (Public Preview)** alongside the scopes the client already has. It needs **Query API** to be ticked too.
+**Choosing a preset replaces the environment client's scopes.** The **AI Assistant** preset sets exactly **Query API** and **MCP Server**, so an existing client that also had **Delivery API** or **Routes API** loses them, and its key stops working against those APIs. To keep them, leave the preset alone and tick **MCP Server** alongside the scopes the client already has. It needs **Query API** to be ticked too.
 </Warning>
 
 See [Using environment clients](/enterspeed/getting-started/environment-clients) for the full environment-client flow, including regenerating a key.
