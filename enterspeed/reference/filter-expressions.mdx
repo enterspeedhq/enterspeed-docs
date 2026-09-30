@@ -199,6 +199,12 @@ properties.tags/any(t: t eq 'news' or t eq 'sport')
 
 // Contains both tags
 properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
+
+// Articles tagged news or sport
+type eq 'article' and (properties.tags/any(t: t eq 'news') or properties.tags/any(t: t eq 'sport'))
+
+// Contains a featured article in either category
+properties.articles/any(a: a.isFeatured eq true and (a.category eq 'news' or a.category eq 'sport'))
 ```
 
 </Tab>
@@ -223,6 +229,12 @@ properties.tags/any(t: t eq 'news' or t eq 'sport')
 
 // Contains both tags
 properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
+
+// Articles tagged news or sport
+type eq 'article' and (properties.tags/any(t: t eq 'news') or properties.tags/any(t: t eq 'sport'))
+
+// Contains a featured article in either category
+properties.articles/any(a: a.isFeatured eq true and (a.category eq 'news' or a.category eq 'sport'))
 ```
 
 </Tab>
@@ -230,6 +242,8 @@ properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
 
 <Info>
 Conditions combined with `and` inside `any` must all match the same item. `properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')` only matches if one article is both featured and in the sport category, not if one article is featured and another is in the sport category.
+
+An `and` that no single item can satisfy isn't an error, it just never matches. `properties.tags/any(t: t eq 'news' and t eq 'sport')` finds nothing, because no tag is both. To match source entities that have both tags, use two `any` joined with `and`, as in the "Contains both tags" example.
 </Info>
 
 <Tabs>
@@ -265,17 +279,20 @@ type eq 'article' and not properties.tags/any(t: t eq 'archived')
 </Tabs>
 
 <Info>
-`not` in front of `any` also matches source entities that don't have the array at all.
+`not` in front of `any` also matches source entities that don't have the array, or where it's `null` or not an array.
 </Info>
 
 <Warning>
+Inside `any`, compare the item with `eq` and combine comparisons with `and` and `or`. Keep the item on the left (`t eq 'news'`, not `'news' eq t`), and put conditions on the source entity itself outside `any`. Otherwise the filter can match nothing, without an error.
+
 The following aren't supported and return a validation error:
 
 - `ne` inside `any`, for example `properties.tags/any(t: t ne 'archived')`. To match source entities where no item equals a value, use `eq` and put `not` in front of `any`: `not properties.tags/any(t: t eq 'archived')`.
 - `in` inside `any`. Use `or` instead, for example `properties.tags/any(t: t eq 'news' or t eq 'sport')`.
+- `eq null` inside `any`.
 - `any` inside `any`, and `all`.
 - `not` anywhere other than directly in front of `any`.
-- An `any` with more than 256 combinations of `and` and `or`, for example nine `(a or b)` groups combined with `and`. Split it into several lookups.
+- An `any` where `and` over `or` groups expands to more than 256 combinations, for example nine `(a or b)` groups combined with `and`. A plain `or` list isn't limited. Reduce the number of `or` groups combined with `and`.
 </Warning>
 
 <Tabs>
