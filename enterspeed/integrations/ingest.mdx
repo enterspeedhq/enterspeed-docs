@@ -1,0 +1,161 @@
+---
+title: Ingest
+description: Ingest generated views back into Enterspeed as source entities, so the output of one schema becomes the input of another.
+---
+
+The Enterspeed Ingest integration uses [destinations](/enterspeed/reference/js/full-schema/actions#destination) to ingest generated views back into Enterspeed. Each view becomes a source entity in a source you choose. From there, other schemas can trigger on it like any other source entity.
+
+You decide on schema level which views to ingest. Set the destination on the entity schema whose views you want to ingest. All schema references are automatically resolved, so you don't have to set it on referenced schemas.
+
+It's possible to configure multiple Ingest destinations if you need to ingest into different sources.
+
+## When to use it
+
+Use the Ingest destination when the output of a schema is itself useful input:
+
+- **Chain schemas.** Split a transformation into steps, where each step triggers on the source entities the previous step wrote.
+- **Materialise a combined view.** Store a view that joins several source entities as a single source entity, so later schemas read one entity instead of repeating the lookups.
+- **Build a hierarchy.** Give each ingested source entity a parent, so you can query everything under it.
+- **Record workflow state.** Write small records (a plan, a ticket, a result) that drive the next step of a multi-step process.
+
+## How it works
+
+1. A schema with the destination generates or updates a view.
+2. The destination fetches the view from the Delivery API, using the environment client you configured.
+3. It ingests the view as is into the source that the source API key belongs to. View references are already resolved by the Delivery API.
+4. When the view is deleted, the destination deletes the matching source entity again.
+
+## Configuration
+
+The destination is configured per Enterspeed environment. In order to set up the Ingest configuration you need the following:
+
+| Setting                            | Required | Description |
+| ---------------------------------- | -------- | ----------- |
+| Environment client API key         | Yes      | The access key of the Enterspeed environment client used to fetch the view from the Delivery API. |
+| Source API key                     | Yes      | The API key (`source-...`) of the source that views are ingested into. |
+| Description                        | No       | A free text note. Use it to record which source the API key points at, since the key alone doesn't tell you. |
+
+<Tip>
+Keep the destination disabled until you've entered both keys. An enabled destination without a source API key fails every view it receives and fills your logs with errors.
+</Tip>
+
+## Options
+
+Options are set on the destination in the schema's `actions` method. All options are optional, and each one can differ per source entity.
+
+| Option             | Default | Description |
+| ------------------ | ------- | ----------- |
+| `sourceEntityType` | `document` | The type the view is ingested as. |
+| `originId`         | The origin id of the source entity the view was generated from | The origin id the view is ingested with. The source entity is also deleted by this id. |
+| `originParentId`   | None | The origin id of the parent source entity, for building a hierarchy in the target source. |
+
+## Example of usage
+
+This schema triggers on products and ingests a small summary record for each one. Other schemas can then trigger on the `productSummary` type.
+
+```js title="Product schema with Ingest destination"
+/**
+ * Options accepted by the Ingest destination.
+ *
+ * @typedef {object} IngestDestinationOptions
+ * @property {string} [sourceEntityType] Type the view is ingested as. Defaults to `document`.
+ * @property {string} [originId] Origin id the view is ingested with. Defaults to the origin id of the current source entity.
+ * @property {string} [originParentId] Origin id of the parent source entity.
+ */
+
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function (context) {
+    context.triggers('pim', ['product']);
+  },
+  actions: function (sourceEntity, context) {
+    context.destination('ingest').options(
+      /** @type {IngestDestinationOptions} */ ({
+        sourceEntityType: 'productSummary',
+        originId: 'summary-' + sourceEntity.originId,
+        originParentId: sourceEntity.originParentId
+          ? 'summary-' + sourceEntity.originParentId
+          : undefined
+      })
+    );
+  },
+  properties: function ({ properties: p }, context) {
+    return {
+      sku: p.sku,
+      name: p.name,
+      brand: p.brand
+    };
+  }
+};
+```
+
+A second schema then picks up the ingested source entities:
+
+```js title="Schema that triggers on the ingested type"
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function (context) {
+    context.triggers('pipeline', ['productSummary']);
+  },
+  properties: function ({ properties: p }, context) {
+    return {
+      title: p.brand + ' ' + p.name
+    };
+  }
+};
+```
+
+`'pipeline'` is the source group of the source the destination ingests into.
+
+The first schema prefixes `originParentId` the same way as `originId`. This makes the summaries form the same hierarchy as the products they came from. `originParentId` must point at an origin id in the target source, not the source the view came from. Otherwise the parent doesn't resolve.
+
+## Designing a self-ingesting flow
+
+Ingesting into Enterspeed from Enterspeed makes it easy to build flows that feed themselves. Follow these rules to keep them predictable.
+
+### Avoid loops
+
+A schema must never trigger on a type it writes. If it does, every ingest triggers the schema again, and the flow never stops. The destination doesn't detect this.
+
+Keep triggers apart by **type**. Give every ingested record a `sourceEntityType` of its own, and let each schema trigger on exactly the type it consumes.
+
+<Warning>
+Ingesting into the same source and type that the schema triggers on creates an endless loop. Check the triggers of every schema that reads the target source before you enable the destination.
+</Warning>
+
+### Always set `sourceEntityType`
+
+A source entity's type can't be changed after it's first ingested. If you forget `sourceEntityType`, the view is ingested as `document`. To fix it, you have to delete the source entity and ingest it again.
+
+### Give each schema its own `originId`
+
+`originId` defaults to the origin id of the source entity the view was generated from. If two schemas send views of the same source entity to the same Ingest destination, both write to the same source entity and overwrite each other.
+
+Set a distinct `originId` per schema, for example with a prefix such as `summary-` or `plan|`.
+
+### Keep the view deterministic
+
+Publishing a schema reprocesses its source entities and sends their views to every destination again. Enterspeed reports a source entity whose content hasn't changed as unchanged, so nothing downstream is triggered.
+
+Avoid values that change on every run, such as the current time. A view with `new Date()` in it is different every time, so each publish rewrites the source entity and retriggers every schema that reads it.
+
+<Tip>
+Use a timestamp from the source entity, such as `sourceEntity.updatedAt`, instead of the current time.
+</Tip>
+
+## Errors
+
+Errors the destination reports, and whether it retries them. Errors you can fix yourself are not retried.
+
+| Code | Retried | Cause |
+| ---- | ------- | ----- |
+| `Connection.Configuration.SourceApiKeyMissing` | No | The destination has no source API key. |
+| `Ingest.Request.Invalid` | No | The source entity was rejected before it was sent. |
+| `Ingest.Request.Failed` | Yes | The ingest call couldn't complete, for example because of a timeout. |
+| `Ingest.Response.Unauthorized` | No | `401`. The source API key isn't valid. |
+| `Ingest.Response.Forbidden` | No | `403`. The source API key doesn't grant ingest access. |
+| `Ingest.Response.BadRequest` | No | `400`. The Ingest API rejected the source entity. |
+| `Ingest.Response.NotFound` | No | `404`. When deleting, this counts as success, because the source entity is already gone. |
+| `Ingest.Response.RequestEntityTooLarge` | No | `413`. The view is too large to ingest. See [service limits](/enterspeed/service-limits). |
+| `Ingest.Response.Unexpected.{status}` | Yes | Any other status, for example `429` or `503`. |
+| `Ingest.Response.Unexpected` | Yes | The response had no status, for example an error from a gateway. |
