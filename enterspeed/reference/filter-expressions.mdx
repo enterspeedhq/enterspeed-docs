@@ -161,6 +161,26 @@ type eq 'article' or type eq 'contentPage'
 <Tabs>
 <Tab title="JavaScript">
 
+```javascript title="Group conditions with parentheses"
+// Articles in either the news or the sport category
+type eq 'article' and (properties.category eq 'news' or properties.category eq 'sport')
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="Group conditions with parentheses"
+// Articles in either the news or the sport category
+type eq 'article' and (properties.category eq 'news' or properties.category eq 'sport')
+```
+
+</Tab>
+</Tabs>
+
+<Tabs>
+<Tab title="JavaScript">
+
 ```javascript title="An array contains any matching value:"
 // Contains specific redirect with constant string value
 redirects/any(r: r eq '/old-page')
@@ -170,6 +190,15 @@ properties.tags/any(t: t eq '${sourceEntity.properties.selectedTag}')
 
 // Contains articles that feature, matching constant boolean value
 properties.articles/any(a: a.isFeatured eq true)
+
+// Contains an article that is both featured and in the sport category
+properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')
+
+// Contains either tag
+properties.tags/any(t: t eq 'news' or t eq 'sport')
+
+// Contains both tags
+properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
 ```
 
 </Tab>
@@ -185,15 +214,69 @@ properties.tags/any(t: t eq '{p.selectedTag}')
 
 // Contains articles that feature, matching constant boolean value
 properties.articles/any(a: a.isFeatured eq true)
+
+// Contains an article that is both featured and in the sport category
+properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')
+
+// Contains either tag
+properties.tags/any(t: t eq 'news' or t eq 'sport')
+
+// Contains both tags
+properties.tags/any(t: t eq 'news') and properties.tags/any(t: t eq 'sport')
 ```
 
 </Tab>
 </Tabs>
 
 <Info>
-Please note that our filter expressions only support one use of `any` per expression.  
-E.g. `properties.tags/any(t: t eq 'tag1') or properties.tags/any(t: t eq 'tag2')` is not supported.
+Conditions combined with `and` inside `any` must all match the same item. `properties.articles/any(a: a.isFeatured eq true and a.category eq 'sport')` only matches if one article is both featured and in the sport category, not if one article is featured and another is in the sport category.
 </Info>
+
+<Tabs>
+<Tab title="JavaScript">
+
+```javascript title="An array doesn't contain a matching value:"
+// Doesn't contain a specific redirect
+not redirects/any(r: r eq '/old-page')
+
+// Doesn't contain a specific tag with expression string value
+not properties.tags/any(t: t eq '${sourceEntity.properties.excludedTag}')
+
+// Articles that aren't tagged as archived
+type eq 'article' and not properties.tags/any(t: t eq 'archived')
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+```javascript title="An array doesn't contain a matching value:"
+// Doesn't contain a specific redirect
+not redirects/any(r: r eq '/old-page')
+
+// Doesn't contain a specific tag with expression string value
+not properties.tags/any(t: t eq '{p.excludedTag}')
+
+// Articles that aren't tagged as archived
+type eq 'article' and not properties.tags/any(t: t eq 'archived')
+```
+
+</Tab>
+</Tabs>
+
+<Info>
+`not` in front of `any` also matches source entities that don't have the array at all.
+</Info>
+
+<Warning>
+The following aren't supported and return a validation error:
+
+- `ne` inside `any`, for example `properties.tags/any(t: t ne 'archived')`. To match source entities where no item equals a value, use `eq` and put `not` in front of `any`: `not properties.tags/any(t: t eq 'archived')`.
+- `in` inside `any`. Use `or` instead, for example `properties.tags/any(t: t eq 'news' or t eq 'sport')`.
+- `any` inside `any`, and `all`.
+- `not` anywhere other than directly in front of `any`.
+- An `any` with more than 256 combinations of `and` and `or`, for example nine `(a or b)` groups combined with `and`. Split it into several lookups.
+</Warning>
 
 <Tabs>
 <Tab title="JavaScript">
