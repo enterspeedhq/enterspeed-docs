@@ -6,6 +6,8 @@ description: "The tool surface of the Speedtrain Management MCP server, grouped 
 
 Every tool takes a tenant and an environment — neither is inferred from your credential.
 
+Most results include an `appUrl`, a link to the matching page in the Speedtrain app. The app opens every link in whichever tenant and environment you have selected in its switcher, so check that it matches before you follow one.
+
 ## Start here
 
 | Tool | Purpose |
@@ -36,6 +38,15 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_list_indices` | Indexes in the environment. |
 | `speedtrain_list_index_documents` | Documents in an index. **Paginated.** |
 | `speedtrain_get_index_document` | One document, including its `$images`. |
+| `speedtrain_get_index_field_manifest` | The fields an index declares, and whether each is ready to filter on. |
+| `speedtrain_plan_index_field_manifest` | Dry-run a change to an index's declared fields. Changes nothing. |
+| `speedtrain_apply_index_field_manifest` | Apply a set of declared fields to an index. |
+
+Declared fields let a review session select documents by more than their external ID. A field is usable only once its lifecycle reads `ready`, after Speedtrain has read it from every document already in the index.
+
+<Warning>
+  The field list you send is the whole set you want, not a list of additions. A field you leave out is removed, together with every value extracted for it. Run the plan tool first and check the number of values a removal would destroy. Removing fields needs an explicit confirmation.
+</Warning>
 
 ## Task configurations
 
@@ -52,26 +63,74 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 
 | Tool | Purpose |
 |---|---|
-| `speedtrain_preview_review_session` | Run a test session, including against a draft version. |
-| `speedtrain_start_review_session` | Start a real review session. |
-| `speedtrain_list_review_sessions` | Sessions for a configuration. **Paginated.** |
-| `speedtrain_get_review_session_status` | Progress and approval rate for one session. |
-| `speedtrain_query_review_items` | Items with their scores and feedback, filterable by decision. **Paginated.** |
-| `speedtrain_get_review_item` | One item in full. |
+| `speedtrain_preview_review_session` | Count how many items a session would process, without running anything. |
+| `speedtrain_start_review_session` | Start a test session, including against a draft version, or a real review session. |
+| `speedtrain_list_review_sessions` | Sessions in the environment, newest first. Filter by configuration, version or mode. **Paginated.** |
+| `speedtrain_get_review_session_status` | Progress and quality gate result for one session. |
+| `speedtrain_query_review_items` | Items with their scores, filterable by stage, status and gate decision. Feedback, output and reasoning are opt-in. **Paginated.** |
+| `speedtrain_get_review_item` | One item in full, with every part. |
+
+A session runs in one of two modes. A **test** session evaluates a version without entering the review and delivery path, so it never delivers anything. A **review** session always runs the published version, and content you accept in it can reach your destinations.
 
 <Tip>
   Before re-running a configuration that has run before, list its existing sessions and consider reusing one. Comparing two runs only means something if both cover the same documents.
 </Tip>
+
+### Deciding on review items
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_accept_review_item` | Accept one item. Optionally pass the reviewer's corrected text. |
+| `speedtrain_reject_review_item` | Reject one item, with the reviewer's reason. Rejection is final and does not re-run anything. |
+| `speedtrain_retry_review_item` | Send one item back for another attempt. The feedback you pass steers the next attempt. |
+| `speedtrain_accept_all_review_items` | Accept every eligible item in a session. Choose between only the items the quality gate approved, or every item awaiting review. |
+| `speedtrain_retry_all_review_items` | Re-run every failed item, or every item the quality gate turned down. Bulk retries carry no feedback. |
+
+<Warning>
+  Accepting is the only action on this server that publishes content. In a review session, an accepted item is queued for delivery to your destinations and cannot be recalled. In a test session, nothing is ever delivered. Accept only what a person has read and asked for. A quality gate pass is an opinion, not an approval.
+
+  Each single-item decision is recorded against the signed-in user. Bulk acceptances are not stamped with a person inside Speedtrain.
+</Warning>
+
+Only an item that is waiting for a decision can be accepted or rejected. If a tool refuses, the message says why and what to do instead. An item that failed to process has no output to judge, so retry it.
 
 ## Destinations
 
 | Tool | Purpose |
 |---|---|
 | `speedtrain_list_destinations` | Destinations in the environment. |
-| `speedtrain_get_destination` | One destination, including its ingest details. |
-| `speedtrain_create_destination` | Create a destination. |
+| `speedtrain_get_destination` | One destination, including its connector and subscribed configurations. The ingest key is always redacted. |
+| `speedtrain_create_destination` | Create a destination. It starts inactive, without an ingest key. |
 | `speedtrain_set_destination_status` | Activate or deactivate it. |
-| `speedtrain_delete_destination` | Remove it. |
+| `speedtrain_delete_destination` | Remove it. Content already delivered is left untouched. |
+
+The server never shows or accepts an ingest API key. `speedtrain_create_destination` creates the destination inactive and returns a link to its page in the app. Paste the real key there, then activate the destination. Until you do, reads flag it `credentialsPending` and it delivers nothing.
+
+## Subscriptions
+
+A subscription runs a task configuration automatically on documents as they are ingested. It processes only document versions ingested after it exists, and activating a new version of the configuration moves its active subscriptions onto that version.
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_subscriptions` | Subscriptions in the environment. Optionally filter by configuration. |
+| `speedtrain_get_subscription` | One subscription. |
+| `speedtrain_create_subscription` | Create a subscription on a configuration's published version. |
+| `speedtrain_update_subscription` | Change only the fields you name. |
+| `speedtrain_delete_subscription` | Delete it. Its sessions and items stay reviewable. |
+
+Each subscription has an auto-approve mode:
+
+| Mode | What happens to each output |
+|---|---|
+| `NEVER` | It waits for a person. |
+| `ON_VOTING_MANAGER_ACCEPT` | It is published automatically only if the quality gate accepted it. Otherwise it waits for a person. |
+| `ALWAYS` | It is published with no person involved. The quality gate cannot stop it. |
+
+<Warning>
+  An active subscription set to `ALWAYS` publishes every output without review. Agree this with a person before you create it or switch it on. Changing a subscription's binding or index also supersedes every item it has awaiting review.
+</Warning>
+
+To pause a subscription instead of deleting it, set its status to `INACTIVE`.
 
 ## Pagination
 
@@ -79,6 +138,8 @@ Every tool takes a tenant and an environment — neither is inferred from your c
   Exactly three tools paginate: `speedtrain_list_index_documents`, `speedtrain_list_review_sessions`, and `speedtrain_query_review_items`.
 
   Each returns a `total` and a `cursor`. Pass the cursor back unchanged, with the same filters, for the next page. A `null` cursor is the only end signal.
+
+  `speedtrain_query_review_items` can return fewer items than you asked for when the next whole item would not fit in one response. It then sets `pageTrimmedForSize` to `true`. Nothing is shortened, and the cursor continues from the first item held back, so a short page is never a reason to stop.
 
   **Every other tool returns its list complete** — the server walks the platform's pagination for you, so there is no cursor to look for.
 </Info>
