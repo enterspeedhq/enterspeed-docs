@@ -367,12 +367,12 @@ type eq 'article' and not properties.tags/any(t: t eq 'archived')
 ### What you can write inside `any`
 
 <Warning>
-Inside `any`, compare the item with `eq` and combine comparisons with `and` and `or`, and put conditions on the source entity itself outside `any`.
+Inside `any`, compare the item with `eq` and combine comparisons with `and` and `or`. Put conditions on the source entity itself outside `any`.
 
 These mistakes don't return an error, the filter just never matches:
 
-- The item on the right of `eq`, for example `'news' eq t` instead of `t eq 'news'`.
-- A condition on a property under `properties` inside `any`, for example `properties.category eq 'article'`.
+- The item on the right of `eq` for an array under `properties`, for example `'news' eq t` instead of `t eq 'news'`. For `redirects` both orders work.
+- A condition on `id`, `originId` or a property under `properties` inside `any`, for example `properties.category eq 'article'`.
 
 The following aren't supported and return a validation error:
 
@@ -381,7 +381,7 @@ The following aren't supported and return a validation error:
 - `eq null` inside `any`.
 - `any` inside `any`, and `all`.
 - `not` anywhere other than directly in front of `any`.
-- A condition on a source entity property outside `properties`, such as `type`, inside `any`.
+- A condition on `type`, `url` or `originParentId` inside `any`.
 - An `any` where `and` over `or` groups expands to more than 256 combinations, for example nine `(a or b)` groups combined with `and`. A plain `or` list isn't limited. Reduce the number of `or` groups combined with `and`.
 </Warning>
 
