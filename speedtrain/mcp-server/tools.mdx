@@ -6,6 +6,8 @@ description: "The tool surface of the Speedtrain Management MCP server, grouped 
 
 Every tool takes a tenant and an environment — neither is inferred from your credential.
 
+Every tool declares whether it only reads, whether it can destroy data, and a display title. Clients that act on these hints, such as Claude, can run the read-only tools without asking you and ask for approval on the rest. The tools that publish content, change what is live, or delete — such as accepting items, activating a version, applying a field change and deleting a destination or subscription — are the ones to require approval for.
+
 Most results include an `appUrl`, a link to the matching page in the Speedtrain app. The app opens every link in whichever tenant and environment you have selected in its switcher, so check that it matches before you follow one.
 
 ## Start here
@@ -37,10 +39,12 @@ Most results include an `appUrl`, a link to the matching page in the Speedtrain 
 |---|---|
 | `speedtrain_list_indices` | Indexes in the environment. |
 | `speedtrain_list_index_documents` | Documents in an index. **Paginated.** |
-| `speedtrain_get_index_document` | One document, including its `$images`. |
+| `speedtrain_get_index_documents` | Read 1 to 50 documents from one index in a single call, each whole and optionally at a pinned version. Includes `$images`. |
 | `speedtrain_get_index_field_manifest` | The fields an index declares, and whether each is ready to filter on. |
 | `speedtrain_plan_index_field_manifest` | Dry-run a change to an index's declared fields. Changes nothing. |
 | `speedtrain_apply_index_field_manifest` | Apply a set of declared fields to an index. |
+
+Pass a review item's `document` straight to `speedtrain_get_index_documents` to read the source the item was generated from, at the version the run read. To find a document from your own system's ID, list the index's documents with a condition on the external ID.
 
 Declared fields let a review session select documents by more than their external ID. A field is usable only once its lifecycle reads `ready`, after Speedtrain has read it from every document already in the index.
 
@@ -68,7 +72,7 @@ Declared fields let a review session select documents by more than their externa
 | `speedtrain_list_review_sessions` | Sessions in the environment, newest first. Filter by configuration, version or mode. **Paginated.** |
 | `speedtrain_get_review_session_status` | Progress and quality gate result for one session. |
 | `speedtrain_query_review_items` | Items with their scores, filterable by stage, status and gate decision. Feedback, output and reasoning are opt-in. **Paginated.** |
-| `speedtrain_get_review_item` | One item in full, with every part. |
+| `speedtrain_get_review_items` | Read 1 to 50 chosen items from one session by ID, whole. Feedback and output are included by default. Reasoning is opt-in. |
 
 A session runs in one of two modes. A **test** session evaluates a version without entering the review and delivery path, so it never delivers anything. A **review** session always runs the published version, and content you accept in it can reach your destinations.
 
@@ -140,6 +144,8 @@ To pause a subscription instead of deleting it, set its status to `INACTIVE`.
   Each returns a `total` and a `cursor`. Pass the cursor back unchanged, with the same filters, for the next page. A `null` cursor is the only end signal.
 
   `speedtrain_query_review_items` can return fewer items than you asked for when the next whole item would not fit in one response. It then sets `pageTrimmedForSize` to `true`. Nothing is shortened, and the cursor continues from the first item held back, so a short page is never a reason to stop.
+
+  The two batch reads, `speedtrain_get_index_documents` and `speedtrain_get_review_items`, return as many whole documents or items as fit in one response. They list the rest in `notReturned`. Pass `notReturned` back unchanged to read them. An entry that cannot be found is reported in `notFound`, and the rest of the batch still comes back.
 
   **Every other tool returns its list complete** — the server walks the platform's pagination for you, so there is no cursor to look for.
 </Info>
