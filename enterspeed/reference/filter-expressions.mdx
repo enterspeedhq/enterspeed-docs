@@ -2,7 +2,7 @@
 title: Filter Expressions
 ---
 
-Filter expressions are used when doing lookups in JSON or JavaScript schemas. Each section below shows what you can write, with an example for both schema types.
+Filter expressions are used when doing lookups in JSON or JavaScript schemas. Most sections below show what you can write, with an example for both schema types.
 
 <Tip>
 If you are using JavaScript and your filter contains expressions, it's often easier to use string interpolation instead of string concatination. See [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation) .
@@ -304,7 +304,7 @@ In a JavaScript schema you can build the `or` list inside `any` from the source 
 export default {
   // ...
   properties: async function (sourceEntity, context) {
-    const selectedTags = sourceEntity.properties.selectedTags ?? [];
+    const selectedTags = sourceEntity.properties.selectedTags || [];
 
     // An empty any() isn't a valid filter, so skip the lookup when nothing is selected
     const relatedArticles = selectedTags.length === 0
@@ -367,7 +367,13 @@ type eq 'article' and not properties.tags/any(t: t eq 'archived')
 ### What you can write inside `any`
 
 <Warning>
-Inside `any`, compare the item with `eq` and combine comparisons with `and` and `or`. Keep the item on the left (`t eq 'news'`, not `'news' eq t`), and put conditions on the source entity itself outside `any`. Otherwise the filter can match nothing, without an error.
+Inside `any`, compare the item with `eq` and combine comparisons with `and` and `or`. Put conditions on the source entity itself outside `any`.
+
+These mistakes also don't return an error, the condition just never matches:
+
+- The item on the right of `eq` for an array under `properties`, for example `'news' eq t` instead of `t eq 'news'`. For `redirects` both orders work.
+- A condition on `id`, `originId` or a property under `properties` inside `any`, for example `properties.category eq 'article'`.
+- A condition on `type`, `url` or `originParentId` inside `any`, when it's combined with `or` or the array is `redirects`. With `redirects` and `or` it can also match the wrong source entities: `redirects/any(r: r eq '/a' or type eq 'article')` matches any source entity with a redirect from `article`.
 
 The following aren't supported and return a validation error:
 
@@ -376,6 +382,7 @@ The following aren't supported and return a validation error:
 - `eq null` inside `any`.
 - `any` inside `any`, and `all`.
 - `not` anywhere other than directly in front of `any`.
+- A condition on `type`, `url` or `originParentId` combined with `and` inside `any`, on an array under `properties`.
 - An `any` where `and` over `or` groups expands to more than 256 combinations, for example nine `(a or b)` groups combined with `and`. A plain `or` list isn't limited. Reduce the number of `or` groups combined with `and`.
 </Warning>
 
@@ -387,7 +394,8 @@ The following aren't supported and return a validation error:
 | `properties.tags/any(t: t ne 'archived')` | Validation error | `not properties.tags/any(t: t eq 'archived')` |
 | `properties.tags/any(t: t in ('news', 'sport'))` | Validation error | `properties.tags/any(t: t eq 'news' or t eq 'sport')` |
 | `properties.articles/any(a: 'sport' eq a.category)` | Never matches | `properties.articles/any(a: a.category eq 'sport')` |
-| `properties.tags/any(t: t eq 'news' and type eq 'article')` | Validation error, or never matches for a property under `properties` | `type eq 'article' and properties.tags/any(t: t eq 'news')` |
+| `properties.tags/any(t: t eq 'news' and type eq 'article')` | Validation error | `type eq 'article' and properties.tags/any(t: t eq 'news')` |
+| `properties.tags/any(t: t eq 'news' and properties.category eq 'article')` | Never matches | `properties.category eq 'article' and properties.tags/any(t: t eq 'news')` |
 
 ## Full example
 
