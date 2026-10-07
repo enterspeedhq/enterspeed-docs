@@ -99,7 +99,7 @@ This section and the next two apply when you connect with a key. The platform le
 | Scope | Why | Grants |
 | --- | --- | --- |
 | `MCP Server` | Gates the MCP tool endpoints. Without it, the server sees none of the dynamic tools or the tools for each index. | Ability to list MCP tools. |
-| `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `enterspeed_query` tool) and **auto-indexed data** (the source tools). |
+| `Query API` | Needed to query your Enterspeed data. | Access to both **schema-transformed data** (the `query_*` tools and the unified `query` tool) and **auto-indexed data** (the `query_source_*` tools and the other source tools). |
 
 `MCP Server` alone is not useful — it must be combined with `Query API`, and Enterspeed enforces that pairing when you save the client.
 
@@ -170,7 +170,7 @@ See [Using environment clients](/enterspeed/getting-started/environment-clients)
 
 Every tool is a read — the server has no way to change your data or your configuration. To configure a tenant, an agent needs [Management MCP](/enterspeed/mcp-server/management-mcp/overview) instead.
 
-The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in three layers. A signed in session also gets three tools for choosing its tenant and environment. See [What to expect when you sign in](#what-to-expect-when-you-sign-in).
+The tool list is assembled per key, so two clients pointed at the same server can see different tools. It comes in four layers. A signed in session also gets three tools for choosing its tenant and environment. See [What to expect when you sign in](#what-to-expect-when-you-sign-in).
 
 **Always present** — the same eight tools for everyone:
 
@@ -187,9 +187,11 @@ The tool list is assembled per key, so two clients pointed at the same server ca
 
 **Per index** — one `query_<indexName>` tool for each index the key can reach, generated from that index's own fields. These give an agent a typed, index-specific way to query, so it does not have to construct a generic filter by hand.
 
-**Unified** — an `enterspeed_query` tool that targets several indexes in a single call.
+**Per source** — one `query_source_<sourceGroup>_<entityType>` tool for each auto-indexed source group and entity type the key can reach, for example `query_source_cms_article`, generated from that entity type's own fields. The group and type appear in lower case.
 
-All three layers respect the key's [index scope](#index-scopes), so the agent is handed a pre-trimmed list rather than being told "no" after it tries.
+**Unified** — a `query` tool that targets several indexes in a single call.
+
+All four layers respect the key's [index scope](#index-scopes), so the agent is handed a pre-trimmed list rather than being told "no" after it tries.
 
 <Tip>
 If an agent only ever shows the eight tools above, the layer of tools for each index is missing. On a signed in session, select a context first. The server does not tell your client when the list changes, so the tools for each index appear only if the client asks for the list again in the same session. `get_indices` and `get_query_items` still reach every index in the selected environment. With a key, it almost always means the key lacks the `MCP Server` scope, or is invalid.
@@ -221,13 +223,13 @@ Expected behaviour: the agent calls `query_blog` with a filter on `author = alic
 
 > Across the `products` and `productsv2` indices, find items with `category = beverages` and under 100 kcal per 100g. Return the top three sorted by energy ascending.
 
-Expected behaviour: the agent calls the unified `enterspeed_query` tool with a `queries` array that targets both indices in a single round-trip.
+Expected behaviour: the agent calls the unified `query` tool with a `queries` array that targets both indices in a single round-trip.
 
 ### Auto-indexed data exploration
 
 > Show me five raw source entities of type `article` from the `cms` source group. Which fields are set on the first one?
 
-Expected behaviour: the agent discovers types via `get_indices_raw_source_entities_by_source_group_alias`, then pulls five entities via `get_source_items`. Access to auto-indexed data comes with the `Query API` scope — no extra scope is needed beyond the standard `Query API` + `MCP Server` combination.
+Expected behaviour: the agent calls `query_source_cms_article` with `pagination.pageSize = 5`. Access to auto-indexed data comes with the `Query API` scope — no extra scope is needed beyond the standard `Query API` + `MCP Server` combination.
 
 ### Authorisation check
 

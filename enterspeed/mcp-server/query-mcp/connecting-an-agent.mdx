@@ -79,7 +79,7 @@ Run it:
 dotnet run
 ```
 
-The output starts with the tools available to your key (static tools, the dynamic `enterspeed_query` tool, and one `query_<indexName>` tool per index you have access to) and then prints the result of the first tool call.
+The output starts with the tools available to your key (static tools, the unified `query` tool, one `query_<indexName>` tool per index and one `query_source_<sourceGroup>_<entityType>` tool per auto-indexed source entity type you have access to) and then prints the result of the first tool call.
 
 ### Driving it from an LLM (tool-use loop)
 
