@@ -174,7 +174,7 @@ Converting a number or date to `text` or `keyword` keeps the value but loses ran
 These changes are rejected, because existing values would be lost:
 
 - Narrowing a number, such as `double` to `integer`
-- `text` to `keyword`, since a `keyword` value is capped at 32,766 bytes and longer text would be rejected outright
+- `text` to `keyword`, which isn't supported at the moment
 - A list to a single value, such as `keyword[]` to `keyword`
 - Switching between unrelated types, such as `date` to `integer`
 
