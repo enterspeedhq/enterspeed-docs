@@ -58,7 +58,7 @@ index: {
 Setting the right types for the properties in your index is important. The types defines the intend of the fields and prevents data of other types from going into the index. The types also helps with effeciently index, search, and analyze of the data added to the index.
 
 <Warning>
-If a value doesn't match the field's type, or is too large for the type to hold, the item isn't indexed and fails with an invalid field error. As a result, the item doesn't show up in query results. Check the log for failed indexing and description of the indexing error.
+If a value doesn't match the field's type, or is too large for the type to hold, the item isn't indexed and fails with an invalid field error. As a result, the item doesn't show up in query results. Check the log for failed indexing and a description of the indexing error.
 </Warning>
 
 ### Text
@@ -94,7 +94,7 @@ If a value doesn't match the field's type, or is too large for the type to hold,
 | Type                |  Description                                                                                                |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | keyword[]           | List of the `Keyword` type for non-analyzed string values used in e.g. filtering and sorting.<br /><br />Can hold up to 32,766 bytes (UTF-8) for each element in the list. |
-| text[]              | List of the `text` type for analyzing string values. This makes it possible to do fuzzy search using the `search` property in the [Query API](/api-reference/query/query-items) but index time takes a bit longer<br /><br />Can hold up to 32,766 bytes (UTF-8) for each element in the list. |
+| text[]              | List of the `text` type for analyzing string values. This makes it possible to do fuzzy search using the `search` property in the [Query API](/api-reference/query/query-items) but index time takes a bit longer.<br /><br />Can hold up to 32,766 bytes (UTF-8) for each element in the list. |
 | integer[]           | List of 32 bit signed integers                                                                              |
 | long[]              | List of 64 bit signed integers                                                                              |
 | float[]             | List of 32 bit signed floating numbers                                                                      |
