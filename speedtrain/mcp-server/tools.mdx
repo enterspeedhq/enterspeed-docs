@@ -136,6 +136,23 @@ Each subscription has an auto-approve mode:
 
 To pause a subscription instead of deleting it, set its status to `INACTIVE`.
 
+## Prompts and resources
+
+Besides tools, the server offers two ready-made prompts and three resources. Clients that support them, such as Claude, list them in their prompt and attachment menus.
+
+| Prompt | Purpose |
+|---|---|
+| `test_task_config` | Run a configuration end to end in a test session, and report what succeeds, what fails and why. It reads the configuration first, asks you for the binding and input source, and previews the item count before it runs. Nothing is accepted or delivered. |
+| `check_config_drift` | Compare the live version of a configuration with a spec you attach, field by field. It is read-only. |
+
+| Resource | Purpose |
+|---|---|
+| `speedtrain_active_task_config` | The published version of a configuration, with its recent versions. It returns the same content as `speedtrain_get_task_config`. |
+| `speedtrain_chat_completion_v3_template` | The configuration document skeleton. It returns the same content as `speedtrain_get_task_config_template`. |
+| `speedtrain_task_config_authoring_guide` | The authoring guide. It returns the same content as `speedtrain_get_task_config_authoring_guide`. |
+
+The tools return the same content as the resources, so a client that cannot read resources loses nothing.
+
 ## Pagination
 
 <Info>
