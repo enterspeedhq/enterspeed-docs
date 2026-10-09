@@ -195,6 +195,7 @@
                   "enterspeed/integrations/clerk",
                   "enterspeed/integrations/elastic-app-search",
                   "enterspeed/integrations/elasticsearch",
+                  "enterspeed/integrations/ingest",
                   "enterspeed/integrations/relewise",
                   "enterspeed/integrations/servicebus",
                   "enterspeed/integrations/shopify",
