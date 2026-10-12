@@ -6,6 +6,10 @@ description: "The tool surface of the Speedtrain Management MCP server, grouped 
 
 Every tool takes a tenant and an environment — neither is inferred from your credential.
 
+<Info>
+  Most tools only read. The tools that change something say so below: they save drafts, change delivery, make content live, or publish it. An agent should confirm with you before using the ones that can't be undone.
+</Info>
+
 ## Start here
 
 | Tool | Purpose |
@@ -34,8 +38,19 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | Tool | Purpose |
 |---|---|
 | `speedtrain_list_indices` | Indexes in the environment. |
-| `speedtrain_list_index_documents` | Documents in an index. **Paginated.** |
-| `speedtrain_get_index_document` | One document, including its `$images`. |
+| `speedtrain_list_index_documents` | Locates documents in an index and returns their IDs. It returns no document content. Filter with a selection or free text. **Paginated.** |
+| `speedtrain_get_index_documents` | Reads 1 to 50 documents from one index, including their `$images`. Documents come back whole. Name `fields` to read only part of each one. |
+| `speedtrain_get_index_field_manifest` | The fields an index declares, which a document selection can filter on, and whether each is ready to use. |
+| `speedtrain_plan_index_field_manifest` | A dry run of a change to an index's declared fields. It shows what would be added or removed, and how many extracted values a removal would destroy. |
+| `speedtrain_apply_index_field_manifest` | Apply the declared fields you planned. A removal destroys extracted data, so it needs explicit confirmation. |
+
+<Tip>
+  To find a document by your own ID, such as a PIM or SKU ID, call `speedtrain_list_index_documents` with an `external_id` condition. Then pass the document IDs it returns to `speedtrain_get_index_documents`.
+</Tip>
+
+<Warning>
+  Declaring a field on an index cannot be edited afterwards, and the platform then reads every document already in the index to extract it. Always plan before you apply, and check with a person first.
+</Warning>
 
 ## Task configurations
 
@@ -57,11 +72,49 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_list_review_sessions` | Sessions for a configuration. **Paginated.** |
 | `speedtrain_get_review_session_status` | Progress and approval rate for one session. |
 | `speedtrain_query_review_items` | Items with their scores and feedback, filterable by decision. **Paginated.** |
-| `speedtrain_get_review_item` | One item in full. |
+| `speedtrain_get_review_items` | 1 to 50 items from one session, by ID, in full. |
 
 <Tip>
   Before re-running a configuration that has run before, list its existing sessions and consider reusing one. Comparing two runs only means something if both cover the same documents.
 </Tip>
+
+## Review decisions
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_accept_review_item` | Accept one item's output. You can pass an edited version of the text. |
+| `speedtrain_reject_review_item` | Reject one item's output. A rejection is final. Add feedback to record the reason. |
+| `speedtrain_retry_review_item` | Send one item back for another attempt. Your feedback goes into the next attempt. This is the only decision that applies to a failed item. |
+| `speedtrain_accept_all_review_items` | Accept every eligible item in a session. You must choose a scope: `manager_approved` or `all_awaiting_review`. |
+| `speedtrain_retry_all_review_items` | Retry every eligible item in a session. You must choose a scope: `failed` or `failed_quality_gate`. |
+
+<Warning>
+  Accepting is the one action that publishes content. In a review session, accepted items go to your active destinations, and you can't undo an acceptance or recall delivered content. In a test session, nothing is ever delivered.
+
+  Each decision is recorded against the signed-in person, or the owner of the access token. An agent should accept only what a person has read and told it to accept.
+</Warning>
+
+<Tip>
+  `manager_approved` accepts only the items the automated quality gate approved. `all_awaiting_review` also accepts the items the gate turned down. Each retried item costs another model run, so check the count before you retry a whole session.
+</Tip>
+
+## Subscriptions
+
+A subscription runs a task configuration automatically on documents as they are ingested.
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_subscriptions` | Subscriptions in the environment. Pass an alias to narrow the list. |
+| `speedtrain_get_subscription` | One subscription. |
+| `speedtrain_create_subscription` | Create a subscription. It runs the configuration's active version. |
+| `speedtrain_update_subscription` | Change a subscription's status, auto-approve mode, binding, index or retry setting. |
+| `speedtrain_delete_subscription` | Delete a subscription. Its sessions and items stay reviewable. |
+
+A subscription processes only documents ingested after it exists. When you activate a new version of a configuration, its active subscriptions move onto that version.
+
+<Warning>
+  With auto-approve mode `ALWAYS`, every output is published with no person involved, and the quality gate can't stop it. With `ON_VOTING_MANAGER_ACCEPT`, an output is published automatically only when the quality gate accepted it. Changing a subscription's binding or index supersedes every item that is awaiting review. To stop a subscription for a while, set its status to `INACTIVE` instead of deleting it.
+</Warning>
 
 ## Destinations
 
@@ -69,9 +122,27 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 |---|---|
 | `speedtrain_list_destinations` | Destinations in the environment. |
 | `speedtrain_get_destination` | One destination, including its ingest details. |
-| `speedtrain_create_destination` | Create a destination. |
+| `speedtrain_create_destination` | Create a destination. It starts inactive and has no usable ingest API key. You finish it in the Speedtrain app. |
 | `speedtrain_set_destination_status` | Activate or deactivate it. |
 | `speedtrain_delete_destination` | Remove it. |
+
+<Info>
+  Never paste an ingest API key into a conversation. When you create a destination, the server returns a link to the destination in the Speedtrain app. Paste the key there, then activate the destination. Reads show the key as `[redacted]` and flag unfinished destinations with `credentialsPending`.
+
+  Delivery only happens for active destinations and only for review sessions. Nothing is delivered retroactively, and there is no delivery receipt per item.
+</Info>
+
+## Prompts and resources
+
+The server also offers two prompts and three resources. Use them from clients that support them.
+
+| Name | Type | Purpose |
+|---|---|---|
+| `test_task_config` | Prompt | Run a configuration in a test session. It previews the item count, runs the session, and reports what succeeded and failed. Nothing is accepted or delivered. |
+| `check_config_drift` | Prompt | Compare the live configuration for an alias with a spec you attach, and report the differences. It never changes anything. |
+| `speedtrain_active_task_config` | Resource | The active configuration document for an alias. |
+| `speedtrain_task_config_authoring_guide` | Resource | The authoring guide, for clients that read resources but can't call the tool. |
+| `speedtrain_chat_completion_v3_template` | Resource | The document skeleton, for the same clients. |
 
 ## Pagination
 
@@ -79,6 +150,10 @@ Every tool takes a tenant and an environment — neither is inferred from your c
   Exactly three tools paginate: `speedtrain_list_index_documents`, `speedtrain_list_review_sessions`, and `speedtrain_query_review_items`.
 
   Each returns a `total` and a `cursor`. Pass the cursor back unchanged, with the same filters, for the next page. A `null` cursor is the only end signal.
+
+  `speedtrain_query_review_items` can return fewer items than you asked for when the next whole item wouldn't fit in one response. Keep going until the cursor is `null`.
+
+  The batch reads, `speedtrain_get_index_documents` and `speedtrain_get_review_items`, return as many whole results as fit in one response. Pass `notReturned` back unchanged to read the rest.
 
   **Every other tool returns its list complete** — the server walks the platform's pagination for you, so there is no cursor to look for.
 </Info>
