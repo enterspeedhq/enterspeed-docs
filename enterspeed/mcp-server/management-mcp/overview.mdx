@@ -98,6 +98,8 @@ This applies to every environment, whatever it is called. You can deploy to any 
 
 The prompt needs a client that supports MCP elicitation, such as Claude Code, Codex, GitHub Copilot CLI, VS Code or Cursor. Clients that don't, such as Claude.ai, Claude Desktop chat and Gemini CLI, are refused for these two tools; deploy from the Management App instead.
 
+The Claude desktop app (including Cowork) doesn't work for these two tools today either. It says it supports confirmation prompts but never shows one ([claude-ai-mcp#1085](https://github.com/anthropics/claude-ai-mcp/issues/1085), [claude-ai-mcp#1046](https://github.com/anthropics/claude-ai-mcp/issues/1046)), so after about a minute the tool returns `confirmation_not_shown` and nothing is changed. Use Claude Code or the Management App to deploy and unpublish.
+
 <Warning>
 A client set to answer on your behalf will confirm without asking you. That includes auto-approve modes, Copilot's Autopilot, and client hooks that answer prompts. Turn those off for connections that can deploy.
 </Warning>
@@ -351,7 +353,8 @@ Use these to smoke-test a fresh connection.
 | A tool is refused as "not offered" | The connection URL has a `?toolsets=` value that does not include that tool's group | Add the group to `toolsets`, or use `toolsets=all`. |
 | `deploy_not_permitted` when deploying a schema | Deploying is switched off on this server | Deploy from the Management App. |
 | A deploy or unpublish is refused asking for a client that supports confirmations | Your client can't show MCP confirmation prompts (elicitation) | Use a client that supports them, or deploy from the Management App. |
-| A deploy or unpublish returns "not confirmed" | The prompt was declined, cancelled, timed out, or the environment name didn't match | Run it again and type the environment's name exactly. |
+| A deploy or unpublish returns "not confirmed" | The prompt was declined, cancelled, or the environment name didn't match | Run it again and type the environment's name exactly. |
+| `confirmation_not_shown` on a deploy or unpublish | Your client says it supports confirmation prompts but didn't show one or answer within about a minute (the Claude desktop app does this today) | Use a client that shows the prompt, such as Claude Code, or deploy from the Management App. |
 | `create_environment_client` succeeded but there is no key in the response | Working as intended — access keys are never returned through MCP | Fetch the key in the Management App. |
 | `429` with a `Retry-After` header | More than 60 requests in a minute from your sessions | Let the client back off and retry. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |

@@ -48,7 +48,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 </Tip>
 
 <Warning>
-`deploy_mapping_schema` and `unpublish_mapping_schema` ask you to confirm in your client, by typing the environment's name, before anything changes. Clients without MCP elicitation support are refused for these two tools. A client set to auto-approve can answer for you.
+`deploy_mapping_schema` and `unpublish_mapping_schema` ask you to confirm in your client, by typing the environment's name, before anything changes. Clients without MCP elicitation support are refused for these two tools. The Claude desktop app (including Cowork) can't run them today either: it announces support but never shows the prompt, so they end with `confirmation_not_shown`. A client set to auto-approve can answer for you.
 </Warning>
 
 ## sources
