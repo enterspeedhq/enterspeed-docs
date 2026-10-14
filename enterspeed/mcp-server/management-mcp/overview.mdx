@@ -87,7 +87,7 @@ Leave all three off and the connection offers every tool, on every tenant your a
 
 ## Guardrails
 
-Beyond your account's own permissions and the connection parameters above, the hosted server applies three limits you should know about.
+Beyond your account's own permissions and the connection parameters above, the hosted server applies four limits you should know about.
 
 <AccordionGroup>
 <Accordion title="Every deploy and unpublish asks you to confirm first">
@@ -128,6 +128,16 @@ Well-behaved MCP clients back off and retry. The limit applies to the whole MCP 
 For comparison, [Query MCP](/enterspeed/mcp-server/query-mcp/overview) allows 120 requests per minute.
 
 </Accordion>
+<Accordion title="Answers fit a 44,000-character budget, and values are never cut">
+
+Every answer is kept to about 44,000 characters, so your client can read it in full instead of saving it to a file. The server never shortens a value to get there. A schema body, an entity, a view or a log line comes back whole or not at all.
+
+- **A list that doesn't fit** holds back whole rows from the end. The answer then has `truncated: true`, and `truncationNote` says how many rows fit and how to narrow the request.
+- **`list_source_entities`, `list_views` and `inspect_route`** also return a `continuationToken`. Pass it back to carry on from the row right after the last one returned, with no rows repeated or skipped.
+- **`query_tenant_logs`** returns a `scrollId` only when the answer ends exactly where a page of log lines ends. Otherwise it returns `truncated: true` without one; narrow the time range or the filters to see the rest.
+- **A single item larger than the budget** is returned whole, with `oversizeNote` as the answer's first property. Such an answer is over the budget, so some clients save it to a file.
+
+</Accordion>
 </AccordionGroup>
 
 ## Security model
@@ -138,6 +148,7 @@ If you are reviewing this server before pointing an agent at your tenant, this i
 - **Passthrough authorisation.** Every permission decision is made by the Management API against your account, not by the MCP server.
 - **No deletes.** The server cannot issue a `DELETE` or a `PATCH` at all. Twelve writes can still change or replace existing configuration or content. See [What the server can and cannot do](#what-the-server-can-and-cannot-do).
 - **Secrets are not readable.** Access keys are removed from responses at the HTTP boundary, so no tool can observe one.
+- **Errors don't expose internals.** An error answer never contains internal host names, stack traces or the body of a server error. It carries a `traceId` instead, which Enterspeed support can use to find the call.
 - **Every deploy and unpublish is confirmed in your client.** You type the environment's name before anything changes. A client set to auto-approve can answer for you, so keep that off on connections that can deploy.
 - **Least privilege is yours to set.** Connect with `?readOnly=true` unless the agent needs to write, and with `?tenantId=` to keep it on the tenants you name. See [Limiting a connection](#limiting-a-connection).
 
@@ -346,6 +357,10 @@ Use these to smoke-test a fresh connection.
 | --- | --- | --- |
 | `401 Unauthorized` on every tool call | The client is not signed in, or its token has expired | Reconnect the server in your client and complete the Enterspeed sign-in. This server authenticates people, not keys — an `x-api-key` header is refused as authentication. Environment client keys belong to [Query MCP](/enterspeed/mcp-server/query-mcp/overview). |
 | Tenant-scoped tools fail with "no tenant is selected" | The session has not selected a tenant yet, or the selection was lost when the client reconnected or the server restarted | Ask the client to select your tenant. Every signed-in session needs this, even with only one tenant. |
+| A call fails with "Missing required argument" | The call left out an argument the tool needs | The message names each missing argument and, where there is one, the tool that returns it, such as `get_tenant_overview` for `environmentId`. |
+| A tool fails and you need to know why | The error answer leaves out internal detail on purpose | Send the `traceId` from the answer to [support@enterspeed.com](mailto:support@enterspeed.com). A `400` from the Management API passes on its own `title`, `detail` and `errors`, which usually say what to change. |
+| `continuationToken is not one this tool returned` | The token was changed, belongs to another tool, or was issued by an earlier version of the server | Leave `continuationToken` out to start the list again from the beginning. |
+| An answer has `truncated: true` | The list didn't fit the 44,000-character answer budget, so whole rows were held back | Pass back the `continuationToken` if there is one. Otherwise narrow the request as `truncationNote` says. |
 | Writes are refused, naming read-only | The connection URL has `?readOnly=true`, or a `readOnly` value the server could not read | Expected if you set it. Reconnect without the parameter if the agent genuinely needs to write. |
 | Writes return a permission error from Enterspeed | Your account does not have write permission in that tenant | Ask a tenant administrator for the access, or make the change in the Management App. |
 | A tool is refused as "not offered" | The connection URL has a `?toolsets=` value that does not include that tool's group | Add the group to `toolsets`, or use `toolsets=all`. |
