@@ -56,7 +56,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | Tool | Type | What it does |
 | --- | --- | --- |
 | `list_sources` | Read | Lists sources and source groups, with their storage mode and the environments they publish to. |
-| `list_source_entities` | Read | Browses or searches a source's ingested entities. Pass `originId` to fetch one entity in full. A long list returns a `continuationToken` to carry on from. |
+| `list_source_entities` | Read | Browses or searches a source's ingested entities. Pass `originIds` (1 to 50) to read those entities in full in one call. A long list returns a `continuationToken` to carry on from. |
 | `upsert_source_group` | **Write (changes existing)** | Creates a source group. With `sourceGroup`, it changes an existing group's name or type instead. A group's alias and storage mode cannot be changed. |
 | `upsert_source` | **Write (changes existing)** | Creates a source in a source group and attaches it to environments. With `source`, it changes an existing source's name, or which environments it publishes to, instead. A source cannot move to another group. |
 | `ingest_source_entities` | **Write (changes existing)** | Writes entities into a source. An entity with the same origin id is overwritten, and the schemas on that source reprocess. Always asks for confirmation first. |
@@ -65,10 +65,10 @@ The dry-run and validate tools are reads, despite sounding like they change some
 
 | Tool | Type | What it does |
 | --- | --- | --- |
-| `list_views` | Read | Lists what an environment has published. Pass `viewId` to fetch a single view's content and the routes that point at it. A long list returns a `continuationToken` to carry on from. |
+| `list_views` | Read | Lists what an environment has published. Pass `viewIds` (1 to 50) to read those views' content and the routes that point at them in one call. A long list returns a `continuationToken` to carry on from. |
 | `inspect_route` | Read | Resolves a URL or handle and shows which route wins. The first stop for "why is this URL wrong?". When more routes match than fit, pass the `continuationToken` back for the rest. |
 | `inspect_indexes` | Read | Lists indexes and their field definitions. |
-| `get_index_document` | Read | Fetches a single indexed document. |
+| `get_index_documents` | Read | Reads 1 to 50 documents from one index. Give the index's `schemaAlias` and `schemaVersion`, the `sourceId` and the entities' `originIds`; it builds each document id as `{sourceGuid}_{originId}` itself. An origin id that contains `/` can't be read from an index yet; read that entity with `list_source_entities`. |
 | `diagnose_missing_content` | Read | Answers "why is my content not showing up?". Give it an `environment` and a source entity's `originId`, a `url` that does not resolve, or both. Add `sourceId` if you know which source the entity is in. It checks the source, the entity, the deployed schema, the view, the route and the domain, and for a URL also whether it resolves and which environment clients can read it. It reports the first link that is broken and what to do about it. A check it could not complete is reported as `could_not_determine`, never as missing. It changes nothing. |
 
 ## domains
@@ -117,6 +117,15 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | `create_tenant` | **Write (additive)** | Creates a new tenant, with you as its administrator. A tenant is billable, so this always asks for confirmation first. |
 | `upsert_environment` | **Write (changes existing)** | Creates an empty environment. With `environment`, it renames that environment instead. |
 
+## Reading several items in one call
+
+`list_source_entities` with `originIds`, `list_views` with `viewIds`, and `get_index_documents` each read up to 50 items in one call, so a client asks for approval once instead of once per item.
+
+- Items come back under `items` in the order you asked for them. An id you pass twice is read once.
+- Ids that don't exist are listed under `notFound`, each with a short reason.
+- When the answer would be too large, the items that didn't fit are listed under `notReturned`. Pass that list back unchanged as `originIds` or `viewIds` to read the rest.
+- If the Management API is throttling requests, the whole call fails and says to wait a few seconds and try again.
+
 ## How the upsert tools decide what to do
 
 `upsert_environment`, `upsert_source_group`, `upsert_source`, and `upsert_domain` each create a resource or change one. The arguments you pass decide which, never what already exists in your tenant.
@@ -130,14 +139,15 @@ Environment clients keep separate `create_environment_client` and `update_enviro
 
 ## Tools that were renamed or merged
 
-The tools below no longer exist. If a saved prompt, script, or log filter names one of them, use the call on the right instead. The arguments keep their names.
+The tools below no longer exist. If a saved prompt, script, or log filter names one of them, use the call on the right instead.
 
 | Earlier tool | Call instead |
 | --- | --- |
 | `get_mapping_schema` | `list_mapping_schemas` with `alias`, or with `schemaId` and optionally `version` |
 | `search_mapping_schemas` | `list_mapping_schemas` with `query` |
-| `get_source_entity` | `list_source_entities` with `sourceId` and `originId` |
-| `get_view` | `list_views` with `viewId` |
+| `get_source_entity` | `list_source_entities` with `sourceId` and `originIds` |
+| `get_view` | `list_views` with `viewIds` |
+| `get_index_document` | `get_index_documents` with `sourceId` and `originIds`, instead of a document id |
 | `get_destination` | `list_destinations` with `alias` |
 | `create_environment` | `upsert_environment` with `name` |
 | `update_environment` | `upsert_environment` with `environment` and `name` |
@@ -148,7 +158,7 @@ The tools below no longer exist. If a saved prompt, script, or log filter names 
 | `create_domain` | `upsert_domain` without `domain` |
 | `update_domain` | `upsert_domain` with `domain` |
 
-Called with those arguments, each `list_*` tool returns what the earlier tool returned. The upsert tools report `outcome` where the earlier tools reported `created` or `updated`. Your tenant's logs record the name of the tool that was actually called, so a log filter on an earlier tool name stops matching. Log entries for the upsert tools still carry an action named after the earlier tools, such as `create_source` or `update_source`.
+`list_source_entities` and `list_views` take a list of ids (`originIds`, `viewIds`) where they used to take one (`originId`, `viewId`), and return the items under `items`, with `notFound` and `notReturned` as described above. The other `list_*` tools return what the earlier tool returned. The upsert tools report `outcome` where the earlier tools reported `created` or `updated`. Your tenant's logs record the name of the tool that was actually called, so a log filter on an earlier tool name stops matching. Log entries for the upsert tools still carry an action named after the earlier tools, such as `create_source` or `update_source`.
 
 ## What is deliberately not exposed
 
