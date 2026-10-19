@@ -177,7 +177,7 @@ The tool list is assembled per key, so two clients pointed at the same server ca
 | Tool | What it does |
 | --- | --- |
 | `get_indices` | Lists the indexes the key can see. The usual starting point. |
-| `describe_index` | Describes one index, schema or source — its fields, and which are searchable or sortable. |
+| `describe_index` | Describes one schema or source index — its fields, and which are searchable or sortable. |
 | `get_query_items` | Queries a single index with filters, sorting, pagination, and facets. |
 | `get_multiple_query_items` | Queries several indexes in one round-trip. |
 | `get_source_items` | Fetches auto-indexed source entities. |
@@ -201,12 +201,12 @@ The server also sends your client instructions when it connects, which tell the 
 
 ## Answer size
 
-Answers on a signed in session are kept to a budget of about 44,000 characters, so your client can read them in full instead of saving them to a file. Answers to a key are returned whole, as before, apart from `get_indices`.
+On a signed-in session, answers from the item tools and `get_indices` are kept to a budget of about 44,000 characters, so your client can read them in full instead of saving them to a file. Other tools, such as `get_indices_raw_source_entities_by_source_group_alias`, are not fitted to the budget yet. Answers to a key are returned whole, as before, apart from `get_indices`.
 
 - **Items are never cut.** The item tools, `get_query_items`, `get_multiple_query_items`, `get_source_items`, `query` and the `query_*` tools, return whole items in order and hold back the rest. A single item larger than the budget comes back whole, on its own.
 - **Each query says whether it was trimmed.** Its entry in the answer carries `pageTrimmedForSize`, `returned` and, when more items remain, `nextCursor`. When several queries share one call, they share the budget in order, and a query past the cut returns no items and its own `nextCursor`.
-- **Continue with `cursor`.** Every item tool takes an optional `cursor`, per query on the tools that take several. Pass back `nextCursor` on the same query to carry on right after the last item returned. Pagination is then ignored. A cursor never reaches past the 10,000-item limit of a query.
-- **`get_indices` fits the budget for every caller, key or signed in.** Indexes that do not fit stay listed, with `mappings` empty, `mappingsOmitted: true` and a `describeIndexName`. Call `describe_index` with that name to get the fields. Under the budget the list is unchanged.
+- **Continue with `cursor`.** Every item tool takes an optional `cursor`, per query on the tools that take several. Pass back `nextCursor` on the same query to carry on right after the last item returned. `pagination` is ignored when you pass `cursor`. A cursor never reaches past the 10,000-item limit of a query.
+- **`get_indices` fits the budget for every caller, key or signed-in.** Indexes that do not fit stay listed, with `mappings` empty, `mappingsOmitted: true` and a `describeIndexName`. Call `describe_index` with that name to get the fields. Under the budget the list is unchanged. Because every index stays listed, an environment with very many indexes can still go over the budget.
 
 ## Sample prompts
 
