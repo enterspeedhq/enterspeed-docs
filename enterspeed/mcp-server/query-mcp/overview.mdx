@@ -253,6 +253,8 @@ Expected behaviour: the agent enumerates the full tool set. If the dynamic and p
 | Tools listed but `query_*` returns "forbidden" | Key has `MCP Server` but not `Query API` | Add the `Query API` scope. |
 | Connected with a key, but every index and query tool fails | The key is a Management API key, not an environment client key | Create an **environment client** key. A Management API key does not work here, and [Management MCP](/enterspeed/mcp-server/management-mcp/overview) does not take keys at all. |
 | `429` with a `Retry-After` header | More than 120 requests in a minute on this key, or from your signed-in sessions | Let the client back off and retry. |
+| A call fails with "Missing required argument" | The call left out an argument the tool needs | The message names each missing argument and, where there is one, the tool that returns it, such as `get_indices` for an index. |
+| A tool fails and you need to know why | The error answer leaves out internal detail on purpose | It never contains internal host names, stack traces or the body of a server error. Send the `traceId` from the answer to [support@enterspeed.com](mailto:support@enterspeed.com). A `400` from the Query API passes on its own error details, which usually say what to change. |
 | Client cannot connect at all | Configured with a `/sse` path, or a proxy that buffers streamed responses | Use the root URL. Streamed responses must pass through unbuffered. |
 
 ## Next steps

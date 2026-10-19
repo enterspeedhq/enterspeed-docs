@@ -56,7 +56,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 | Tool | Type | What it does |
 | --- | --- | --- |
 | `list_sources` | Read | Lists sources and source groups, with their storage mode and the environments they publish to. |
-| `list_source_entities` | Read | Browses or searches a source's ingested entities. Pass `originId` to fetch one entity in full. |
+| `list_source_entities` | Read | Browses or searches a source's ingested entities. Pass `originId` to fetch one entity in full. A long list returns a `continuationToken` to carry on from. |
 | `upsert_source_group` | **Write (changes existing)** | Creates a source group. With `sourceGroup`, it changes an existing group's name or type instead. A group's alias and storage mode cannot be changed. |
 | `upsert_source` | **Write (changes existing)** | Creates a source in a source group and attaches it to environments. With `source`, it changes an existing source's name, or which environments it publishes to, instead. A source cannot move to another group. |
 | `ingest_source_entities` | **Write (changes existing)** | Writes entities into a source. An entity with the same origin id is overwritten, and the schemas on that source reprocess. Always asks for confirmation first. |
@@ -65,8 +65,8 @@ The dry-run and validate tools are reads, despite sounding like they change some
 
 | Tool | Type | What it does |
 | --- | --- | --- |
-| `list_views` | Read | Lists what an environment has published. Pass `viewId` to fetch a single view's content and the routes that point at it. |
-| `inspect_route` | Read | Resolves a URL or handle and shows which route wins. The first stop for "why is this URL wrong?". |
+| `list_views` | Read | Lists what an environment has published. Pass `viewId` to fetch a single view's content and the routes that point at it. A long list returns a `continuationToken` to carry on from. |
+| `inspect_route` | Read | Resolves a URL or handle and shows which route wins. The first stop for "why is this URL wrong?". When more routes match than fit, pass the `continuationToken` back for the rest. |
 | `inspect_indexes` | Read | Lists indexes and their field definitions. |
 | `get_index_document` | Read | Fetches a single indexed document. |
 | `diagnose_missing_content` | Read | Answers "why is my content not showing up?". Give it an `environment` and a source entity's `originId`, a `url` that does not resolve, or both. Add `sourceId` if you know which source the entity is in. It checks the source, the entity, the deployed schema, the view, the route and the domain, and for a URL also whether it resolves and which environment clients can read it. It reports the first link that is broken and what to do about it. A check it could not complete is reported as `could_not_determine`, never as missing. It changes nothing. |
@@ -106,7 +106,7 @@ The dry-run and validate tools are reads, despite sounding like they change some
 
 | Tool | Type | What it does |
 | --- | --- | --- |
-| `query_tenant_logs` | Read | Queries tenant logs — errors, warnings, processing activity. |
+| `query_tenant_logs` | Read | Queries tenant logs — errors, warnings, processing activity. Returns a `scrollId` for the next page only when the answer ends on a page boundary; otherwise narrow the time range or filters. |
 | `aggregate_tenant_logs` | Read | Counts log events grouped by field, for example errors by schema. |
 | `get_tenant_metrics` | Read | Entity and index counts, request counts, and the processing backlog. |
 
