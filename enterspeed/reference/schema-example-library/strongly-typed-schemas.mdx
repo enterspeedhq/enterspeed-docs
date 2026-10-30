@@ -1,0 +1,62 @@
+---
+title: Strongly typed schemas
+---
+
+Describe your source entity with a [JSDoc](https://jsdoc.app/) type definition to get IntelliSense on your custom properties in the schema editor.
+
+By default, Enterspeed doesn't know the structure of the data you have ingested. When you pass your own type definition to the generic version of the schema type, the editor can suggest and validate your custom properties.
+
+<Steps>
+  <Step title="Create a type definition">
+    Describe the properties of your source entity with a `@typedef`.
+
+    ```js title="Type definition"
+    /** @typedef {object} ContentPage
+     * @property {string} title
+     * @property {string} content
+     * @property {object} metaData
+     * @property {boolean} metaData.isPublished
+     */
+    ```
+  </Step>
+  <Step title="Use the generic schema type">
+    Pass your type definition to the generic version of the schema type, such as `Enterspeed.FullSchema<ContentPage>`.
+  </Step>
+</Steps>
+
+<CodeGroup>
+```js Content page schema icon="square-js"
+/** @typedef {object} ContentPage
+ * @property {string} title
+ * @property {string} content
+ * @property {object} metaData
+ * @property {boolean} metaData.isPublished
+ */
+
+/** @type {Enterspeed.FullSchema<ContentPage>} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['contentPage']);
+  },
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url);
+  },
+  properties: function (sourceEntity, context) {
+    const p = sourceEntity.properties;
+    return {
+      title: p.title,
+      content: p.content,
+      isPublished: p.metaData.isPublished
+    };
+  }
+}
+```
+</CodeGroup>
+
+<Tip>
+You don't have to write type definitions by hand. Paste the JSON from your source entity into a tool such as [transform.tools](https://transform.tools/json-to-jsdoc) to generate them.
+</Tip>
+
+## More examples
+
+See [JSDoc](/enterspeed/reference/js/jsdoc) for more examples, including how to type the results of lookups and the parameters of custom functions.
