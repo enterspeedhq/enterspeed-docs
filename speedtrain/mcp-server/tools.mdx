@@ -27,7 +27,7 @@ Most results include an `appUrl`, a link to the matching page in the Speedtrain 
 |---|---|
 | `speedtrain_get_task_config_authoring_guide` | The complete configuration reference — field meanings, prompt assembly, rule types, gate arithmetic, worked examples. |
 | `speedtrain_get_task_config_template` | The document skeleton to fill in, with one fully-formed variant so the shape is unambiguous. |
-| `speedtrain_list_deployment_models` | Available deployment models and their inference settings. |
+| `speedtrain_list_deployment_models` | Available deployment models, their inference settings, the abilities each one has (reading images or documents), and whether its processing chain still awaits your approval. |
 
 <Warning>
   Read the authoring guide before **either** authoring a configuration **or** interpreting classifier feedback. Misreading a classifier verdict is the easier of the two to get wrong — an evaluator can produce confident feedback about source data it structurally never received.
@@ -39,7 +39,7 @@ Most results include an `appUrl`, a link to the matching page in the Speedtrain 
 |---|---|
 | `speedtrain_list_indices` | Indexes in the environment. |
 | `speedtrain_list_index_documents` | Documents in an index. **Paginated.** |
-| `speedtrain_get_index_documents` | Read 1 to 50 documents from one index in a single call, each whole and optionally at a pinned version. Includes `$images`. |
+| `speedtrain_get_index_documents` | Read 1 to 50 documents from one index in a single call, each whole and optionally at a pinned version. Includes `$images` and `$documents`. |
 | `speedtrain_get_index_field_manifest` | The fields an index declares, and whether each is ready to filter on. |
 | `speedtrain_plan_index_field_manifest` | Dry-run a change to an index's declared fields. Changes nothing. |
 | `speedtrain_apply_index_field_manifest` | Apply a set of declared fields to an index. |
@@ -61,7 +61,16 @@ Declared fields let a review session select documents by more than their externa
 | `speedtrain_create_task_config` | Create a new configuration. |
 | `speedtrain_push_task_config` | Push a new version of an existing configuration. |
 | `speedtrain_list_task_config_versions` | Version history, and which one is published. |
+| `speedtrain_preview_llm_request` | Show what a version would send to the model for one sample document, without running anything. |
 | `speedtrain_activate_task_config_version` | Make a version the published one. Names the version it displaces. |
+
+Task configuration and session results carry a `dataHandlerConsent` status. It says whether the configuration can run, and which model and which party in its processing chain still need approval. Until a person approves that party, saving or publishing a configuration that uses the model is refused, and runs can be refused depending on the tenant's approval mode. A person approves a party in the app, under **Settings** → **Processing chain approval**. You cannot approve one through the server.
+
+`speedtrain_preview_llm_request` shows, for one sample document, the main call and every quality check that applies: the model, the abilities switched on, the options a run sends, and the images and documents it would attach. Nothing is run and nothing is created. Preview after every push and before you start a test session. If a model reads images or documents, is set to fail when they are missing, and the document has none, the preview reports `would_fail` with the reason. That is an answer, not an error.
+
+<Info>
+  Reading images and documents is a model ability, set in the `features` of a model reference in the configuration, not in `options`. It works only on models reached through OpenRouter or Anthropic directly. A configuration that turns it on for a model reached another way, such as AWS Bedrock or Azure, is refused when you save it. Documents come from the `$documents` key, as images come from `$images`.
+</Info>
 
 ## Review sessions
 
