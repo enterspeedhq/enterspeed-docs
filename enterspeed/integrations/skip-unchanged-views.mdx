@@ -52,8 +52,6 @@ With the setting off, the destination is called every time a view is processed, 
 
 The setting applies to the destination in every environment. Each skipped call is written to **Logs**, with the destination alias and the region.
 
-With the [Management API](#management-api), call `PUT /api/v1/tenant/destination-groups/{alias}/skip-unchanged-views` with `{ "enabled": true }`.
-
 ## Resend views
 
 Resend sends the selected views to the destination again, as they are in delivery now. Nothing is reprocessed or re-ingested, and **Skip unchanged views** doesn't apply, so every selected view is sent.
@@ -80,68 +78,3 @@ Good to know:
 - Views processed before stored mapping results were switched on can't be resent yet, and are counted as having no stored result. Reprocess them instead, for example by deploying the schema.
 - Only one Resend per destination and environment runs at a time.
 - The destination must be enabled for the environment.
-
-## Management API
-
-Authenticate with a management client key that has read/write access, sent in the `X-Api-Key` header.
-
-### Skip unchanged views
-
-```bash
-curl -X PUT "https://management.enterspeed.com/api/v1/tenant/destination-groups/{alias}/skip-unchanged-views" \
-  -H "X-Api-Key: <management client key>" \
-  -H "Content-Type: application/json" \
-  -d '{ "enabled": true }'
-```
-
-Returns `204` on success. Send `{ "enabled": false }` to turn it off again.
-
-### Resend
-
-```bash
-curl -X POST "https://management.enterspeed.com/api/v1/tenant/destination-groups/{alias}/_resend" \
-  -H "X-Api-Key: <management client key>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "environmentId": "gid://Environment/<environment guid>",
-    "mappingSchemaAlias": "product",
-    "dryRun": true
-  }'
-```
-
-| Field | Description |
-| --- | --- |
-| `environmentId` | Required. The environment to resend in. |
-| `mappingSchemaAlias`, `sourceId`, `entityTypes` | A filter, in any combination. `entityTypes` is an array, for example `["product"]`. |
-| `viewIds` | Up to 100 view ids from that environment, instead of a filter. |
-| `dryRun` | `true` counts the views that would be sent, without sending. |
-| `continuationToken` | The token from the previous response, to carry on where it stopped. |
-
-Use either a filter or `viewIds`, not both. One call works for about 20 seconds. While the response has a `continuationToken`, call again with it to carry on.
-
-```json title="Response"
-{
-  "dryRun": false,
-  "totalCandidates": 1200,
-  "scanned": 600,
-  "matched": 580,
-  "sent": 580,
-  "failed": 0,
-  "noStoredResult": 20,
-  "failedViewIds": [],
-  "continuationToken": "..."
-}
-```
-
-`totalCandidates` is on the first call only and is an upper bound: views that don't target the destination aren't sent. `failedViewIds` lists at most 100 ids.
-
-### Errors
-
-Both calls return `409 Conflict` with one of these codes:
-
-| Code | Meaning |
-| --- | --- |
-| `StoredMappingResultsRequired` | Your tenant doesn't have stored mapping results. Contact support. Turning the setting off always works. |
-| `DestinationDisabledForEnvironment` | Resend only: the destination is disabled for the environment. Enable it first. |
-| `NoDeliveryRegionForDestination` | Resend only: none of the destination's regions is a delivery region of your tenant. |
-| `ResendAlreadyRunning` | Resend only: a resend to this destination and environment is already running. Wait for it to return, then call again. |
