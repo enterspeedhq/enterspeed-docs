@@ -4,7 +4,7 @@ sidebarTitle: Skip unchanged views
 description: Only call a destination when a view actually changed, and send views to it again on demand.
 ---
 
-By default, every time a view is processed, Enterspeed calls the [destinations](/enterspeed/reference/js/full-schema/actions#destination) the view targets, even when the view is identical to the one delivered before. Re-ingesting unchanged content or deploying a schema can call your receiver thousands of times with nothing new.
+By default, every time a view is processed, Enterspeed calls the [destinations](/enterspeed/reference/js/full-schema/actions#destination) the view targets, even when the view is identical to the one delivered before. Deploying a schema, a reprocess action or an update to a source entity property your schema doesn't map processes views again without changing them, and can call your receiver thousands of times with nothing new.
 
 Turn on **Skip unchanged views** for a destination and Enterspeed only calls it when the view actually changed. Use **Resend** to send views to the destination again whenever you need to, for example after your receiver was down.
 
@@ -34,7 +34,7 @@ Even with the setting on, the destination is always called for:
 | Deletes, including a view that stops targeting the destination | Your receiver must remove it. |
 | A view processed for the first time after stored mapping results were switched on | Enterspeed doesn't know where it was sent before. From the next processing on, it can be skipped. |
 
-Destinations with the setting off are called exactly as before.
+With the setting off, the destination is called every time a view is processed, whether the view changed or not.
 
 ## When not to turn it on
 
@@ -42,8 +42,6 @@ Destinations with the setting off are called exactly as before.
 - **Your receiver expires records it hasn't seen for a while.** If records that aren't refreshed within some period are removed, unchanged views are no longer refreshed and will expire.
 
 ## Turn it on
-
-You need the **Admin** role on the tenant.
 
 1. In the management app, go to **Settings** → **Destinations** and open the destination.
 2. Switch on **Skip unchanged views**.

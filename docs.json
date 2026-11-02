@@ -190,7 +190,12 @@
               {
                 "group": "Destination integrations",
                 "pages": [
-                  "enterspeed/integrations/skip-unchanged-views",
+                  {
+                    "group": "Configuration",
+                    "pages": [
+                      "enterspeed/integrations/skip-unchanged-views"
+                    ]
+                  },
                   "enterspeed/integrations/webhooks",
                   "enterspeed/integrations/algolia",
                   "enterspeed/integrations/clerk",
