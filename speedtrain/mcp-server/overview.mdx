@@ -4,12 +4,12 @@ sidebarTitle: "Overview"
 description: "Drive Speedtrain from an AI agent — what the MCP server can do, and the boundary it deliberately does not cross."
 ---
 
-Speedtrain exposes a **Model Context Protocol** server, so an AI agent can author task configurations, run test sessions, and read results without a person clicking through the UI.
+Speedtrain exposes a **Model Context Protocol** server, so an AI agent can author task configurations, run sessions, read results, and act on review decisions without a person clicking through the UI.
 
 To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of any Speedtrain page, or see [Connect to the MCP server](/speedtrain/mcp-server/connect).
 
 <Info>
-  The MCP server is for **building and inspecting**. It can create a configuration, run a preview, and read every score and piece of feedback — but it cannot accept content or ship it. Those decisions stay with people, in the Speedtrain UI.
+  The MCP server can build, inspect, and decide. It can create a configuration, run a preview, read every score and piece of feedback, and accept, reject, or retry review items. Accepting is the one action that publishes content, so it is a person's decision. An agent should accept only what you have read and asked it to accept.
 </Info>
 
 ## What it is good at
@@ -28,19 +28,31 @@ To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of a
   </Card>
 
   <Card title="Managing destinations" icon="paper-plane">
-    List, create, and set the status of destinations.
+    List, create, pause, and delete destinations. You add the ingest key in the app.
+  </Card>
+
+  <Card title="Deciding on review items" icon="circle-check">
+    Accept, reject, or retry items one at a time or in bulk.
+  </Card>
+
+  <Card title="Automating with subscriptions" icon="repeat">
+    Run a configuration on newly ingested documents, and choose whether outputs wait for a person.
   </Card>
 </Columns>
 
 ## What it deliberately cannot do
 
 <Warning>
-  - **Accept or decline content.** Every human decision stays in the UI.
+  - **Set an ingest key.** A destination is created inactive and without a key. A person adds the key in the Speedtrain app.
   - **Configure tool capabilities.** Those need platform-side credentials and are set up in the UI. A configuration's existing capability entries are carried through untouched when an agent edits the document.
   - **Write documents.** Index documents are read-only over MCP.
 </Warning>
 
-That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy — while the decisions that carry consequences remain with a person.
+That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy.
+
+<Warning>
+  Some actions publish content or cannot be undone. Accepting an item in a review session queues it for your destinations, and you cannot recall it. A subscription set to auto-approve `ALWAYS` publishes every output with no person involved. Applying a field change can permanently delete extracted values. Keep a person in the loop for these.
+</Warning>
 
 ## Getting oriented
 
