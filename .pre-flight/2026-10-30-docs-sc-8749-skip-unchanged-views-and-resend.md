@@ -4,6 +4,7 @@
 
 docs.json
 enterspeed/integrations/skip-unchanged-views.mdx
+enterspeed/reference/js/full-schema/actions.mdx
 
 ## Observations
 

@@ -21,6 +21,8 @@ A view is unchanged, and the call is skipped, only when all of these hold:
 
 A value you map into your properties that changes every time, such as the current time, makes every view count as changed.
 
+If a destination alias or option is computed from a source entity property that isn't mapped into the view, a change to that property alone isn't noticed, and the call is skipped. Use [Resend](#resend-views) after a change like that.
+
 The check is made **per delivery region**, against the view that region already holds. A region that missed an earlier update compares as changed and calls the destination.
 
 ## What is always sent
@@ -31,8 +33,10 @@ Even with the setting on, the destination is always called for:
 | --- | --- |
 | The first delivery of a view in a region | There is nothing to compare with. |
 | A change in the destinations the view targets, or in their options | Your receiver may need the view in a new place or shape. |
-| Deletes, including a view that stops targeting the destination | Your receiver must remove it. |
+| Deletes | Your receiver must remove it. |
 | A view processed for the first time after stored mapping results were switched on | Enterspeed doesn't know where it was sent before. From the next processing on, it can be skipped. |
+
+A view that stops targeting the destination is only sent as a delete to a stateful destination. A stateless destination, the default, only gets a delete when the view itself is deleted. This is the same with the setting on or off.
 
 With the setting off, the destination is called every time a view is processed, whether the view changed or not.
 
@@ -108,7 +112,7 @@ curl -X POST "https://management.enterspeed.com/api/v1/tenant/destination-groups
 | Field | Description |
 | --- | --- |
 | `environmentId` | Required. The environment to resend in. |
-| `mappingSchemaAlias`, `sourceId`, `entityTypes` | A filter, in any combination. |
+| `mappingSchemaAlias`, `sourceId`, `entityTypes` | A filter, in any combination. `entityTypes` is an array, for example `["product"]`. |
 | `viewIds` | Up to 100 view ids from that environment, instead of a filter. |
 | `dryRun` | `true` counts the views that would be sent, without sending. |
 | `continuationToken` | The token from the previous response, to carry on where it stopped. |
