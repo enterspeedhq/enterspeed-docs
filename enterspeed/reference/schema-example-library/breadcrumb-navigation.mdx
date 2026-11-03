@@ -31,6 +31,16 @@ export default {
 ```
 </CodeGroup>
 
+<Warning>
+Add every page type that can be a parent to the `breadcrumbItem` triggers.
+If a parent's type is missing, its reference resolves to `null` and the breadcrumb is cut off at that page.
+
+For example, take the path `homePage` > `sectionPage` > `contentPage` > `contentPage`, where `sectionPage` isn't in the triggers.
+The breadcrumb of the deepest `contentPage` stops below the `sectionPage`, so it only contains its parent `contentPage`.
+A `contentPage` directly below the `sectionPage` gets no breadcrumb at all.
+The only trace is in `meta.missingViewReferences` in the Delivery API response.
+</Warning>
+
 In your page schema, you only reference the `breadcrumbItem` view of the parent.
 
 <CodeGroup>
@@ -39,6 +49,9 @@ In your page schema, you only reference the `breadcrumbItem` view of the parent.
 export default {
   triggers: function(context) {
     context.triggers("cms", ["contentPage"]);
+  },
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url);
   },
   properties: function (sourceEntity, context) {
     return {
@@ -58,13 +71,13 @@ Every page below it gets the updated breadcrumb on the next request.
 <Tip>
 Use this approach even if your source entities have an array of all their ancestor ids.
 If you reference the ancestors by that array, moving a page changes the ancestor ids of all the pages below it.
-You then need to reprocess all those pages to update their breadcrumbs.
+You then need to re-ingest all those pages to update their breadcrumbs.
 </Tip>
 
 The response contains the breadcrumb as a nested structure, from the parent of the current page up to the root.
 
 <CodeGroup>
-```json Delivery API response
+```json Delivery API V2+ response
 {
   "route": {
     "breadcrumb": {
