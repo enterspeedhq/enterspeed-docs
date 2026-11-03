@@ -2,13 +2,14 @@
 title: Breadcrumb navigation
 ---
 
-A schema for generating a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation).
+You can build a [breadcrumb navigation](https://en.wikipedia.org/wiki/Breadcrumb_navigation) with a `breadcrumbItem` schema that you reference from your page schemas.
+[See more about referencing schemas](/enterspeed/key-concepts/referencing-schemas).
 
-This schema can be used in other schemas using the [reference type](/enterspeed/key-concepts/referencing-schemas), as you can see in the code below.
-
+Each breadcrumb item references the breadcrumb item of its parent.
+The references chain up the tree until they reach a source entity without an `originParentId`.
 
 <CodeGroup>
-```js Breadcrumb item icon="square-js"
+```js breadcrumbItem schema icon="square-js" highlight={13-15}
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -21,30 +22,115 @@ export default {
         url: sourceEntity.url,
         originId: sourceEntity.originId,
       },
-      level: sourceEntity.properties.metaData.level,
+      parent: sourceEntity.originParentId
+                ? context.reference("breadcrumbItem").byOriginId(sourceEntity.originParentId)
+                : null
     };
   }
 }
 ```
 </CodeGroup>
 
-How the _breadcrumb item schema_ will be used in a page schema.
+<Warning>
+Add every page type that can be a parent to the `breadcrumbItem` triggers.
+If a parent's type is missing, its reference resolves to `null` and the breadcrumb is cut off at that page.
+
+For example, take the path `homePage` > `sectionPage` > `contentPage` > `contentPage`, where `sectionPage` isn't in the triggers.
+The breadcrumb of the deepest `contentPage` stops below the `sectionPage`, so it only contains its parent `contentPage`.
+A `contentPage` directly below the `sectionPage` gets no breadcrumb at all.
+The only trace is in `meta.missingViewReferences` in the Delivery API response.
+</Warning>
+
+In your page schema, you only reference the `breadcrumbItem` view of the parent.
 
 <CodeGroup>
-```js Breadcrumb item used in another schema icon="square-js"
+```js contentPage schema with breadcrumb icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
     context.triggers("cms", ["contentPage"]);
   },
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url);
+  },
   properties: function (sourceEntity, context) {
     return {
-      breadcrumbs: context
-                    .reference("breadcrumbItem")
-                    // The nodePath property is an array of ancestor ids.
-                    .byOriginIds(sourceEntity.properties.metaData.nodePath)
+      breadcrumb: sourceEntity.originParentId
+                    ? context.reference("breadcrumbItem").byOriginId(sourceEntity.originParentId)
+                    : null
     };
   }
 }
+```
+</CodeGroup>
+
+All references are by origin id, and Enterspeed resolves them at delivery time.
+This means you don't need to reprocess the page views when you rename or move an ancestor.
+Every page below it gets the updated breadcrumb on the next request.
+
+<Tip>
+Use this approach even if your source entities have an array of all their ancestor ids.
+If you reference the ancestors by that array, moving a page changes the ancestor ids of all the pages below it.
+You then need to re-ingest all those pages to update their breadcrumbs.
+</Tip>
+
+The response contains the breadcrumb as a nested structure, from the parent of the current page up to the root.
+
+<CodeGroup>
+```json Delivery API V2+ response
+{
+  "route": {
+    "breadcrumb": {
+      "link": {
+        "name": "Blog",
+        "url": "https://example.com/blog/",
+        "originId": "1100"
+      },
+      "parent": {
+        "link": {
+          "name": "Home",
+          "url": "https://example.com/",
+          "originId": "1000"
+        },
+        "parent": null
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+In your frontend, you flatten the nested structure into a list of links, ordered from the root to the parent.
+
+<CodeGroup>
+```js Flatten the breadcrumb icon="square-js"
+function flattenBreadcrumb(breadcrumb) {
+  const links = [];
+
+  for (let item = breadcrumb; item; item = item.parent) {
+    links.unshift(item.link);
+  }
+
+  return links;
+}
+```
+</CodeGroup>
+
+For the response above, `flattenBreadcrumb` returns the following list.
+
+<CodeGroup>
+```json Flattened breadcrumb
+[
+  {
+    "name": "Home",
+    "url": "https://example.com/",
+    "originId": "1000"
+  },
+  {
+    "name": "Blog",
+    "url": "https://example.com/blog/",
+    "originId": "1100"
+  }
+]
 ```
 </CodeGroup>

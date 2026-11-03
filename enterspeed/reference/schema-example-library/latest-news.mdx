@@ -2,10 +2,14 @@
 title: Latest news
 ---
 
-A schema for listing the 3 latest news articles with a filter for global news category.
+You can build a list of the latest news articles in several ways. This page shows two of them: full schemas with references, and an index schema.
+
+## Using full schemas
+
+The `frontPage` schema below lists the 3 latest news articles that match the front page's culture.
 
 <CodeGroup>
-```js FrontPage schema with latest news icon="square-js"
+```js frontPage schema with latest news icon="square-js"
 /** @type {Enterspeed.FullSchema} */
 export default {
   triggers: function(context) {
@@ -20,11 +24,159 @@ export default {
       description: sourceEntity.properties.description,
       latestNews: context
                 .reference("news")
-                .filter("type eq 'news' and properties.category eq 'globalNews'")
+                .filter(`type eq 'news' and properties.culture eq '${sourceEntity.properties.culture}'`)
                 .orderBy({propertyName: "properties.date", direction: "desc"})
                 .limit(3)
     };
   }
+}
+```
+</CodeGroup>
+
+To keep the list up to date, you need to reprocess the `frontPage` schema whenever a news article is created, updated or deleted.
+[See more about when reprocessing is needed](/enterspeed/key-concepts/reprocessing#references-by-filter-needs-reprocess).
+
+Below is an example of the `news` schema including the reprocess action.
+
+<Note>
+Always make your reprocess actions as precise as possible to avoid overprocessing.
+Typically, you want to reprocess by id, as this is the fastest and most precise option.
+
+In this case, you don't have the id of the front page. But you only have one front page per culture,
+so you can target that single front page source entity with a filter expression matching the culture.
+</Note>
+
+<CodeGroup>
+```js news schema with a reprocess action on the frontPage icon="square-js" highlight={10,11}
+/** @type {Enterspeed.FullSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers("cms", ["news"]);
+  },
+  routes: function(sourceEntity, context) {
+    context.url(sourceEntity.url);
+  },
+  actions: function(sourceEntity, context) {
+    context.reprocess('frontPage')
+            .filter(`type eq 'frontPage' and properties.culture eq '${sourceEntity.properties.culture}'`);
+  },
+  properties: function (sourceEntity, context) {
+    return {
+      title: sourceEntity.properties.name,
+      date: sourceEntity.properties.date,
+      category: sourceEntity.properties.category,
+      text: sourceEntity.properties.text
+    };
+  }
+}
+```
+</CodeGroup>
+
+## Using index schemas
+
+<Note>
+Index schemas are a paid add-on. They don't need reprocessing,
+and they let you query the index using the [Query API](/api-reference/query)
+for the news articles you want to return, for example based on culture and category.
+</Note>
+
+<CodeGroup>
+```js newsIndex schema with news article icon="square-js"
+/** @type {Enterspeed.IndexSchema} */
+export default {
+  triggers: function(context) {
+    context.triggers('cms', ['news']);
+  },
+  index: {
+    fields: {
+      title: { type: "text" },
+      date: { type: "date" },
+      culture: { type: "keyword" },
+      category: { type: "keyword" },
+      text: { type: "text" }
+    }
+  },
+  properties: function (sourceEntity) {
+    return {
+      title: sourceEntity.properties.name,
+      date: sourceEntity.properties.date,
+      culture: sourceEntity.properties.culture,
+      category: sourceEntity.properties.category,
+      text: sourceEntity.properties.text
+    };
+  }
+}
+```
+</CodeGroup>
+
+Here's a request to the [Query API](/api-reference/query) for the `newsIndex` and the response.
+
+<CodeGroup>
+```bash Query API request
+curl -L -X POST 'https://query.enterspeed.com/v1/newsIndex' \
+-H 'X-Api-Key: [your_environment_key]' \
+-H 'Content-Type: application/json' \
+-d '{
+    "filters": {
+      "and": [
+        {
+          "field": "culture",
+          "operator": "equals",
+          "value": "en-us"
+        }
+      ]
+    },
+    "sort": [
+      {
+        "field": "date",
+        "order": "desc"
+      }
+    ],
+    "pagination": {
+      "page": 0,
+      "pageSize": 3
+    }
+  }'
+```
+
+```json Response
+{
+  "totalResults": 100,
+  "results": [
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2025-10-17T12:08:43.5022645Z",
+        "_originId": "f269a7fc-2a96-4246-b8d6-6e91e6bfa390",
+        "title": "Management MCP now supports schema dry runs against single entities",
+        "date": "2025-10-17",
+        "culture": "en-us",
+        "category": "Product update",
+        "text": "..."
+      },
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2025-10-16T09:15:44.9083304Z",
+        "_originId": "bb27cc54-3e72-4191-a096-081038e3fde9",
+        "title": "Speedtrain: A/B output comparison in review sessions",
+        "date": "2025-10-16",
+        "culture": "en-us",
+        "category": "Feature release",
+        "text": "..."
+      },
+      {
+        "_sourceGuid": "6f544251-40ca-474b-9c00-5d44bc891799",
+        "_updatedAt": "2025-10-14T13:50:24.9083304Z",
+        "_originId": "5012de39-4739-4c37-84d0-321f8e859f5c",
+        "title": "New documentation for the Query API and index setup",
+        "date": "2025-10-14",
+        "culture": "en-us",
+        "category": "Documentation",
+        "text": "..."
+      }
+  ],
+  "facets": [],
+  "nextPageToken": "eyJhbGlhcyI6InF1ZXJ5LWMwNzA1MzAxLWIxMDYtNDkwZi05MjQwLTE3MjQ2NTYzMTRkZS1wcm9kdWN0aW5kZXgiLCJzb3J0IjpbMTc2MDcwMjkyMTMxNCwyXX0=",
+  "status": 0
 }
 ```
 </CodeGroup>
