@@ -1,0 +1,80 @@
+---
+title: Skip unchanged views and resend
+sidebarTitle: Skip unchanged views
+description: Only call a destination when a view actually changed, and send views to it again on demand.
+---
+
+By default, every time a view is processed, Enterspeed calls the [destinations](/enterspeed/reference/js/full-schema/actions#destination) the view targets, even when the view is identical to the one delivered before. Deploying a schema, a reprocess action or an update to a source entity property your schema doesn't map processes views again without changing them, and can call your receiver thousands of times with nothing new.
+
+Turn on **Skip unchanged views** for a destination and Enterspeed only calls it when the view actually changed. Use **Resend** to send views to the destination again whenever you need to, for example after your receiver was down.
+
+<Note>
+Both need **stored mapping results** on your tenant. Enterspeed switches this on for you: contact [support@enterspeed.com](mailto:support@enterspeed.com). If you don't see the **Skip unchanged views** section on your destination, contact support as well.
+</Note>
+
+## What counts as unchanged
+
+A view is unchanged, and the call is skipped, only when all of these hold:
+
+- The view's properties and its references to other views are identical to the view already delivered. Timestamps such as `updatedAt` are ignored.
+- The view targets the same destinations, with the same options, as the last time it was processed.
+
+A value you map into your properties that changes every time, such as the current time, makes every view count as changed.
+
+If a destination alias or option is computed from a source entity property that isn't mapped into the view, a change to that property alone isn't noticed, and the call is skipped. Use [Resend](#resend-views) after a change like that.
+
+The check is made **per delivery region**, against the view that region already holds. A region that missed an earlier update compares as changed and calls the destination.
+
+## What is always sent
+
+Even with the setting on, the destination is always called for:
+
+| Case | Why |
+| --- | --- |
+| The first delivery of a view in a region | There is nothing to compare with. |
+| A change in the destinations the view targets, or in their options | Your receiver may need the view in a new place or shape. |
+| Deletes | Your receiver must remove it. |
+| A view processed for the first time after stored mapping results were switched on | Enterspeed doesn't know where it was sent before. From the next processing on, it can be skipped. |
+
+A view that stops targeting the destination is only sent as a delete to a stateful destination. A stateless destination, the default, only gets a delete when the view itself is deleted. This is the same with the setting on or off.
+
+With the setting off, the destination is called every time a view is processed, whether the view changed or not.
+
+## When not to turn it on
+
+- **The view is only used as a trigger.** If your receiver uses the call as a signal, for example an empty view that starts a rebuild, the view never changes. It is sent once and then never again.
+- **Your receiver expires records it hasn't seen for a while.** If records that aren't refreshed within some period are removed, unchanged views are no longer refreshed and will expire.
+
+## Turn it on
+
+1. In the management app, go to **Settings** → **Destinations** and open the destination.
+2. Switch on **Skip unchanged views**.
+
+The setting applies to the destination in every environment. Each skipped call is written to **Logs**, with the destination alias and the region.
+
+## Resend views
+
+Resend sends the selected views to the destination again, as they are in delivery now. Nothing is reprocessed or re-ingested, and **Skip unchanged views** doesn't apply, so every selected view is sent.
+
+Resend when:
+
+- your receiver was down or rejected calls;
+- your receiver lost or reset its data;
+- the destination's connection settings changed, for example a new URL or index.
+
+To resend from the management app:
+
+1. Open the destination and click **Resend…**.
+2. Pick the environment.
+3. Select the views by a filter (schema, source and/or entity types) or paste up to 100 view ids, one per line.
+4. Click **Check**. Enterspeed counts the views that would be sent, without sending anything.
+5. Click **Send** to send them. You see the progress, then how many were sent and how many failed, with the ids of the failed views.
+
+Good to know:
+
+- Only views that target the destination are sent. They are sent in every region the destination delivers in.
+- Views are sent in throttled batches, so a large resend doesn't flood your receiver.
+- "Sent" means queued for the destination. Whether your receiver accepted the call shows in **Logs**.
+- Views processed before stored mapping results were switched on can't be resent yet, and are counted as having no stored result. Reprocess them instead, for example by deploying the schema.
+- Only one Resend per destination and environment runs at a time.
+- The destination must be enabled for the environment.
