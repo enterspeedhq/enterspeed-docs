@@ -1,9 +1,21 @@
 ---
-title: "Capabilities"
-description: "Tools the model may call during a run, and the images capability that lets a vision model see the document's pictures."
+title: "Capabilities and abilities"
+sidebarTitle: "Capabilities"
+description: "Tools a task may call during a run, and the model abilities that let a model read a record's images and documents."
 ---
 
-Capabilities are extra powers a configuration declares. Two different things live under this heading, and they behave differently.
+Two different things give a job extra power, and you set them in different places.
+
+| | Capabilities | Abilities |
+|---|---|---|
+| What they are | Tools the model may **call** during a run | What the model can **read** from the record |
+| Examples | Data lookup, query indexes, MCP server, web search | Image Reading, Document Reading |
+| Where you set them | The task configuration, under **AI can also…** | On the model — your tenant default under **Settings → Models**, and per job or per quality check in the model picker |
+| What they need | Tool credentials | A model on a gateway that can carry the attachment, and `$images` or `$documents` on the record |
+
+<Info>
+  Images used to be a capability in the task configuration. They are now a model ability, **Image Reading**. [The old images capability](#the-old-images-capability)
+</Info>
 
 ## Tool capabilities
 
@@ -22,49 +34,138 @@ These need platform-side credentials and are configured in the Speedtrain UI. [T
   Live lookup beats pasted data. If reference information changes — stock, pricing tiers, a taxonomy — a capability keeps it current in a way a constant in the prompt cannot.
 </Tip>
 
-## The images capability
+## Model abilities
 
-This one is not a tool. It attaches the input document's pictures to the model call, so that a vision-capable model actually **sees** them instead of reading a URL as text.
+An ability is not a tool. It attaches part of the record to the model call, so the model actually **reads** the attachment instead of reading a URL as text.
+
+| Ability | Reads | From the record's | Settings |
+|---|---|---|---|
+| **Image Reading** | Pictures | `$images` | **Enable Image Reading**, **When the record has no images** |
+| **Document Reading** | PDFs — spec sheets, safety data sheets, manuals, certificates | `$documents` | **Enable Document Reading**, **When the record has no documents** |
+
+Nothing is attached just because the record carries `$images` or `$documents`. The ability must be switched on for the model that makes the call. [Add a content source](/speedtrain/getting-started/content-source)
+
+### See what a model can do
+
+- **Settings → Models** lists your tenant's models. The **Abilities** column shows which abilities each model offers. Open a model to see its ability settings and change your tenant default.
+- In the task configuration editor, the model picker for the specialist and for each AI quality check shows the same abilities. A setting you change there applies to that one job or that one check.
+- When you preview a configuration, the request preview lists the **Active abilities** for the generation call, and the **Active abilities for this rule** for each AI quality check. That is the final answer, after every layer below has had its say.
+
+A model only shows the abilities it offers. A model without Document Reading cannot read documents, whatever you set. A setting marked as set by Enterspeed cannot be changed.
+
+### How the settings stack
+
+Each setting is decided in this order. The last layer that sets it wins.
+
+<Steps>
+  <Step title="Platform default">
+    Enterspeed sets a default for each model in the catalog.
+  </Step>
+
+  <Step title="Tenant">
+    Your default for that model, under **Settings → Models**. It applies to every job that uses the model.
+  </Step>
+
+  <Step title="Job">
+    The task configuration's own setting on the specialist's model. It applies to the generation call only.
+  </Step>
+
+  <Step title="Quality check">
+    An AI quality check's own setting on its model. It applies to that check's evaluation call only.
+  </Step>
+</Steps>
+
+<Warning>
+  A quality check does **not** inherit the job's setting. It resolves from the platform default, then the tenant, then its own setting. If you switch Image Reading off for the job but set nothing on a check, that check still gets the tenant or platform value.
+</Warning>
+
+### Which gateways carry attachments
+
+The model provider fetches the URL directly. Speedtrain never downloads, stores or parses the file. Only some gateways can pass an attachment on:
+
+| Gateway | Images | Documents |
+|---|---|---|
+| OpenRouter | Yes | Yes |
+| Anthropic | Yes | Yes |
+| Any other gateway, such as Azure | No | No |
+
+If an ability is on for a model whose gateway cannot carry it, the model picker warns you, and saving the configuration is refused with a message naming the model and its gateway. Switch the ability off, or pick a model on OpenRouter or Anthropic.
+
+<Note>
+  Documents must be PDFs. Speedtrain checks only the URL's shape, so a URL that does not serve a PDF — or that the provider cannot fetch — fails at the provider. The item is reported as a rejected request, with the provider's own words as the detail.
+</Note>
+
+### When the record has no images or documents
+
+Each ability has a **When the record has no images** or **When the record has no documents** setting:
+
+| In the app | In the API | What happens to a record without the attachment |
+|---|---|---|
+| **FAIL** | `FAIL` | The item fails with `INPUT_IMAGES_MISSING` or `INPUT_DOCUMENTS_MISSING`. It is not retried — the record has to change first. This is the default when nothing is set. |
+| **OPTIONAL** | `SKIP` | The call runs without them. |
+
+An empty array — `"$images": []` or `"$documents": []` — counts as no attachments, the same as leaving the key out.
+
+<Warning>
+  - **FAIL on a quality check fails the whole item**, not just that check's score. It fires before any check is scored.
+  - **A task that runs over another task's output never has images or documents.** With an ability on and this setting at FAIL, every item would fail, so saving is refused. Set it to **OPTIONAL** or switch the ability off. A job that needs the attachments must run first, directly on the index.
+</Warning>
+
+## Checking output against images and documents
+
+Generation and evaluation are separate calls with separate models. That is the property worth designing around: a strong model can write the description, while a cheaper model — from a different vendor, if you like — independently checks it against the record's attachments.
+
+To give a quality check the attachments, switch the ability on for **that check's model**:
+
+- **Image Reading** on a check's model: does the colour and garment type named in the text match the photo?
+- **Document Reading** on a check's model: are the dimensions, materials and safety statements in the text the ones in the spec sheet or safety data sheet?
+
+The evaluator starts from a clean context. It never sees the specialist prompt or the generation conversation — only the output, its own rule, and what its model was given. Its verdict is a second opinion, not a model grading its own homework.
+
+<Info>
+  Attachments and source access are **independent** settings. A check can be given the pictures or the PDFs but not the source text, which is exactly the shape for "does this text match the spec sheet, judged on the spec sheet alone".
+</Info>
+
+### What cannot read attachments
+
+Schema and forbidden-terms rules are structurally text-only. Anything about a picture or a document is a question for an AI quality check — or better, where possible, a deterministic check on the resulting *text*.
+
+<Warning>
+  A check that reads attachments is a model call with images or PDFs attached on every item, which makes it the most expensive kind of check available. Every PDF page counts towards the call's input tokens. Put the question in one check rather than three.
+</Warning>
+
+## The old images capability
+
+Before Image Reading, a task configuration declared images as a capability with `"$type": "images"`, a `uid`, `scope.generation` and `onMissing`, and a quality check opted in by listing the `uid`.
+
+That capability is **replaced for new saves**:
+
+- Saving a configuration that still carries it is refused. Images are now the model's Image Reading ability.
+- Versions saved before the change keep running exactly as before, and can still be activated.
+- When you open such a configuration in the editor, it converts the capability for you and names what it changed: Image Reading is switched on for the task's model if the capability applied to generation, and for the model of each quality check that listed it. Click **Save Changes** to keep it.
+
+| Old capability | Now |
+|---|---|
+| `scope.generation: true` | **Enable Image Reading** on the job's model |
+| A quality check listing the `uid` | **Enable Image Reading** on that check's model |
+| `onMissing: "FAIL"`, or no `onMissing` | **When the record has no images**: **FAIL** |
+| `onMissing: "SKIP"` | **When the record has no images**: **OPTIONAL** |
+
+There was never a documents capability. Document Reading has always been a model ability.
+
+### Setting abilities in the configuration JSON
+
+If you author configurations as JSON — for example through the [MCP server](/speedtrain/mcp-server/overview) — abilities sit under `features` on a model reference, grouped by ability. The `options` object keeps inference settings only:
 
 ```json
-{
-  "$type": "images",
-  "uid": "img-1",
-  "name": "Product photos",
-  "scope": { "generation": true },
-  "onMissing": "FAIL"
+"model": {
+  "id": "…",
+  "options":  { "temperature": 0.2 },
+  "features": {
+    "read-images":    { "images_enabled": true, "images_on_missing": "FAIL" },
+    "read-documents": { "documents_enabled": true, "documents_on_missing": "SKIP" }
+  }
 }
 ```
 
-| Field | Meaning |
-|---|---|
-| `uid` | Unique handle. A quality rule opts into the pictures by listing this value. |
-| `name` | Display name only — never rendered to the model as a callable tool. |
-| `scope.generation` | Whether the **generation** call gets the pictures. It does not gate quality rules. |
-| `onMissing` | `FAIL` or `SKIP` — what happens to a document with no usable pictures. Case-sensitive. |
-
-### Three rules that bite
-
-<Warning>
-  - **At most one images capability per configuration.** `onMissing` is therefore one decision for the whole job.
-  - **Nothing happens until a consumer opts in.** Declaring the capability while neither generation nor any rule uses it means the job still runs text-only.
-  - **The model must be vision-capable**, for the specialist *and* for every rule that opts in. Nothing checks this when you save — it surfaces at run time as a failed attempt.
-</Warning>
-
-### Checking pictures with a different model
-
-Generation and evaluation are separate calls with separate models. That is the property worth designing around: a strong model can write the description while a cheaper vision model — from a different vendor, if you like — independently checks that the colour and garment type named in the text match the photo.
-
-The evaluator starts from a clean context. It never sees the specialist prompt or the generation conversation — only the output, its own rule, and the images it opted into. Its verdict is a second opinion, not a model grading its own homework.
-
-<Info>
-  Images and source access are **independent** knobs. A rule can be given the pictures but not the source text, which is exactly the shape for "does this text match the photo, judged on the photo alone".
-</Info>
-
-### What cannot see pictures
-
-Schema and forbidden-terms rules are structurally text-only. Anything about the picture is a question for an AI rule — or better, where possible, a deterministic check on the resulting *text*.
-
-<Warning>
-  A vision rule is a model call with images attached on every item, which makes it the most expensive kind of check available. Put the vision question in one rule rather than three.
-</Warning>
+The same shape works on the specialist's model and on each AI quality check's model. Values are case-sensitive: `FAIL` and `SKIP`, never `fail`. Saving is refused for an ability setting placed in `options`, and for an ability the referenced model does not offer.
