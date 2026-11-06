@@ -1,0 +1,96 @@
+---
+title: "Processing chain approval"
+description: "Why Speedtrain can refuse to save, publish, start or retry a task configuration, and how to approve the parties in its processing chain."
+---
+
+Every deployment model sends your data to one or more organisations when it runs. Some of those organisations have not been approved by Enterspeed. Before your data can reach one of them, your tenant approves it. Until then, Speedtrain refuses to save, publish or run the task configurations that use that model.
+
+Find it under **Settings → Processing chain approval**.
+
+<Info>
+  Processing chain approval is not the same as approving an item in a [review session](/speedtrain/key-concepts/review-sessions). Review approval decides whether generated output is accepted. Processing chain approval decides where your data is allowed to go.
+</Info>
+
+## Processing chains and parties
+
+A model's **processing chain** is every organisation its requests can reach. That includes the gateway and every provider the gateway may route the model to. A gateway such as OpenRouter can send one model to several providers, so its chain can list several parties.
+
+Each organisation in the chain is a **party**. Enterspeed reviews every party and gives it one of two statuses:
+
+| Status | What it means for you |
+|---|---|
+| **Approved** | Enterspeed has approved the party. You do not need to do anything. |
+| **Not approved — tenants must approve** | Enterspeed has not approved the party. Your tenant approves it before a task configuration can send data to it. |
+
+A task configuration's processing chain is the chain of every model it uses: the specialist's model and the model of each AI evaluation [quality check](/speedtrain/key-concepts/quality-checks). Every party in it that Enterspeed has not approved needs your approval.
+
+An approval covers the party, not one model. Once you approve a party, every model and every task configuration that sends data to it is covered.
+
+<Note>
+  Approving a party records that your organisation holds the data processing agreement with that party.
+</Note>
+
+## What is refused until you approve
+
+Your tenant's **approval mode** is set by Enterspeed. It decides how much is refused while a party is still waiting for approval.
+
+| Action | Strict (default) | Non-strict |
+|---|---|---|
+| Save a new version of a task configuration | Refused | Refused |
+| Publish or activate a version | Refused | Refused |
+| Start a review session, test run or subscription | Refused | Allowed |
+| Retry an item | Refused | Allowed |
+| Items already queued | Fail before any data is sent | Run |
+
+Adding a model to your tenant, or switching a disabled one back on, is also refused while a party in its chain is waiting for approval.
+
+In **Strict** mode, a task configuration that is missing approval is shown as **Disabled — approval needed**. A disabled configuration stops every one of its versions, including an older version whose chain was already covered.
+
+In **Non-strict** mode, the configuration shows **Processing chain approval not given**. It still runs, but you can't save changes to it or publish a version until the parties are approved.
+
+<Info>
+  Enterspeed can turn processing chain approval off for a tenant. Then nothing is refused, and the settings page says that processing chain approval is turned off for your organisation.
+</Info>
+
+## Approve the parties
+
+<Steps>
+  <Step title="Open the approval page">
+    Go to **Settings → Processing chain approval**. **Needed to run your task configurations** lists every task configuration that is missing approval, grouped by environment. Each one shows which model needs which parties.
+
+    You can also click **Review processing chain** on a disabled task configuration to approve only that configuration's parties.
+  </Step>
+
+  <Step title="Confirm the statement">
+    Check the statement. It names each party you are approving, and confirms that your organisation is responsible for the data processing agreement with it.
+  </Step>
+
+  <Step title="Click Approve">
+    Task configurations whose processing chain is now approved can run again.
+  </Step>
+</Steps>
+
+Approvals are permanent records of what your organisation has confirmed, so you can't withdraw them from this page. **Approved parties** lists every approval, with when it was made and by whom. An approval that Enterspeed made on your organisation's behalf is marked **Approved by Enterspeed** or **Approved by Enterspeed Admin**, and shows the approval record Enterspeed gave for it.
+
+### A configuration that stays disabled
+
+| Shown as | What to do |
+|---|---|
+| **Disabled — re-check needed** | Its processing chain is already approved, but it has not been re-checked yet. Click **Re-check all** on the approval page, or **Re-check** on the configuration. |
+| **Disabled — model unavailable** | A model it uses is no longer available. This is not an approval problem: choose another model in the task configuration. Approving or re-checking does not help. |
+
+## Retry items that failed for missing approval
+
+An item whose processing chain is not approved fails before any data leaves Speedtrain. Its failure says that the task configuration is blocked by processing chain approval and links to **Settings → Processing chain approval**.
+
+Once the parties are approved, retry the failed items. In a review session, **Retry *n* failed** retries every failed item in one go. You can also retry a single item.
+
+<Tip>
+  Approve first, then retry. In Strict mode, a retry is refused until the approval is in place.
+</Tip>
+
+## Read approval from the MCP server
+
+The [Management MCP server](/speedtrain/mcp-server/overview) shows processing chain approval but cannot approve. When a save, publish, start or retry is refused for missing approval, the agent names the party, tells you to approve it in **Settings → Processing chain approval**, and does not try to work around it.
+
+Task configurations and review session status carry the approval state in `dataHandlerConsent`, and two read-only tools list what is missing and what is approved. [Management MCP tools](/speedtrain/mcp-server/tools#processing-chain-approval)

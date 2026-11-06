@@ -360,7 +360,8 @@
             "icon": "gear",
             "pages": [
               "speedtrain/settings/management-clients",
-              "speedtrain/settings/tool-credentials"
+              "speedtrain/settings/tool-credentials",
+              "speedtrain/settings/processing-chain-approval"
             ]
           },
           {
