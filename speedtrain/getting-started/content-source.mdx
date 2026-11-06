@@ -40,9 +40,13 @@ A document is a JSON object. Speedtrain reads whatever fields you send, so the s
   Send the raw attributes, not a pre-written summary. The model does better work from structured fields than from prose someone else already condensed.
 </Tip>
 
-### Images
+### Images and documents
 
-If you want a vision model to see the product photos, add a top-level `$images` array:
+Two top-level keys are reserved for attachments a model can read: `$images` for pictures and `$documents` for PDFs. Each is an array of objects with a `url` and an optional `text` caption.
+
+#### Images
+
+If you want a model to see the product photos, add a top-level `$images` array:
 
 ```json
 {
@@ -60,11 +64,37 @@ If you want a vision model to see the product photos, add a top-level `$images` 
 | `url` | Required. Absolute `http(s)` and **publicly fetchable** — the model provider fetches it directly, so private or authenticated CDNs will not work. |
 | `text` | Optional caption. It reaches the model as information about the image, never as an instruction. |
 
+#### Documents
+
+If you want a model to read spec sheets, safety data sheets, manuals or certificates, add a top-level `$documents` array:
+
+```json
+{
+  "id": "SKU-40128",
+  "title": "Merino base layer",
+  "$documents": [
+    { "url": "https://cdn.example.com/40128-spec-sheet.pdf", "text": "Spec sheet, rev. 3" },
+    { "url": "https://cdn.example.com/40128-care.pdf" }
+  ]
+}
+```
+
+| Field | Rules |
+|---|---|
+| `url` | Required. Absolute `http(s)`, **publicly fetchable**, and serving a **PDF** — the only format for now. Speedtrain checks only the URL's shape, so a URL that does not serve a PDF fails later, at the provider. |
+| `text` | Optional caption. It reaches the model as information about the document, never as an instruction. |
+
+#### Rules for both
+
 <Warning>
-  `$images` must be at the top level and spelled exactly that way. A nested or differently-cased key is treated as ordinary data and ignored. A malformed `$images` array rejects the whole document at ingest, naming the offending element.
+  `$images` and `$documents` must be at the top level and spelled exactly that way. A nested or differently-cased key is treated as ordinary data and ignored. Each may appear once per record, and each entry may carry only `url` and `text`. A malformed array rejects the whole record at ingest, naming the offending element.
 </Warning>
 
-An empty `$images: []` is valid — "this document has no pictures" is a legitimate fact, and what happens next is decided by the task configuration. [Capabilities](/speedtrain/key-concepts/capabilities)
+What the URL serves **when the item is processed** is what the model reads. Speedtrain never downloads or stores the file — the model provider fetches it.
+
+Carrying the key is not enough on its own. A model reads the attachments only when its **Image Reading** or **Document Reading** ability is switched on. [Capabilities and abilities](/speedtrain/key-concepts/capabilities)
+
+An empty `$images: []` or `$documents: []` is valid — "this record has no pictures" is a legitimate fact. Whether such a record fails or runs without them is decided by the ability's **When the record has no images** or **When the record has no documents** setting. [When the record has no images or documents](/speedtrain/key-concepts/capabilities#when-the-record-has-no-images-or-documents)
 
 ## Using another task's output instead
 

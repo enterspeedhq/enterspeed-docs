@@ -48,9 +48,11 @@ Keep to 2–3 fields per option. Every field is a constraint the model has to ho
 
 ## 3. Give the AI extra abilities
 
-Under **AI can also…** you attach capabilities — looking up data in an index, calling an external MCP server, searching the web, or seeing the document's images.
+Under **AI can also…** you attach tool capabilities — looking up data in an index, calling an external MCP server, or searching the web.
 
-Most first configurations need none of these. Add them when the job genuinely cannot be done from the document alone. [Capabilities](/speedtrain/key-concepts/capabilities)
+Reading the record's images or PDFs is not set here. It is a model ability: in the specialist's model picker, switch on **Image Reading** or **Document Reading**, and choose what happens to a record that has none. The picker shows only the abilities that model offers, and your tenant default from **Settings → Models** applies until you change it.
+
+Most first configurations need none of these. Add them when the job genuinely cannot be done from the record's fields alone. [Capabilities and abilities](/speedtrain/key-concepts/capabilities)
 
 ## 4. Write the quality checks
 
@@ -60,7 +62,7 @@ This is the part that makes the job trustworthy. Three rule types are available:
 |---|---|---|
 | JSON Schema | Code | The output contract — field names, types, length limits, enums, patterns |
 | Forbidden terms | Code | Exact words and phrases that must never appear |
-| AI evaluation | A model call | Questions that genuinely need judgment — tone, naturalness, grounding |
+| AI evaluation | A model call | Questions that genuinely need judgment — tone, naturalness, grounding, whether the text matches the photo or the spec sheet |
 
 Start with a schema rule. Every configuration should have one, because it is the only thing that machine-enforces the shape of the output:
 

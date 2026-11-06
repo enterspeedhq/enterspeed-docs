@@ -75,7 +75,7 @@ Each rule carries:
 
 - A **name**, which the generator sees as a headline
 - A **description**: complete, self-contained criteria for what to evaluate
-- Its **own model**
+- Its **own model**, with its own ability settings — switch on Image Reading or Document Reading there to check the output against the record's pictures or PDFs
 - An **evaluation type**: pass/fail (the default, and right about eighty percent of the time) or custom with a rubric
 - Whether it gets **access to the source document**
 
@@ -101,7 +101,8 @@ This table decides whether a verdict means anything:
 | Source document | Yes | Only with source access enabled |
 | Generated output | — | Yes |
 | Other rules | Yes, all of them | No — each rule is evaluated in isolation |
-| Document images | Only if generation is in scope | Only if the rule opts in by uid |
+| Record images (`$images`) | Only with Image Reading on for the job's model | Only with Image Reading on for the rule's own model |
+| Record documents (`$documents`) | Only with Document Reading on for the job's model | Only with Document Reading on for the rule's own model |
 
 <Warning>
   **The trap.** A rule whose text talks about grounding or faithfulness to source data, but which was never given source access, will still produce confident feedback. It never received the source — it is judging phrasing while sounding like it checked the facts.

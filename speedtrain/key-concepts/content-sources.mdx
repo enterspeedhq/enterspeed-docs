@@ -24,7 +24,7 @@ index ──▶ task 1: extract attributes ──▶ stage output ──▶ task
 Find them under **Content sources → Stage outputs**.
 
 <Warning>
-  A chained stage carries no images. When the input is another task's output there is no source document and therefore no `$images` — so a configuration that needs to see pictures must run first, directly on the index.
+  A chained stage carries no images or documents. When the input is another task's output there is no source document and therefore no `$images` or `$documents` — so a configuration that needs to read pictures or PDFs must run first, directly on the index.
 </Warning>
 
 ## The input is chosen at session time
@@ -57,4 +57,4 @@ When starting a session you choose between:
 
 A document is whatever JSON you push. Use your source system's own field names.
 
-One key is reserved: a top-level `$images` array attaches pictures to the record, so that a vision-capable model can see them. [Add a content source](/speedtrain/getting-started/content-source)
+Two keys are reserved: a top-level `$images` array attaches pictures to the record, and a top-level `$documents` array attaches PDFs. A model reads them when its Image Reading or Document Reading ability is on. [Add a content source](/speedtrain/getting-started/content-source)
