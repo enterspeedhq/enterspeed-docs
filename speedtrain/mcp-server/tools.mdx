@@ -85,6 +85,10 @@ Task configuration and session results carry a `dataHandlerConsent` status. It s
 
 A session runs in one of two modes. A **test** session evaluates a version without entering the review and delivery path, so it never delivers anything. A **review** session always runs the published version, and content you accept in it can reach your destinations.
 
+A test session needs a `limit`, the number of documents to run. By default it takes the first `limit` documents of the input, so every run uses the same documents. A configuration you keep revising against those documents gets tuned to them. It passes the test and then fails on the rest of your catalogue. To avoid that, pass `samplingStrategy` as `random` on `speedtrain_start_review_session` or `speedtrain_preview_review_session`. Each run then checks a fresh random sample of `limit` documents. `ordered` is the default.
+
+Random sampling works only in test mode, with a limit, on an index input. To re-run exactly the documents an earlier session used, select them by external ID instead and leave `samplingStrategy` out. A preview with `random` needs a limit too, and its total is still the full set of candidate documents, not the sample.
+
 <Tip>
   Before re-running a configuration that has run before, list its existing sessions and consider reusing one. Comparing two runs only means something if both cover the same documents.
 </Tip>
