@@ -43,6 +43,16 @@ The Query MCP also accepts a scoped environment client key in an `x-api-key` hea
 | [Management MCP](/enterspeed/mcp-server/management-mcp/overview) | Signing in with your Enterspeed account. |
 | [Documentation MCP](/enterspeed/mcp-server/documentation-mcp/overview) | Nothing — the documentation is public. |
 
+### How long a sign-in lasts
+
+A sign-in lasts **7 days** from the moment you sign in. Your client renews its access in the background every hour, so you do not notice anything during those 7 days. After that, the client asks you to sign in again. A scoped key on the Query MCP does not expire this way.
+
+### When someone leaves your organisation
+
+**Remove the person from your Enterspeed tenant.** On the Management MCP that takes effect at once, because every request is checked against the tenant's members. On the Query MCP it stops new selections at once, but a session that already has an environment selected keeps querying it until it selects again or reconnects.
+
+Disabling the person in your own directory is not enough on its own. If they sign in with your company's Microsoft account, disabling them there stops new sign-ins, but a connection they already have keeps working for up to 7 days. If you need someone's MCP connections ended straight away, contact Enterspeed support. We end their sign-ins, and their connections stop when the client next renews its access, normally within the hour.
+
 ## Transport
 
 Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL, and nothing else. Choose the **HTTP** or **Streamable HTTP** transport in your client. The older SSE transport does not work: a client set to *SSE* fails on its first request with an HTTP 400 error. There is no `/sse` endpoint — always configure the root URL.
