@@ -49,9 +49,9 @@ A sign-in lasts **7 days** from the moment you sign in. Your client renews its a
 
 ### When someone leaves your organisation
 
-**Remove the person from your Enterspeed tenant.** On the Management MCP that takes effect at once, because every request is checked against the tenant's members. On the Query MCP it stops new selections at once, but a session that already has an environment selected keeps querying it until it selects again or reconnects.
+**Remove the person from your Enterspeed tenant.** On the Management MCP that takes effect at once, because every request is checked against the tenant's members. On the Query MCP it stops new selections at once, but a session that already has an environment selected keeps querying it. To end that straight away, regenerate the **Enterspeed MCP (sign-in)** environment client in each environment the person used, in the Management App. Their session stops within about five minutes, and everyone else selects the environment again the next time they query.
 
-Disabling the person in your own directory is not enough on its own. If they sign in with your company's Microsoft account, disabling them there stops new sign-ins, but a connection they already have keeps working for up to 7 days. If you need someone's MCP connections ended straight away, contact Enterspeed support. We end their sign-ins, and their connections stop when the client next renews its access, normally within the hour.
+Disabling the person in your own directory is not enough on its own. If they sign in with your company's Microsoft account, disabling them there stops new sign-ins, but it does not end a connection they already have. Removing them from the tenant does.
 
 ## Transport
 
