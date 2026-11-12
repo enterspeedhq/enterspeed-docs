@@ -73,10 +73,25 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_set_destination_status` | Activate or deactivate it. |
 | `speedtrain_delete_destination` | Remove it. |
 
+## Processing chain approval
+
+Both tools are read-only. A person approves a party in the app, under **Settings → Processing chain approval** — it cannot be done over MCP. [Processing chain approval](/speedtrain/settings/processing-chain-approval)
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_task_configs_missing_approval` | Task configurations, in every environment of the tenant, that are missing processing chain approval or use a model that is no longer available — with each model and the party it is missing. **Paginated.** |
+| `speedtrain_list_processing_chain_parties` | The parties a processing chain can send data to, whether Enterspeed has approved each, and where it has not, whether your tenant has, when, and who approved it by name. **Paginated.** |
+
+`speedtrain_list_task_configs`, `speedtrain_get_task_config` and `speedtrain_get_review_session_status` also carry the approval state, in `dataHandlerConsent`: whether the configuration can run, and which model needs which party.
+
+<Info>
+  When saving, publishing, starting a session or retrying is refused for missing approval, the agent names the party and sends you to **Settings → Processing chain approval**. It does not retry or swap the model to get around it.
+</Info>
+
 ## Pagination
 
 <Info>
-  Exactly three tools paginate: `speedtrain_list_index_documents`, `speedtrain_list_review_sessions`, and `speedtrain_query_review_items`.
+  Exactly five tools paginate: `speedtrain_list_index_documents`, `speedtrain_list_review_sessions`, `speedtrain_query_review_items`, `speedtrain_list_task_configs_missing_approval`, and `speedtrain_list_processing_chain_parties`.
 
   Each returns a `total` and a `cursor`. Pass the cursor back unchanged, with the same filters, for the next page. A `null` cursor is the only end signal.
 
