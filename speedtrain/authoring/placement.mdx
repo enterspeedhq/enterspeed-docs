@@ -21,9 +21,10 @@ The single most common way a task configuration goes wrong is **duplication**: t
 | Context-dependent judgment — tone, naturalness, a word used only as a buzzword | An AI evaluation rule | Needs understanding, not matching. |
 | Brand voice, terminology, audience traits | A variant option's fields | Reaches the generator **and** the checks, and can be scoped. |
 | How the AI should use a dimension | That variant's instruction | Per-dimension direction. The defaults usually suffice. |
-| Reference data to look up at runtime | A capability | Live data beats pasted data. |
-| Pictures the model must actually see | The images capability, plus `$images` on the document | A vision model reads the picture; a text model reads a URL and guesses. |
-| Whether the generated text matches the pictures | An AI rule that opts into the images capability | Verification is a separate call, and can use a different model than generation. |
+| Reference data to look up at runtime | A tool capability | Live data beats pasted data. |
+| Pictures the model must actually see | Image Reading on the job's model, plus `$images` on the record | With the ability on, the model reads the picture; without it, the model reads a URL and guesses. |
+| Spec sheets, safety data sheets or manuals the model must actually read | Document Reading on the job's model, plus `$documents` on the record | The provider reads the PDF; a URL in the text tells the model nothing. |
+| Whether the generated text matches the pictures or the PDFs | An AI rule whose own model has Image Reading or Document Reading on | Verification is a separate call, and can use a different model than generation. A rule does not inherit the job's setting. |
 | Generation-only context — campaign notes, edge cases | Special instructions | Checks cannot see it, so only put things here that never need checking. |
 | Which data the job runs over | The session's input binding, not the configuration | One configuration, many feeds. |
 
