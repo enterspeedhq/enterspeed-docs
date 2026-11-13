@@ -99,11 +99,6 @@ You published version 4 and start a real review session.
 - **Preview sessions.** They run what you select, as before.
 - **A configuration that reads another task's stage output.** Its sessions run as before.
 
-### From the API and agents
-
-- **API.** Bulk session options take an optional `scope`: `EVERYTHING` or `SHOULD_BE_PROCESSED`. Leave it out and you get `EVERYTHING`, so existing integrations do not change. The session preview returns `shouldBeProcessedTotal` next to `total`, which keeps its meaning as the **Everything** count. `SHOULD_BE_PROCESSED` on a preview session or a chained configuration is refused, and nothing runs.
-- **MCP server.** An agent that starts a real review session runs **Everything** for now. [MCP tools](/speedtrain/mcp-server/tools)
-
 ## Related
 
 - [Review sessions](/speedtrain/key-concepts/review-sessions)
