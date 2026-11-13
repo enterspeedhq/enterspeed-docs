@@ -63,9 +63,9 @@ Every tool takes a tenant and an environment — neither is inferred from your c
   Before re-running a configuration that has run before, list its existing sessions and consider reusing one. Comparing two runs only means something if both cover the same documents.
 </Tip>
 
-<Warning>
-  `speedtrain_start_review_session` runs **Everything** the published version has not run yet, including documents that already have an accepted output. The app's **Should be processed** choice is not available to agents yet. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
-</Warning>
+<Info>
+  A real review started by an agent runs **Should be processed** unless the agent asks for **Everything**, as in the app: products that already have an accepted output for their current data are left out. `speedtrain_preview_review_session` returns both counts first, so the agent can tell you what a run covers before it starts. The counts are a snapshot, not a cap; to cap a run, the agent sets a limit. When nothing should be processed, no session is started. Test sessions, and configurations that read another configuration's output, have no choice and run everything. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
+</Info>
 
 ## Destinations
 
