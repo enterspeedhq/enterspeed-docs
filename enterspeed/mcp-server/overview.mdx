@@ -43,6 +43,16 @@ The Query MCP also accepts a scoped environment client key in an `x-api-key` hea
 | [Management MCP](/enterspeed/mcp-server/management-mcp/overview) | Signing in with your Enterspeed account. |
 | [Documentation MCP](/enterspeed/mcp-server/documentation-mcp/overview) | Nothing — the documentation is public. |
 
+### How long a sign-in lasts
+
+A sign-in lasts **7 days** from the moment you sign in. Your client renews its access in the background every hour, so you do not notice anything during those 7 days. After that, the client asks you to sign in again. A scoped key on the Query MCP does not expire this way: it stays valid until you regenerate the environment client's key or delete the client.
+
+### When someone leaves your organisation
+
+**Remove the person from your Enterspeed tenant.** On the Management MCP that takes effect at once, because every request is checked against the tenant's members. On the Query MCP, the person can no longer select an environment, but a session of theirs that already has one selected keeps querying it. To end that straight away, regenerate the **Enterspeed MCP (sign-in)** environment client in each environment the person used, in the Management App. Their session stops within about five minutes, and everyone else selects the environment again the next time they query.
+
+Disabling the person in your own directory is not enough on its own. If they sign in with your company's Microsoft account, disabling them there stops new sign-ins, but it does not end a connection they already have. Removing them from the tenant does on the Management MCP. On the Query MCP, regenerate the sign-in environment client as described above.
+
 ## Transport
 
 Both tenant-facing servers speak **MCP Streamable HTTP** on the root URL, and nothing else. Choose the **HTTP** or **Streamable HTTP** transport in your client. The older SSE transport does not work: a client set to *SSE* fails on its first request with an HTTP 400 error. There is no `/sse` endpoint — always configure the root URL.
