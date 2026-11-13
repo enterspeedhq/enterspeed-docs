@@ -50,6 +50,8 @@ From that feedback you can tell whether the *generation* is wrong or the *rule* 
 
 For each item you can accept, decline, or retry. On a retry, the previous attempt's failure feedback is fed into the next generation, so the model sees specifically what went wrong.
 
+Decisions in a preview session are for learning only. Accepting an item here does not count as done when a real review later chooses **Should be processed**. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
+
 **Accept quality gate approvals** accepts every item the gate passed in one action. That is the intended workflow at volume: let the gate handle the clear passes, spend your attention on the rest.
 
 <Tip>
