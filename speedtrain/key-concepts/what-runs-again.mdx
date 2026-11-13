@@ -1,0 +1,106 @@
+---
+title: "What runs again after a change"
+description: "After you publish a new version, choose whether a real review runs every document again or only the ones that still need work."
+---
+
+Publishing a new version of a configuration runs nothing by itself. The question comes when you start the next real review session: should it run every document in the index again, or only the documents that still need work?
+
+Each document in a run is one generation, so your answer decides what the run costs.
+
+## The choice before a run
+
+When you start a real review session on an index, Speedtrain shows two counts and asks you to pick one.
+
+| Choice | What it runs |
+|---|---|
+| **Everything** | Every document this version has not run yet, whatever older versions did. |
+| **Should be processed** | Every document this version has not run yet that has no accepted output for its current data, from any version. |
+
+**Should be processed** is preselected.
+
+- **Both counts are exact when you see them.** They are a snapshot, not a cap. The run covers what matches when it starts, so a document pushed in the meantime is included.
+- **To cap a run,** set a session limit. The limit picks from the choice you made.
+- **When nothing is left,** the screen says "Nothing to run. Every product this version has not run yet already has an accepted text." You cannot start the session with that choice. **Everything** is still one click away.
+
+<Info>
+  On screen, Speedtrain calls each document in the index a product.
+</Info>
+
+## When a document is done
+
+A document is **done** for a configuration when a real review accepted an output for it. All four of these must hold:
+
+- **Its current data.** The output was produced from the document as it is now. Any change pushed after the accept makes it due again, even a change to a field the configuration never reads.
+- **The same configuration,** on any version.
+- **The same variant options.** A document done in Danish is not done in English.
+- **The same index.** The same id in another index is another document.
+
+It does not matter who accepted the output: a person, **Accept quality gate approvals**, or an automation subscription that approves automatically. Delivery does not matter either. Done is about the decision, not about whether a destination received it.
+
+Once done, a document stays done until its data changes. Declining an output from a later version does not undo it.
+
+**Not done**, so included in **Should be processed**:
+
+- Never run
+- Declined
+- Waiting for a decision
+- Generation failed
+- Still generating
+- Accepted, but the document changed since
+
+## A version never runs the same document twice
+
+Both choices leave out every document the running version already has an item for, unless that item's generation failed.
+
+So declining an item and starting another session on the same version does not bring that document back. It comes back when the **next** version runs **Should be processed**.
+
+The same holds after a rollback. Activate an older version again, and it skips every document it already has an item for.
+
+## A newer output replaces the waiting item
+
+When a newer output lands for a document whose older item still waits for a decision, the older item is **superseded**. It closes and can no longer be accepted, so reviewers are not left deciding on two outputs for one document.
+
+- **"Newer" means the item created later.** After a rollback, the older version's new output is the newer one.
+- **A failed generation replaces nothing.** The waiting item stays open.
+- **Accepted and declined items are never replaced.**
+
+These close nothing by themselves:
+
+- Publishing or activating a version.
+- Editing an automation subscription: its version, its variant options or its input.
+
+Items already waiting stay open, and you can still accept them.
+
+## Preview sessions are outside
+
+Preview sessions are for testing, so they never count.
+
+- Accepting an item in a preview session does not make a document done.
+- A preview item never replaces another item, and is never replaced.
+
+## Examples
+
+You published version 4 and start a real review session.
+
+| The document | Everything | Should be processed |
+|---|---|---|
+| Accepted on version 3, unchanged since | Runs | Skipped |
+| Accepted on version 3, then its price changed | Runs | Runs |
+| Pushed again with identical content after its accept | Runs | Skipped. Identical content is not a change. |
+| Accepted on version 2, declined on version 3 | Runs | Skipped. It is still done. |
+| Declined on version 3 | Runs | Runs |
+| Waiting for a decision on version 3 | Runs. When the new output lands, the version 3 item closes. | The same |
+| Accepted only in a preview session | Runs | Runs |
+| Never run | Runs | Runs |
+| Deleted from the index | Not counted | Not counted |
+
+## Where the choice does not appear
+
+- **Preview sessions.** They run what you select, as before.
+- **A configuration that reads another task's stage output.** Its sessions run as before.
+
+## Related
+
+- [Review sessions](/speedtrain/key-concepts/review-sessions)
+- [Task configurations](/speedtrain/key-concepts/task-configurations): versions and publishing
+- [Add a content source](/speedtrain/getting-started/content-source): pushing and updating documents

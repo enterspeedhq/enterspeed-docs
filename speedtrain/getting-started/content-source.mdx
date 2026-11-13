@@ -21,6 +21,15 @@ A task needs data to run over. In Speedtrain that data lives in an **index** —
   </Step>
 </Steps>
 
+### Updating and deleting documents
+
+- **Pushing identical content changes nothing.** No new version is made, and nothing runs.
+- **Any changed field is new data,** even a field no configuration reads. A document accepted before is then due again under **Should be processed**. Keep fields that change often but do not matter, such as timestamps, out of what you push.
+- **A deleted document** is left out of every new run. Its items already waiting for a decision stay open.
+- **A document pushed again after a delete** is a new document. It has no accepted output yet.
+
+[What runs again after a change](/speedtrain/key-concepts/what-runs-again)
+
 ## Document shape
 
 A document is a JSON object. Speedtrain reads whatever fields you send, so the shape is yours to decide — use the field names your source system already uses rather than inventing new ones.

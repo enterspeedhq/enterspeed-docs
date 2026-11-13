@@ -23,8 +23,12 @@ Creating a session binds three things:
   </Step>
 </Steps>
 
+## Choosing what to run
+
+A real review session on an index asks one more question before it starts: run **Everything** this version has not run yet, or only what **Should be processed**, which leaves out documents that already have an accepted output for their current data. **Should be processed** is preselected. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
+
 <Tip>
-  Before re-running a configuration that has run before, look at its existing sessions. A comparison between two runs only means something if both cover the same documents.
+  To compare two runs, look at the existing sessions first. A comparison only means something if both cover the same documents.
 </Tip>
 
 ## Preview sessions and review sessions
@@ -67,6 +71,8 @@ For each item a person can:
 | Accept | The output is approved, and delivered if an active destination exists |
 | Decline | The output is rejected |
 | Retry | A new generation attempt, with the previous attempt's failure feedback fed back in |
+
+An item waiting for a decision closes when a newer output lands for the same document. It is then **superseded** and can no longer be accepted. [A newer output replaces the waiting item](/speedtrain/key-concepts/what-runs-again#a-newer-output-replaces-the-waiting-item)
 
 **Accept quality gate approvals** accepts every gate-passed item at once. That is the intended workflow at volume — let the gate handle the clear passes and spend attention on the rest.
 
