@@ -1,7 +1,7 @@
 ---
 title: "MCP server"
 sidebarTitle: "Overview"
-description: "Drive Speedtrain from an AI agent — what the MCP server can do, and the boundary it deliberately does not cross."
+description: "Drive Speedtrain from an AI agent — what the MCP server can do, and where a person stays in charge."
 ---
 
 Speedtrain exposes a **Model Context Protocol** server, so an AI agent can author task configurations, run test sessions, and read results without a person clicking through the UI.
@@ -9,7 +9,7 @@ Speedtrain exposes a **Model Context Protocol** server, so an AI agent can autho
 To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of any Speedtrain page, or see [Connect to the MCP server](/speedtrain/mcp-server/connect).
 
 <Info>
-  The MCP server is for **building and inspecting**. It can create a configuration, run a preview, and read every score and piece of feedback — but it cannot accept content or ship it. Those decisions stay with people, in the Speedtrain UI.
+  The MCP server is for **building and inspecting**. It can create a configuration, run a preview, and read every score and piece of feedback. It can also accept, reject and retry review items, but an agent should do that only on your instruction. In a review session, accepting delivers content to your destinations and cannot be undone.
 </Info>
 
 ## What it is good at
@@ -30,17 +30,21 @@ To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of a
   <Card title="Managing destinations" icon="paper-plane">
     List, create, and set the status of destinations.
   </Card>
+
+  <Card title="Reviewing and automating" icon="circle-check">
+    Accept, reject and retry items, and manage the subscriptions that run a configuration on new documents.
+  </Card>
 </Columns>
 
 ## What it deliberately cannot do
 
 <Warning>
-  - **Accept or decline content.** Every human decision stays in the UI.
+  - **Approve a processing chain party.** A person does that in the app.
   - **Configure tool capabilities.** Those need platform-side credentials and are set up in the UI. A configuration's existing capability entries are carried through untouched when an agent edits the document.
   - **Write documents.** Index documents are read-only over MCP.
 </Warning>
 
-That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy — while the decisions that carry consequences remain with a person.
+That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy — while the decisions that carry consequences stay with a person. Agents are told to accept only what you have read and approved, or what you have given a standing instruction to accept.
 
 ## Getting oriented
 
