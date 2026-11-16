@@ -9,7 +9,7 @@ Speedtrain exposes a **Model Context Protocol** server, so an AI agent can autho
 To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of any Speedtrain page, or see [Connect to the MCP server](/speedtrain/mcp-server/connect).
 
 <Info>
-  The MCP server is for **building and inspecting**. It can create a configuration, run a preview, and read every score and piece of feedback. It can also accept, reject and retry review items, but an agent should do that only on your instruction. In a review session, accepting delivers content to your destinations and cannot be undone.
+  The MCP server is for **building, inspecting and, on your instruction, deciding**. It can create a configuration, run a preview, and read every score and piece of feedback. It can also accept, reject and retry review items. Agents are instructed to do that only on your say-so, but nothing in the server enforces it. In a review session, accepting delivers content to your destinations and cannot be undone.
 </Info>
 
 ## What it is good at
@@ -44,7 +44,7 @@ To set it up, click **Use Speedtrain in Claude** in the bottom-right corner of a
   - **Write documents.** Index documents are read-only over MCP.
 </Warning>
 
-That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy — while the decisions that carry consequences stay with a person. Agents are told to accept only what you have read and approved, or what you have given a standing instruction to accept.
+That boundary is the point. An agent can do the laborious part — drafting rules, reading hundreds of rejections, spotting which check is noisy — while the decisions that carry consequences stay with a person. Agents are instructed to accept only what you have read and approved, or what you have given a standing instruction to accept.
 
 ## Getting oriented
 

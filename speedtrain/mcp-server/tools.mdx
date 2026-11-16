@@ -82,11 +82,11 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_accept_review_item` | Accept one item's output. Pass the person's own corrected text if they rewrote it. |
 | `speedtrain_reject_review_item` | Reject one item for good, with the reviewer's reason. |
 | `speedtrain_retry_review_item` | Send one item back for another attempt. The feedback travels with the retry. |
-| `speedtrain_accept_all_review_items` | Accept every eligible item in a session, by scope: only items the quality gate approved, or everything awaiting review. |
+| `speedtrain_accept_all_review_items` | Accept every eligible item in a session, by scope: only items the quality gate approved, or everything awaiting review. The second scope also accepts, and delivers, items the quality gate did not approve. |
 | `speedtrain_retry_all_review_items` | Re-run every eligible item in a session, by scope: items that failed to process, or items the quality gate rejected. |
 
 <Warning>
-  In a review session, accepting delivers the content to the environment's destinations, and a decision cannot be undone. In a test session, nothing is ever delivered. Accepting is a person's judgement: an agent accepts what you have read and told it to accept, or what you have given it a standing instruction to accept. It does not accept output because it scored well. Accept and retry decisions are recorded against the signed-in user or the owner of the access token. Bulk accepts are not.
+  In a review session, accepting delivers the content to the environment's destinations, and a decision cannot be undone. In a test session, nothing is ever delivered. Accepting is a person's judgement. Agents are instructed to accept only what you have read and told them to accept, or what you have given them a standing instruction to accept, and not output that merely scored well. Nothing in the server enforces this. Accepting one item is recorded against the signed-in user or the owner of the access token. Accepting in bulk is not.
 </Warning>
 
 <Info>
@@ -104,14 +104,12 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_delete_subscription` | Delete it. Existing sessions and items stay reviewable. |
 
 <Info>
-  A subscription processes only documents ingested after it exists. Activating a new version of a configuration moves its active subscriptions onto that version. Changing a subscription's variant options or input supersedes every item awaiting review.
+  A subscription processes only documents ingested after it exists. Activating a new version of a configuration moves its active subscriptions onto that version. Changing a subscription's variant options or input supersedes every item awaiting review. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
 </Info>
 
 <Warning>
   A subscription that is active with auto-approve set to **Always** publishes every output with no person involved, and the quality gate cannot stop it. An agent says so and waits for you to agree first.
 </Warning>
-
-[What runs again after a change](/speedtrain/key-concepts/what-runs-again)
 
 ## Destinations
 
