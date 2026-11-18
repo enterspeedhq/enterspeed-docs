@@ -35,7 +35,14 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 |---|---|
 | `speedtrain_list_indices` | Indexes in the environment. |
 | `speedtrain_list_index_documents` | Documents in an index. **Paginated.** |
-| `speedtrain_get_index_document` | One document, including its `$images` and `$documents`. |
+| `speedtrain_get_index_documents` | Up to 50 documents from one index, each including its `$images` and `$documents`. Pass the `document` handle from a review item to read the source at the version the run used. |
+| `speedtrain_get_index_field_manifest` | The fields an index declares, and whether each is ready to filter on. |
+| `speedtrain_plan_index_field_manifest` | A dry run of a change to an index's declared fields: what it adds, what it removes and how much data that destroys. Changes nothing. |
+| `speedtrain_apply_index_field_manifest` | Apply a declared-field change. **Removing a field deletes the values extracted for it.** |
+
+<Warning>
+  Declaring a field changes a shared index, and the platform then reads every document in it to extract the field. An agent plans first, shows you the plan, and applies only after you agree. A field is usable only once its status is **ready**.
+</Warning>
 
 ## Task configurations
 
@@ -46,6 +53,7 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_create_task_config` | Create a new configuration. |
 | `speedtrain_push_task_config` | Push a new version of an existing configuration. |
 | `speedtrain_list_task_config_versions` | Version history, and which one is published. |
+| `speedtrain_preview_llm_request` | What a version would send to the model for one sample record, without running anything: each call, its model, the abilities switched on and the images and documents attached. Reports `would_fail` when a real run of that record would fail. |
 | `speedtrain_activate_task_config_version` | Make a version the published one. Names the version it displaces. |
 
 ## Review sessions
@@ -57,7 +65,7 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 | `speedtrain_list_review_sessions` | Sessions for a configuration. **Paginated.** |
 | `speedtrain_get_review_session_status` | Progress and approval rate for one session. |
 | `speedtrain_query_review_items` | Items with their scores and feedback, filterable by decision. **Paginated.** |
-| `speedtrain_get_review_item` | One item in full. |
+| `speedtrain_get_review_items` | Up to 50 items from one session by id, in full. |
 
 <Tip>
   Before re-running a configuration that has run before, list its existing sessions and consider reusing one. Comparing two runs only means something if both cover the same documents.
@@ -66,6 +74,42 @@ Every tool takes a tenant and an environment — neither is inferred from your c
 <Info>
   A real review started by an agent runs **Should be processed** unless the agent asks for **Everything**, as in the app: products that already have an accepted output for their current data are left out. `speedtrain_preview_review_session` returns both counts first, so the agent can tell you what a run covers before it starts. The counts are a snapshot, not a cap; to cap a run, the agent sets a limit. When nothing should be processed, no session is started. Test sessions, and configurations that read another configuration's output, have no choice and run everything. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
 </Info>
+
+## Review decisions
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_accept_review_item` | Accept one item's output. Pass the person's own corrected text if they rewrote it. |
+| `speedtrain_reject_review_item` | Reject one item for good, with the reviewer's reason. |
+| `speedtrain_retry_review_item` | Send one item back for another attempt. The feedback travels with the retry. |
+| `speedtrain_accept_all_review_items` | Accept every eligible item in a session, by scope: only items the quality gate approved, or everything awaiting review. The second scope also accepts, and delivers, items the quality gate did not approve. |
+| `speedtrain_retry_all_review_items` | Re-run every eligible item in a session, by scope: items that failed to process, or items the quality gate rejected. |
+
+<Warning>
+  In a review session, accepting delivers the content to the environment's destinations, and a decision cannot be undone. In a test session, nothing is ever delivered. Accepting is a person's judgement. Agents are instructed to accept only what you have read and told them to accept, or what you have given them a standing instruction to accept, and not output that merely scored well. Nothing in the server enforces this. Accepting one item is recorded against the signed-in user or the owner of the access token. Accepting in bulk is not.
+</Warning>
+
+<Info>
+  An item that failed to process has no output to accept or reject. Retry it. Each retry costs another model run, and bulk retries carry no feedback, so retry an item on its own to steer it.
+</Info>
+
+## Automation subscriptions
+
+| Tool | Purpose |
+|---|---|
+| `speedtrain_list_subscriptions` | The environment's subscriptions: what runs a configuration automatically as documents are ingested, and whether each output waits for a person. |
+| `speedtrain_get_subscription` | One subscription. |
+| `speedtrain_create_subscription` | Create a subscription for a published configuration. |
+| `speedtrain_update_subscription` | Change a subscription's status, approval mode, retry or input. |
+| `speedtrain_delete_subscription` | Delete it. Existing sessions and items stay reviewable. |
+
+<Info>
+  A subscription processes only documents ingested after it exists. Activating a new version of a configuration moves its active subscriptions onto that version. Changing a subscription's variant options or input supersedes every item awaiting review. [What runs again after a change](/speedtrain/key-concepts/what-runs-again)
+</Info>
+
+<Warning>
+  A subscription that is active with auto-approve set to **Always** publishes every output with no person involved, and the quality gate cannot stop it. An agent says so and waits for you to agree first.
+</Warning>
 
 ## Destinations
 
@@ -91,6 +135,17 @@ Both tools are read-only. A person approves a party in the app, under **Settings
 <Info>
   When saving, publishing, starting a session or retrying is refused for missing approval, the agent names the party and sends you to **Settings → Processing chain approval**. It does not retry or swap the model to get around it.
 </Info>
+
+## Prompts and resources
+
+The server also offers two prompts and two resources.
+
+| Name | Purpose |
+|---|---|
+| `test_task_config` | Prompt. Runs a configuration end to end in a test session and reports what succeeds, what fails and why. Nothing is accepted or shipped. |
+| `check_config_drift` | Prompt. Compares the live configuration for an alias with a spec you attach, and reports the differences. Read-only. |
+| `speedtrain_active_task_config` | Resource. The active version of a configuration, as `speedtrain_get_task_config` returns it. |
+| `speedtrain_chat_completion_v3_template` | Resource. The document skeleton for a new configuration. |
 
 ## Pagination
 
