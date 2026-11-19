@@ -65,7 +65,8 @@
                 ]
               },
               "enterspeed/user-login",
-              "enterspeed/service-limits"
+              "enterspeed/service-limits",
+              "enterspeed/supported-versions"
             ]
           },
           {
@@ -142,7 +143,6 @@
             "icon": "plug",
             "pages": [
               "enterspeed/integrations/overview",
-              "enterspeed/integrations/supported-packages",
               {
                 "group": "Source integrations",
                 "pages": [
