@@ -1,0 +1,56 @@
+---
+title: Supported packages and SBOMs
+sidebarTitle: Supported packages
+description: Lifecycle status and software bills of materials for Enterspeed SDKs, integrations and tools.
+---
+
+{/* Generated from the internal SBOM index (enterspeedhq/sbom). Do not edit by hand. */}
+
+This page lists the Enterspeed packages you can install and their support status.
+Use it to check that the version you run is still supported, and when to upgrade.
+
+<Note>
+  A software bill of materials (SBOM) is available for each supported version.
+  SBOMs are shared with customers on request. See [Requesting an SBOM](#requesting-an-sbom).
+</Note>
+
+Last updated: 2026-10-27
+
+## Support status
+
+- **Active**: fully supported. New features, bug fixes and security fixes.
+- **Maintenance**: security fixes only.
+- **Legacy**: no longer updated. Move to the replacement package before the support end date.
+
+## Supported packages
+
+| Package | Latest version | Status | Supports | Channel |
+|---|---|---|---|---|
+| `Enterspeed.Source.Sdk` | 2.0.7 | Active | .NET Standard 1.1/2.0, .NET 6, 9, 10 | NuGet |
+| `Enterspeed.Delivery.Sdk` | 1.6.0 | Active | .NET Standard 2.0, .NET 6 | NuGet |
+| `Enterspeed.Query.Sdk` | 2.1.0 | Active | .NET Standard 2.0, .NET 8 | NuGet |
+| `Enterspeed.Source.UmbracoCms` | 5.3.7 | Active | Umbraco 14+ (.NET 8, 9, 10) | NuGet |
+| `Enterspeed.Source.UmbracoCms` | 4.4.4 | Maintenance | Umbraco 9–13 (.NET 5–8) | NuGet |
+| `Enterspeed.Source.UmbracoCms.Cloudinary` | 4.0.0 | Maintenance | Umbraco 14+ (.NET 8) | NuGet |
+| `es-cli` | 3.1.2 | Active | linux-x64, osx-arm64, osx-x64, win-x64 (.NET 8 single-file) | GitHub Releases |
+| `@enterspeed/js-schema-types` | 1.16.0 | Active | TypeScript | npm |
+| `@enterspeed/n8n-nodes-enterspeed` | 0.1.1 | Active | n8n | npm |
+
+## Legacy packages
+
+These packages are deprecated. They receive no further updates.
+
+| Package | Last version | Supports | Support ends | Replacement |
+|---|---|---|---|---|
+| `Enterspeed.Source.UmbracoCms.V7` | 4.2.0 | Umbraco 7 (end of life) | 2026-12-31 | `Enterspeed.Source.UmbracoCms` |
+| `Enterspeed.Source.UmbracoCms.V8` | 4.2.0 | Umbraco 8 (end of life) | 2026-12-31 | `Enterspeed.Source.UmbracoCms` |
+| `Enterspeed.Source.UmbracoCms.V9` | 3.2.0 | Umbraco 9 (end of life) | 2022-12-13 | `Enterspeed.Source.UmbracoCms` |
+| `Enterspeed.Source.UmbracoCms.V10` | 3.2.0 | Umbraco 10 (end of life) | 2022-12-13 | `Enterspeed.Source.UmbracoCms` |
+| `Enterspeed.Source.Commercetools` | 1.0.0 | Commercetools | 2026-12-31 | — |
+
+## Requesting an SBOM
+
+Email [support@enterspeed.com](mailto:support@enterspeed.com) to request an SBOM.
+Tell us the package and the version you use.
+
+SBOMs are provided in [CycloneDX](https://cyclonedx.org) JSON format. SPDX is available on request.

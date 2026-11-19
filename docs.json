@@ -142,6 +142,7 @@
             "icon": "plug",
             "pages": [
               "enterspeed/integrations/overview",
+              "enterspeed/integrations/supported-packages",
               {
                 "group": "Source integrations",
                 "pages": [
