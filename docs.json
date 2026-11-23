@@ -315,6 +315,7 @@
               "speedtrain/data-flow",
               "speedtrain/how-it-works",
               "speedtrain/use-cases",
+              "speedtrain/compliance",
               {
                 "group": "Getting started",
                 "icon": "circle-play",
