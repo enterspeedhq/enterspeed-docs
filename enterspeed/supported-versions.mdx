@@ -1,0 +1,62 @@
+---
+title: Supported versions and SBOMs
+sidebarTitle: Supported versions
+description: Lifecycle status and software bills of materials for Enterspeed SDKs, integrations and tools.
+---
+
+{/* Generated from the internal SBOM index (enterspeedhq/sbom). Do not edit by hand. */}
+
+This page lists the Enterspeed packages you can install and their support status.
+Use it to check that the version you run is still supported, and when to upgrade.
+
+<Note>
+  A software bill of materials (SBOM) is available for each supported version.
+  SBOMs are shared with customers on request. See [Requesting an SBOM](#requesting-an-sbom).
+</Note>
+
+Last updated: 2026-11-24
+
+## Support status
+
+- **Active**: fully supported. New features, bug fixes and security fixes.
+- **Maintenance**: security fixes only, for 12 months. The version then becomes legacy.
+- **Legacy**: no longer updated. Move to a supported version or the replacement package.
+
+## Supported packages
+
+| Package | Major version | Status | Maintenance ends | Channel |
+|---|---|---|---|---|
+| `Enterspeed.Source.Sdk` | 2.x | Active | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.Sdk) |
+| `Enterspeed.Delivery.Sdk` | 1.x | Active | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Delivery.Sdk) |
+| `Enterspeed.Query.Sdk` | 2.x | Active | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Query.Sdk) |
+| `Enterspeed.Query.Sdk` | 1.x | Maintenance | 2027-03-05 | [NuGet](https://www.nuget.org/packages/Enterspeed.Query.Sdk) |
+| `Enterspeed.Source.UmbracoCms` | 5.x | Active | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms) |
+| `Enterspeed.Source.UmbracoCms` | 4.x | Maintenance | 2026-12-14 | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms) |
+| `Enterspeed.Source.UmbracoCms.Cloudinary` | 4.x | Active | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.Cloudinary) |
+| `Enterspeed.Source.UmbracoCms.Cloudinary` | 3.x | Maintenance | 2026-12-14 | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.Cloudinary) |
+| `Enterspeed.Source.UmbracoCms.V7` | 4.x | Maintenance | 2026-12-31 | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V7) |
+| `Enterspeed.Source.UmbracoCms.V8` | 4.x | Maintenance | 2026-12-31 | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V8) |
+| `Enterspeed.Source.SitecoreCms.V9` | 0.x | Active | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.SitecoreCms.V9) |
+| `Enterspeed.Source.Commercetools` | 1.x | Maintenance | 2026-12-31 | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.Commercetools) |
+| `es-cli` | 3.x | Active | — | [GitHub Releases](https://github.com/enterspeedhq/enterspeed-cli/releases) |
+| `@enterspeed/js-schema-types` | 1.x | Active | — | [npm](https://www.npmjs.com/package/@enterspeed/js-schema-types) |
+| `@enterspeed/n8n-nodes-enterspeed` | 0.x | Active | — | [npm](https://www.npmjs.com/package/@enterspeed/n8n-nodes-enterspeed) |
+| `Enterspeed.Demos.UmbracoCms.FairyTales` | 0.x | Maintenance | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.FairyTales) |
+| `Enterspeed.Demos.UmbracoCms.MultisiteBeers` | 0.x | Maintenance | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Demos.UmbracoCms.MultisiteBeers) |
+
+## Legacy packages
+
+These packages are deprecated. They receive no further updates.
+
+| Package | Major version | Replacement | Channel |
+|---|---|---|---|
+| `Enterspeed.Source.UmbracoCms.V9` | 3.x | `Enterspeed.Source.UmbracoCms` | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V9) |
+| `Enterspeed.Source.UmbracoCms.V10` | 3.x | `Enterspeed.Source.UmbracoCms` | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.UmbracoCms.V10) |
+| `Enterspeed.Source.SitecoreCms.V8` | 0.x | — | [NuGet](https://www.nuget.org/packages/Enterspeed.Source.SitecoreCms.V8) |
+
+## Requesting an SBOM
+
+Email [support@enterspeed.com](mailto:support@enterspeed.com) to request an SBOM.
+Tell us the package and the version you use.
+
+SBOMs are provided in [CycloneDX](https://cyclonedx.org) JSON format. SPDX is available on request.

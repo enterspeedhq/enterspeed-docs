@@ -65,7 +65,13 @@
                 ]
               },
               "enterspeed/user-login",
-              "enterspeed/service-limits"
+              {
+                "group": "Support and limits",
+                "pages": [
+                  "enterspeed/service-limits",
+                  "enterspeed/supported-versions"
+                ]
+              }
             ]
           },
           {
@@ -265,13 +271,6 @@
               "enterspeed/best-practices/ingest-integrations",
               "enterspeed/best-practices/schemas",
               "enterspeed/best-practices/indexes"
-            ]
-          },
-          {
-            "group": "SDKs and packages",
-            "icon": "box",
-            "pages": [
-              "enterspeed/sdks-and-packages/supported-versions"
             ]
           },
           {
