@@ -7,6 +7,14 @@
   box-sizing: border-box;
 }
 
+/* Let pages that contain a `<div className="full-width-page" />` marker use
+   all the width freed up by `mode: "wide"` (used on the Supported versions page). */
+@media (width >= 1024px) {
+  .is-wide ~ * > :last-child:has(.full-width-page) {
+    max-width: none !important;
+  }
+}
+
 /* Dark mode — Mintlify adds a `.dark` class on the root element. */
 .dark .integration-logos .card img {
   background-color: #000035; /* dark mode */

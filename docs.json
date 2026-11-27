@@ -64,10 +64,10 @@
                   "enterspeed/key-concepts/reprocessing"
                 ]
               },
-              "enterspeed/user-login",
               {
                 "group": "Support and limits",
                 "pages": [
+                  "enterspeed/user-login",
                   "enterspeed/service-limits",
                   "enterspeed/supported-versions"
                 ]
@@ -79,7 +79,7 @@
             "icon": "book-open-cover",
             "pages": [
               {
-                "group": "schemas",
+                "group": "Schemas",
                 "pages": [
                   {
                     "group": "JavaScript schemas",
